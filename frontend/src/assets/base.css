@@ -1,0 +1,105 @@
+/* color palette created manually using figma */
+:root {
+    --warning-50: #fdfae6;
+    --warning-100: #f9efb0;
+    --warning-200: #f6e78a;
+    --warning-300: #f2dc54;
+    --warning-400: #efd533;
+    --warning-500: #ebcb00;
+    --warning-600: #d6b900;
+    --warning-700: #a79000;
+    --warning-800: #817000;
+    --warning-900: #635500;
+
+    --primary-50: #f7f0fc;
+    --primary-100: #e5d0f6;
+    --primary-200: #d9baf2;
+    --primary-300: #c79aec;
+    --primary-400: #bd86e9;
+    --primary-500: #ac68e3;
+    --primary-600: #9d5fcf;
+    --primary-700: #7a4aa1;
+    --primary-800: #5f397d;
+    --primary-900: #482c5f;
+
+    --black-50: #ebebeb;
+    --black-100: #c0c0c0;
+    --black-200: #a1a1a1;
+    --black-300: #767676;
+    --black-400: #5c5c5c;
+    --black-500: #333333;
+    --black-600: #2e2e2e;
+    --black-700: #242424;
+    --black-800: #1c1c1c;
+    --black-900: #151515;
+
+    --error-50: #fce9e9;
+    --error-100: #f7baba;
+    --error-200: #f39898;
+    --error-300: #ee6969;
+    --error-400: #ea4c4c;
+    --error-500: #e51f1f;
+    --error-600: #d01c1c;
+    --error-700: #a31616;
+    --error-800: #7e1111;
+    --error-900: #600d0d;
+
+    --info-50: #e9f7fd;
+    --info-100: #b9e6f9;
+    --info-200: #98daf6;
+    --info-300: #68c9f2;
+    --info-400: #4bbeef;
+    --info-500: #1eaeeb;
+    --info-600: #1b9ed6;
+    --info-700: #157ca7;
+    --info-800: #116081;
+    --info-900: #0d4963;
+}
+
+/* semantic color variables for this project */
+:root {
+    --color-background: var(--white-50);
+    --color-background-soft: var(--white-100);
+    --color-background-mute: var(--white-200);
+
+    --color-border: var(--black-600);
+    --color-border-hover: var(--black-800);
+
+    --color-heading: var(--black-900);
+    --color-text: var(--black-800);
+}
+
+body {
+    min-height: 100vh;
+    color: var(--color-text);
+    background: var(--color-background);
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    color: var(--color-heading);
+    margin-top: 2em;
+    margin-bottom: 1em;
+    letter-spacing: -1.5%;
+}
+
+h1 {
+    font-size: 3rem;
+}
+h2 {
+    font-size: 2.25rem;
+}
+h3 {
+    font-size: 1.5rem;
+}
+h4 {
+    font-size: 1rem;
+}
+h5 {
+    font-size: 0.75rem;
+}
