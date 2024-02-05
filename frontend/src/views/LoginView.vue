@@ -2,6 +2,7 @@
 import { ref, reactive, computed, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
+import ValidatedInput from "@/components/ValidatedInput.vue";
 
 
 const formElement = ref<HTMLFormElement | null>(null);
@@ -36,16 +37,20 @@ async function login() {
         <div id="login-container">
             <h1>{{ $t("login.title") }}</h1>
             <form ref="formElement" id="login-form" @submit.prevent="login">
-                <div id="email-input-container" class="input-container" @input="v$.email.$reset()" @focusout="v$.email.$validate()">
-                    <label for="email">{{ $t("login.email") }}</label>
-                    <input id="email" type="text" v-model="loginData.email" :class="{ 'border-red': v$.email.$error }"/>
-                    <span v-if="v$.email.$error" class="error-message">{{ v$.email.$errors[0].$message }}</span>
-                </div>
-                <div id="password-input-container" class="input-container" @input="v$.password.$reset()" @focusout="v$.password.$validate()">
-                    <label for="password">{{ $t("login.password") }}</label>
-                    <input id="password" type="password" v-model="loginData.password" :class="{ 'border-red': v$.password.$error }"/>
-                    <span v-if="v$.password.$error" class="error-message">{{ v$.password.$errors[0].$message }}</span>
-                </div>
+                <ValidatedInput
+                    id="email"
+                    type="text"
+                    v-model="loginData.email"
+                    :validator="v$.email"
+                    :label="$t('login.email')"
+                />
+                <ValidatedInput
+                    id="password"
+                    type="password"
+                    v-model="loginData.password"
+                    :validator="v$.password"
+                    :label="$t('login.password')"
+                />
                 <button id="login-button" type="submit">{{ $t("login.login") }}</button>
             </form>
         </div>
@@ -102,16 +107,5 @@ async function login() {
 
 #login-button:hover {
     background-color: var(--gray-800);
-}
-
-.error-message {
-    color: red;
-    margin-left: 0.2em;
-    font-size: 0.8em;
-    font-style: italic;
-}
-
-.border-red {
-    border: 1px solid red;
 }
 </style>
