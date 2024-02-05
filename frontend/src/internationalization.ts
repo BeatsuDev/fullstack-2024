@@ -10,6 +10,9 @@ export default {
         }
     },
     no: {
+        company: {
+            name: "Vet ikke enda"
+        },
         navbar: {
             about: "Om",
             contact: "Kontakt",
