@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
     <header>
-        <nav id="navigation-bar">
+        <nav v-if="!$route.meta.hideNavbar" id="navigation-bar">
             <div id="company-name">{{ $t("company.name") }}</div>
             <div id="routes">
                 <RouterLink to="">{{ $t("navbar.about") }}</RouterLink>
