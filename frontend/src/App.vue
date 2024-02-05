@@ -7,9 +7,9 @@ import { RouterLink, RouterView } from "vue-router";
         <nav v-if="!$route.meta.hideNavbar" id="navigation-bar">
             <div id="company-name">{{ $t("company.name") }}</div>
             <div id="routes">
-                <RouterLink to="">{{ $t("navbar.about") }}</RouterLink>
-                <RouterLink to="">{{ $t("navbar.contact") }}</RouterLink>
-                <RouterLink to="">{{ $t("navbar.login") }}</RouterLink>
+                <RouterLink id="about-router-link" to="">{{ $t("navbar.about") }}</RouterLink>
+                <RouterLink id="contact-router-link" to="">{{ $t("navbar.contact") }}</RouterLink>
+                <RouterLink id="login-router-link" to="">{{ $t("navbar.login") }}</RouterLink>
                 <select id="locale-selector" v-model="$i18n.locale">
                     <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
                 </select>
