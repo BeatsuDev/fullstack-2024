@@ -10,7 +10,7 @@ import { RouterLink, RouterView } from "vue-router";
                 <RouterLink to="">{{ $t("navbar.about") }}</RouterLink>
                 <RouterLink to="">{{ $t("navbar.contact") }}</RouterLink>
                 <RouterLink to="">{{ $t("navbar.login") }}</RouterLink>
-                <select v-model="$i18n.locale">
+                <select id="locale-selector" v-model="$i18n.locale">
                     <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
                 </select>
             </div>
@@ -49,5 +49,19 @@ import { RouterLink, RouterView } from "vue-router";
     display: flex;
     justify-content: end;
     gap: 1.5rem;
+}
+
+#locale-selector {
+    padding: 0.25em;
+    font-size: 0.75em;
+    border-radius: 0.25rem;
+    background-color: var(--gray-700);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#locale-selector:focus {
+    outline: none;
 }
 </style>
