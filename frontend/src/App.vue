@@ -35,13 +35,30 @@ import { RouterLink, RouterView } from "vue-router";
 }
 
 #routes > a {
-    color: white;
+    position: relative;
+    color: var(--gray-200);
     text-decoration: none;
     transition: color 50ms;
 }
 
 #routes > a:hover {
-    color: var(--gray-500);
+    color: white;
+}
+
+#routes > a::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    border-radius: 2px;
+    background-color: white;
+    transition: width 100ms;
+}
+
+#routes > a:hover::before {
+    width: 100%;
 }
 
 #routes {
