@@ -9,7 +9,7 @@ import { RouterLink, RouterView } from "vue-router";
             <div id="routes">
                 <RouterLink id="about-router-link" to="">{{ $t("navbar.about") }}</RouterLink>
                 <RouterLink id="contact-router-link" to="">{{ $t("navbar.contact") }}</RouterLink>
-                <RouterLink id="login-router-link" to="">{{ $t("navbar.login") }}</RouterLink>
+                <RouterLink id="login-router-link" to="login">{{ $t("navbar.login") }}</RouterLink>
                 <select id="locale-selector" v-model="$i18n.locale">
                     <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
                 </select>
