@@ -16,7 +16,7 @@ jobs:
           path: frontend/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
       - run: npm install
-      - run: npm run format --check
+      - run: npm run format:check
 
   lint:
     defaults:
@@ -32,4 +32,4 @@ jobs:
           path: frontend/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
       - run: npm install
-      - run: npm run lint
+      - run: npm run lint:check
