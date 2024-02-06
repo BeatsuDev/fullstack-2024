@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  title: Vet Ikke API.
+  description: |-
+    Vet ikke enda...
+  termsOfService: https://vetikke.no/tos
+  contact:
+    email: vkbugge@hotmail.com
+  license:
+    name: MIT License
+    url: "https://opensource.org/licenses/MIT"
+  version: 1.0.0
+tags:
+  - name: user
+    description: Operations regarding the user.
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      description: Register a user
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreate"
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "409":
+          description: User already exists
+    put:
+      tags:
+        - user
+      description: Update a user
+      operationId: updateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+              $ref: "#/components/schemas/User"
+        "409":
+          description: User already exists
+  /user/session:
+    post:
+      tags:
+        - user
+      description: Log in with credentials
+      operationId: login
+      requestBody:
+        description: Login credentials
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLogin"
+      responses:
+        "201":
+          headers:
+            Set-Cookie:
+              description: Cookie to be used for authentication.
+              schema:
+                type: string
+                example: "Authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1NzYyMjQxM"
+        "401":
+          description: Bad credentials
+    put:
+      tags:
+        - user
+      description: Refresh token
+      operationId: refreshToken
+      responses:
+        "201":
+          headers:
+            Set-Cookie:
+              description: Cookie to be used for authentication.
+              schema:
+                type: string
+                example: "Authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1NzYyMjQxM"
+        "401":
+          description: Bad credentials
+    get:
+      tags:
+        - user
+      description: Get logged in user
+      operationId: loggedInUser
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+              $ref: "#/components/schemas/User"
+        "401":
+          description: Bad credentials
+  /user/{id}:
+    get:
+      tags:
+        - user
+      description: Get a specific user
+      operationId: getUser
+      parameters:
+        - name: id
+          description: The ID of the user
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    delete:
+      tags:
+        - user
+      description: Delete a specific User
+      operationId: deleteUser
+      parameters:
+        - name: id
+          description: The ID of the user
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Successful response
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+    UserUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+    UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    UserCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
