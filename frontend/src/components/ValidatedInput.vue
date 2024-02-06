@@ -29,6 +29,12 @@ const props = defineProps<{
 </template>
 
 <style scoped>
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+}
+
 input {
     padding: 0.5rem;
     font-size: 1em;
