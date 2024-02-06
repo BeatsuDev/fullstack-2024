@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import ValidatedInput from "@/components/ValidatedInput.vue";
+import ButtonComponent from "@/components/ButtonComponent.vue";
+
 import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
-import ValidatedInput from "@/components/ValidatedInput.vue";
+
 import router from "@/router";
 
 const formElement = ref<HTMLFormElement | null>(null);
@@ -57,9 +60,9 @@ async function login() {
                     />
                 </div>
                 <div id="login-buttons-container">
-                    <button id="login-button" type="submit">
+                    <ButtonComponent id="login-button" type="submit">
                         {{ $t("login.login") }}
-                    </button>
+                    </ButtonComponent>
                     <RouterLink to="register" id="not-registered-message">
                         {{ $t("login.notRegistered") }}
                     </RouterLink>
@@ -108,19 +111,7 @@ async function login() {
 }
 
 #login-button {
-    border: none;
-    border-radius: 0.25rem;
-    padding: 1em 0.5em;
     width: 100%;
-    background-color: var(--gray-700);
-    transition: background-color 100ms;
-    font-size: 1em;
-    color: white;
-    cursor: pointer;
-}
-
-#login-button:hover {
-    background-color: var(--gray-800);
 }
 
 #not-registered-message {
