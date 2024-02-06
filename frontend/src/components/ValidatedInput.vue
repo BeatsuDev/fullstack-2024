@@ -30,6 +30,7 @@ const props = defineProps<{
 
 <style scoped>
 .input-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.2em;
@@ -40,9 +41,19 @@ input {
     font-size: 1em;
 }
 
+input:focus {
+    outline: none;
+}
+
 .error-message {
+    position: absolute;
     color: red;
-    margin-left: 0.2em;
+    background-color: white;
+    padding: 0.1em 0.25em;
+    z-index: 10;
+    bottom: 0;
+    transform: translateY(50%);
+    left: 0.25em;
     font-size: 0.8em;
     font-style: italic;
 }
