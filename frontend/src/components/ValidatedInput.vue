@@ -1,6 +1,15 @@
-<script setup lang="ts" generic="ParameterValidator extends { $validate: () => Promise<boolean>, $reset: () => void, $errors: ErrorObject[] }">
+<script
+    setup
+    lang="ts"
+    generic="
+        ParameterValidator extends {
+            $validate: () => Promise<boolean>;
+            $reset: () => void;
+            $errors: ErrorObject[];
+        }
+    "
+>
 import type { ErrorObject } from "@vuelidate/core/index.js";
-
 
 const model = defineModel<string>();
 const props = defineProps<{
@@ -24,7 +33,9 @@ const props = defineProps<{
             @focusout="validator.$validate()"
             v-model="model"
         />
-        <span v-if="validator.$errors.length" class="error-message">{{ validator.$errors[0].$message }}</span>
+        <span v-if="validator.$errors.length" class="error-message">{{
+            validator.$errors[0].$message
+        }}</span>
     </div>
 </template>
 

@@ -17,7 +17,7 @@ export default {
             register: "Register",
             login: "Log in",
             notRegistered: "Not registered? Click here to create an account!",
-        }
+        },
     },
     no: {
         company: {
@@ -37,6 +37,6 @@ export default {
             register: "Registrer",
             login: "Logg inn",
             notRegistered: "Ikke registrert? Trykk her for å lage en bruker!",
-        }
-    }
+        },
+    },
 };

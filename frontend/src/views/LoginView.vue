@@ -5,7 +5,6 @@ import { required, email, minLength } from "@vuelidate/validators";
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import router from "@/router";
 
-
 const formElement = ref<HTMLFormElement | null>(null);
 const loginData = reactive({
     email: "",
@@ -58,7 +57,9 @@ async function login() {
                     />
                 </div>
                 <div id="login-buttons-container">
-                    <button id="login-button" type="submit">{{ $t("login.login") }}</button>
+                    <button id="login-button" type="submit">
+                        {{ $t("login.login") }}
+                    </button>
                     <RouterLink to="register" id="not-registered-message">
                         {{ $t("login.notRegistered") }}
                     </RouterLink>
@@ -86,7 +87,7 @@ async function login() {
     #login-form {
         max-width: 90%;
         width: 90%;
-    }   
+    }
 }
 
 #login-form {
