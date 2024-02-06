@@ -14,9 +14,9 @@ import type { ErrorObject } from "@vuelidate/core/index.js";
 const model = defineModel<string>();
 const props = defineProps<{
     id: string;
-    type: string;
-    label: string;
     validator: ParameterValidator;
+    type?: string;
+    label?: string;
     class?: string;
     [key: string]: any;
 }>();
