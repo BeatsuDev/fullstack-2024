@@ -3,6 +3,7 @@ import { ref, reactive, computed, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 import ValidatedInput from "@/components/ValidatedInput.vue";
+import router from "@/router";
 
 
 const formElement = ref<HTMLFormElement | null>(null);
@@ -16,10 +17,6 @@ const formRules = {
     password: { required, minLength: minLength(8) },
 };
 
-const emit = defineEmits<{
-    submit: [formData: typeof loginData]
-}>();
-
 const v$ = useVuelidate(formRules, loginData);
 
 async function login() {
@@ -28,7 +25,14 @@ async function login() {
     const isValid = await v$.value.$validate();
     if (!isValid) return;
 
-    emit("submit", toRaw(loginData));
+    const data = toRaw(loginData);
+    formElement.value.reset();
+
+    // TODO: Send login request to the server
+    console.log("Log in data:", data);
+    setTimeout(() => alert("Logged in successfully!"), 200);
+
+    router.push({ name: "home" });
 }
 </script>
 
