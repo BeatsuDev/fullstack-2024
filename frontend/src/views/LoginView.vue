@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed, toRaw } from "vue";
+import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 import ValidatedInput from "@/components/ValidatedInput.vue";
@@ -41,21 +41,28 @@ async function login() {
         <div id="login-container">
             <h1>{{ $t("login.title") }}</h1>
             <form ref="formElement" id="login-form" @submit.prevent="login">
-                <ValidatedInput
-                    id="email"
-                    type="text"
-                    v-model="loginData.email"
-                    :validator="v$.email"
-                    :label="$t('login.email')"
-                />
-                <ValidatedInput
-                    id="password"
-                    type="password"
-                    v-model="loginData.password"
-                    :validator="v$.password"
-                    :label="$t('login.password')"
-                />
-                <button id="login-button" type="submit">{{ $t("login.login") }}</button>
+                <div id="inputs-container">
+                    <ValidatedInput
+                        id="email"
+                        type="text"
+                        v-model="loginData.email"
+                        :validator="v$.email"
+                        :label="$t('login.email')"
+                    />
+                    <ValidatedInput
+                        id="password"
+                        type="password"
+                        v-model="loginData.password"
+                        :validator="v$.password"
+                        :label="$t('login.password')"
+                    />
+                </div>
+                <div id="login-buttons-container">
+                    <button id="login-button" type="submit">{{ $t("login.login") }}</button>
+                    <RouterLink to="register" id="not-registered-message">
+                        {{ $t("login.notRegistered") }}
+                    </RouterLink>
+                </div>
             </form>
         </div>
     </main>
@@ -70,9 +77,6 @@ async function login() {
 }
 
 #login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
     width: 30%;
     max-width: 22rem;
     min-width: 17rem;
@@ -85,31 +89,45 @@ async function login() {
     }   
 }
 
+#login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+#login-form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
 #login-form input {
     padding: 0.5rem;
     font-size: 1em;
 }
 
-.input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2em;
-}
-
 #login-button {
-    padding: 1rem 0.5rem;
-    font-size: 1em;
-    background-color: var(--gray-700);
-    color: white;
     border: none;
     border-radius: 0.25rem;
-    cursor: pointer;
+    padding: 1em 0.5em;
+    width: 100%;
+    background-color: var(--gray-700);
     transition: background-color 100ms;
-    width: 60%;
-    margin: 0 auto;
+    font-size: 1em;
+    color: white;
+    cursor: pointer;
 }
 
 #login-button:hover {
     background-color: var(--gray-800);
+}
+
+#not-registered-message {
+    font-size: 0.8em;
+    margin-top: 0.1em;
+    font-style: italic;
+    text-decoration: underline;
+
+    color: var(--gray-600);
 }
 </style>

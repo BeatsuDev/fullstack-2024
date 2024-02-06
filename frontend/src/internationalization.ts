@@ -1,7 +1,7 @@
 export default {
     en: {
         company: {
-            name: "Vet ikke enda"
+            name: "Vet ikke enda",
         },
         navbar: {
             about: "About",
@@ -16,11 +16,12 @@ export default {
             forgot: "Forgot password?",
             register: "Register",
             login: "Log in",
+            notRegistered: "Not registered? Click here to create an account!",
         }
     },
     no: {
         company: {
-            name: "Vet ikke enda"
+            name: "Vet ikke enda",
         },
         navbar: {
             about: "Om",
@@ -35,6 +36,7 @@ export default {
             forgot: "Glemt passord?",
             register: "Registrer",
             login: "Logg inn",
+            notRegistered: "Ikke registrert? Trykk her for å lage en bruker!",
         }
     }
 };
