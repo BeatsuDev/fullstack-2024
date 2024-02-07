@@ -12,11 +12,13 @@ export default {
             title: "Log in",
             email: "Email",
             password: "Password",
+            repeatPassword: "Repeat password",
             submit: "Log in",
             forgot: "Forgot password?",
             register: "Register",
             login: "Log in",
             notRegistered: "Not registered? Click here to create an account!",
+            alreadyRegistered: "Already registered? Click here to log in!",
         },
     },
     no: {
@@ -32,11 +34,14 @@ export default {
             title: "Logg inn",
             email: "Epost",
             password: "Passord",
+            repeatPassword: "Gjenta passord",
             submit: "Logg inn",
             forgot: "Glemt passord?",
             register: "Registrer",
             login: "Logg inn",
             notRegistered: "Ikke registrert? Trykk her for å lage en bruker!",
+            alreadyRegistered:
+                "Allerede registrert? Trykk her for å logge inn!",
         },
     },
 };
