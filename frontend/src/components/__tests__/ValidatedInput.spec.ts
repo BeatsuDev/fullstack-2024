@@ -11,7 +11,7 @@ describe("ValidatedInput", () => {
         $validate: () => Promise<boolean>;
         $reset: () => void;
         $errors: ErrorObject[];
-    } & any;
+    } & TODO;
 
     let wrapper: VueWrapper<TODO>;
 
