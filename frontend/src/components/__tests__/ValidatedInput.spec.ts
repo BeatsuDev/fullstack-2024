@@ -13,7 +13,7 @@ describe("ValidatedInput", () => {
         $errors: ErrorObject[];
     } & any;
 
-    let wrapper: VueWrapper<typeof ValidatedInput>;
+    let wrapper: VueWrapper<TODO>;
 
     beforeAll(() => {
         mockValidator = reactive({
