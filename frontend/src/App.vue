@@ -28,7 +28,14 @@ import { RouterLink, RouterView } from "vue-router";
             </div>
         </nav>
     </header>
-    <RouterView />
+    <RouterView v-slot="{ Component, route }">
+        <Transition
+            :name="(route.meta.transitionName as string | undefined) || 'fade'"
+            mode="out-in"
+        >
+            <Component :is="Component" />
+        </Transition>
+    </RouterView>
 </template>
 
 <style scoped>
@@ -92,5 +99,37 @@ import { RouterLink, RouterView } from "vue-router";
 
 #locale-selector:focus {
     outline: none;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 60ms cubic-bezier(0, 0.2, 0.75, 0.75);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.slide-left-enter-active,
+.slide-left-leave-active {
+    transition: all 130ms cubic-bezier(0, 0.2, 0.75, 0.75);
+}
+
+.slide-right-enter-from,
+.slide-left-leave-to {
+    transform: translateX(-20px);
+    opacity: 0;
+}
+
+.slide-right-enter-active,
+.slide-right-leave-active {
+    transition: all 130ms cubic-bezier(0, 0.2, 0.75, 0.75);
+}
+
+.slide-left-enter-from,
+.slide-right-leave-to {
+    transform: translateX(20px);
+    opacity: 0;
 }
 </style>

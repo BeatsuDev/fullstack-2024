@@ -18,4 +18,13 @@ const router = createRouter({
     ],
 });
 
+router.beforeEach((to, from) => {
+    const toDepth = to.path.split("/").filter((i) => i).length;
+    const fromDepth = from.path.split("/").filter((i) => i).length;
+
+    if (toDepth === fromDepth) return;
+    const goingUp = toDepth < fromDepth;
+    to.meta.transitionName = goingUp ? "slide-left" : "slide-right";
+});
+
 export default router;
