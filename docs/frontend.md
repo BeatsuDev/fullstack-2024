@@ -20,8 +20,9 @@ Other commands:
 ```bash
 npm run test:unit  # Runs unit tests in watch mode
 npm run test:unit -- --run  # Runs unit tests once
-npm run test:coverage  # Coverage report using vitests
+npm run test:unit:coverage  # Coverage report using vitests
 npm run test:e2e  # Runs cypress e2e tests once
+npm run test:e2e:coverage  # Coverage report using cypress tests
 
 npm run lint  # Fix linting errors
 npm run format  # Fix formatting errors
