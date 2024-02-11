@@ -1,9 +1,9 @@
 package no.ntnu.fullstack.backend.security;
 
-import java.util.Base64;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +28,9 @@ public class AuthenticationController {
   @Autowired
   private UserDetailsService userDetailsService;
 
+  @Autowired
+  private JWTService jwtService;
+
   @GetMapping
   @ResponseBody
   public String getUser(Authentication authentication) {
@@ -39,9 +42,8 @@ public class AuthenticationController {
   public ResponseEntity<String> login(@RequestBody UserLogin login) {
     var user = userDetailsService.loadUserByUsername(login.getEmail());
     if (encoder.matches(login.getPassword(), user.getPassword())) {
-      byte[] encoded = Base64.getEncoder()
-          .encode(String.format("%s:%s", login.getEmail(), login.getPassword()).getBytes());
-      return ResponseEntity.ok().header("Set-Cookie", String.format("Authorization=Basic %s", new String(encoded)))
+      ResponseCookie jwtCookie = jwtService.generateTokenCookie(user);
+      return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
           .build();
     } else {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

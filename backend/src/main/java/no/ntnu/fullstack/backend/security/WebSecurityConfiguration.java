@@ -1,7 +1,5 @@
 package no.ntnu.fullstack.backend.security;
 
-import java.lang.reflect.Method;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,7 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @EnableWebSecurity
@@ -52,13 +52,17 @@ public class WebSecurityConfiguration {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(final HttpSecurity http)
+  public SecurityFilterChain filterChain(final HttpSecurity http, JWTAuthFilter jwtAuthFilter)
       throws Exception {
-    return http
+    http
         .csrf((csrfConfigurer) -> {
           csrfConfigurer.disable();
         })
-        .exceptionHandling(Customizer.withDefaults())
+        .exceptionHandling((exception) -> {
+          exception.authenticationEntryPoint((request, response, e) -> {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+          });
+        })
         .sessionManagement(session -> {
           session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         })
@@ -67,7 +71,8 @@ public class WebSecurityConfiguration {
               .requestMatchers(HttpMethod.POST, "/user/session").permitAll()
               .anyRequest().authenticated();
         })
-        .httpBasic(Customizer.withDefaults())
-        .build();
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
   }
 }
