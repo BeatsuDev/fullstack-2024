@@ -65,10 +65,13 @@ public class JWTService {
     }
   }
 
-  public ResponseCookie generateTokenCookie(UserDetails userDatails) {
+  public Cookie generateTokenCookie(UserDetails userDatails) {
     String jwt = generateTokenFromUsername(userDatails.getUsername());
-    return ResponseCookie.from(cookieName, jwt)
-        .path("/").maxAge(tokenAge).httpOnly(true).build();
+    Cookie cookie = new Cookie(cookieName, jwt);
+    cookie.setPath("/");
+    cookie.setMaxAge((int) tokenAge.getSeconds());
+    cookie.setHttpOnly(true);
+    return cookie;
   }
 
   public Optional<UserDetails> resolveJWT(String jwt) {

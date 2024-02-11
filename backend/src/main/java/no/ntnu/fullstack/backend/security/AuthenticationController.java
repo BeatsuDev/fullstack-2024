@@ -1,14 +1,12 @@
 package no.ntnu.fullstack.backend.security;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import no.ntnu.fullstack.backend.security.DTO.UserLogin;
 
@@ -41,15 +40,22 @@ public class AuthenticationController {
   }
 
   @PostMapping
-  public ResponseEntity<String> login(HttpServletResponse response, @RequestBody UserLogin login)
-      throws AuthenticationException {
-    UserDetails user = userDetailsService.loadUserByUsername(login.getEmail());
+  @ResponseBody
+  public void login(HttpServletResponse response, @RequestBody UserLogin login)
+      throws IOException {
+    UserDetails user;
+    try {
+      user = userDetailsService.loadUserByUsername(login.getEmail());
+    } catch (UsernameNotFoundException e) {
+      response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+      return;
+    }
+
     if (encoder.matches(login.getPassword(), user.getPassword())) {
-      ResponseCookie jwtCookie = jwtService.generateTokenCookie(user);
-      return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-          .build();
+      Cookie jwtCookie = jwtService.generateTokenCookie(user);
+      response.addCookie(jwtCookie);
     } else {
-      throw new BadCredentialsException(login.getEmail());
+      response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }
   }
 

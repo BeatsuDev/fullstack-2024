@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,6 +23,12 @@ class JWTAuthFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
+    if (request.getRequestURI().endsWith("/user/session")
+        && (request.getMethod().equals("DELETE") || request.getMethod().equals("POST"))) {
+      filterChain.doFilter(request, response);
+      return;
+    }
+
     jwtService.resolveJWT(request)
         .map((user) -> {
           return new UsernamePasswordAuthenticationToken(
@@ -31,6 +38,7 @@ class JWTAuthFilter extends OncePerRequestFilter {
         }).ifPresent((auth) -> {
           auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
           SecurityContextHolder.getContext().setAuthentication(auth);
+          response.addCookie(jwtService.generateTokenCookie((UserDetails) auth.getPrincipal()));
         });
 
     filterChain.doFilter(request, response);
