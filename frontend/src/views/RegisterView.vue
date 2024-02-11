@@ -7,7 +7,12 @@ import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs } from "@vuelidate/validators";
 
+import type { UserCreate } from "@/api";
+import { UserApi } from "@/api";
+
 import router from "@/router";
+
+const userApi = new UserApi();
 
 const formElement = ref<HTMLFormElement | null>(null);
 const formData = reactive({
@@ -34,13 +39,25 @@ async function register() {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { repeatPassword, ...data } = toRaw(formData);
-    formElement.value.reset();
 
-    // TODO: Send register request to the server
-    console.log("Registered with data:", data);
-    setTimeout(() => alert("Successfully created a new user!"), 200);
-
-    router.push({ name: "home" });
+    try {
+        // TODO: Add loading animation
+        await userApi.registerUser(data as UserCreate);
+        formElement.value.reset();
+        router.push({ name: "home" });
+    } catch (error: any) {
+        // TODO: Check that the error is of type AxiosResponse (it should be)
+        // TODO: Show error message to user
+        console.error("Error on register:", error);
+        switch (error.status) {
+            case 409:
+                alert("Could not register user. User already exists.");
+                break;
+            default:
+                alert("Could not register user. Unkown reason why.");
+                break;
+        }
+    }
 }
 </script>
 
