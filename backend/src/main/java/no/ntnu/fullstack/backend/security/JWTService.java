@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +20,8 @@ import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +32,29 @@ public class JWTService {
 
   private Duration tokenAge = Duration.ofMinutes(5);
   private String cookieName = "Authentication";
-  private SecretKey key = Jwts.SIG.HS512.key().build();
-  private JwtParser parser = Jwts.parser().verifyWith(key).build();
+
+  @Value("${application.jwtsecret}")
+  private String jwtSecret;
+  private SecretKey key;
+  private JwtParser jwtParser;
 
   private final UserDetailsService userDetailsService;
+
+  private SecretKey getKey() {
+    if (key == null) {
+      key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    }
+
+    return key;
+  }
+
+  private JwtParser getJwtParser() {
+    if (jwtParser == null) {
+      jwtParser = Jwts.parser().verifyWith(getKey()).build();
+    }
+
+    return jwtParser;
+  }
 
   public Optional<String> getJwt(HttpServletRequest request) {
     Cookie cookie = WebUtils.getCookie(request, cookieName);
@@ -52,7 +74,7 @@ public class JWTService {
   public Optional<UserDetails> resolveJWT(String jwt) {
     String subject = null;
     try {
-      subject = parser.parseSignedClaims(jwt).getPayload().getSubject();
+      subject = getJwtParser().parseSignedClaims(jwt).getPayload().getSubject();
     } catch (MalformedJwtException e) { // TODO: use a logger
       System.out.println("Invalid JWT token: " + e.getMessage());
     } catch (ExpiredJwtException e) {
@@ -90,7 +112,7 @@ public class JWTService {
         .subject(username)
         .issuedAt(now)
         .expiration(new Date(now.getTime() + tokenAge.get(ChronoUnit.SECONDS) * 1000))
-        .signWith(key)
+        .signWith(getKey())
         .compact();
   }
 }
