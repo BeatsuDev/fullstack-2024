@@ -17,6 +17,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -67,6 +68,7 @@ public class WebSecurityConfiguration {
         })
         .authorizeHttpRequests(authorize -> {
           authorize
+              .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
               .requestMatchers(HttpMethod.POST, "/user/session").permitAll()
               .anyRequest().authenticated();
         })
