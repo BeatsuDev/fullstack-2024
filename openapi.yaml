@@ -52,7 +52,7 @@ paths:
           content:
             application/json:
               schema:
-              $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/User"
         "409":
           description: User already exists
   /user/session:
@@ -69,6 +69,7 @@ paths:
               $ref: "#/components/schemas/UserLogin"
       responses:
         "201":
+          description: Successful operation
           headers:
             Set-Cookie:
               description: Cookie to be used for authentication.
@@ -84,6 +85,7 @@ paths:
       operationId: refreshToken
       responses:
         "201":
+          description: Successful operation
           headers:
             Set-Cookie:
               description: Cookie to be used for authentication.
@@ -103,7 +105,7 @@ paths:
           content:
             application/json:
               schema:
-              $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/User"
         "401":
           description: Bad credentials
   /user/{id}:
