@@ -27,20 +27,6 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity(securedEnabled = true)
 public class WebSecurityConfiguration {
   @Bean
-  public UserDetailsService UserDetailsService(final PasswordEncoder encoder) {
-    final InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-
-    manager.createUser(
-        User.withUsername("user@example.org").password(encoder.encode("userpassword"))
-            .roles("USER").build());
-    manager.createUser(
-        User.withUsername("admin@example.org").password(encoder.encode("adminpassword"))
-            .roles("USER", "ADMIN").build());
-
-    return manager;
-  }
-
-  @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
@@ -70,6 +56,7 @@ public class WebSecurityConfiguration {
           authorize
               .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
               .requestMatchers(HttpMethod.POST, "/user/session").permitAll()
+              .requestMatchers(HttpMethod.POST, "/user").permitAll()
               .anyRequest().authenticated();
         })
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

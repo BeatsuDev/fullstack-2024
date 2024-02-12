@@ -2,10 +2,10 @@ package no.ntnu.fullstack.backend.security;
 
 import java.io.IOException;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,34 +18,36 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.security.DTO.UserLogin;
+import no.ntnu.fullstack.backend.user.UserMapper;
+import no.ntnu.fullstack.backend.user.UserService;
+import no.ntnu.fullstack.backend.user.dto.UserDTO;
+import no.ntnu.fullstack.backend.user.model.User;
 
 @Controller
 @RequestMapping(value = "/user/session")
+@RequiredArgsConstructor
 public class AuthenticationController {
-  @Autowired
-  private PasswordEncoder encoder;
-
-  @Autowired
-  private UserDetailsService userDetailsService;
-
-  @Autowired
-  private JWTService jwtService;
+  private final PasswordEncoder encoder;
+  private final UserService userService;
+  private final JWTService jwtService;
+  private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
   @GetMapping
   @ResponseBody
-  public String getUser(Authentication authentication) {
-    var user = (UserDetails) authentication.getPrincipal();
-    return user.getUsername();
+  public UserDTO getUser(Authentication authentication) {
+    var user = (User) authentication.getPrincipal();
+    return userMapper.toUserDTO(user);
   }
 
   @PostMapping
   @ResponseBody
   public void login(HttpServletResponse response, @RequestBody UserLogin login)
       throws IOException {
-    UserDetails user;
+    User user;
     try {
-      user = userDetailsService.loadUserByUsername(login.getEmail());
+      user = userService.getUserByEmailOrThrow(login.getEmail());
     } catch (UsernameNotFoundException e) {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
       return;
@@ -61,7 +63,6 @@ public class AuthenticationController {
 
   @PutMapping
   @ResponseBody
-  public String refreshToken() {
-    return ":)";
+  public void refreshToken() {
   }
 }

@@ -25,6 +25,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.user.model.User;
 
 @Service
 @RequiredArgsConstructor
@@ -65,8 +66,8 @@ public class JWTService {
     }
   }
 
-  public Cookie generateTokenCookie(UserDetails userDatails) {
-    String jwt = generateTokenFromUsername(userDatails.getUsername());
+  public Cookie generateTokenCookie(User user) {
+    String jwt = generateTokenFromUsername(user.getEmail());
     Cookie cookie = new Cookie(cookieName, jwt);
     cookie.setPath("/");
     cookie.setMaxAge((int) tokenAge.getSeconds());

@@ -3,9 +3,13 @@ package no.ntnu.fullstack.backend.user;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.user.model.User;
 
+@Service
 @RequiredArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
@@ -16,6 +20,12 @@ public class UserService {
 
   public Optional<User> getUserByEmail(String email) {
     return userRepository.findByEmail(email);
+  }
+
+  public User getUserByEmailOrThrow(String email) throws UsernameNotFoundException {
+    return getUserByEmail(email).orElseThrow(() -> {
+      throw new UsernameNotFoundException(email);
+    });
   }
 
   public Optional<User> createUser(User user) {
