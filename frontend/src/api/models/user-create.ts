@@ -25,17 +25,17 @@ export interface UserCreate {
      * @type {string}
      * @memberof UserCreate
      */
-    name?: string;
+    name: string;
 
     /**
      * @type {string}
      * @memberof UserCreate
      */
-    email?: string;
+    email: string;
 
     /**
      * @type {string}
      * @memberof UserCreate
      */
-    password?: string;
+    password: string;
 }

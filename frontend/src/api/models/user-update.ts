@@ -25,17 +25,17 @@ export interface UserUpdate {
      * @type {string}
      * @memberof UserUpdate
      */
-    id?: string;
+    id: string;
 
     /**
      * @type {string}
      * @memberof UserUpdate
      */
-    name?: string;
+    name: string;
 
     /**
      * @type {string}
      * @memberof UserUpdate
      */
-    email?: string;
+    email: string;
 }

@@ -10,6 +10,11 @@ describe("User login", () => {
                 email: "test@test.com",
             } as User,
         });
+
+        cy.intercept("GET", "/user", {
+            statusCode: 200,
+            body: {},
+        });
     });
 });
 

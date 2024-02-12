@@ -25,17 +25,17 @@ export interface User {
      * @type {string}
      * @memberof User
      */
-    id?: string;
+    id: string;
 
     /**
      * @type {string}
      * @memberof User
      */
-    name?: string;
+    name: string;
 
     /**
      * @type {string}
      * @memberof User
      */
-    email?: string;
+    email: string;
 }

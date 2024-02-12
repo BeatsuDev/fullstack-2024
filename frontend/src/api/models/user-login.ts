@@ -25,11 +25,11 @@ export interface UserLogin {
      * @type {string}
      * @memberof UserLogin
      */
-    email?: string;
+    email: string;
 
     /**
      * @type {string}
      * @memberof UserLogin
      */
-    password?: string;
+    password: string;
 }
