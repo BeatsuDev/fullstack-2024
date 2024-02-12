@@ -28,14 +28,14 @@ public class UserService {
     });
   }
 
-  public Optional<User> createUser(User user) {
+  public Optional<User> createUser(User user) { // TODO: Validate email
     if (user == null || user.getId() != null) {
       return Optional.empty();
     }
     return Optional.of(userRepository.saveAndFlush(user));
   }
 
-  public Optional<User> updateUser(User user) {
+  public Optional<User> updateUser(User user) { // TODO: Validate email
     if (user == null || user.getId() == null) {
       return Optional.empty();
     }
