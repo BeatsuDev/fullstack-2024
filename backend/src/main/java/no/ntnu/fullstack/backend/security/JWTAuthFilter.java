@@ -25,12 +25,6 @@ class JWTAuthFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    if (request.getRequestURI().endsWith("/user/session")
-        && (request.getMethod().equals("DELETE") || request.getMethod().equals("POST"))) {
-      filterChain.doFilter(request, response);
-      return;
-    }
-
     jwtService.resolveJWT(request)
         .flatMap((userDetails) -> {
           return userService.getUserByEmail(userDetails.getUsername())

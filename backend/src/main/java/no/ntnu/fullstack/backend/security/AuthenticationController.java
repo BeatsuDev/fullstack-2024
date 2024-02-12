@@ -55,6 +55,7 @@ public class AuthenticationController {
 
     if (encoder.matches(login.getPassword(), user.getPassword())) {
       Cookie jwtCookie = jwtService.generateTokenCookie(user);
+      response.reset();
       response.addCookie(jwtCookie);
     } else {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
