@@ -1,6 +1,5 @@
 package no.ntnu.fullstack.backend.security.DTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
