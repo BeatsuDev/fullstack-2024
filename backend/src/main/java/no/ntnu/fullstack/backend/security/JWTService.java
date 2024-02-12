@@ -59,11 +59,7 @@ public class JWTService {
 
   public Optional<String> getJwt(HttpServletRequest request) {
     Cookie cookie = WebUtils.getCookie(request, cookieName);
-    if (cookie != null) {
-      return Optional.of(cookie.getValue());
-    } else {
-      return Optional.empty();
-    }
+    return Optional.ofNullable(cookie).map(Cookie::getValue);
   }
 
   public Cookie generateTokenCookie(User user) {
