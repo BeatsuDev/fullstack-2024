@@ -147,6 +147,10 @@ components:
   schemas:
     User:
       type: object
+      required:
+        - id
+        - name
+        - email
       properties:
         id:
           type: string
@@ -156,6 +160,10 @@ components:
           type: string
     UserUpdate:
       type: object
+      required:
+        - id
+        - name
+        - email
       properties:
         id:
           type: string
@@ -165,6 +173,9 @@ components:
           type: string
     UserLogin:
       type: object
+      required:
+        - email
+        - password
       properties:
         email:
           type: string
@@ -172,6 +183,10 @@ components:
           type: string
     UserCreate:
       type: object
+      required:
+        - name
+        - email
+        - password
       properties:
         name:
           type: string
