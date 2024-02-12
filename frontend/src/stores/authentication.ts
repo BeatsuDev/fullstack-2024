@@ -1,7 +1,7 @@
 import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 
-import type { UserLogin } from "@/api";
+import type { UserLogin, UserCreate } from "@/api";
 import { UserApi } from "@/api";
 
 type AuthenticationData = {
@@ -89,5 +89,56 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         return { authenticationData, error };
     }
 
-    return { refresh, deauthenticate, authenticate, authenticated };
+    async function asyncAuthenticate(loginDetails: UserLogin) {
+        await userApi.login(loginDetails);
+        authenticationData.authenticated = true;
+        authenticationData.timer = setTimeout(
+            warnDeauthentication,
+            TIMEOUT_SECONDS * 1000
+        );
+
+        return authenticationData;
+    }
+
+    function register(loginDetails: UserCreate) {
+        const error = ref<any>(null);
+
+        userApi
+            .registerUser(loginDetails)
+            .then(() => {
+                authenticationData.authenticated = true;
+                authenticationData.timer = setTimeout(
+                    warnDeauthentication,
+                    TIMEOUT_SECONDS * 1000
+                );
+            })
+            .catch((err) => {
+                error.value = err;
+                alert("Failed to register");
+            });
+
+        return { authenticationData, error };
+    }
+
+    async function asyncRegister(loginDetails: UserCreate) {
+        await userApi.registerUser(loginDetails);
+
+        authenticationData.authenticated = true;
+        authenticationData.timer = setTimeout(
+            warnDeauthentication,
+            TIMEOUT_SECONDS * 1000
+        );
+
+        return authenticationData;
+    }
+
+    return {
+        refresh,
+        deauthenticate,
+        authenticate,
+        asyncAuthenticate,
+        register,
+        asyncRegister,
+        authenticated,
+    };
 });

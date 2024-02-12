@@ -6,7 +6,7 @@ import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 
-import { UserApi } from "@/api";
+import { useAuthenticationStore } from "@/stores/authentication";
 import { AxiosError } from "axios";
 
 import router from "@/router";
@@ -23,8 +23,7 @@ const formRules = {
 };
 
 const v$ = useVuelidate(formRules, loginData);
-
-const userApi = new UserApi();
+const authenticationStore = useAuthenticationStore();
 
 async function login() {
     if (!formElement.value) return;
@@ -32,17 +31,16 @@ async function login() {
     const isValid = await v$.value.$validate();
     if (!isValid) return;
 
-    const data = toRaw(loginData);
-
-    // TODO: Add loading
-    // TODO: Better user alert
+    const formData = toRaw(loginData);
 
     try {
-        await userApi.login(data);
+        // TODO: Add loading
+        // TODO: Better user alert
+        await authenticationStore.asyncAuthenticate(formData);
         formElement.value.reset();
         router.push({ name: "home" });
     } catch (error: any) {
-        console.log("Error during login:", error);
+        console.error("Error during login:", error);
 
         if (error instanceof AxiosError) {
             return alert("Could not log in. " + error.message);

@@ -7,13 +7,10 @@ import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs } from "@vuelidate/validators";
 
-import type { UserCreate } from "@/api";
-import { UserApi } from "@/api";
+import { useAuthenticationStore } from "@/stores/authentication";
 import { AxiosError } from "axios";
 
 import router from "@/router";
-
-const userApi = new UserApi();
 
 const formElement = ref<HTMLFormElement | null>(null);
 const formData = reactive({
@@ -31,6 +28,7 @@ const rules = {
 };
 
 const v$ = useVuelidate(rules, formData);
+const authenticationStore = useAuthenticationStore();
 
 async function register() {
     if (!formElement.value) return;
@@ -43,7 +41,7 @@ async function register() {
 
     try {
         // TODO: Add loading animation
-        await userApi.registerUser(data as UserCreate);
+        await authenticationStore.asyncRegister(data);
         formElement.value.reset();
         router.push({ name: "home" });
     } catch (error: any) {
@@ -55,6 +53,7 @@ async function register() {
         }
 
         // TODO: Check that the error is of type AxiosResponse (it should be)
+        // TODO: Localization
         switch (error.status) {
             case 409:
                 alert("Could not register user. User already exists.");
