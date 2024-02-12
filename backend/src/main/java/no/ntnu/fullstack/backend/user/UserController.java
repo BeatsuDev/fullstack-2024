@@ -1,5 +1,7 @@
 package no.ntnu.fullstack.backend.user;
 
+import java.util.Optional;
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,13 +19,18 @@ import no.ntnu.fullstack.backend.user.model.User;
 @RequiredArgsConstructor
 public class UserController {
   private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
-  private final UserRepository userRepository;
+  private final UserService userService;
 
   @PostMapping
   @ResponseBody
   public UserDTO registerUser(@RequestBody UserCreate userCreate) {
     User user = userMapper.fromUserCreate(userCreate);
-    user = userRepository.save(user);
-    return userMapper.toUserDTO(user);
+    Optional<User> result = userService.createUser(user);
+
+    if (result.isPresent()) {
+      return userMapper.toUserDTO(result.get());
+    } else {
+      throw new RuntimeException("Could not create user.");
+    }
   }
 }

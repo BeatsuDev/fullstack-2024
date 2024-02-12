@@ -1,0 +1,34 @@
+package no.ntnu.fullstack.backend.user;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.user.model.User;
+
+@RequiredArgsConstructor
+public class UserService {
+  private final UserRepository userRepository;
+
+  public Optional<User> getUserById(UUID id) {
+    return userRepository.findById(id);
+  }
+
+  public Optional<User> getUserByEmail(String email) {
+    return userRepository.findByEmail(email);
+  }
+
+  public Optional<User> createUser(User user) {
+    if (user == null || user.getId() != null) {
+      return Optional.empty();
+    }
+    return Optional.of(userRepository.saveAndFlush(user));
+  }
+
+  public Optional<User> updateUser(User user) {
+    if (user == null || user.getId() == null) {
+      return Optional.empty();
+    }
+    return Optional.of(userRepository.saveAndFlush(user));
+  }
+}
