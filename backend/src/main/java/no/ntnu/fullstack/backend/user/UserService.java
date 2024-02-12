@@ -3,7 +3,6 @@ package no.ntnu.fullstack.backend.user;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -18,14 +17,16 @@ public class UserService {
     return userRepository.findById(id);
   }
 
+  public User getUserByIdOrThrow(UUID id) throws UserNotFoundException {
+    return getUserById(id).orElseThrow(UserNotFoundException::new);
+  }
+
   public Optional<User> getUserByEmail(String email) {
     return userRepository.findByEmail(email);
   }
 
-  public User getUserByEmailOrThrow(String email) throws UsernameNotFoundException {
-    return getUserByEmail(email).orElseThrow(() -> {
-      throw new UsernameNotFoundException(email);
-    });
+  public User getUserByEmailOrThrow(String email) throws UserNotFoundException {
+    return getUserByEmail(email).orElseThrow(UserNotFoundException::new);
   }
 
   public Optional<User> createUser(User user) { // TODO: Validate email
@@ -42,12 +43,12 @@ public class UserService {
     return Optional.of(userRepository.saveAndFlush(user));
   }
 
-  public boolean deleteUser(UUID id) {
-    if (!userRepository.existsById(id)) {
-      return false;
+  public void deleteUser(UUID id) throws UserNotFoundException {
+    boolean deleteResult = userRepository.existsById(id);
+    if (!deleteResult) {
+      throw new UserNotFoundException();
     }
 
     userRepository.deleteById(id);
-    return true;
   }
 }

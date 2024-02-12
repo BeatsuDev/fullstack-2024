@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.security.DTO.UserLogin;
 import no.ntnu.fullstack.backend.user.UserMapper;
+import no.ntnu.fullstack.backend.user.UserNotFoundException;
 import no.ntnu.fullstack.backend.user.UserService;
 import no.ntnu.fullstack.backend.user.dto.UserDTO;
 import no.ntnu.fullstack.backend.user.model.User;
@@ -46,7 +46,7 @@ public class AuthenticationController {
     User user;
     try {
       user = userService.getUserByEmailOrThrow(login.getEmail());
-    } catch (UsernameNotFoundException e) {
+    } catch (UserNotFoundException e) {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
       return;
     }
