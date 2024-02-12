@@ -27,6 +27,7 @@ public abstract class UserMapper {
 
   @Mappings({
       @Mapping(target = "password", qualifiedByName = "encodePassword"),
+      @Mapping(target = "id", ignore = true)
   })
   public abstract User fromUserCreate(UserCreate user);
 
