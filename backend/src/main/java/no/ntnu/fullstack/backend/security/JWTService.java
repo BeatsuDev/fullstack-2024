@@ -36,24 +36,28 @@ public class JWTService {
 
   @Value("${application.jwtsecret}")
   private String jwtSecret;
-  private SecretKey key;
-  private JwtParser jwtParser;
+  private Optional<SecretKey> key = Optional.empty();
+  private Optional<JwtParser> jwtParser = Optional.empty();
 
   private final UserDetailsService userDetailsService;
 
   private SecretKey getKey() {
-    if (key == null) {
-      key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-    }
+    return key.orElseGet(this::createKey);
+  }
 
+  private SecretKey createKey() {
+    SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    this.key = Optional.of(key);
     return key;
   }
 
   private JwtParser getJwtParser() {
-    if (jwtParser == null) {
-      jwtParser = Jwts.parser().verifyWith(getKey()).build();
-    }
+    return jwtParser.orElseGet(this::createParser);
+  }
 
+  private JwtParser createParser() {
+    JwtParser jwtParser = Jwts.parser().verifyWith(getKey()).build();
+    this.jwtParser = Optional.of(jwtParser);
     return jwtParser;
   }
 
