@@ -99,7 +99,7 @@ public class JWTService {
     } catch (UsernameNotFoundException e) {
     }
 
-    return Optional.of(user);
+    return Optional.ofNullable(user);
   }
 
   public ResponseCookie getCleanCookie() {
