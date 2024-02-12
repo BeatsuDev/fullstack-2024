@@ -9,6 +9,7 @@ import { required, email, sameAs } from "@vuelidate/validators";
 
 import type { UserCreate } from "@/api";
 import { UserApi } from "@/api";
+import { AxiosError } from "axios";
 
 import router from "@/router";
 
@@ -46,9 +47,14 @@ async function register() {
         formElement.value.reset();
         router.push({ name: "home" });
     } catch (error: any) {
-        // TODO: Check that the error is of type AxiosResponse (it should be)
         // TODO: Show error message to user
-        console.error("Error on register:", error);
+        console.log("Error during login:", error);
+
+        if (error instanceof AxiosError) {
+            return alert("Could not log in. " + error.message);
+        }
+
+        // TODO: Check that the error is of type AxiosResponse (it should be)
         switch (error.status) {
             case 409:
                 alert("Could not register user. User already exists.");
