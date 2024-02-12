@@ -5,20 +5,17 @@ This is a monorepo for the back-end and front-end of the application
 
 In this repo you will find:
 
-`/`:
-
-- API specification (using swagger)
-- Deployment scripts
+`.github`:
 - GitHub Actions workflows
 
-`/backend`:
+`docs`:
+- Documentation for the [back-end](./docs/backend.md) and [front-end](./docs/frontend.md)
 
-- README.md for preparing and running back-end
+`/backend`:
 - Source code for back-end
 - Unit tests for back-end
 
 `/frontend`:
-
-- README.md for running front-end
+- Source code for front-end
 - Unit tests for front-end
 - End-to-end for front-end tests that are not reliant on back-end
