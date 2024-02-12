@@ -72,9 +72,9 @@ public class JWTService {
   }
 
   public Optional<UserDetails> resolveJWT(String jwt) {
-    String subject = null;
+    Optional<String> subject = Optional.empty();
     try {
-      subject = getJwtParser().parseSignedClaims(jwt).getPayload().getSubject();
+      subject = Optional.ofNullable(getJwtParser().parseSignedClaims(jwt).getPayload().getSubject());
     } catch (MalformedJwtException e) { // TODO: use a logger
       System.out.println("Invalid JWT token: " + e.getMessage());
     } catch (ExpiredJwtException e) {
@@ -85,17 +85,11 @@ public class JWTService {
       System.out.println("JWT claims string is empty:" + e.getMessage());
     }
 
-    if (subject == null) {
+    try {
+      return subject.map((s) -> userDetailsService.loadUserByUsername(s));
+    } catch (UsernameNotFoundException e) {
       return Optional.empty();
     }
-
-    UserDetails user = null;
-    try {
-      user = userDetailsService.loadUserByUsername(subject);
-    } catch (UsernameNotFoundException e) {
-    }
-
-    return Optional.ofNullable(user);
   }
 
   public ResponseCookie getCleanCookie() {
