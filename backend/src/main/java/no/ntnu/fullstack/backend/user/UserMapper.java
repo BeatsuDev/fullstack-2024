@@ -7,8 +7,6 @@ import org.mapstruct.Named;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.nimbusds.oauth2.sdk.device.UserCode;
-
 import no.ntnu.fullstack.backend.user.dto.UserCreate;
 import no.ntnu.fullstack.backend.user.dto.UserDTO;
 import no.ntnu.fullstack.backend.user.dto.UserUpdate;
