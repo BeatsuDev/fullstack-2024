@@ -5,19 +5,21 @@ import ButtonComponent from "@/components/ButtonComponent.vue";
 import { RouterLink } from "vue-router";
 import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, sameAs } from "@vuelidate/validators";
+import { required, email, sameAs } from "@vuelidate/validators";
 
 import router from "@/router";
 
 const formElement = ref<HTMLFormElement | null>(null);
 const formData = reactive({
+    name: "",
     email: "",
     password: "",
     repeatPassword: "",
 });
 
 const rules = {
-    email: { required },
+    name: { required },
+    email: { required, email },
     password: { required },
     repeatPassword: { required, sameAsPassword: sameAs("password") },
 };
@@ -52,6 +54,13 @@ async function register() {
                 @submit.prevent="register"
             >
                 <div id="inputs-container">
+                    <ValidatedInput
+                        id="name"
+                        type="text"
+                        v-model="formData.name"
+                        :validator="v$.name"
+                        :label="$t('login.name')"
+                    />
                     <ValidatedInput
                         id="email"
                         type="text"

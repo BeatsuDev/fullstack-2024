@@ -10,6 +10,7 @@ export default {
         },
         login: {
             title: "Log in",
+            name: "Name",
             email: "Email",
             password: "Password",
             repeatPassword: "Repeat password",
@@ -32,6 +33,7 @@ export default {
         },
         login: {
             title: "Logg inn",
+            name: "Navn",
             email: "Epost",
             password: "Passord",
             repeatPassword: "Gjenta passord",
