@@ -8,7 +8,6 @@ import java.util.Optional;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -96,8 +95,11 @@ public class JWTService {
     }
   }
 
-  public ResponseCookie getCleanCookie() {
-    return ResponseCookie.from(cookieName, null).path("/").build();
+  public Cookie getCleanCookie() {
+    Cookie cookie = new Cookie(cookieName, null);
+    cookie.setPath("/");
+    cookie.setHttpOnly(true);
+    return cookie;
   }
 
   public Optional<UserDetails> resolveJWT(HttpServletRequest request) {

@@ -3,15 +3,18 @@ package no.ntnu.fullstack.backend.security;
 import java.io.IOException;
 
 import org.mapstruct.factory.Mappers;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -63,5 +66,16 @@ public class AuthenticationController {
   @PutMapping
   @ResponseBody
   public void refreshToken() {
+  }
+
+  @DeleteMapping
+  @ResponseBody
+  @ResponseStatus(value = HttpStatus.NO_CONTENT)
+  public void logout(HttpServletResponse response) {
+    Cookie cleanCookie = jwtService.getCleanCookie();
+
+    response.reset();
+    response.addCookie(cleanCookie);
+    return;
   }
 }

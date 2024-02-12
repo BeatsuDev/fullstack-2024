@@ -108,6 +108,14 @@ paths:
                 $ref: "#/components/schemas/User"
         "401":
           description: Bad credentials
+    delete:
+      tags:
+        - user
+      description: Log out User
+      operationId: logout
+      responses:
+        "204":
+          description: Successful operation
   /user/{id}:
     get:
       tags:
