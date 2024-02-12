@@ -6,6 +6,9 @@ import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 
+import { UserApi } from "@/api";
+import { AxiosError } from "axios";
+
 import router from "@/router";
 
 const formElement = ref<HTMLFormElement | null>(null);
@@ -21,6 +24,8 @@ const formRules = {
 
 const v$ = useVuelidate(formRules, loginData);
 
+const userApi = new UserApi();
+
 async function login() {
     if (!formElement.value) return;
 
@@ -28,13 +33,28 @@ async function login() {
     if (!isValid) return;
 
     const data = toRaw(loginData);
-    formElement.value.reset();
 
-    // TODO: Send login request to the server
-    console.log("Log in data:", data);
-    setTimeout(() => alert("Logged in successfully!"), 200);
+    // TODO: Add loading
+    // TODO: Better user alert
 
-    router.push({ name: "home" });
+    try {
+        await userApi.login(data);
+        formElement.value.reset();
+        router.push({ name: "home" });
+    } catch (error: any) {
+        console.log("Error during login:", error);
+
+        if (error instanceof AxiosError) {
+            return alert("Could not log in. " + error.message);
+        }
+
+        switch (error.status) {
+            case 401:
+                return alert("Could not log in. Bad credentials.");
+            default:
+                return alert("Could not log in. Unkown error.");
+        }
+    }
 }
 </script>
 
