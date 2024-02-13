@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.security.DTO.UserLogin;
 import no.ntnu.fullstack.backend.user.UserMapper;
@@ -44,7 +45,7 @@ public class AuthenticationController {
 
   @PostMapping
   @ResponseBody
-  public void login(HttpServletResponse response, @RequestBody UserLogin login)
+  public void login(HttpServletResponse response, @Valid @RequestBody UserLogin login)
       throws IOException {
     User user;
     try {

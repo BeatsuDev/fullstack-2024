@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.security.JWTService;
 import no.ntnu.fullstack.backend.user.dto.UserCreate;
@@ -36,7 +37,7 @@ public class UserController {
 
   @PostMapping
   @ResponseBody
-  public UserDTO registerUser(@RequestBody UserCreate userCreate) {
+  public UserDTO registerUser(@Valid @RequestBody UserCreate userCreate) {
     User user = userMapper.fromUserCreate(userCreate);
     Optional<User> result = userService.createUser(user);
 
@@ -46,7 +47,7 @@ public class UserController {
   @PutMapping
   @ResponseBody
   @PreAuthorize("isAuthenticated() && #userUpdate.id == authentication.principal.id")
-  public UserDTO updateUser(HttpServletResponse response, @RequestBody UserUpdate userUpdate) {
+  public UserDTO updateUser(HttpServletResponse response, @Valid @RequestBody UserUpdate userUpdate) {
     User user = userMapper.fromUserUpdate(userUpdate);
     Optional<User> result = userService.updateUser(user);
 
