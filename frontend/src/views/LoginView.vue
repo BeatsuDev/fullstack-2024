@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
-import LoadingCircle from "@/components/LoadingCircle.vue";
 
 import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
