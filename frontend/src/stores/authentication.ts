@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 
 import type { UserLogin, UserCreate } from "@/api";
 import { UserApi } from "@/api";
+import globalAxios from "axios";
 
 type AuthenticationData = {
     authenticated: boolean;
@@ -18,6 +19,11 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         timer: undefined,
     });
 
+    globalAxios.interceptors.request.use((response) => {
+        setDeauthenticationTimer();
+        return response;
+    });
+
     const authenticated = computed(() => authenticationData.authenticated);
 
     function warnDeauthentication() {
@@ -29,7 +35,7 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         authenticationData.timer = setTimeout(deauthenticate, 60 * 1000);
     }
 
-    function setTimer(seconds: number = 5 * 60) {
+    function setDeauthenticationTimer(seconds: number = 5 * 60) {
         if (authenticationData.timer) {
             clearTimeout(authenticationData.timer);
         }
