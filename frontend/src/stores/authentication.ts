@@ -45,24 +45,14 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         );
     }
 
-    function refresh(seconds: number = 5 * 60): {
-        authenticationData: AuthenticationData;
-        error: any;
-    } {
-        const error = ref<any>(null);
+    function refresh(): ReturnType<typeof userApi.refreshToken> {
+        const promise = userApi.refreshToken();
 
-        userApi
-            .refreshToken()
-            .then(() => setTimer(seconds))
-            .catch((err) => {
-                error.value = err;
-                deauthenticate();
+        promise
+            .then(() => setDeauthenticationTimer(TIMEOUT_SECONDS))
+            .catch(deauthenticate);
 
-                // TODO: Localization
-                alert("Failed to refresh token.");
-            });
-
-        return { authenticationData, error };
+        return promise;
     }
 
     function deauthenticate() {
@@ -75,76 +65,41 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         // TODO: Send a request to the server to remove the cookie
     }
 
-    function authenticate(loginDetails: UserLogin) {
-        const error = ref<any>(null);
+    function authenticate(
+        loginDetails: UserLogin
+    ): ReturnType<typeof userApi.login> {
+        const promise = userApi.login(loginDetails);
 
-        userApi
-            .login(loginDetails)
+        promise
             .then(() => {
                 authenticationData.authenticated = true;
-                authenticationData.timer = setTimeout(
-                    warnDeauthentication,
-                    TIMEOUT_SECONDS * 1000
-                );
+                setDeauthenticationTimer();
             })
-            .catch((err) => {
-                error.value = err;
-                alert("Failed to authenticate");
-            });
+            .catch(deauthenticate);
 
-        return { authenticationData, error };
+        return promise;
     }
 
-    async function asyncAuthenticate(loginDetails: UserLogin) {
-        await userApi.login(loginDetails);
-        authenticationData.authenticated = true;
-        authenticationData.timer = setTimeout(
-            warnDeauthentication,
-            TIMEOUT_SECONDS * 1000
-        );
+    function register(
+        loginDetails: UserCreate
+    ): ReturnType<typeof userApi.registerUser> {
+        const promise = userApi.registerUser(loginDetails);
 
-        return authenticationData;
-    }
-
-    function register(loginDetails: UserCreate) {
-        const error = ref<any>(null);
-
-        userApi
-            .registerUser(loginDetails)
+        promise
             .then(() => {
                 authenticationData.authenticated = true;
-                authenticationData.timer = setTimeout(
-                    warnDeauthentication,
-                    TIMEOUT_SECONDS * 1000
-                );
+                setDeauthenticationTimer();
             })
-            .catch((err) => {
-                error.value = err;
-                alert("Failed to register");
-            });
+            .catch(deauthenticate);
 
-        return { authenticationData, error };
-    }
-
-    async function asyncRegister(loginDetails: UserCreate) {
-        await userApi.registerUser(loginDetails);
-
-        authenticationData.authenticated = true;
-        authenticationData.timer = setTimeout(
-            warnDeauthentication,
-            TIMEOUT_SECONDS * 1000
-        );
-
-        return authenticationData;
+        return promise;
     }
 
     return {
         refresh,
         deauthenticate,
         authenticate,
-        asyncAuthenticate,
         register,
-        asyncRegister,
         authenticated,
     };
 });

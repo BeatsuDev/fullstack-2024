@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
+import LoadingCircle from "@/components/LoadingCircle.vue";
 
 import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -36,7 +37,7 @@ async function login() {
     try {
         // TODO: Add loading
         // TODO: Better user alert
-        await authenticationStore.asyncAuthenticate(formData);
+        await authenticationStore.authenticate(formData);
         formElement.value.reset();
         router.push({ name: "home" });
     } catch (error: any) {

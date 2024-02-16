@@ -41,7 +41,7 @@ async function register() {
 
     try {
         // TODO: Add loading animation
-        await authenticationStore.asyncRegister(data);
+        await authenticationStore.register(data);
         formElement.value.reset();
         router.push({ name: "home" });
     } catch (error: any) {
