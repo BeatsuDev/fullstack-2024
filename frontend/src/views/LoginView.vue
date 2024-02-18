@@ -34,10 +34,9 @@ const { loading, execute: executeLoginRequest } = useExecutablePromise(
 
 async function login() {
     if (!formElement.value) return;
-    const isValid = await v$.value.$validate();
 
+    const isValid = await v$.value.$validate();
     if (!isValid) return;
-    const formData = toRaw(loginData);
 
     function onError(err: Error | AxiosError) {
         console.error("Error during login:", err);
@@ -63,6 +62,7 @@ async function login() {
         router.push({ name: "home" });
     }
 
+    const formData = toRaw(loginData);
     executeLoginRequest(formData).then(onSuccess).catch(onError);
 }
 </script>
