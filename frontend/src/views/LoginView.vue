@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
+import LoadingCircle from "@/components/LoadingCircle.vue";
 
 import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 
 import { useAuthenticationStore } from "@/stores/authentication";
+import { useExecutablePromise } from "@/utils/promise";
+import { displayToast } from "@/utils/toast";
 import { AxiosError } from "axios";
 
 import router from "@/router";
@@ -25,39 +28,48 @@ const formRules = {
 const v$ = useVuelidate(formRules, loginData);
 const authenticationStore = useAuthenticationStore();
 
+const { loading, execute: executeLoginRequest } = useExecutablePromise(
+    authenticationStore.authenticate
+);
+
 async function login() {
     if (!formElement.value) return;
-
     const isValid = await v$.value.$validate();
-    if (!isValid) return;
 
+    if (!isValid) return;
     const formData = toRaw(loginData);
 
-    try {
-        // TODO: Add loading
-        // TODO: Better user alert
-        await authenticationStore.authenticate(formData);
-        formElement.value.reset();
-        router.push({ name: "home" });
-    } catch (error: any) {
-        console.error("Error during login:", error);
+    function onError(err: Error | AxiosError) {
+        console.error("Error during login:", err);
 
-        if (error instanceof AxiosError) {
-            return alert("Could not log in. " + error.message);
+        var message = "";
+        if (err instanceof AxiosError) {
+            switch (err.status) {
+                case 401:
+                    message = "Could not log in. Bad credentials.";
+                    break;
+            }
         }
 
-        switch (error.status) {
-            case 401:
-                return alert("Could not log in. Bad credentials.");
-            default:
-                return alert("Could not log in. Unkown error.");
-        }
+        displayToast({
+            title: "Login error",
+            message: "Could not log in. " + message || "Unkown error.",
+            type: "error",
+        });
     }
+
+    function onSuccess() {
+        formElement.value?.reset();
+        router.push({ name: "home" });
+    }
+
+    executeLoginRequest(formData).then(onSuccess).catch(onError);
 }
 </script>
 
 <template>
     <main>
+        <LoadingCircle v-if="loading" />
         <div id="login-container">
             <h1>{{ $t("login.title") }}</h1>
             <form ref="formElement" id="login-form" @submit.prevent="login">
@@ -141,3 +153,4 @@ async function login() {
     color: var(--gray-600);
 }
 </style>
+@/utils/promise @/utils/toast
