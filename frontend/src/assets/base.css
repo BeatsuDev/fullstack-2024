@@ -79,6 +79,8 @@
 
     --color-heading: var(--black-900);
     --color-text: var(--black-800);
+    --color-button: var(--primary-600);
+    --color-button-hover: var(--primary-700);
 }
 
 body {

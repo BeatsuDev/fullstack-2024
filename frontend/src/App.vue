@@ -45,7 +45,7 @@ import { RouterLink, RouterView } from "vue-router";
     flex-direction: row;
     padding: 1rem 1.5rem;
     color: white;
-    background-color: var(--gray-800);
+    background-color: var(--primary-800);
     font-size: 1.25em;
 }
 
@@ -91,7 +91,7 @@ import { RouterLink, RouterView } from "vue-router";
     padding: 0.25em;
     font-size: 0.75em;
     border-radius: 0.25rem;
-    background-color: var(--gray-700);
+    background-color: var(--primary-700);
     color: white;
     border: none;
     cursor: pointer;
