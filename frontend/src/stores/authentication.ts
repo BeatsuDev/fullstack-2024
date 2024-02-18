@@ -4,7 +4,6 @@ import { defineStore } from "pinia";
 import type { UserLogin, UserCreate } from "@/api";
 import { UserApi } from "@/api";
 import globalAxios from "axios";
-import type { AxiosRequestConfig } from "axios";
 
 type AuthenticationData = {
     authenticated: boolean;
