@@ -41,7 +41,7 @@ async function login() {
     function onError(err: Error | AxiosError) {
         console.error("Error during login:", err);
 
-        var message = "";
+        let message = "";
         if (err instanceof AxiosError) {
             switch (err.status) {
                 case 401:
