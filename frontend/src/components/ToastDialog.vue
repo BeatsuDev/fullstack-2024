@@ -6,7 +6,7 @@ import { ref } from "vue";
 const props = defineProps<ToastOptions>();
 
 const visible = ref(false);
-const hideTimeout = ref<number | null>(null);
+const hideTimeout = ref<ReturnType<typeof setTimeout> | null>(null);
 
 function close() {
     visible.value = false;
