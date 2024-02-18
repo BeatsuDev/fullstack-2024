@@ -38,32 +38,30 @@ async function login() {
     const isValid = await v$.value.$validate();
     if (!isValid) return;
 
-    function onError(err: Error | AxiosError) {
-        console.error("Error during login:", err);
-
-        let message = "";
-        if (err instanceof AxiosError) {
-            switch (err.status) {
-                case 401:
-                    message = "Could not log in. Bad credentials.";
-                    break;
-            }
-        }
-
-        displayToast({
-            title: "Login error",
-            message: "Could not log in. " + message || "Unkown error.",
-            type: "error",
-        });
-    }
-
-    function onSuccess() {
-        formElement.value?.reset();
-        router.push({ name: "home" });
-    }
-
     const formData = toRaw(loginData);
-    executeLoginRequest(formData).then(onSuccess).catch(onError);
+    executeLoginRequest(formData)
+        .then(() => {
+            formElement.value?.reset();
+            router.push({ name: "home" });
+        })
+        .catch((err: Error | AxiosError) => {
+            console.error("Error during login:", err);
+
+            let message = "Unkown error.";
+            if (err instanceof AxiosError) {
+                switch (err.status) {
+                    case 401:
+                        message = "Could not log in. Bad credentials.";
+                        break;
+                }
+            }
+
+            displayToast({
+                title: "Login error",
+                message: "Could not log in. " + message,
+                type: "error",
+            });
+        });
 }
 </script>
 

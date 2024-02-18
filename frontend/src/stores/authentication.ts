@@ -68,7 +68,7 @@ export const useAuthenticationStore = defineStore("authentication", () => {
 
     function authenticate(
         loginDetails: UserLogin,
-        options?: AxiosRequestConfig<any> | undefined
+        options?: Parameters<typeof userApi.login>[1]
     ): ReturnType<typeof userApi.login> {
         const promise = userApi.login(loginDetails, options);
 
@@ -83,9 +83,10 @@ export const useAuthenticationStore = defineStore("authentication", () => {
     }
 
     function register(
-        loginDetails: UserCreate
+        loginDetails: UserCreate,
+        options?: Parameters<typeof userApi.registerUser>[1]
     ): ReturnType<typeof userApi.registerUser> {
-        const promise = userApi.registerUser(loginDetails);
+        const promise = userApi.registerUser(loginDetails, options);
 
         promise
             .then(() => {

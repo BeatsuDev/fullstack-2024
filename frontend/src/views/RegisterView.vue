@@ -6,6 +6,8 @@ import { RouterLink } from "vue-router";
 import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs } from "@vuelidate/validators";
+import { useExecutablePromise } from "@/utils/promise";
+import { displayToast } from "@/utils/toast";
 
 import { useAuthenticationStore } from "@/stores/authentication";
 import { AxiosError } from "axios";
@@ -30,6 +32,10 @@ const rules = {
 const v$ = useVuelidate(rules, formData);
 const authenticationStore = useAuthenticationStore();
 
+const { loading, execute: executeRegister } = useExecutablePromise(
+    authenticationStore.register
+);
+
 async function register() {
     if (!formElement.value) return;
 
@@ -39,35 +45,35 @@ async function register() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { repeatPassword, ...data } = toRaw(formData);
 
-    try {
-        // TODO: Add loading animation
-        await authenticationStore.register(data);
-        formElement.value.reset();
-        router.push({ name: "home" });
-    } catch (error: any) {
-        // TODO: Show error message to user
-        console.log("Error during login:", error);
+    executeRegister(data)
+        .then(() => {
+            formElement.value?.reset();
+            router.push({ name: "home" });
+        })
+        .catch((err: Error | AxiosError) => {
+            console.error("Error during login:", err);
 
-        if (error instanceof AxiosError) {
-            return alert("Could not log in. " + error.message);
-        }
+            let message = "Unkown error.";
+            if (err instanceof AxiosError) {
+                switch (err.status) {
+                    case 401:
+                        message = "Could not register.";
+                        break;
+                }
+            }
 
-        // TODO: Check that the error is of type AxiosResponse (it should be)
-        // TODO: Localization
-        switch (error.status) {
-            case 409:
-                alert("Could not register user. User already exists.");
-                break;
-            default:
-                alert("Could not register user. Unkown reason why.");
-                break;
-        }
-    }
+            displayToast({
+                title: "Register error",
+                message: "Could not register. " + message,
+                type: "error",
+            });
+        });
 }
 </script>
 
 <template>
     <main>
+        <LoadingCircle v-if="loading" />
         <div id="register-container">
             <h1>{{ $t("login.register") }}</h1>
             <form
