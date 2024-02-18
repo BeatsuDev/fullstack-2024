@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 import type { UserLogin, UserCreate } from "@/api";
 import { UserApi } from "@/api";
 import globalAxios from "axios";
+import type { AxiosRequestConfig } from "axios";
 
 type AuthenticationData = {
     authenticated: boolean;
@@ -66,9 +67,10 @@ export const useAuthenticationStore = defineStore("authentication", () => {
     }
 
     function authenticate(
-        loginDetails: UserLogin
+        loginDetails: UserLogin,
+        options?: AxiosRequestConfig<any> | undefined
     ): ReturnType<typeof userApi.login> {
-        const promise = userApi.login(loginDetails);
+        const promise = userApi.login(loginDetails, options);
 
         promise
             .then(() => {
