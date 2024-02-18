@@ -39,6 +39,11 @@ import { RouterLink, RouterView } from "vue-router";
 </template>
 
 <style scoped>
+main {
+    position: relative;
+    flex: 1;
+}
+
 #navigation-bar {
     display: flex;
     align-items: center;

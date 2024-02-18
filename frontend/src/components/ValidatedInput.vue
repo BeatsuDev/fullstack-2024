@@ -1,15 +1,11 @@
-<script
-    setup
-    lang="ts"
-    generic="
-        ParameterValidator extends {
-            $validate: () => Promise<boolean>;
-            $reset: () => void;
-            $errors: ErrorObject[];
-        }
-    "
->
+<script setup lang="ts">
 import type { ErrorObject } from "@vuelidate/core/index.js";
+
+type ParameterValidator = {
+    $validate: () => Promise<boolean>;
+    $reset: () => void;
+    $errors: ErrorObject[];
+};
 
 const model = defineModel<string>();
 const props = defineProps<{

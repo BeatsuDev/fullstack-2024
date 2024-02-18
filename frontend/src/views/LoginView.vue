@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
+import LoadingCircle from "@/components/LoadingCircle.vue";
 
 import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
+
+import { useAuthenticationStore } from "@/stores/authentication";
+import { useExecutablePromise } from "@/utils/promise";
+import { displayToast } from "@/utils/toast";
+import { AxiosError } from "axios";
 
 import router from "@/router";
 
@@ -20,6 +26,11 @@ const formRules = {
 };
 
 const v$ = useVuelidate(formRules, loginData);
+const authenticationStore = useAuthenticationStore();
+
+const { loading, execute: executeLoginRequest } = useExecutablePromise(
+    authenticationStore.authenticate
+);
 
 async function login() {
     if (!formElement.value) return;
@@ -27,19 +38,36 @@ async function login() {
     const isValid = await v$.value.$validate();
     if (!isValid) return;
 
-    const data = toRaw(loginData);
-    formElement.value.reset();
+    const formData = toRaw(loginData);
+    executeLoginRequest(formData)
+        .then(() => {
+            formElement.value?.reset();
+            router.push({ name: "home" });
+        })
+        .catch((err: Error | AxiosError) => {
+            console.error("Error during login:", err);
 
-    // TODO: Send login request to the server
-    console.log("Log in data:", data);
-    setTimeout(() => alert("Logged in successfully!"), 200);
+            let message = "Unkown error.";
+            if (err instanceof AxiosError) {
+                switch (err.status) {
+                    case 401:
+                        message = "Could not log in. Bad credentials.";
+                        break;
+                }
+            }
 
-    router.push({ name: "home" });
+            displayToast({
+                title: "Login error",
+                message: "Could not log in. " + message,
+                type: "error",
+            });
+        });
 }
 </script>
 
 <template>
     <main>
+        <LoadingCircle v-if="loading" />
         <div id="login-container">
             <h1>{{ $t("login.title") }}</h1>
             <form ref="formElement" id="login-form" @submit.prevent="login">
@@ -123,3 +151,4 @@ async function login() {
     color: var(--gray-600);
 }
 </style>
+@/utils/promise @/utils/toast

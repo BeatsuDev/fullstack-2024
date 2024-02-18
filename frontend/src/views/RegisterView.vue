@@ -6,6 +6,11 @@ import { RouterLink } from "vue-router";
 import { ref, reactive, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs } from "@vuelidate/validators";
+import { useExecutablePromise } from "@/utils/promise";
+import { displayToast } from "@/utils/toast";
+
+import { useAuthenticationStore } from "@/stores/authentication";
+import { AxiosError } from "axios";
 
 import router from "@/router";
 
@@ -25,6 +30,11 @@ const rules = {
 };
 
 const v$ = useVuelidate(rules, formData);
+const authenticationStore = useAuthenticationStore();
+
+const { loading, execute: executeRegister } = useExecutablePromise(
+    authenticationStore.register
+);
 
 async function register() {
     if (!formElement.value) return;
@@ -34,18 +44,36 @@ async function register() {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { repeatPassword, ...data } = toRaw(formData);
-    formElement.value.reset();
 
-    // TODO: Send register request to the server
-    console.log("Registered with data:", data);
-    setTimeout(() => alert("Successfully created a new user!"), 200);
+    executeRegister(data)
+        .then(() => {
+            formElement.value?.reset();
+            router.push({ name: "home" });
+        })
+        .catch((err: Error | AxiosError) => {
+            console.error("Error during login:", err);
 
-    router.push({ name: "home" });
+            let message = "Unkown error.";
+            if (err instanceof AxiosError) {
+                switch (err.status) {
+                    case 401:
+                        message = "Could not register.";
+                        break;
+                }
+            }
+
+            displayToast({
+                title: "Register error",
+                message: "Could not register. " + message,
+                type: "error",
+            });
+        });
 }
 </script>
 
 <template>
     <main>
+        <LoadingCircle v-if="loading" />
         <div id="register-container">
             <h1>{{ $t("login.register") }}</h1>
             <form
