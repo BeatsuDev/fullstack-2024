@@ -3,7 +3,7 @@ import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
 import { RouterLink } from "vue-router";
-import { ref, reactive, toRaw } from "vue";
+import { ref, reactive, computed, watch, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs } from "@vuelidate/validators";
 import { useExecutablePromise } from "@/utils/promise";
@@ -26,8 +26,15 @@ const rules = {
     name: { required },
     email: { required, email },
     password: { required },
-    repeatPassword: { required, sameAsPassword: sameAs("password") },
+    repeatPassword: {
+        required,
+        sameAsPassword: sameAs(computed(() => formData.password)),
+    },
 };
+
+watch(formData, (newData: typeof formData) => {
+    console.log(newData);
+});
 
 const v$ = useVuelidate(rules, formData);
 const authenticationStore = useAuthenticationStore();
