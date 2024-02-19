@@ -10,6 +10,6 @@ RUN mvn dependency:resolve
 COPY . /app
 VOLUME .:/app
 
-RUN chmod u+x docker-entrypoint.sh
+RUN chmod 777 docker-entrypoint.sh
 
-CMD ["mvn", "spring-boot:run"]
+CMD ["./docker-entrypoint.sh"]

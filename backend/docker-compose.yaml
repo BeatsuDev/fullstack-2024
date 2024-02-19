@@ -8,8 +8,8 @@ services:
       POSTGRES_DB: mydatabase
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
-    volumes:
-      - ./database:/var/lib/postgresql/data
+    networks:
+      - dev
 
   maven:
     build: .
@@ -17,3 +17,38 @@ services:
       - .:/app
     ports:
       - 8080:8080
+    networks:
+      - dev
+    depends_on:
+      - postgres
+
+  postgres_test:
+    image: postgres:latest
+    container_name: postgres-test-db
+    environment:
+      POSTGRES_DB: mytestdatabase
+      POSTGRES_USER: mytestuser
+      POSTGRES_PASSWORD: mytestpassword
+    networks:
+      - testnet
+    profiles:
+      - "test"
+
+  test:
+    build: .
+    volumes:
+      - .:/app
+    command: mvn test -Dspring.profiles.active=test
+    networks:
+      - testnet
+    depends_on:
+      - postgres_test
+    profiles:
+      - "test"
+
+networks:
+  dev:
+    driver: bridge
+
+  testnet:
+    driver: bridge
