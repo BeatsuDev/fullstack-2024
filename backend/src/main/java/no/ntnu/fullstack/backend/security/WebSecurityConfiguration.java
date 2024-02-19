@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,6 +34,24 @@ public class WebSecurityConfiguration {
   public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
       throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+            .allowedOrigins(
+                "http://127.0.0.1:5173/",
+                "http://localhost:5173/",
+                "http://127.0.0.1:8080/",
+                "http://localhost:8080/")
+            .allowedMethods("*")
+            .allowedHeaders("*")
+            .allowCredentials(true);
+      }
+    };
   }
 
   @Bean
