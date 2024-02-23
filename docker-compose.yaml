@@ -3,7 +3,6 @@ version: "3"
 services:
   postgres:
     image: postgres:latest
-    container_name: postgres-db
     environment:
       POSTGRES_DB: mydatabase
       POSTGRES_USER: myuser
@@ -11,10 +10,10 @@ services:
     networks:
       - dev
 
-  maven:
-    build: .
+  backend:
+    build: ./backend/
     volumes:
-      - .:/app
+      - ./backend:/app
     ports:
       - 8080:8080
     networks:
@@ -22,9 +21,19 @@ services:
     depends_on:
       - postgres
 
+  frontend:
+    build: ./frontend/
+    volumes:
+      - ./frontend:/app
+    ports:
+      - 5173:5173
+    networks:
+      - dev
+    depends_on:
+      - backend
+
   postgres_test:
     image: postgres:latest
-    container_name: postgres-test-db
     environment:
       POSTGRES_DB: mytestdatabase
       POSTGRES_USER: mytestuser
