@@ -6,8 +6,8 @@ import { RouterLink } from "vue-router";
 import { ref, reactive, computed, watch, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs } from "@vuelidate/validators";
-import { useExecutablePromise } from "@/utils/promise";
-import { displayToast } from "@/utils/toast";
+import { useExecutablePromise } from "@/composables/promise";
+import { displayToast } from "@/notifications/toast";
 
 import { useAuthenticationStore } from "@/stores/authentication";
 import { AxiosError } from "axios";
@@ -182,3 +182,4 @@ async function register() {
     color: var(--gray-600);
 }
 </style>
+@/notifications/toast

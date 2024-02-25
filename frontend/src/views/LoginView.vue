@@ -8,8 +8,8 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 
 import { useAuthenticationStore } from "@/stores/authentication";
-import { useExecutablePromise } from "@/utils/promise";
-import { displayToast } from "@/utils/toast";
+import { useExecutablePromise } from "@/composables/promise";
+import { displayToast } from "@/notifications/toast";
 import { AxiosError } from "axios";
 
 import router from "@/router";
@@ -152,3 +152,4 @@ async function login() {
 }
 </style>
 @/utils/promise @/utils/toast
+@/notifications/toast

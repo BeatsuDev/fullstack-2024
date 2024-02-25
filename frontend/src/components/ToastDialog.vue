@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ToastOptions } from "@/utils/toast";
+import type { ToastOptions } from "@/notifications/toast";
 import { onMounted } from "vue";
 import { ref } from "vue";
 
@@ -86,3 +86,4 @@ onMounted(() => {
     text-decoration: underline;
 }
 </style>
+@/notifications/toast
