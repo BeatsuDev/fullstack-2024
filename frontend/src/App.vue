@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
+import NotificationsContainer from "@/components/NotificationsContainer.vue";
 </script>
 
 <template>
@@ -28,14 +29,19 @@ import { RouterLink, RouterView } from "vue-router";
             </div>
         </nav>
     </header>
-    <RouterView v-slot="{ Component, route }">
-        <Transition
-            :name="(route.meta.transitionName as string | undefined) || 'fade'"
-            mode="out-in"
-        >
-            <Component :is="Component" />
-        </Transition>
-    </RouterView>
+    <main>
+        <NotificationsContainer />
+        <RouterView v-slot="{ Component, route }">
+            <Transition
+                :name="
+                    (route.meta.transitionName as string | undefined) || 'fade'
+                "
+                mode="out-in"
+            >
+                <Component :is="Component" />
+            </Transition>
+        </RouterView>
+    </main>
 </template>
 
 <style scoped>

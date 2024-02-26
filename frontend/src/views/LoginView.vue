@@ -8,11 +8,13 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 
 import { useAuthenticationStore } from "@/stores/authentication";
+import { useNotificationStore } from "@/stores/notification";
 import { useExecutablePromise } from "@/composables/promise";
-import { displayToast } from "@/notifications/toast";
 import { AxiosError } from "axios";
 
 import router from "@/router";
+
+const { addNotification } = useNotificationStore();
 
 const formElement = ref<HTMLFormElement | null>(null);
 const loginData = reactive({
@@ -56,8 +58,7 @@ async function login() {
                 }
             }
 
-            displayToast({
-                title: "Login error",
+            addNotification({
                 message: "Could not log in. " + message,
                 type: "error",
             });
@@ -66,38 +67,36 @@ async function login() {
 </script>
 
 <template>
-    <main>
-        <LoadingCircle v-if="loading" />
-        <div id="login-container">
-            <h1>{{ $t("login.title") }}</h1>
-            <form ref="formElement" id="login-form" @submit.prevent="login">
-                <div id="inputs-container">
-                    <ValidatedInput
-                        id="email"
-                        type="text"
-                        v-model="loginData.email"
-                        :validator="v$.email"
-                        :label="$t('login.email')"
-                    />
-                    <ValidatedInput
-                        id="password"
-                        type="password"
-                        v-model="loginData.password"
-                        :validator="v$.password"
-                        :label="$t('login.password')"
-                    />
-                </div>
-                <div id="login-buttons-container">
-                    <ButtonComponent id="login-button" type="submit">
-                        {{ $t("login.login") }}
-                    </ButtonComponent>
-                    <RouterLink to="register" id="not-registered-message">
-                        {{ $t("login.notRegistered") }}
-                    </RouterLink>
-                </div>
-            </form>
-        </div>
-    </main>
+    <LoadingCircle v-if="loading" />
+    <div id="login-container">
+        <h1>{{ $t("login.title") }}</h1>
+        <form ref="formElement" id="login-form" @submit.prevent="login">
+            <div id="inputs-container">
+                <ValidatedInput
+                    id="email"
+                    type="text"
+                    v-model="loginData.email"
+                    :validator="v$.email"
+                    :label="$t('login.email')"
+                />
+                <ValidatedInput
+                    id="password"
+                    type="password"
+                    v-model="loginData.password"
+                    :validator="v$.password"
+                    :label="$t('login.password')"
+                />
+            </div>
+            <div id="login-buttons-container">
+                <ButtonComponent id="login-button" type="submit">
+                    {{ $t("login.login") }}
+                </ButtonComponent>
+                <RouterLink to="register" id="not-registered-message">
+                    {{ $t("login.notRegistered") }}
+                </RouterLink>
+            </div>
+        </form>
+    </div>
 </template>
 
 <style scoped>

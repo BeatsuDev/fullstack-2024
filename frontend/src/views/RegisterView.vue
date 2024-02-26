@@ -7,12 +7,17 @@ import { ref, reactive, computed, watch, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs } from "@vuelidate/validators";
 import { useExecutablePromise } from "@/composables/promise";
-import { displayToast } from "@/notifications/toast";
 
+import { useNotificationStore } from "@/stores/notification";
 import { useAuthenticationStore } from "@/stores/authentication";
 import { AxiosError } from "axios";
 
+import { useI18n } from "vue-i18n";
+
 import router from "@/router";
+
+const { addNotification } = useNotificationStore();
+const { t } = useI18n();
 
 const formElement = ref<HTMLFormElement | null>(null);
 const formData = reactive({
@@ -69,9 +74,8 @@ async function register() {
                 }
             }
 
-            displayToast({
-                title: "Register error",
-                message: "Could not register. " + message,
+            addNotification({
+                message: `${t("errors.register.failed")} ${message}`,
                 type: "error",
             });
         });
@@ -79,56 +83,50 @@ async function register() {
 </script>
 
 <template>
-    <main>
-        <LoadingCircle v-if="loading" />
-        <div id="register-container">
-            <h1>{{ $t("login.register") }}</h1>
-            <form
-                ref="formElement"
-                id="register-form"
-                @submit.prevent="register"
-            >
-                <div id="inputs-container">
-                    <ValidatedInput
-                        id="name"
-                        type="text"
-                        v-model="formData.name"
-                        :validator="v$.name"
-                        :label="$t('login.name')"
-                    />
-                    <ValidatedInput
-                        id="email"
-                        type="text"
-                        v-model="formData.email"
-                        :validator="v$.email"
-                        :label="$t('login.email')"
-                    />
-                    <ValidatedInput
-                        id="password"
-                        type="password"
-                        v-model="formData.password"
-                        :validator="v$.password"
-                        :label="$t('login.password')"
-                    />
-                    <ValidatedInput
-                        id="repeat-password"
-                        type="password"
-                        v-model="formData.repeatPassword"
-                        :validator="v$.repeatPassword"
-                        :label="$t('login.repeatPassword')"
-                    />
-                </div>
-                <div id="register-buttons-container">
-                    <ButtonComponent id="register-button" type="submit">
-                        {{ $t("login.register") }}
-                    </ButtonComponent>
-                    <RouterLink to="login" id="registered-message">
-                        {{ $t("login.alreadyRegistered") }}
-                    </RouterLink>
-                </div>
-            </form>
-        </div>
-    </main>
+    <LoadingCircle v-if="loading" />
+    <div id="register-container">
+        <h1>{{ $t("login.register") }}</h1>
+        <form ref="formElement" id="register-form" @submit.prevent="register">
+            <div id="inputs-container">
+                <ValidatedInput
+                    id="name"
+                    type="text"
+                    v-model="formData.name"
+                    :validator="v$.name"
+                    :label="$t('login.name')"
+                />
+                <ValidatedInput
+                    id="email"
+                    type="text"
+                    v-model="formData.email"
+                    :validator="v$.email"
+                    :label="$t('login.email')"
+                />
+                <ValidatedInput
+                    id="password"
+                    type="password"
+                    v-model="formData.password"
+                    :validator="v$.password"
+                    :label="$t('login.password')"
+                />
+                <ValidatedInput
+                    id="repeat-password"
+                    type="password"
+                    v-model="formData.repeatPassword"
+                    :validator="v$.repeatPassword"
+                    :label="$t('login.repeatPassword')"
+                />
+            </div>
+            <div id="register-buttons-container">
+                <ButtonComponent id="register-button" type="submit">
+                    {{ $t("login.register") }}
+                </ButtonComponent>
+                <RouterLink to="login" id="registered-message">
+                    {{ $t("login.alreadyRegistered") }}
+                </RouterLink>
+            </div>
+        </form>
+    </div>
 </template>
 
 <style scoped>
