@@ -7,12 +7,14 @@ import { ref, reactive, computed, watch, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs } from "@vuelidate/validators";
 import { useExecutablePromise } from "@/composables/promise";
-import { displayToast } from "@/notifications/toast";
 
+import { useNotificationStore } from "@/stores/notification";
 import { useAuthenticationStore } from "@/stores/authentication";
 import { AxiosError } from "axios";
 
 import router from "@/router";
+
+const { addNotification } = useNotificationStore();
 
 const formElement = ref<HTMLFormElement | null>(null);
 const formData = reactive({
@@ -69,9 +71,8 @@ async function register() {
                 }
             }
 
-            displayToast({
-                title: "Register error",
-                message: "Could not register. " + message,
+            addNotification({
+                message: `Could not register. ${message}`,
                 type: "error",
             });
         });
@@ -79,7 +80,7 @@ async function register() {
 </script>
 
 <template>
-    <main>
+    <div>
         <LoadingCircle v-if="loading" />
         <div id="register-container">
             <h1>{{ $t("login.register") }}</h1>
@@ -128,7 +129,7 @@ async function register() {
                 </div>
             </form>
         </div>
-    </main>
+    </div>
 </template>
 
 <style scoped>

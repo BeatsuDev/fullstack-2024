@@ -8,11 +8,13 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 
 import { useAuthenticationStore } from "@/stores/authentication";
+import { useNotificationStore } from "@/stores/notification";
 import { useExecutablePromise } from "@/composables/promise";
-import { displayToast } from "@/notifications/toast";
 import { AxiosError } from "axios";
 
 import router from "@/router";
+
+const { addNotification } = useNotificationStore();
 
 const formElement = ref<HTMLFormElement | null>(null);
 const loginData = reactive({
@@ -56,8 +58,7 @@ async function login() {
                 }
             }
 
-            displayToast({
-                title: "Login error",
+            addNotification({
                 message: "Could not log in. " + message,
                 type: "error",
             });
@@ -66,7 +67,7 @@ async function login() {
 </script>
 
 <template>
-    <main>
+    <div>
         <LoadingCircle v-if="loading" />
         <div id="login-container">
             <h1>{{ $t("login.title") }}</h1>
@@ -97,7 +98,7 @@ async function login() {
                 </div>
             </form>
         </div>
-    </main>
+    </div>
 </template>
 
 <style scoped>

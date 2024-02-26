@@ -21,6 +21,14 @@ export default {
             notRegistered: "Not registered? Click here to create an account!",
             alreadyRegistered: "Already registered? Click here to log in!",
         },
+        notification: {
+            close: "Close",
+        },
+        errors: {
+            register: {
+                failed: "Failed to register",
+            },
+        },
     },
     no: {
         company: {
@@ -44,6 +52,9 @@ export default {
             notRegistered: "Ikke registrert? Trykk her for å lage en bruker!",
             alreadyRegistered:
                 "Allerede registrert? Trykk her for å logge inn!",
+        },
+        notification: {
+            close: "Lukk",
         },
     },
 };
