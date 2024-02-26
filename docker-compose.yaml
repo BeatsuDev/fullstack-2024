@@ -44,10 +44,10 @@ services:
       - "test"
 
   test:
-    build: .
+    build: ./backend/
     volumes:
-      - .:/app
-    command: mvn test -Dspring.profiles.active=test
+      - ./backend/:/app
+    command: mvn test -Dspring.profiles.active=test -X
     networks:
       - testnet
     depends_on:
