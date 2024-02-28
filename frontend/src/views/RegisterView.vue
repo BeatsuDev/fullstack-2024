@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
+import LoadingCircle from "@/components/LoadingCircle.vue";
 
 import { RouterLink } from "vue-router";
 import { ref, reactive, computed, watch, toRaw } from "vue";
