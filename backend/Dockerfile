@@ -8,8 +8,6 @@ RUN mvn dependency:resolve
 
 
 COPY . /app
-VOLUME .:/app
 
 RUN chmod 777 docker-entrypoint.sh
-
 CMD ["./docker-entrypoint.sh"]
