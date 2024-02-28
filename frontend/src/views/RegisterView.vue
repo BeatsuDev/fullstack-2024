@@ -4,7 +4,7 @@ import ButtonComponent from "@/components/ButtonComponent.vue";
 import LoadingCircle from "@/components/LoadingCircle.vue";
 
 import { RouterLink } from "vue-router";
-import { ref, reactive, computed, watch, toRaw } from "vue";
+import { ref, reactive, computed, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs } from "@vuelidate/validators";
 import { useExecutablePromise } from "@/composables/promise";
@@ -34,10 +34,6 @@ const rules = {
         sameAsPassword: sameAs(computed(() => formData.password)),
     },
 };
-
-watch(formData, (newData: typeof formData) => {
-    console.log(newData);
-});
 
 const v$ = useVuelidate(rules, formData);
 const authenticationStore = useAuthenticationStore();
