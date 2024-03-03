@@ -152,4 +152,3 @@ async function login() {
     color: var(--gray-600);
 }
 </style>
-@/utils/promise @/utils/toast @/notifications/toast

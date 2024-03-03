@@ -7,6 +7,7 @@ export default {
             about: "About",
             contact: "Contact",
             login: "Log in",
+            profile: "Profile",
         },
         login: {
             title: "Log in",
@@ -38,6 +39,7 @@ export default {
             about: "Om",
             contact: "Kontakt",
             login: "Logg inn",
+            profile: "Profile",
         },
         login: {
             title: "Logg inn",
@@ -55,6 +57,9 @@ export default {
         },
         notification: {
             close: "Lukk",
+        },
+        profile: {
+            title: "Din Profil",
         },
     },
 };

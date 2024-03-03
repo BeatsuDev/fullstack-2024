@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import { RouterLink, RouterView } from "vue-router";
 import NotificationsContainer from "@/components/NotificationsContainer.vue";
+import { useAuthenticationStore } from "./stores/authentication";
+
+const { authenticated } = storeToRefs(useAuthenticationStore());
 </script>
 
 <template>
@@ -16,8 +20,14 @@ import NotificationsContainer from "@/components/NotificationsContainer.vue";
                 <RouterLink id="contact-router-link" to="">{{
                     $t("navbar.contact")
                 }}</RouterLink>
-                <RouterLink id="login-router-link" to="login">{{
-                    $t("navbar.login")
+                <RouterLink
+                    v-if="!authenticated"
+                    id="login-router-link"
+                    to="login"
+                    >{{ $t("navbar.login") }}</RouterLink
+                >
+                <RouterLink v-else id="profile-router-link" to="profile">{{
+                    $t("navbar.profile")
                 }}</RouterLink>
                 <select id="locale-selector" v-model="$i18n.locale">
                     <option
