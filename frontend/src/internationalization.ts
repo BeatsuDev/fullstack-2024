@@ -30,6 +30,11 @@ export default {
                 failed: "Failed to register",
             },
         },
+        profile: {
+            information:
+                "This is your profile information. You can edit it here.",
+            changeValues: "Save Changes",
+        },
     },
     no: {
         company: {
@@ -60,6 +65,9 @@ export default {
         },
         profile: {
             title: "Din Profil",
+            information:
+                "Dette er din profilinformasjon. Du kan endre den her.",
+            changeValues: "Lagre Endringer",
         },
     },
 };
