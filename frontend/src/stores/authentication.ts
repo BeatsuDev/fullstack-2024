@@ -1,7 +1,7 @@
 import { computed, reactive } from "vue";
 import { defineStore } from "pinia";
 
-import type { UserLogin, UserCreate } from "@/api";
+import type { User, UserLogin, UserCreate } from "@/api";
 import { UserApi } from "@/api";
 import globalAxios from "axios";
 
@@ -9,6 +9,7 @@ import router from "@/router";
 
 type AuthenticationData = {
     authenticated: boolean;
+    user?: User;
     timer?: ReturnType<typeof setTimeout>;
 };
 
@@ -18,6 +19,7 @@ export const useAuthenticationStore = defineStore("authentication", () => {
 
     const authenticationData: AuthenticationData = reactive({
         authenticated: false,
+        user: undefined,
         timer: undefined,
     });
 
@@ -27,6 +29,7 @@ export const useAuthenticationStore = defineStore("authentication", () => {
     });
 
     const authenticated = computed(() => authenticationData.authenticated);
+    const loggedInUser = computed(() => authenticationData.user);
 
     function warnDeauthentication() {
         // TODO: Allow user to refresh token
@@ -78,9 +81,9 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         const promise = userApi.login(loginDetails, options);
 
         promise
-            .then(() => {
+            .then((response) => {
                 authenticationData.authenticated = true;
-                setDeauthenticationTimer();
+                authenticationData.user = response.data;
             })
             .catch(deauthenticate);
 
@@ -109,5 +112,6 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         authenticate,
         register,
         authenticated,
+        loggedInUser,
     };
 });
