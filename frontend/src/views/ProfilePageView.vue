@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { reactive, computed } from "vue";
+import { reactive, computed, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { email, sameAs } from "@vuelidate/validators";
+import { useAuthenticationStore } from "@/stores/authentication";
 
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
+
+const authenticationStore = useAuthenticationStore();
 
 const formData = reactive({
     name: "",
@@ -23,6 +26,11 @@ const rules = {
 };
 
 const v$ = useVuelidate(rules, formData);
+
+onMounted(() => {
+    formData.name = authenticationStore.loggedInUser?.name || "";
+    formData.email = authenticationStore.loggedInUser?.email || "";
+});
 </script>
 
 <template>
