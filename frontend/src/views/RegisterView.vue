@@ -180,4 +180,3 @@ async function register() {
     color: var(--gray-600);
 }
 </style>
-@/notifications/toast
