@@ -29,10 +29,10 @@ export const useAuthenticationStore = defineStore("authentication", () => {
     function warnDeauthentication() {
         // TODO: Allow user to refresh token
         // TODO: Localization
-        alert("You will be deauthenticated in 1 minute. Refresh?");
-
         clearTimeout(authenticationData.timer);
         authenticationData.timer = setTimeout(deauthenticate, 60 * 1000);
+
+        alert("You will be deauthenticated in 1 minute. Refresh?");
     }
 
     function setDeauthenticationTimer(seconds: number = 5 * 60) {
