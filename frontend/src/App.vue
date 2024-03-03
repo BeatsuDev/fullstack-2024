@@ -6,7 +6,9 @@ import NotificationsContainer from "@/components/NotificationsContainer.vue";
 <template>
     <header>
         <nav v-if="!$route.meta.hideNavbar" id="navigation-bar">
-            <div id="company-name">{{ $t("company.name") }}</div>
+            <RouterLink to="/" id="company-name">
+                {{ $t("company.name") }}
+            </RouterLink>
             <div id="routes">
                 <RouterLink id="about-router-link" to="">{{
                     $t("navbar.about")
@@ -62,6 +64,8 @@ main {
 
 #company-name {
     font-size: 1.5em;
+    text-decoration: none;
+    color: white;
 }
 
 #routes > a {
