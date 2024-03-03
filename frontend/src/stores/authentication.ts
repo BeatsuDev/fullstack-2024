@@ -5,6 +5,8 @@ import type { UserLogin, UserCreate } from "@/api";
 import { UserApi } from "@/api";
 import globalAxios from "axios";
 
+import router from "@/router";
+
 type AuthenticationData = {
     authenticated: boolean;
     timer?: ReturnType<typeof setTimeout>;
@@ -61,6 +63,10 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         }
         authenticationData.authenticated = false;
         authenticationData.timer = undefined;
+
+        if (router.currentRoute.value.meta.requiresAuth) {
+            router.push({ name: "login" });
+        }
 
         // TODO: Send a request to the server to remove the cookie
     }
