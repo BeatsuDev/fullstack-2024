@@ -13,34 +13,23 @@
  */
 
 export interface ConfigurationParameters {
-    apiKey?:
-        | string
-        | Promise<string>
-        | ((name: string) => string)
-        | ((name: string) => Promise<string>);
+    apiKey?: string | Promise<string> | ((name: string) => string) | ((name: string) => Promise<string>);
     username?: string;
     password?: string;
-    accessToken?:
-        | string
-        | Promise<string>
-        | ((name?: string, scopes?: string[]) => string)
-        | ((name?: string, scopes?: string[]) => Promise<string>);
+    accessToken?: string | Promise<string> | ((name?: string, scopes?: string[]) => string) | ((name?: string, scopes?: string[]) => Promise<string>);
     basePath?: string;
     baseOptions?: any;
 }
 
 export class Configuration {
+
     /**
      * parameter for apiKey security
      *
      * @param name security name
      * @memberof Configuration
      */
-    apiKey?:
-        | string
-        | Promise<string>
-        | ((name: string) => string)
-        | ((name: string) => Promise<string>);
+    apiKey?: string | Promise<string> | ((name: string) => string) | ((name: string) => Promise<string>);
 
     /**
      * parameter for basic security
@@ -65,11 +54,7 @@ export class Configuration {
      * @param scopes oauth2 scope
      * @memberof Configuration
      */
-    accessToken?:
-        | string
-        | Promise<string>
-        | ((name?: string, scopes?: string[]) => string)
-        | ((name?: string, scopes?: string[]) => Promise<string>);
+    accessToken?: string | Promise<string> | ((name?: string, scopes?: string[]) => string) | ((name?: string, scopes?: string[]) => Promise<string>);
 
     /**
      * override base path

@@ -12,15 +12,14 @@
  * Do not edit the class manually.
  */
 
-import {} from ".";
-
-/**
- *
+ /**
+ * 
  *
  * @export
  * @interface UserUpdate
  */
 export interface UserUpdate {
+
     /**
      * @type {string}
      * @memberof UserUpdate
@@ -38,4 +37,10 @@ export interface UserUpdate {
      * @memberof UserUpdate
      */
     email: string;
+
+    /**
+     * @type {string}
+     * @memberof UserUpdate
+     */
+    password?: string;
 }
