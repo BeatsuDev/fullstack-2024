@@ -12,15 +12,14 @@
  * Do not edit the class manually.
  */
 
-import {} from ".";
-
-/**
- *
+ /**
+ * 
  *
  * @export
  * @interface UserLogin
  */
 export interface UserLogin {
+
     /**
      * @type {string}
      * @memberof UserLogin

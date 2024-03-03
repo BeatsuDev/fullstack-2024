@@ -45,14 +45,14 @@ public class AuthenticationController {
 
   @PostMapping
   @ResponseBody
-  public void login(HttpServletResponse response, @Valid @RequestBody UserLogin login)
+  public UserDTO login(HttpServletResponse response, @Valid @RequestBody UserLogin login)
       throws IOException {
     User user;
     try {
       user = userService.getUserByEmailOrThrow(login.getEmail());
     } catch (UserNotFoundException e) {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-      return;
+      return null;
     }
 
     if (encoder.matches(login.getPassword(), user.getPassword())) {
@@ -62,6 +62,8 @@ public class AuthenticationController {
     } else {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }
+
+    return userMapper.toUserDTO(user);
   }
 
   @PutMapping

@@ -15,7 +15,7 @@
 import { Configuration } from "./configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import globalAxios, { AxiosRequestConfig, AxiosInstance } from "axios";
+import globalAxios, { AxiosRequestConfig, AxiosInstance } from 'axios';
 
 export const BASE_PATH = "http://localhost:8080/".replace(/\/+$/, "");
 
@@ -48,17 +48,13 @@ export interface RequestArgs {
 export class BaseAPI {
     protected configuration: Configuration | undefined;
 
-    constructor(
-        configuration?: Configuration,
-        protected basePath: string = BASE_PATH,
-        protected axios: AxiosInstance = globalAxios
-    ) {
+    constructor(configuration?: Configuration, protected basePath: string = BASE_PATH, protected axios: AxiosInstance = globalAxios) {
         if (configuration) {
             this.configuration = configuration;
             this.basePath = configuration.basePath || this.basePath;
         }
     }
-}
+};
 
 /**
  *
@@ -68,10 +64,7 @@ export class BaseAPI {
  */
 export class RequiredError extends Error {
     name: "RequiredError" = "RequiredError";
-    constructor(
-        public field: string,
-        msg?: string
-    ) {
+    constructor(public field: string, msg?: string) {
         super(msg);
     }
 }
