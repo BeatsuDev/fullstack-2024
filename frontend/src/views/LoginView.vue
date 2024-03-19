@@ -47,8 +47,6 @@ async function login() {
             router.push({ name: "home" });
         })
         .catch((err: Error | AxiosError) => {
-            console.error("Error during login:", err);
-
             let message = "Unkown error.";
             if (err instanceof AxiosError) {
                 switch (err.status) {
@@ -68,7 +66,7 @@ async function login() {
 
 <template>
     <div>
-        <LoadingCircle v-if="loading" />
+        <LoadingCircle :loading="loading" />
         <div id="login-container">
             <h1>{{ $t("login.title") }}</h1>
             <form ref="formElement" id="login-form" @submit.prevent="login">
