@@ -1,6 +1,7 @@
 <script setup lang="ts">
 withDefaults(
     defineProps<{
+        loading: boolean;
         outerColor?: string;
         innerColor?: string;
         thickness?: string;
@@ -12,28 +13,34 @@ withDefaults(
 </script>
 
 <template>
-    <div class="loading-container">
-        <div class="loader" :class="$attrs.class">
-            <div
-                :style="{
-                    borderColor: outerColor,
-                    borderWidth: thickness,
-                    width: `100%`,
-                    aspectRatio: '1/1',
-                }"
-                class="outer-circle"
-            ></div>
-            <div
-                :style="{
-                    borderColor: innerColor,
-                    borderWidth: thickness,
-                    width: `calc(100% - 2*${thickness} - 4px)`,
-                    aspectRatio: '1/1',
-                }"
-                class="inner-circle"
-            ></div>
+    <Transition mode="out-in">
+        <div
+            v-if="loading"
+            class="loading-container"
+            style="transition-delay: 200ms"
+        >
+            <div class="loader" :class="$attrs.class">
+                <div
+                    :style="{
+                        borderColor: outerColor,
+                        borderWidth: thickness,
+                        width: `100%`,
+                        aspectRatio: '1/1',
+                    }"
+                    class="outer-circle"
+                ></div>
+                <div
+                    :style="{
+                        borderColor: innerColor,
+                        borderWidth: thickness,
+                        width: `calc(100% - 2*${thickness} - 4px)`,
+                        aspectRatio: '1/1',
+                    }"
+                    class="inner-circle"
+                ></div>
+            </div>
         </div>
-    </div>
+    </Transition>
 </template>
 
 <style scoped>
@@ -83,5 +90,15 @@ withDefaults(
     100% {
         transform: rotate(360deg);
     }
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 300ms;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
 }
 </style>
