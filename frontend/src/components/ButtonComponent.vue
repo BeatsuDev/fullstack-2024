@@ -8,7 +8,7 @@
 button {
     border: none;
     border-radius: 0.25rem;
-    padding: 1em 0.5em;
+    padding: 1em 1.5em;
     background-color: var(--color-button);
     transition: background-color 100ms;
     font-size: 1em;
