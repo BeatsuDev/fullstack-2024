@@ -26,17 +26,28 @@ const { removeNotification } = useNotificationStore();
     position: absolute;
     top: 1rem;
     right: 1rem;
-    max-height: calc(100% - 2rem);
+    height: calc(100% - 2rem);
+    width: 100%;
+    pointer-events: none;
     flex-direction: column;
+    align-items: flex-end;
     z-index: 100;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+#notification-container > * {
+    pointer-events: auto;
 }
 
 .notification-move,
 .notification-enter-active,
 .notification-leave-active {
     transition: all 300ms ease;
+}
+
+.notification-leave-active {
+    position: absolute !important;
 }
 
 .notification-enter-from,

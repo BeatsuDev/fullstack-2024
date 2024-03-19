@@ -49,7 +49,9 @@ const icon = computed(() => {
     padding: 0.25rem;
     margin: 0.5rem;
     width: 20rem;
+    background-color: var(--primary-50);
 
+    box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.5);
     border-radius: 0.5rem;
 }
 
@@ -64,6 +66,11 @@ const icon = computed(() => {
     flex: 1;
 }
 
+#notification-box #close-notification {
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
 #notification-box button {
     background-color: transparent;
     border: none;
@@ -75,35 +82,35 @@ const icon = computed(() => {
     align-self: flex-start;
 }
 
-.success svg {
+.success > #icon > svg {
     color: var(--success-500);
 }
 
-.success {
-    background-color: var(--success-500);
-}
-
-.info svg {
+.info > #icon > svg {
     color: var(--info-500);
 }
 
-.info {
-    background-color: var(--info-500);
-}
-
-.warning svg {
+.warning > #icon > svg {
     color: var(--warning-500);
 }
 
-.warning {
-    background-color: var(--warning-500);
-}
-
-.error svg {
+.error > #icon > svg {
     color: var(--error-500);
 }
 
+.success {
+    border: 2px solid var(--success-500);
+}
+
+.info {
+    border: 2px solid var(--info-500);
+}
+
+.warning {
+    border: 2px solid var(--warning-500);
+}
+
 .error {
-    background-color: var(--error-500);
+    border: 2px solid var(--error-500);
 }
 </style>
