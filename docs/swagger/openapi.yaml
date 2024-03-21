@@ -15,9 +15,7 @@ servers:
   - url: https://api.kazoot.no/
 tags:
   - name: User
-    description: Create, update, get or delete a user.
   - name: User Session
-    description: Log in, refresh token, get information about currently logged in user or log out.
 paths:
   /user:
     post:
