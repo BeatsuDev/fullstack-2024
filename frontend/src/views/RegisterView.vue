@@ -78,7 +78,7 @@ async function register() {
 
 <template>
     <div>
-        <LoadingCircle v-if="loading" />
+        <LoadingCircle :loading="loading" />
         <div id="register-container">
             <h1>{{ $t("login.register") }}</h1>
             <form
