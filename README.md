@@ -1,7 +1,7 @@
-# Vet ikke enda
+# Kazoot
 
 This is a monorepo for the back-end and front-end of the application
-"Vet ikke enda" created for the [NTNU course IDATT2105](https://www.ntnu.no/studier/emner/IDATT210).
+"Kazoot" created for the [NTNU course IDATT2105](https://www.ntnu.no/studier/emner/IDATT210).
 
 In this repo you will find:
 
