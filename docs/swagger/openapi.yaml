@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
-  title: Vet Ikke API.
+  title: Kazoot
   description: |-
-    Vet ikke enda...
-  termsOfService: https://vetikke.no/tos
+    An application
+  termsOfService: https://kazoot.no/terms-of-service
   contact:
     email: vkbugge@hotmail.com
   license:
@@ -12,6 +12,7 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:8080/
+  - url: https://api.kazoot.no/
 tags:
   - name: user
     description: Operations regarding the user.
