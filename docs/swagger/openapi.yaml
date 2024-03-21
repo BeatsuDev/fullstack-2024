@@ -63,7 +63,7 @@ paths:
       tags:
         - User
       description: Get a specific user
-      operationId: getUser
+      operationId: fetchUser
       parameters:
         - name: id
           description: The ID of the user
