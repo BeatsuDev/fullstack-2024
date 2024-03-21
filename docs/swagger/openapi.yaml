@@ -140,7 +140,7 @@ paths:
       tags:
         - User Session
       description: Get logged in user
-      operationId: loggedInUser
+      operationId: fetchSession
       responses:
         "200":
           description: Successful operation
