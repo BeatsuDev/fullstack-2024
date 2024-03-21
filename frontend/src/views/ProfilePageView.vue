@@ -34,11 +34,11 @@ onMounted(() => {
 </script>
 
 <template>
-    <div id="profile-page-container">
+    <div class="profile-page-container">
         <h1>{{ $t("profile.title") }}</h1>
         <p>{{ $t("profile.information") }}</p>
 
-        <div id="change-values-container">
+        <form id="change-values-container" @submit.prevent="">
             <ValidatedInput
                 id="name"
                 type="text"
@@ -53,48 +53,59 @@ onMounted(() => {
                 :validator="v$.email"
                 :label="$t('login.email')"
             />
-            <ValidatedInput
-                id="password"
-                type="password"
-                v-model="formData.password"
-                :validator="v$.password"
-                :label="$t('login.password')"
-            />
-            <ValidatedInput
-                id="password"
-                type="password"
-                v-model="formData.password"
-                :validator="v$.password"
-                :label="$t('login.repeatPassword')"
-            />
-        </div>
-
-        <ButtonComponent id="change-values-button" type="submit">
-            {{ $t("profile.changeValues") }}
-        </ButtonComponent>
+            <ButtonComponent id="change-values-button" type="submit">
+                {{ $t("profile.changeValues") }}
+            </ButtonComponent>
+        </form>
     </div>
 </template>
 
 <style scoped>
-#profile-page-container {
-    width: 40%;
-    margin: 0 auto;
+.profile-page-container > h1 {
+    width: 100%;
+    text-align: center;
+}
 
+.profile-page-container {
     display: flex;
     flex-direction: column;
+
+    margin: 0 auto;
+    width: 40%;
 }
 
 #change-values-container {
+    max-width: 30em;
     width: 60%;
     margin: 0 auto;
 
     display: flex;
     flex-direction: column;
-    gap: 0.5em;
+    gap: 1.5em;
 }
 
 #change-values-button {
     margin: 0 auto;
     margin-top: 1em;
+}
+
+@media screen and (max-width: 1280px) {
+    .profile-page-container {
+        width: 60%;
+    }
+
+    #change-values-container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .profile-page-container {
+        width: 90%;
+    }
+
+    #change-values-container {
+        width: 100%;
+    }
 }
 </style>
