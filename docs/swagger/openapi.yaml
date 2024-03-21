@@ -14,20 +14,22 @@ servers:
   - url: http://localhost:8080/
   - url: https://api.kazoot.no/
 tags:
-  - name: user
-    description: Operations regarding the user.
+  - name: User
+    description: Create, update, get or delete a user.
+  - name: User Session
+    description: Log in, refresh token, get information about currently logged in user or log out.
 paths:
   /user:
     post:
       tags:
-        - user
-      description: Register a user
+        - User
+      description: Register a user (create a user)
       operationId: registerUser
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserCreate"
+              $ref: "#/components/schemas/UserAuthentication"
       responses:
         "201":
           description: Successful operation
@@ -39,8 +41,8 @@ paths:
           description: User already exists
     put:
       tags:
-        - user
-      description: Update a user
+        - User
+      description: Update the information of a user
       operationId: updateUser
       requestBody:
         content:
@@ -56,75 +58,10 @@ paths:
                 $ref: "#/components/schemas/User"
         "409":
           description: User already exists
-  /user/session:
-    post:
-      tags:
-        - user
-      description: Log in with credentials
-      operationId: login
-      requestBody:
-        description: Login credentials
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserLogin"
-      responses:
-        "201":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-          headers:
-            Set-Cookie:
-              description: Cookie to be used for authentication.
-              schema:
-                type: string
-                example: "Authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1NzYyMjQxM"
-        "401":
-          description: Bad credentials
-    put:
-      tags:
-        - user
-      description: Refresh token
-      operationId: refreshToken
-      responses:
-        "201":
-          description: Successful operation
-          headers:
-            Set-Cookie:
-              description: Cookie to be used for authentication.
-              schema:
-                type: string
-                example: "Authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1NzYyMjQxM"
-        "401":
-          description: Bad credentials
-    get:
-      tags:
-        - user
-      description: Get logged in user
-      operationId: loggedInUser
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-        "401":
-          description: Bad credentials
-    delete:
-      tags:
-        - user
-      description: Log out User
-      operationId: logout
-      responses:
-        "204":
-          description: Successful operation
   /user/{id}:
     get:
       tags:
-        - user
+        - User
       description: Get a specific user
       operationId: getUser
       parameters:
@@ -143,7 +80,7 @@ paths:
                 $ref: "#/components/schemas/User"
     delete:
       tags:
-        - user
+        - User
       description: Delete a specific User
       operationId: deleteUser
       parameters:
@@ -156,56 +93,96 @@ paths:
       responses:
         "204":
           description: Successful response
+  /user/session:
+    post:
+      tags:
+        - User Session
+      description: Log in with credentials
+      operationId: login
+      requestBody:
+        description: Login credentials
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuthentication"
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          headers:
+            Set-Cookie:
+              description: Cookie to be used for authentication.
+              schema:
+                type: string
+                example: "Authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1NzYyMjQxM"
+        "401":
+          description: Bad credentials
+    put:
+      tags:
+        - User Session
+      description: Refresh token
+      operationId: refreshToken
+      responses:
+        "201":
+          description: Successful operation
+          headers:
+            Set-Cookie:
+              description: Cookie to be used for authentication.
+              schema:
+                type: string
+                example: "Authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE1NzYyMjQxM"
+        "401":
+          description: Bad credentials
+    get:
+      tags:
+        - User Session
+      description: Get logged in user
+      operationId: loggedInUser
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Bad credentials
+    delete:
+      tags:
+        - User Session
+      description: Log out User
+      operationId: logout
+      responses:
+        "204":
+          description: Successful operation
 components:
   schemas:
     User:
       type: object
       required:
-        - id
-        - name
-        - email
+        - username
       properties:
-        id:
-          type: string
-        name:
-          type: string
-        email:
+        username:
           type: string
     UserUpdate:
       type: object
       required:
-        - id
-        - name
-        - email
+        - username
       properties:
-        id:
-          type: string
-        name:
-          type: string
-        email:
+        username:
           type: string
         password:
           type: string
-    UserLogin:
+    UserAuthentication:
       type: object
       required:
-        - email
+        - username
         - password
       properties:
-        email:
-          type: string
-        password:
-          type: string
-    UserCreate:
-      type: object
-      required:
-        - name
-        - email
-        - password
-      properties:
-        name:
-          type: string
-        email:
+        username:
           type: string
         password:
           type: string
