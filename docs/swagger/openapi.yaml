@@ -184,3 +184,182 @@ components:
           type: string
         password:
           type: string
+    Category:
+      type: object
+      required:
+        - name
+        - color
+      properties:
+        name:
+          type: string
+          maxLength: 32
+        color:
+          type: string
+          minLength: 4
+          maxLength: 7
+    FeedbackCreate:
+      type: object
+      required:
+        - feedback
+      properties:
+        feedback:
+          type: string
+          maxLength: 1024
+    Feedback:
+      type: object
+      required:
+        - id
+        - quiz_id
+        - username
+        - feedback
+        - created_at
+      properties:
+        id:
+          type: integer
+        quiz_id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        feedback:
+          type: string
+          maxLength: 1024
+        created_at:
+          type: string
+          format: date-time
+    QuestionCreate:
+      type: object
+      required:
+        - type
+        - question
+      properties:
+        type:
+          type: string
+          enum: ["MULTIPLE", "BOOLEAN", "TEXT"]
+        question:
+          type: string
+          maxLength: 128
+    Question:
+      type: object
+      required:
+        - type
+        - question
+        - correct_answer
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: ["MULTIPLE", "BOOLEAN", "TEXT"]
+        question:
+          type: string
+          maxLength: 128
+        correct_answer:
+          type: string
+          maxLength: 128
+        media_url:
+          type: string
+          format: uri
+    QuizCreate:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          minLength: 5
+          maxLength: 128
+        description:
+          type: string
+          maxLength: 2000
+        difficulty:
+          type: integer
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+    QuizSearchOptions:
+      type: object
+      properties:
+        limit:
+          description: How many results to fetch
+          type: integer
+        text_search:
+          type: string
+          maxLength: 128
+        min_difficulty:
+          type: integer
+        max_difficulty:
+          type: integer
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+    QuizOverview:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - categories
+        - creator
+        - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          minLength: 5
+          maxLength: 128
+        description:
+          type: string
+          maxLength: 2000
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+        creator:
+          $ref: "#/components/schemas/User"
+        created_at:
+          type: string
+          format: date-time
+    Quiz:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - categories
+        - feedbacks
+        - questions
+        - creator
+        - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          minLength: 5
+          maxLength: 128
+        description:
+          type: string
+          maxLength: 2000
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+        feedbacks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feedback"
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+        creator:
+          $ref: "#/components/schemas/User"
+        created_at:
+          type: string
+          format: date-time
