@@ -278,23 +278,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Category"
-    QuizSearchOptions:
-      type: object
-      properties:
-        limit:
-          description: How many results to fetch
-          type: integer
-        text_search:
-          type: string
-          maxLength: 128
-        min_difficulty:
-          type: integer
-        max_difficulty:
-          type: integer
-        categories:
-          type: array
-          items:
-            $ref: "#/components/schemas/Category"
     QuizOverview:
       type: object
       required:
