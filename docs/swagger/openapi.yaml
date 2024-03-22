@@ -16,6 +16,8 @@ servers:
 tags:
   - name: User
   - name: User Session
+  - name: Quiz
+
 paths:
   /user:
     post:
@@ -156,6 +158,89 @@ paths:
       responses:
         "204":
           description: Successful operation
+  /quiz:
+    post:
+      tags:
+        - Quiz
+      description: Create a new quiz
+      operationId: createQuiz
+      requestBody:
+        description: Quiz creation information
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizCreate"
+            example:
+              {
+                "title": "Biology: Chapter 1",
+                "description": null,
+                "difficulty": 8,
+                "categories":
+                  [
+                    { "name": "Biology", "color": "#0f0" },
+                    { "name": "Human Body", "color": "#ff19c2" },
+                  ],
+              }
+      responses:
+        "201":
+          description: Successfully created Quiz
+        "401":
+          description: Not logged in
+    get:
+      tags:
+        - Quiz
+      description: Get first page of quizzes
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: textSearch
+          schema:
+            type: string
+            maxLength: 128
+        - in: query
+          name: minDifficulty
+          schema:
+            type: integer
+        - in: query
+          name: maxDifficulty
+          schema:
+            type: integer
+        - in: query
+          name: category
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Category"
+      responses:
+        "200":
+          description: Successfully got the first page of quizzes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizOverview"
+  /quiz/{id}:
+    get:
+      tags:
+        - Quiz
+      description: Get all information about a quiz
+      parameters:
+        - name: id
+          description: The ID of a quiz
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: "Successfully fetched the quiz"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quiz"
 components:
   schemas:
     User:
