@@ -245,7 +245,7 @@ paths:
   /quiz/{id}/attempt:
     post:
       tags:
-        - Quiz
+        - Attempt
       description: Attempt a quiz
       operationId: attemptQuiz
       requestBody:
