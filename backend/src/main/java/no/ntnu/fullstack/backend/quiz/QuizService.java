@@ -9,9 +9,8 @@ import no.ntnu.fullstack.backend.quiz.repository.RevisionRepository;
 import org.springframework.stereotype.Service;
 
 /**
- * The QuizService class provides methods for creating and managing quizzes.
- * It also manages the relationship between quizzes and revisions, and
- * hides the complexity of revisions.
+ * The QuizService class provides methods for creating and managing quizzes. It also manages the
+ * relationship between quizzes and revisions, and hides the complexity of revisions.
  */
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,9 @@ public class QuizService {
   private final RevisionRepository revisionRepository;
 
   /**
-   * Creates a new quiz with a given revision.
-   * The revision is the first version of the quiz.
+   * Creates a new quiz with a given revision. The revision is the first version of the quiz.
    *
-   * @param quiz     The quiz to create.
+   * @param quiz The quiz to create.
    * @param revision The revision to create.
    * @return The created quiz.
    */

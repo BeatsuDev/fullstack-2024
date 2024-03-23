@@ -28,7 +28,7 @@ public class QuizController {
    * Create a new quiz with the given quiz data that becomes the first revision.
    *
    * @param authentication The authentication object.
-   * @param createQuiz  The quiz data to create.
+   * @param createQuiz The quiz data to create.
    * @return The created quiz.
    */
   @PostMapping
