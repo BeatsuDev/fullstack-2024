@@ -25,7 +25,7 @@ const { authenticated } = storeToRefs(useAuthenticationStore());
                     >{{ $t("navbar.login") }}</RouterLink
                 >
                 <a v-else @click="authenticationStore.deauthenticate"
-                    >Logg out</a
+                    >Log out</a
                 >
                 <select id="locale-selector" v-model="$i18n.locale">
                     <option
