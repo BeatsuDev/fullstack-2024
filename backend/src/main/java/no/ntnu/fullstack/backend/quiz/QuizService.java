@@ -11,5 +11,5 @@ import no.ntnu.fullstack.backend.user.model.User;
 @Service
 @RequiredArgsConstructor
 public class QuizService {
-  private final no.ntnu.fullstack.backend.user.QuizRepository quizRepository;
+  private final QuizRepository quizRepository;
 }
