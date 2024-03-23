@@ -30,4 +30,8 @@ public class Revision {
   private User creator;
 
   @CreationTimestamp private Date createdAt;
+
+  @ManyToOne
+  @JoinColumn(name = "quiz_id")
+  private Quiz quiz;
 }

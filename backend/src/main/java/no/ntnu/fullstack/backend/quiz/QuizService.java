@@ -15,6 +15,7 @@ public class QuizService {
   @Transactional
   public Quiz createQuiz(Quiz quiz, Revision revision) {
     Quiz createdQuiz = quizRepository.saveAndFlush(quiz);
+    revision.setQuiz(createdQuiz);
     revisionRepository.saveAndFlush(revision);
     return createdQuiz;
   }
