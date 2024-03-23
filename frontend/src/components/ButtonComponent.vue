@@ -1,10 +1,10 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
     small?: boolean;
     large?: boolean;
-    roundedSm?: boolean;
+    "rounded-sm"?: boolean;
     rounded?: boolean;
-    roundedLg?: boolean;
+    "rounded-lg"?: boolean;
     filled?: boolean;
 }>();
 </script>
@@ -54,7 +54,7 @@ button.large {
     padding: 1em 1.5em;
 }
 
-button.rounded-sm {
+button.roundedSm {
     border-radius: 0.125em;
 }
 
@@ -62,7 +62,7 @@ button.rounded {
     border-radius: 0.25em;
 }
 
-button.rounded-lg {
+button.roundedLg {
     border-radius: 0.5em;
 }
 
