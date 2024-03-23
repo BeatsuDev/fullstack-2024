@@ -1,5 +1,25 @@
 import { ref, type Ref } from "vue";
 
+/**
+ * Usage:
+ *
+ * import { usePromise, useExecutablePromise } from "@/composables/promise";
+ * import { useAuthenticationStore } from "@/stores/authentication";
+ *
+ * const authenticationStore = useAuthenticationStore();
+ * const { data, loading, finished, error, promise } = usePromise(
+ *    authenticationStore.authenticate({ username: "test", password: "test" })
+ * );
+ *
+ *
+ * const { data, loading, finished, error, execute } = useExecutablePromise(
+ *   authenticationStore.authenticate
+ * );
+ *
+ * const promise = execute({ username: "test", password: "test" });
+ * promise.then((result) => console.log(result));
+ */
+
 export type PromiseComposable<T> = {
     data: Ref<T | null>;
     loading: Ref<boolean>;
