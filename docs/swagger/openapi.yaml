@@ -245,6 +245,14 @@ paths:
                 $ref: "#/components/schemas/Quiz"
   
   /quiz/{id}/attempt:
+    parameters:
+      - name: id
+        description: The ID of a quiz
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
     post:
       tags:
         - Attempt
@@ -267,6 +275,14 @@ paths:
           description: Quiz not found
 
   /quiz/{id}/feedback:
+    parameters:
+      - name: id
+        description: The ID of a quiz
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
     post:
       tags:
         - Feedback
@@ -309,6 +325,14 @@ paths:
           description: Quiz not found
   
   /quiz/{id}/question:
+    parameters:
+      - name: id
+        description: The ID of a quiz
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
     post:
       tags:
         - Question
@@ -336,6 +360,14 @@ paths:
         "403":
           description: "Not the creator of the quiz"
   /quiz/{id}/collaborator:
+    parameters:
+      - name: id
+        description: The ID of a quiz
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
     post:
       tags:
         - Collaborator
@@ -377,6 +409,20 @@ paths:
         "404":
           description: Quiz not found
   /quiz/{id}/collaborator/{collaborator_id}:
+    parameters:
+      - name: id
+        description: The ID of a quiz
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: collaborator_id
+        description: The ID of the collaborator
+        in: path
+        required: true
+        schema:
+          type: string
     delete:
       tags:
         - Collaborator
@@ -390,6 +436,13 @@ paths:
         "404":
           description: Quiz not found
   /question/{question_id}:
+    parameters:
+      - name: question_id
+        description: The ID of the question
+        in: path
+        required: true
+        schema:
+          type: integer
     put:
       tags:
         - Question
