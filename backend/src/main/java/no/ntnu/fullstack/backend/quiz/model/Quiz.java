@@ -1,4 +1,4 @@
-package no.ntnu.fullstack.backend.quiz;
+package no.ntnu.fullstack.backend.quiz.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
