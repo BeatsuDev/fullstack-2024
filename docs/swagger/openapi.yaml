@@ -288,6 +288,8 @@ paths:
           description: Question not found
         "401":
           description: Not logged in
+        "403":
+          description: "Not the creator of the quiz"
     delete:
       tags:
         - Quiz
