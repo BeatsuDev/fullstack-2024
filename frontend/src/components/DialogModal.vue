@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ButtonComponent from "./ButtonComponent.vue";
+import ButtonComponent from "./buttons/SecondaryButton.vue";
 
 const isVisible = defineModel<boolean>();
 
