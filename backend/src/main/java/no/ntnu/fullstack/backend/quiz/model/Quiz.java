@@ -27,5 +27,6 @@ public class Quiz {
   @CreationTimestamp private Date createdAt;
 
   @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+  @JoinColumn(name = "revision_id")
   private List<Revision> revisions;
 }
