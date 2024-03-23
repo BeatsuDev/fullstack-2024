@@ -284,6 +284,13 @@ paths:
                 "media_url": "https://example.com/image.jpg",
                 "answer_options": ["Oslo", "Bergen", "Trondheim", "Stavanger"]
               }
+      responses:
+        "201":
+          description: Successfully created the question
+        "401":
+          description: Not logged in
+        "403":
+          description: "Not the creator of the quiz"
   /quiz/{id}/question/{question_id}:
     put:
       tags:
