@@ -288,6 +288,20 @@ paths:
           description: Question not found
         "401":
           description: Not logged in
+    delete:
+      tags:
+        - Quiz
+      description: Delete a question
+      operationId: deleteQuestion
+      responses:
+        "204":
+          description: Successfully deleted the question
+        "404":
+          description: Question not found
+        "401":
+          description: Not logged in
+        "403":
+          description: "Not the creator of the quiz"
 components:
   schemas:
     User:
