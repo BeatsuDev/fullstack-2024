@@ -13,9 +13,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
 @Setter
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Quiz {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
