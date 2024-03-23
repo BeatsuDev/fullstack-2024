@@ -1,5 +1,6 @@
 package no.ntnu.fullstack.backend.quiz;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
@@ -11,6 +12,7 @@ public class QuizService {
   private final QuizRepository quizRepository;
   private final RevisionRepository revisionRepository;
 
+  @Transactional
   public Quiz createQuiz(Quiz quiz, Revision revision) {
     Quiz createdQuiz = quizRepository.saveAndFlush(quiz);
     revisionRepository.saveAndFlush(revision);
