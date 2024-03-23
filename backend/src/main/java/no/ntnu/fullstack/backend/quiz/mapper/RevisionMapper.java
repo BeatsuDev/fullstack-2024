@@ -1,4 +1,4 @@
-package no.ntnu.fullstack.backend.quiz;
+package no.ntnu.fullstack.backend.quiz.mapper;
 
 import no.ntnu.fullstack.backend.quiz.dto.QuizCreateDTO;
 import no.ntnu.fullstack.backend.quiz.model.Revision;

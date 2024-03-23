@@ -1,4 +1,4 @@
-package no.ntnu.fullstack.backend.quiz;
+package no.ntnu.fullstack.backend.quiz.repository;
 
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
