@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ValidatedInput from "@/components/ValidatedInput.vue";
-import ButtonComponent from "@/components/buttons/PrimaryButton.vue";
+import ButtonComponent from "@/components/ButtonComponent.vue";
 import LoadingCircle from "@/components/LoadingCircle.vue";
 
 import { RouterLink } from "vue-router";
@@ -117,7 +117,13 @@ async function register() {
                     />
                 </div>
                 <div id="register-buttons-container">
-                    <ButtonComponent id="register-button" type="submit">
+                    <ButtonComponent
+                        id="register-button"
+                        type="submit"
+                        rounded
+                        large
+                        filled
+                    >
                         {{ $t("login.register") }}
                     </ButtonComponent>
                     <RouterLink to="login" id="registered-message">
