@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { RouterView, RouterLink } from "vue-router";
-import { useWindowSize } from "@vueuse/core";
 
 import SearchIcon from "@/assets/icons/navbar/SearchIcon.vue";
 import AddIcon from "@/assets/icons/navbar/AddIcon.vue";
 import FolderIcon from "@/assets/icons/navbar/FolderIcon.vue";
 import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
-
-const { width } = useWindowSize();
 </script>
 
 <template>
