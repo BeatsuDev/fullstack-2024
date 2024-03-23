@@ -241,6 +241,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Quiz"
+  
+  /quiz/{id}/attempt:
+    post:
+      tags:
+        - Quiz
+      description: Attempt a quiz
+      operationId: attemptQuiz
+      requestBody:
+        description: Answers to the quiz
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/QuizAttempt"
+      responses:
+        "200":
+          description: Successfully attempted the quiz
+        "401":
+          description: Not logged in
+        "404":
+          description: Quiz not found
+
   /quiz/{id}/question:
     post:
       tags:
