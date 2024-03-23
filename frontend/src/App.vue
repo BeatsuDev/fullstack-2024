@@ -4,6 +4,7 @@ import { RouterLink, RouterView } from "vue-router";
 import NotificationsContainer from "@/components/NotificationsContainer.vue";
 import { useAuthenticationStore } from "./stores/authentication";
 
+const authenticationStore = useAuthenticationStore();
 const { authenticated } = storeToRefs(useAuthenticationStore());
 </script>
 
@@ -23,9 +24,9 @@ const { authenticated } = storeToRefs(useAuthenticationStore());
                     to="login"
                     >{{ $t("navbar.login") }}</RouterLink
                 >
-                <RouterLink v-else id="profile-router-link" to="profile">{{
-                    $t("navbar.profile")
-                }}</RouterLink>
+                <a v-else @click="authenticationStore.deauthenticate"
+                    >Logg out</a
+                >
                 <select id="locale-selector" v-model="$i18n.locale">
                     <option
                         v-for="locale in $i18n.availableLocales"
