@@ -291,10 +291,10 @@ paths:
           description: Not logged in
         "403":
           description: "Not the creator of the quiz"
-  /quiz/{id}/question/{question_id}:
+  /question/{question_id}:
     put:
       tags:
-        - Quiz
+        - Question
       description: Update a question
       operationId: updateQuestion
       requestBody:
@@ -322,7 +322,7 @@ paths:
           description: "Not the creator of the quiz"
     delete:
       tags:
-        - Quiz
+        - Question
       description: Delete a question
       operationId: deleteQuestion
       responses:
