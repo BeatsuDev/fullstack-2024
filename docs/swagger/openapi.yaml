@@ -267,7 +267,7 @@ paths:
   /quiz/{id}/question:
     post:
       tags:
-        - Quiz
+        - Question
       description: Create a new question
       operationId: createQuestion
       requestBody:
