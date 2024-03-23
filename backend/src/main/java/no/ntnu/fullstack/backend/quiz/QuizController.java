@@ -24,6 +24,13 @@ public class QuizController {
   private final QuizMapper quizMapper = Mappers.getMapper(QuizMapper.class);
   private final RevisionMapper revisionMapper = Mappers.getMapper(RevisionMapper.class);
 
+  /**
+   * Create a new quiz with the given quiz data that becomes the first revision.
+   *
+   * @param authentication The authentication object.
+   * @param createQuiz  The quiz data to create.
+   * @return The created quiz.
+   */
   @PostMapping
   @ResponseBody
   public ResponseEntity<QuizDTO> createQuiz(

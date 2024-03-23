@@ -11,6 +11,11 @@ import lombok.Setter;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.hibernate.annotations.CreationTimestamp;
 
+
+/**
+ * The Revision entity represents a version of a quiz.
+ * The latest revision is the one that is currently active.
+ */
 @Getter
 @Setter
 @Entity

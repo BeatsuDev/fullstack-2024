@@ -11,6 +11,12 @@ import lombok.Setter;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.hibernate.annotations.CreationTimestamp;
 
+
+/**
+ * The Quiz entity represents a quiz that can be created by a user.
+ * A quiz consists of a list of revisions, where each revision represents a version of the quiz.
+ * The latest revision is the one that is currently active.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

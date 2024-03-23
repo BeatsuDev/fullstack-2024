@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The QuizCreateDTO class represents a quiz creation request.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

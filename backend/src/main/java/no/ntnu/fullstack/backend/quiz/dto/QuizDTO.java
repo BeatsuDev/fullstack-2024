@@ -4,10 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.ntnu.fullstack.backend.user.dto.UserDTO;
-import no.ntnu.fullstack.backend.user.model.User;
 
 import java.util.Date;
 
+/**
+ * The QuizDTO class represents a quiz with a revision
+ */
 @Getter
 @Setter
 @NoArgsConstructor
