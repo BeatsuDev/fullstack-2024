@@ -12,6 +12,9 @@ const router = createRouter({
             path: "/",
             name: "home",
             component: LandingView,
+            meta: {
+                redirectIfAuthenticated: true,
+            },
         },
         {
             path: "/login",
