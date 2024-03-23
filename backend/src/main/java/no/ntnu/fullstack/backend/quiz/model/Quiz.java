@@ -26,6 +26,6 @@ public class Quiz {
 
   @CreationTimestamp private Date createdAt;
 
-  @OneToMany(cascade = CascadeType.REMOVE)
+  @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
   private List<Revision> revisions;
 }
