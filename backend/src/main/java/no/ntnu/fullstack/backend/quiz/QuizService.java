@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
+import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
+import no.ntnu.fullstack.backend.quiz.repository.RevisionRepository;
 import org.springframework.stereotype.Service;
 
 /**
