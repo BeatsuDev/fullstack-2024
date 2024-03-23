@@ -52,11 +52,17 @@ const router = createRouter({
                     name: "create",
                     path: "/create",
                     component: () => import("@/views/app/CreateView.vue"),
+                    meta: {
+                        requiresAuth: true,
+                    },
                 },
                 {
                     name: "quizzes",
                     path: "/quizzes",
                     component: () => import("@/views/app/QuizzesView.vue"),
+                    meta: {
+                        requiresAuth: true,
+                    },
                 },
                 {
                     path: "/profile",
