@@ -241,6 +241,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Quiz"
+  /quiz/{id}/question:
+    post:
+      tags:
+        - Quiz
+      description: Create a new question
+      operationId: createQuestion
+      requestBody:
+        description: Question creation information
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuestionCreate"
+            example:
+              {
+                "type": "MULTIPLE",
+                "question": "What is the capital of Norway?",
+                "correct_answer": "Oslo",
+                "media_url": "https://example.com/image.jpg",
+                "answer_options": ["Oslo", "Bergen", "Trondheim", "Stavanger"]
+              }
+      responses:
+        "201":
+          description: Successfully created Question
+        "401":
+          description: Not logged in
 components:
   schemas:
     User:
