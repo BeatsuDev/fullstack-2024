@@ -266,6 +266,48 @@ paths:
         "404":
           description: Quiz not found
 
+  /quiz/{id}/feedback:
+    post:
+      tags:
+        - Feedback
+      description: Give feedback on a quiz
+      operationId: giveFeedback
+      requestBody:
+        description: Feedback information
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeedbackCreate"
+            example:
+              {
+                "feedback": "This quiz was great!"
+              }
+      responses:
+        "201":
+          description: Successfully created the question
+        "401":
+          description: Not logged in
+        "404":
+          description: Quiz not found
+    get:
+      tags:
+        - Feedback
+      description: Get all feedback on a quiz
+      operationId: getFeedback
+      responses:
+        "201":
+          description: Successfully created the question
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Feedback"
+        "401":
+          description: Not logged in
+        "404":
+          description: Quiz not found
+  
   /quiz/{id}/question:
     post:
       tags:
@@ -347,7 +389,6 @@ paths:
           description: Not logged in
         "404":
           description: Quiz not found
-
   /question/{question_id}:
     put:
       tags:
