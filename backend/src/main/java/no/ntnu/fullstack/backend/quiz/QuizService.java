@@ -5,15 +5,19 @@ import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.category.CategoryService;
 import no.ntnu.fullstack.backend.category.model.Category;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
+import no.ntnu.fullstack.backend.quiz.model.LatestQuiz;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
 import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
 import no.ntnu.fullstack.backend.quiz.repository.RevisionRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * The QuizService class provides methods for creating and managing quizzes. It also manages the
  * relationship between quizzes and revisions, and hides the complexity of revisions.
  */
+
 @Service
 @RequiredArgsConstructor
 public class QuizService {
@@ -36,4 +40,8 @@ public class QuizService {
     revisionRepository.saveAndFlush(revision);
     return createdQuiz;
   }
+  public List<LatestQuiz> retrieveQuizzes() {
+    return quizRepository.findWithFirstRevision();
+  }
+
 }

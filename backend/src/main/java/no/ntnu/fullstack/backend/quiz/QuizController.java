@@ -7,16 +7,16 @@ import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
 import no.ntnu.fullstack.backend.quiz.mapper.QuizMapper;
 import no.ntnu.fullstack.backend.quiz.mapper.RevisionMapper;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
+import no.ntnu.fullstack.backend.quiz.model.LatestQuiz;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/quiz")
@@ -42,5 +42,12 @@ public class QuizController {
     Revision revision = revisionMapper.fromQuizCreate(createQuiz, user);
     Quiz createdQuiz = quizService.createQuiz(quiz, revision);
     return ResponseEntity.ok(quizMapper.toDTO(createdQuiz, revision));
+  }
+
+  @GetMapping
+  @ResponseBody
+  public ResponseEntity<List<QuizDTO>> listQuiz() {
+    List<LatestQuiz> quizzes = quizService.retrieveQuizzes();
+    return ResponseEntity.ok( quizzes.stream().map(quiz -> quizMapper.toDTO(quiz.getQuiz(), quiz.getLatestRevision())).toList() );
   }
 }
