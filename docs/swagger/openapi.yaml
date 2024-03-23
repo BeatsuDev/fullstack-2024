@@ -261,9 +261,31 @@ paths:
                 "media_url": "https://example.com/image.jpg",
                 "answer_options": ["Oslo", "Bergen", "Trondheim", "Stavanger"]
               }
+  /quiz/{id}/question/{question_id}:
+    put:
+      tags:
+        - Quiz
+      description: Update a question
+      operationId: updateQuestion
+      requestBody:
+        description: Question update information
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuestionCreate"
+            example:
+              {
+                "type": "MULTIPLE",
+                "question": "What is the capital of Norway?",
+                "correct_answer": "Oslo",
+                "media_url": "https://example.com/image.jpg",
+                "answer_options": ["Oslo", "Bergen", "Trondheim", "Stavanger"]
+              }
       responses:
-        "201":
-          description: Successfully created Question
+        "200":
+          description: Successfully updated the question
+        "404":
+          description: Question not found
         "401":
           description: Not logged in
 components:
