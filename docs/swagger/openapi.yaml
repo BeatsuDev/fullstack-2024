@@ -291,6 +291,63 @@ paths:
           description: Not logged in
         "403":
           description: "Not the creator of the quiz"
+  /quiz/{id}/collaborator:
+    post:
+      tags:
+        - Collaborator
+      description: Add a collaborator to a quiz
+      operationId: addCollaborator
+      requestBody:
+        description: Collaborator information
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizAddCollaborator"
+              example:
+                {
+                  "email": "user@example.org"
+                }
+      responses:
+        "200":
+          description: Successfully added the collaborator
+        "401":
+          description: Not logged in
+        "404":
+          description: Quiz not found
+    get:
+      tags:
+        - Collaborator
+      description: Get all collaborators of a quiz
+      operationId: getCollaborators
+      requestBody:
+        description: Collaborator information
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Successfully got the collaborators 
+        "401":
+          description: Not logged in
+        "404":
+          description: Quiz not found
+  /quiz/{id}/collaborator/{collaborator_id}:
+    delete:
+      tags:
+        - Collaborator
+      description: Remove a collaborator from a quiz
+      operationId: removeCollaborator
+      responses:
+        "204":
+          description: Successfully removed the collaborator
+        "401":
+          description: Not logged in
+        "404":
+          description: Quiz not found
+
   /question/{question_id}:
     put:
       tags:
@@ -560,4 +617,11 @@ components:
         question_id:
           type: integer
         answer:
+          type: string
+    QuizAddCollaborator:
+      type: object
+      required:
+        - email
+      properties:
+        email:
           type: string
