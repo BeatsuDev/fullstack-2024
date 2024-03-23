@@ -27,9 +27,9 @@ import no.ntnu.fullstack.backend.user.dto.UserDTO;
 import no.ntnu.fullstack.backend.user.dto.UserUpdate;
 import no.ntnu.fullstack.backend.user.model.User;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/user")
-@RequiredArgsConstructor
 public class UserController {
   private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
   private final UserService userService;
