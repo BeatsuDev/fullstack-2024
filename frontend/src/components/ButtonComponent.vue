@@ -14,9 +14,9 @@ defineProps<{
         :class="{
             small,
             large,
-            roundedSm,
+            'rounded-sm': roundedSm,
             rounded,
-            roundedLg,
+            'rounded-lg': roundedLg,
             filled,
         }"
     >
