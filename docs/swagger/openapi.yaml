@@ -321,17 +321,15 @@ paths:
         - Collaborator
       description: Get all collaborators of a quiz
       operationId: getCollaborators
-      requestBody:
-        description: Collaborator information
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/User"
       responses:
         "200":
           description: Successfully got the collaborators 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
         "401":
           description: Not logged in
         "404":
