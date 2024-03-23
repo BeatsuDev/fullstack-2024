@@ -1,7 +1,7 @@
 export default {
     en: {
         company: {
-            name: "Vet ikke enda",
+            name: "Kazoot",
         },
         navbar: {
             about: "About",
@@ -38,7 +38,7 @@ export default {
     },
     no: {
         company: {
-            name: "Vet ikke enda",
+            name: "Kazoot",
         },
         navbar: {
             about: "Om",
