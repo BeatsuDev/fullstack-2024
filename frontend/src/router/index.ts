@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import LandingView from "@/views/LandingView.vue";
+import AppView from "@/views/AppView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
             meta: {
                 requiresAuth: true,
             },
+        },
+        {
+            path: "/app",
+            name: "app",
+            component: AppView,
         },
     ],
 });
