@@ -4,7 +4,6 @@ export default {
             name: "Kazoot",
         },
         navbar: {
-            about: "About",
             contact: "Contact",
             login: "Log in",
             profile: "Profile",
@@ -41,7 +40,6 @@ export default {
             name: "Kazoot",
         },
         navbar: {
-            about: "Om",
             contact: "Kontakt",
             login: "Logg inn",
             profile: "Profile",

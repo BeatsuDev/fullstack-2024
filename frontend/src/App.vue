@@ -14,9 +14,6 @@ const { authenticated } = storeToRefs(useAuthenticationStore());
                 {{ $t("company.name") }}
             </RouterLink>
             <div id="routes">
-                <RouterLink id="about-router-link" to="">{{
-                    $t("navbar.about")
-                }}</RouterLink>
                 <RouterLink id="contact-router-link" to="">{{
                     $t("navbar.contact")
                 }}</RouterLink>
