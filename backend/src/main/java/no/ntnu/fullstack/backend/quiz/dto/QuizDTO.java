@@ -7,9 +7,7 @@ import no.ntnu.fullstack.backend.user.dto.UserDTO;
 
 import java.util.Date;
 
-/**
- * The QuizDTO class represents a quiz with a revision
- */
+/** The QuizDTO class represents a quiz with a revision */
 @Getter
 @Setter
 @NoArgsConstructor
