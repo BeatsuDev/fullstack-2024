@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ButtonComponent from "./buttons/SecondaryButton.vue";
+import ButtonComponent from "./ButtonComponent.vue";
 
 const isVisible = defineModel<boolean>();
 
@@ -33,12 +33,21 @@ function onCancel() {
                 <h3>{{ title }}</h3>
                 <p>{{ message }}</p>
                 <div id="buttons">
-                    <ButtonComponent id="confirm-button" @click="onConfirm">{{
-                        confirmText
-                    }}</ButtonComponent>
-                    <ButtonComponent id="cancel-button" @click="onCancel">{{
-                        cancelText
-                    }}</ButtonComponent>
+                    <ButtonComponent
+                        id="confirm-button"
+                        @click="onConfirm"
+                        rounded
+                        large
+                        filled
+                        >{{ confirmText }}</ButtonComponent
+                    >
+                    <ButtonComponent
+                        id="cancel-button"
+                        @click="onCancel"
+                        rounded
+                        large
+                        >{{ cancelText }}</ButtonComponent
+                    >
                 </div>
             </div>
         </div>

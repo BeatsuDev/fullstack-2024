@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ValidatedInput from "@/components/ValidatedInput.vue";
-import PrimaryButton from "@/components/buttons/PrimaryButton.vue";
+import ButtonComponent from "@/components/ButtonComponent.vue";
 import LoadingCircle from "@/components/LoadingCircle.vue";
 
 import { ref, reactive, toRaw } from "vue";
@@ -87,9 +87,15 @@ async function login() {
                     />
                 </div>
                 <div id="login-buttons-container">
-                    <PrimaryButton id="login-button" type="submit">
+                    <ButtonComponent
+                        id="login-button"
+                        type="submit"
+                        rounded
+                        large
+                        filled
+                    >
                         {{ $t("login.login") }}
-                    </PrimaryButton>
+                    </ButtonComponent>
                     <RouterLink to="register" id="not-registered-message">
                         {{ $t("login.notRegistered") }}
                     </RouterLink>

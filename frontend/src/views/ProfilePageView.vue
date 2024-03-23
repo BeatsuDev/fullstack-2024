@@ -5,7 +5,7 @@ import { email, sameAs } from "@vuelidate/validators";
 import { useAuthenticationStore } from "@/stores/authentication";
 
 import ValidatedInput from "@/components/ValidatedInput.vue";
-import ButtonComponent from "@/components/buttons/PrimaryButton.vue";
+import ButtonComponent from "@/components/ButtonComponent.vue";
 
 const authenticationStore = useAuthenticationStore();
 
@@ -53,7 +53,13 @@ onMounted(() => {
                 :validator="v$.email"
                 :label="$t('login.email')"
             />
-            <ButtonComponent id="change-values-button" type="submit">
+            <ButtonComponent
+                id="change-values-button"
+                type="submit"
+                rounded
+                large
+                filled
+            >
                 {{ $t("profile.changeValues") }}
             </ButtonComponent>
         </form>
