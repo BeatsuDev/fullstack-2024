@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import { useAuthenticationStore } from "@/stores/authentication";
+
 import LandingView from "@/views/LandingView.vue";
 import AppView from "@/views/AppView.vue";
 
@@ -44,10 +45,9 @@ const router = createRouter({
     ],
 });
 
-// Navigation guards
-const authenticationStore = useAuthenticationStore();
-
 router.beforeEach((to, from) => {
+    const authenticationStore = useAuthenticationStore();
+
     // Set meta transition name for page transitions
     const toDepth = to.path.split("/").filter((i) => i).length;
     const fromDepth = from.path.split("/").filter((i) => i).length;
