@@ -4,6 +4,7 @@ import { useAuthenticationStore } from "@/stores/authentication";
 
 import LandingView from "@/views/LandingView.vue";
 import AppView from "@/views/AppView.vue";
+import ExploreView from "@/views/app/ExploreView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,17 +34,39 @@ const router = createRouter({
             },
         },
         {
-            path: "/profile",
-            name: "profile",
-            component: () => import("@/views/ProfilePageView.vue"),
-            meta: {
-                requiresAuth: true,
-            },
-        },
-        {
             path: "/app",
             name: "app",
-            component: AppView,
+            component: AppView, // This is commonly visited, so should be loaded eagerly
+            children: [
+                {
+                    name: "redirect-to-explore",
+                    path: "",
+                    redirect: "explore",
+                },
+                {
+                    name: "explore",
+                    path: "/explore",
+                    component: ExploreView, // This is also commonly visited
+                },
+                {
+                    name: "create",
+                    path: "/create",
+                    component: () => import("@/views/app/CreateView.vue"),
+                },
+                {
+                    name: "quizzes",
+                    path: "/quizzes",
+                    component: () => import("@/views/app/QuizzesView.vue"),
+                },
+                {
+                    path: "/profile",
+                    name: "profile",
+                    component: () => import("@/views/ProfilePageView.vue"),
+                    meta: {
+                        requiresAuth: true,
+                    },
+                },
+            ],
         },
     ],
 });
