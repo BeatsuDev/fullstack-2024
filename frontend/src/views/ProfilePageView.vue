@@ -5,7 +5,7 @@ import { email, sameAs } from "@vuelidate/validators";
 import { useAuthenticationStore } from "@/stores/authentication";
 
 import ValidatedInput from "@/components/ValidatedInput.vue";
-import ButtonComponent from "@/components/ButtonComponent.vue";
+import ButtonComponent from "@/components/buttons/PrimaryButton.vue";
 
 const authenticationStore = useAuthenticationStore();
 

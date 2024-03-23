@@ -104,6 +104,7 @@
     --color-text: var(--black-800);
     --color-button: var(--primary-600);
     --color-button-hover: var(--primary-700);
+    --color-button-border: var(--primary-800);
 
     --color-scrollbar: var(--black-50);
     --color-scrollbar-thumb: var(--black-100);
