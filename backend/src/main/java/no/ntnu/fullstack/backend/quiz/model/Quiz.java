@@ -10,10 +10,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name = "_user")
+@Entity
 public class Quiz {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
-
 }
