@@ -15,7 +15,7 @@ import no.ntnu.fullstack.backend.user.dto.UserDTO;
 public class QuizDTO {
   private String title;
   private String description;
-  private String difficulty;
+  private int difficulty;
   private UserDTO creator;
   private Date createdAt;
   private List<Category> categories;

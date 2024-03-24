@@ -9,16 +9,19 @@ import no.ntnu.fullstack.backend.user.UserMapper;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 @Mapper(uses = {UserMapper.class, CategoryMapper.class})
 @RequiredArgsConstructor
 public abstract class QuizMapper {
-  @Mapping(source = "revision.title", target = "title")
-  @Mapping(source = "revision.description", target = "description")
-  @Mapping(source = "revision.difficulty", target = "difficulty")
-  @Mapping(source = "quiz.createdAt", target = "createdAt")
-  @Mapping(source = "quiz.creator", target = "creator")
-  @Mapping(source = "revision.categories", target = "categories")
+  @Mappings({
+    @Mapping(source = "revision.title", target = "title"),
+    @Mapping(source = "revision.description", target = "description"),
+    @Mapping(source = "revision.difficulty", target = "difficulty"),
+    @Mapping(source = "quiz.createdAt", target = "createdAt"),
+    @Mapping(source = "quiz.creator", target = "creator"),
+    @Mapping(source = "revision.categories", target = "categories")
+  })
   public abstract QuizDTO toDTO(Quiz quiz, Revision revision);
 
   @Mapping(source = "user", target = "creator")
