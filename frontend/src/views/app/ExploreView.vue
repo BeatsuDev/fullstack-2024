@@ -56,6 +56,10 @@ function toggleCategory(category: Category) {
 }
 
 function getCategoryStyle(category: Category) {
+    if (category.name == "string")
+        return {
+            border: `2px solid red`,
+        };
     if (isCategorySelected(category)) {
         return {
             border: `2px solid ${category.color}`,
@@ -88,7 +92,24 @@ const { promise, loading: quizFetchLoading } = usePromise(
 );
 
 promise.then((response) => {
-    foundQuizzes.value = response.data;
+    foundQuizzes.value = [
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+        ...response.data,
+    ];
 });
 </script>
 
@@ -160,7 +181,7 @@ promise.then((response) => {
                 </Transition>
             </div>
         </div>
-        <div class="found-quizzes-container">
+        <main class="found-quizzes-container">
             <div v-if="quizFetchLoading">Loading...</div>
             <div v-else-if="foundQuizzes.length === 0">No quizzes found.</div>
             <div class="found-quizzes-grid" v-else>
@@ -174,12 +195,21 @@ promise.then((response) => {
                         :style="`background-color: hsl(${Math.random() * 360}deg ${60 + Math.random() * 40}% 50%);`"
                     ></div>
                     <div class="quiz-card-content">
+                        <div class="quiz-card-categories">
+                            <div
+                                v-for="(category, i) in quiz.categories"
+                                :key="i"
+                                :style="getCategoryStyle(category)"
+                            >
+                                {{ category.name }}
+                            </div>
+                        </div>
                         <h4 style="margin-top: 0">{{ quiz.title }}</h4>
                         <p>{{ quiz.description }}</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 </template>
 
@@ -234,6 +264,7 @@ promise.then((response) => {
     border-radius: 2em;
     cursor: pointer;
     user-select: none;
+    text-transform: uppercase;
 }
 
 .category-filter-labels input {
@@ -258,23 +289,48 @@ fieldset > legend {
 
 .found-quizzes-container {
     padding: 1em;
+    max-height: 100%;
 }
 
 .found-quizzes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1em;
 }
 
 .quiz-overview-card {
     border: 1px solid black;
+    border-radius: 1em;
+    transition-duration: 150ms;
+}
+
+.quiz-overview-card:hover {
+    box-shadow: 2px 2px 4px rgb(0 0 0 / 50%);
+    transform: translate(-2px, -2px);
+    cursor: pointer;
 }
 
 .quiz-overview-card .quiz-card-banner {
-    height: 100px;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+    height: 5em;
 }
 
 .quiz-overview-card .quiz-card-content {
     padding: 1em;
+}
+
+.quiz-overview-card .quiz-card-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.quiz-overview-card .quiz-card-categories div {
+    padding: 0.25em 0.5em;
+    border-radius: 1em;
+    font-size: 0.8em;
+    text-transform: uppercase;
 }
 </style>
