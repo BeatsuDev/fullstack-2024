@@ -114,7 +114,7 @@ promise.then((response) => {
 </script>
 
 <template>
-    <div>
+    <div class="explore-view-container">
         <div class="search-container">
             <ButtonComponent
                 rounded-lg
@@ -214,6 +214,19 @@ promise.then((response) => {
 </template>
 
 <style scoped>
+.explore-view-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+/* Fucking hacky as fuck. I wish I didn't have to do this. Change if can! */
+/* 100vh - (nav height + nav y-padding) - (search container height + search container y-padding) - (bottom nav height + bottom nav y-padding) - (main y-padding) */
+main {
+    height: calc(100vh - 66px - 57.6562px - 86px - 32px);
+}
+
 .search-container {
     position: relative;
     display: flex;
