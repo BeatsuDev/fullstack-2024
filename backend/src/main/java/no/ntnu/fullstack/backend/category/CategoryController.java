@@ -13,15 +13,11 @@ import java.util.List;
 @RequestMapping("/category")
 public class CategoryController {
 
-    private final CategoryService categoryService;
+  private final CategoryService categoryService;
 
-    @GetMapping
-    public List<Category> getAllCategories() {
+  @GetMapping
+  public List<Category> getAllCategories() {
 
-        return categoryService.getAllCategories();
-
-    }
-
-
-
+    return categoryService.getAllCategories();
+  }
 }
