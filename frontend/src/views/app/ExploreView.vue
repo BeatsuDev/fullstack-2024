@@ -95,48 +95,54 @@ const maxDifficulty = ref(10);
             <ButtonComponent @click="searchQuizzes" rounded large filled>
                 {{ $t("explore.search") }}
             </ButtonComponent>
-            <div v-if="filtersWindowOpen" class="filters-container">
-                <fieldset style="border: none">
-                    <legend>Categories</legend>
-                    <div class="category-filter-labels">
-                        <label
-                            v-for="(category, i) in categories"
-                            :key="i"
-                            :style="getCategoryStyle(category)"
-                            ><input
-                                type="checkbox"
-                                @change="toggleCategory(category)"
-                            />{{ category.name }}</label
-                        >
+
+            <!-- This one is not affected by the transition animation and hides all overflow -->
+            <div class="outer-filters-container">
+                <Transition>
+                    <div v-if="filtersWindowOpen" class="filters-container">
+                        <fieldset style="border: none">
+                            <legend>Categories</legend>
+                            <div class="category-filter-labels">
+                                <label
+                                    v-for="(category, i) in categories"
+                                    :key="i"
+                                    :style="getCategoryStyle(category)"
+                                    ><input
+                                        type="checkbox"
+                                        @change="toggleCategory(category)"
+                                    />{{ category.name }}</label
+                                >
+                            </div>
+                        </fieldset>
+                        <fieldset style="border: none">
+                            <legend>Difficulty</legend>
+                            <div>
+                                <label>
+                                    Min ({{ minDifficulty }})
+                                    <input
+                                        v-model="minDifficulty"
+                                        type="range"
+                                        step="1"
+                                        min="1"
+                                        max="10"
+                                        value="1"
+                                /></label>
+                                <br />
+                                <label>
+                                    Max ({{ maxDifficulty }})
+                                    <input
+                                        v-model="maxDifficulty"
+                                        type="range"
+                                        step="1"
+                                        min="1"
+                                        max="10"
+                                        value="10"
+                                    />
+                                </label>
+                            </div>
+                        </fieldset>
                     </div>
-                </fieldset>
-                <fieldset style="border: none">
-                    <legend>Difficulty</legend>
-                    <div>
-                        <label>
-                            Min ({{ minDifficulty }})
-                            <input
-                                v-model="minDifficulty"
-                                type="range"
-                                step="1"
-                                min="1"
-                                max="10"
-                                value="1"
-                        /></label>
-                        <br />
-                        <label>
-                            Max ({{ maxDifficulty }})
-                            <input
-                                v-model="maxDifficulty"
-                                type="range"
-                                step="1"
-                                min="1"
-                                max="10"
-                                value="10"
-                            />
-                        </label>
-                    </div>
-                </fieldset>
+                </Transition>
             </div>
         </div>
     </div>
@@ -159,14 +165,23 @@ const maxDifficulty = ref(10);
     border: none;
 }
 
-.filters-container {
+.outer-filters-container {
+    overflow: hidden;
+
     position: absolute;
-    display: flex;
-    flex-direction: column;
     top: 100%;
     left: 0;
     width: 100%;
+}
+
+.filters-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 0.5em;
     background-color: var(--primary-400);
+
+    width: 100%;
+    height: 100%;
 }
 
 .category-filter-labels {
@@ -194,5 +209,15 @@ fieldset > legend {
     font-size: 1.2em;
     margin: 0.5em;
     font-weight: bold;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: transform 150ms cubic-bezier(0.85, 0, 0.15, 1);
+}
+
+.v-enter-from,
+.v-leave-to {
+    transform: translateY(-100%);
 }
 </style>
