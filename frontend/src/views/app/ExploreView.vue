@@ -169,7 +169,14 @@ promise.then((response) => {
                     :key="i"
                     class="quiz-overview-card"
                 >
-                    <h4 style="margin-top: 0">{{ quiz.title }}</h4>
+                    <div
+                        class="quiz-card-banner"
+                        :style="`background-color: hsl(${Math.random() * 360}deg ${60 + Math.random() * 40}% 50%);`"
+                    ></div>
+                    <div class="quiz-card-content">
+                        <h4 style="margin-top: 0">{{ quiz.title }}</h4>
+                        <p>{{ quiz.description }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -247,5 +254,27 @@ fieldset > legend {
 .v-enter-from,
 .v-leave-to {
     transform: translateY(-100%);
+}
+
+.found-quizzes-container {
+    padding: 1em;
+}
+
+.found-quizzes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1em;
+}
+
+.quiz-overview-card {
+    border: 1px solid black;
+}
+
+.quiz-overview-card .quiz-card-banner {
+    height: 100px;
+}
+
+.quiz-overview-card .quiz-card-content {
+    padding: 1em;
 }
 </style>
