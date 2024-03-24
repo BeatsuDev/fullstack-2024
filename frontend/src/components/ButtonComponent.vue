@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
     small?: boolean;
     large?: boolean;
-    "rounded-sm"?: boolean;
+    roundedSm?: boolean;
     rounded?: boolean;
-    "rounded-lg"?: boolean;
+    roundedLg?: boolean;
     filled?: boolean;
 }>();
 </script>
