@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
+import type { Category } from "@/api";
 
 // Search
 const searchQuery = ref("");
@@ -21,13 +22,7 @@ function toggleFiltersWindow() {
 
 // Categories
 
-// TODO: Use the Category type generated from the swagger spec
-type TempCategory = {
-    name: string;
-    color: string;
-};
-
-const categories = ref<TempCategory[]>([
+const categories = ref<Category[]>([
     { name: "Biology", color: "#0f0" },
     { name: "Science", color: "#ad0" },
     { name: "Math", color: "#f00" },
@@ -42,13 +37,13 @@ const categories = ref<TempCategory[]>([
     { name: "General Knowledge", color: "#80f" },
 ]);
 
-const selectedCategories = ref<TempCategory[]>([]);
+const selectedCategories = ref<Category[]>([]);
 
-function isCategorySelected(category: TempCategory): boolean {
+function isCategorySelected(category: Category): boolean {
     return selectedCategories.value.map((c) => c.name).includes(category.name);
 }
 
-function toggleCategory(category: TempCategory) {
+function toggleCategory(category: Category) {
     if (isCategorySelected(category)) {
         selectedCategories.value = selectedCategories.value.filter(
             (c) => c.name !== category.name
@@ -58,7 +53,7 @@ function toggleCategory(category: TempCategory) {
     }
 }
 
-function getCategoryStyle(category: TempCategory) {
+function getCategoryStyle(category: Category) {
     if (isCategorySelected(category)) {
         return {
             border: `2px solid ${category.color}`,
