@@ -1,6 +1,8 @@
 package no.ntnu.fullstack.backend.category;
 
 import java.util.List;
+import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.category.model.Category;
 import no.ntnu.fullstack.backend.category.repository.CategoryRepository;
@@ -16,7 +18,10 @@ public class CategoryService {
     return categoryRepository.findAll();
   }
 
-  public Category saveCategory(Category category) {
-    return categoryRepository.save(category);
+  public void saveCategory(Category category) {
+    categoryRepository.save(category);
+  }
+  public List<Category> getCategoriesById(List<UUID> ids) {
+    return categoryRepository.findAllById(ids);
   }
 }
