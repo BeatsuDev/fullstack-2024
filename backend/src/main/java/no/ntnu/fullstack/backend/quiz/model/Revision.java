@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import no.ntnu.fullstack.backend.category.model.Category;
+import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -44,4 +45,7 @@ public class Revision {
   @OneToMany
   @JoinColumn(name = "category_id")
   private List<Category> categories;
+
+  @OneToMany(mappedBy = "revision")
+  private List<Question> questions;
 }

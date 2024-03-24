@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.ntnu.fullstack.backend.category.model.Category;
+import no.ntnu.fullstack.backend.question.dto.QuestionDTO;
 import no.ntnu.fullstack.backend.user.dto.UserDTO;
 
 /** The QuizDTO class represents a quiz with a revision */
@@ -22,4 +23,5 @@ public class QuizDTO {
   private UserDTO creator;
   private Date createdAt;
   private List<Category> categories;
+  private List<QuestionDTO> questions;
 }
