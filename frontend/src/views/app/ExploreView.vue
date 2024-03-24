@@ -3,9 +3,16 @@ import { ref } from "vue";
 import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
+const filtersWindowOpen = ref(false);
+
+function toggleFiltersWindow() {
+    filtersWindowOpen.value = !filtersWindowOpen.value;
+}
+
 const searchQuery = ref("");
 
 function searchQuizzes() {
+    filtersWindowOpen.value = false;
     console.log("Searching for quizzes...");
     alert("Searching for quizzes...");
 }
@@ -14,7 +21,10 @@ function searchQuizzes() {
 <template>
     <div>
         <div class="search-container">
-            <ButtonComponent rounded-lg class="toggle-filters"
+            <ButtonComponent
+                rounded-lg
+                class="toggle-filters"
+                @click="toggleFiltersWindow"
                 ><FilterIcon
             /></ButtonComponent>
             <input
@@ -26,12 +36,16 @@ function searchQuizzes() {
             <ButtonComponent @click="searchQuizzes" rounded large filled>
                 {{ $t("explore.search") }}
             </ButtonComponent>
+            <div v-if="filtersWindowOpen" class="filters-container">
+                &lt;insert filters here&gt;
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
 .search-container {
+    position: relative;
     display: flex;
     justify-content: space-around;
 
@@ -44,5 +58,16 @@ function searchQuizzes() {
     margin: 0 1em;
     background-color: var(--primary-100);
     border: none;
+}
+
+.filters-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--primary-400);
 }
 </style>
