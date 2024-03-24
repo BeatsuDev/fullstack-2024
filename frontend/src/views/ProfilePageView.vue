@@ -34,7 +34,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="profile-page-container">
+    <main class="profile-page-container">
         <h1>{{ $t("profile.title") }}</h1>
         <p>{{ $t("profile.information") }}</p>
 
@@ -63,7 +63,7 @@ onMounted(() => {
                 {{ $t("profile.changeValues") }}
             </ButtonComponent>
         </form>
-    </div>
+    </main>
 </template>
 
 <style scoped>
