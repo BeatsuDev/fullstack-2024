@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 
 /**
  * The Quiz entity represents a quiz that can be created by a user. A quiz consists of a list of
