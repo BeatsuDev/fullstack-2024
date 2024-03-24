@@ -17,7 +17,7 @@ public class Category {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  private String category;
+  private String name;
 
   private String color;
 }
