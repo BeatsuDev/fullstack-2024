@@ -1,12 +1,13 @@
 package no.ntnu.fullstack.backend.quiz.mapper;
 
+import no.ntnu.fullstack.backend.category.CategoryMapper;
 import no.ntnu.fullstack.backend.quiz.dto.QuizCreateDTO;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(uses = CategoryMapper.class)
 public abstract class RevisionMapper {
 
   @Mapping(source = "user", target = "creator")

@@ -1,6 +1,7 @@
 package no.ntnu.fullstack.backend.quiz.mapper;
 
 import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.category.CategoryMapper;
 import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
@@ -9,7 +10,7 @@ import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(uses = UserMapper.class)
+@Mapper(uses = {UserMapper.class, CategoryMapper.class})
 @RequiredArgsConstructor
 public abstract class QuizMapper {
   @Mapping(source = "revision.title", target = "title")
