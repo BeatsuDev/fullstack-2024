@@ -13,7 +13,10 @@ public class CategoryService {
   private final CategoryRepository categoryRepository;
 
   public List<Category> getAllCategories() {
-
     return categoryRepository.findAll();
+  }
+
+  public Category saveCategory(Category category) {
+    return categoryRepository.save(category);
   }
 }
