@@ -2,6 +2,8 @@ package no.ntnu.fullstack.backend.quiz;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.category.CategoryService;
+import no.ntnu.fullstack.backend.category.model.Category;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
 import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class QuizService {
   private final QuizRepository quizRepository;
   private final RevisionRepository revisionRepository;
+  private final CategoryService categoryService;
 
   /**
    * Creates a new quiz with a given revision. The revision is the first version of the quiz.
@@ -29,6 +32,7 @@ public class QuizService {
   public Quiz createQuiz(Quiz quiz, Revision revision) {
     Quiz createdQuiz = quizRepository.saveAndFlush(quiz);
     revision.setQuiz(createdQuiz);
+    revision.setCategories(categoryService.getCategoriesById(revision.getCategories().stream().map(Category::getId).toList()));
     revisionRepository.saveAndFlush(revision);
     return createdQuiz;
   }
