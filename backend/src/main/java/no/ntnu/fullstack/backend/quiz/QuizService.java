@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.category.CategoryService;
 import no.ntnu.fullstack.backend.category.model.Category;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
-import no.ntnu.fullstack.backend.quiz.model.LatestQuiz;
+import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
 import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
 import no.ntnu.fullstack.backend.quiz.repository.RevisionRepository;
@@ -40,7 +40,7 @@ public class QuizService {
     revisionRepository.saveAndFlush(revision);
     return createdQuiz;
   }
-  public List<LatestQuiz> retrieveQuizzes() {
+  public List<QuizWithRevision> retrieveQuizzes() {
     return quizRepository.findWithFirstRevision();
   }
 
