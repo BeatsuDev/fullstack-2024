@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Vet Ikke API.
- * Vet ikke enda...
+ * Kazoot
+ * An application
  *
  * OpenAPI spec version: 1.0.0
  * Contact: vkbugge@hotmail.com

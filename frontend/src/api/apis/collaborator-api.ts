@@ -28,146 +28,39 @@ import {
     BaseAPI,
     RequiredError,
 } from "../base";
+import { QuizAddCollaborator } from "../models";
 import { User } from "../models";
-import { UserCreate } from "../models";
-import { UserUpdate } from "../models";
 /**
- * UserApi - axios parameter creator
+ * CollaboratorApi - axios parameter creator
  * @export
  */
-export const UserApiAxiosParamCreator = function (
+export const CollaboratorApiAxiosParamCreator = function (
     configuration?: Configuration
 ) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Add a collaborator to a quiz
+         * @param {string} id The ID of a quiz
+         * @param {QuizAddCollaborator} [body] Collaborator information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteUser: async (
+        addCollaborator: async (
             id: string,
+            body?: QuizAddCollaborator,
             options: AxiosRequestConfig = {}
         ): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError(
                     "id",
-                    "Required parameter id was null or undefined when calling deleteUser."
+                    "Required parameter id was null or undefined when calling addCollaborator."
                 );
             }
-            const localVarPath = `/user/{id}`.replace(
+            const localVarPath = `/quiz/{id}/collaborator`.replace(
                 `{${"id"}}`,
                 encodeURIComponent(String(id))
             );
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions: AxiosRequestConfig = {
-                method: "DELETE",
-                ...baseOptions,
-                ...options,
-            };
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = new URLSearchParams(query).toString();
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers,
-            };
-
-            return {
-                url:
-                    localVarUrlObj.pathname +
-                    localVarUrlObj.search +
-                    localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Get a specific user
-         * @param {string} id The ID of the user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        fetchUser: async (
-            id: string,
-            options: AxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError(
-                    "id",
-                    "Required parameter id was null or undefined when calling fetchUser."
-                );
-            }
-            const localVarPath = `/user/{id}`.replace(
-                `{${"id"}}`,
-                encodeURIComponent(String(id))
-            );
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions: AxiosRequestConfig = {
-                method: "GET",
-                ...baseOptions,
-                ...options,
-            };
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = new URLSearchParams(query).toString();
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers,
-            };
-
-            return {
-                url:
-                    localVarUrlObj.pathname +
-                    localVarUrlObj.search +
-                    localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        registerUser: async (
-            body?: UserCreate,
-            options: AxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
-            const localVarPath = `/user`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
@@ -216,16 +109,26 @@ export const UserApiAxiosParamCreator = function (
             };
         },
         /**
-         * Update the information of a user
-         * @param {UserUpdate} [body]
+         * Get all collaborators of a quiz
+         * @param {string} id The ID of a quiz
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUser: async (
-            body?: UserUpdate,
+        getCollaborators: async (
+            id: string,
             options: AxiosRequestConfig = {}
         ): Promise<RequestArgs> => {
-            const localVarPath = `/user`;
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError(
+                    "id",
+                    "Required parameter id was null or undefined when calling getCollaborators."
+                );
+            }
+            const localVarPath = `/quiz/{id}/collaborator`.replace(
+                `{${"id"}}`,
+                encodeURIComponent(String(id))
+            );
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
@@ -233,14 +136,12 @@ export const UserApiAxiosParamCreator = function (
                 baseOptions = configuration.baseOptions;
             }
             const localVarRequestOptions: AxiosRequestConfig = {
-                method: "PUT",
+                method: "GET",
                 ...baseOptions,
                 ...options,
             };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter["Content-Type"] = "application/json";
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -257,13 +158,76 @@ export const UserApiAxiosParamCreator = function (
                 ...headersFromBaseOptions,
                 ...options.headers,
             };
-            const needsSerialization =
-                typeof body !== "string" ||
-                localVarRequestOptions.headers["Content-Type"] ===
-                    "application/json";
-            localVarRequestOptions.data = needsSerialization
-                ? JSON.stringify(body !== undefined ? body : {})
-                : body || "";
+
+            return {
+                url:
+                    localVarUrlObj.pathname +
+                    localVarUrlObj.search +
+                    localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Remove a collaborator from a quiz
+         * @param {string} id The ID of a quiz
+         * @param {string} collaboratorId The ID of the collaborator
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removeCollaborator: async (
+            id: string,
+            collaboratorId: string,
+            options: AxiosRequestConfig = {}
+        ): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError(
+                    "id",
+                    "Required parameter id was null or undefined when calling removeCollaborator."
+                );
+            }
+            // verify required parameter 'collaboratorId' is not null or undefined
+            if (collaboratorId === null || collaboratorId === undefined) {
+                throw new RequiredError(
+                    "collaboratorId",
+                    "Required parameter collaboratorId was null or undefined when calling removeCollaborator."
+                );
+            }
+            const localVarPath = `/quiz/{id}/collaborator/{collaborator_id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(
+                    `{${"collaborator_id"}}`,
+                    encodeURIComponent(String(collaboratorId))
+                );
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions: AxiosRequestConfig = {
+                method: "DELETE",
+                ...baseOptions,
+                ...options,
+            };
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = new URLSearchParams(query).toString();
+            let headersFromBaseOptions =
+                baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {
+                ...localVarHeaderParameter,
+                ...headersFromBaseOptions,
+                ...options.headers,
+            };
 
             return {
                 url:
@@ -277,19 +241,21 @@ export const UserApiAxiosParamCreator = function (
 };
 
 /**
- * UserApi - functional programming interface
+ * CollaboratorApi - functional programming interface
  * @export
  */
-export const UserApiFp = function (configuration?: Configuration) {
+export const CollaboratorApiFp = function (configuration?: Configuration) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Add a collaborator to a quiz
+         * @param {string} id The ID of a quiz
+         * @param {QuizAddCollaborator} [body] Collaborator information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteUser(
+        async addCollaborator(
             id: string,
+            body?: QuizAddCollaborator,
             options?: AxiosRequestConfig
         ): Promise<
             (
@@ -297,9 +263,9 @@ export const UserApiFp = function (configuration?: Configuration) {
                 basePath?: string
             ) => Promise<AxiosResponse<void>>
         > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
+            const localVarAxiosArgs = await CollaboratorApiAxiosParamCreator(
                 configuration
-            ).deleteUser(id, options);
+            ).addCollaborator(id, body, options);
             return (
                 axios: AxiosInstance = globalAxios,
                 basePath: string = BASE_PATH
@@ -312,23 +278,23 @@ export const UserApiFp = function (configuration?: Configuration) {
             };
         },
         /**
-         * Get a specific user
-         * @param {string} id The ID of the user
+         * Get all collaborators of a quiz
+         * @param {string} id The ID of a quiz
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async fetchUser(
+        async getCollaborators(
             id: string,
             options?: AxiosRequestConfig
         ): Promise<
             (
                 axios?: AxiosInstance,
                 basePath?: string
-            ) => Promise<AxiosResponse<User>>
+            ) => Promise<AxiosResponse<Array<User>>>
         > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
+            const localVarAxiosArgs = await CollaboratorApiAxiosParamCreator(
                 configuration
-            ).fetchUser(id, options);
+            ).getCollaborators(id, options);
             return (
                 axios: AxiosInstance = globalAxios,
                 basePath: string = BASE_PATH
@@ -341,52 +307,25 @@ export const UserApiFp = function (configuration?: Configuration) {
             };
         },
         /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body]
+         * Remove a collaborator from a quiz
+         * @param {string} id The ID of a quiz
+         * @param {string} collaboratorId The ID of the collaborator
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerUser(
-            body?: UserCreate,
+        async removeCollaborator(
+            id: string,
+            collaboratorId: string,
             options?: AxiosRequestConfig
         ): Promise<
             (
                 axios?: AxiosInstance,
                 basePath?: string
-            ) => Promise<AxiosResponse<User>>
+            ) => Promise<AxiosResponse<void>>
         > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
+            const localVarAxiosArgs = await CollaboratorApiAxiosParamCreator(
                 configuration
-            ).registerUser(body, options);
-            return (
-                axios: AxiosInstance = globalAxios,
-                basePath: string = BASE_PATH
-            ) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * Update the information of a user
-         * @param {UserUpdate} [body]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateUser(
-            body?: UserUpdate,
-            options?: AxiosRequestConfig
-        ): Promise<
-            (
-                axios?: AxiosInstance,
-                basePath?: string
-            ) => Promise<AxiosResponse<User>>
-        > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
-                configuration
-            ).updateUser(body, options);
+            ).removeCollaborator(id, collaboratorId, options);
             return (
                 axios: AxiosInstance = globalAxios,
                 basePath: string = BASE_PATH
@@ -402,139 +341,118 @@ export const UserApiFp = function (configuration?: Configuration) {
 };
 
 /**
- * UserApi - factory interface
+ * CollaboratorApi - factory interface
  * @export
  */
-export const UserApiFactory = function (
+export const CollaboratorApiFactory = function (
     configuration?: Configuration,
     basePath?: string,
     axios?: AxiosInstance
 ) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Add a collaborator to a quiz
+         * @param {string} id The ID of a quiz
+         * @param {QuizAddCollaborator} [body] Collaborator information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteUser(
+        async addCollaborator(
             id: string,
+            body?: QuizAddCollaborator,
             options?: AxiosRequestConfig
         ): Promise<AxiosResponse<void>> {
-            return UserApiFp(configuration)
-                .deleteUser(id, options)
+            return CollaboratorApiFp(configuration)
+                .addCollaborator(id, body, options)
                 .then((request) => request(axios, basePath));
         },
         /**
-         * Get a specific user
-         * @param {string} id The ID of the user
+         * Get all collaborators of a quiz
+         * @param {string} id The ID of a quiz
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async fetchUser(
+        async getCollaborators(
             id: string,
             options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration)
-                .fetchUser(id, options)
+        ): Promise<AxiosResponse<Array<User>>> {
+            return CollaboratorApiFp(configuration)
+                .getCollaborators(id, options)
                 .then((request) => request(axios, basePath));
         },
         /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body]
+         * Remove a collaborator from a quiz
+         * @param {string} id The ID of a quiz
+         * @param {string} collaboratorId The ID of the collaborator
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerUser(
-            body?: UserCreate,
+        async removeCollaborator(
+            id: string,
+            collaboratorId: string,
             options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration)
-                .registerUser(body, options)
-                .then((request) => request(axios, basePath));
-        },
-        /**
-         * Update the information of a user
-         * @param {UserUpdate} [body]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateUser(
-            body?: UserUpdate,
-            options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration)
-                .updateUser(body, options)
+        ): Promise<AxiosResponse<void>> {
+            return CollaboratorApiFp(configuration)
+                .removeCollaborator(id, collaboratorId, options)
                 .then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * UserApi - object-oriented interface
+ * CollaboratorApi - object-oriented interface
  * @export
- * @class UserApi
+ * @class CollaboratorApi
  * @extends {BaseAPI}
  */
-export class UserApi extends BaseAPI {
+export class CollaboratorApi extends BaseAPI {
     /**
-     * Delete a specific User
-     * @param {string} id The ID of the user
+     * Add a collaborator to a quiz
+     * @param {string} id The ID of a quiz
+     * @param {QuizAddCollaborator} [body] Collaborator information
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof CollaboratorApi
      */
-    public async deleteUser(
+    public async addCollaborator(
         id: string,
+        body?: QuizAddCollaborator,
         options?: AxiosRequestConfig
     ): Promise<AxiosResponse<void>> {
-        return UserApiFp(this.configuration)
-            .deleteUser(id, options)
+        return CollaboratorApiFp(this.configuration)
+            .addCollaborator(id, body, options)
             .then((request) => request(this.axios, this.basePath));
     }
     /**
-     * Get a specific user
-     * @param {string} id The ID of the user
+     * Get all collaborators of a quiz
+     * @param {string} id The ID of a quiz
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof CollaboratorApi
      */
-    public async fetchUser(
+    public async getCollaborators(
         id: string,
         options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration)
-            .fetchUser(id, options)
+    ): Promise<AxiosResponse<Array<User>>> {
+        return CollaboratorApiFp(this.configuration)
+            .getCollaborators(id, options)
             .then((request) => request(this.axios, this.basePath));
     }
     /**
-     * Register a user (create a user)
-     * @param {UserCreate} [body]
+     * Remove a collaborator from a quiz
+     * @param {string} id The ID of a quiz
+     * @param {string} collaboratorId The ID of the collaborator
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof CollaboratorApi
      */
-    public async registerUser(
-        body?: UserCreate,
+    public async removeCollaborator(
+        id: string,
+        collaboratorId: string,
         options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration)
-            .registerUser(body, options)
-            .then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * Update the information of a user
-     * @param {UserUpdate} [body]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public async updateUser(
-        body?: UserUpdate,
-        options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration)
-            .updateUser(body, options)
+    ): Promise<AxiosResponse<void>> {
+        return CollaboratorApiFp(this.configuration)
+            .removeCollaborator(id, collaboratorId, options)
             .then((request) => request(this.axios, this.basePath));
     }
 }

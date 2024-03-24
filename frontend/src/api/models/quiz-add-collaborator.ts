@@ -17,30 +17,12 @@
  *
  *
  * @export
- * @interface UserUpdate
+ * @interface QuizAddCollaborator
  */
-export interface UserUpdate {
+export interface QuizAddCollaborator {
     /**
      * @type {string}
-     * @memberof UserUpdate
-     */
-    id: string;
-
-    /**
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    name: string;
-
-    /**
-     * @type {string}
-     * @memberof UserUpdate
+     * @memberof QuizAddCollaborator
      */
     email: string;
-
-    /**
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    password?: string;
 }

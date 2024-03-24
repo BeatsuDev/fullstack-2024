@@ -17,30 +17,36 @@
  *
  *
  * @export
- * @interface UserUpdate
+ * @interface Feedback
  */
-export interface UserUpdate {
+export interface Feedback {
     /**
-     * @type {string}
-     * @memberof UserUpdate
+     * @type {number}
+     * @memberof Feedback
      */
-    id: string;
+    id: number;
 
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof Feedback
      */
-    name: string;
+    quizId: string;
 
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof Feedback
      */
-    email: string;
+    username: string;
 
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof Feedback
      */
-    password?: string;
+    feedback: string;
+
+    /**
+     * @type {Date}
+     * @memberof Feedback
+     */
+    createdAt: Date;
 }

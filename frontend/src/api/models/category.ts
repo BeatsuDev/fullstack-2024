@@ -17,30 +17,18 @@
  *
  *
  * @export
- * @interface UserUpdate
+ * @interface Category
  */
-export interface UserUpdate {
+export interface Category {
     /**
      * @type {string}
-     * @memberof UserUpdate
-     */
-    id: string;
-
-    /**
-     * @type {string}
-     * @memberof UserUpdate
+     * @memberof Category
      */
     name: string;
 
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof Category
      */
-    email: string;
-
-    /**
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    password?: string;
+    color: string;
 }

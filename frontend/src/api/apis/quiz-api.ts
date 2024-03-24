@@ -28,146 +28,29 @@ import {
     BaseAPI,
     RequiredError,
 } from "../base";
-import { User } from "../models";
-import { UserCreate } from "../models";
-import { UserUpdate } from "../models";
+import { Category } from "../models";
+import { Quiz } from "../models";
+import { QuizCreate } from "../models";
+import { QuizOverview } from "../models";
 /**
- * UserApi - axios parameter creator
+ * QuizApi - axios parameter creator
  * @export
  */
-export const UserApiAxiosParamCreator = function (
+export const QuizApiAxiosParamCreator = function (
     configuration?: Configuration
 ) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Create a new quiz
+         * @param {QuizCreate} [body] Quiz creation information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteUser: async (
-            id: string,
+        createQuiz: async (
+            body?: QuizCreate,
             options: AxiosRequestConfig = {}
         ): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError(
-                    "id",
-                    "Required parameter id was null or undefined when calling deleteUser."
-                );
-            }
-            const localVarPath = `/user/{id}`.replace(
-                `{${"id"}}`,
-                encodeURIComponent(String(id))
-            );
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions: AxiosRequestConfig = {
-                method: "DELETE",
-                ...baseOptions,
-                ...options,
-            };
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = new URLSearchParams(query).toString();
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers,
-            };
-
-            return {
-                url:
-                    localVarUrlObj.pathname +
-                    localVarUrlObj.search +
-                    localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Get a specific user
-         * @param {string} id The ID of the user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        fetchUser: async (
-            id: string,
-            options: AxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError(
-                    "id",
-                    "Required parameter id was null or undefined when calling fetchUser."
-                );
-            }
-            const localVarPath = `/user/{id}`.replace(
-                `{${"id"}}`,
-                encodeURIComponent(String(id))
-            );
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions: AxiosRequestConfig = {
-                method: "GET",
-                ...baseOptions,
-                ...options,
-            };
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = new URLSearchParams(query).toString();
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers,
-            };
-
-            return {
-                url:
-                    localVarUrlObj.pathname +
-                    localVarUrlObj.search +
-                    localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        registerUser: async (
-            body?: UserCreate,
-            options: AxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
-            const localVarPath = `/user`;
+            const localVarPath = `/quiz`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
@@ -216,16 +99,24 @@ export const UserApiAxiosParamCreator = function (
             };
         },
         /**
-         * Update the information of a user
-         * @param {UserUpdate} [body]
+         * Get first page of quizzes
+         * @param {number} [limit]
+         * @param {string} [textSearch]
+         * @param {number} [minDifficulty]
+         * @param {number} [maxDifficulty]
+         * @param {Array<Category>} [category]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUser: async (
-            body?: UserUpdate,
+        quizGet: async (
+            limit?: number,
+            textSearch?: string,
+            minDifficulty?: number,
+            maxDifficulty?: number,
+            category?: Array<Category>,
             options: AxiosRequestConfig = {}
         ): Promise<RequestArgs> => {
-            const localVarPath = `/user`;
+            const localVarPath = `/quiz`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
@@ -233,14 +124,32 @@ export const UserApiAxiosParamCreator = function (
                 baseOptions = configuration.baseOptions;
             }
             const localVarRequestOptions: AxiosRequestConfig = {
-                method: "PUT",
+                method: "GET",
                 ...baseOptions,
                 ...options,
             };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter["Content-Type"] = "application/json";
+            if (limit !== undefined) {
+                localVarQueryParameter["limit"] = limit;
+            }
+
+            if (textSearch !== undefined) {
+                localVarQueryParameter["textSearch"] = textSearch;
+            }
+
+            if (minDifficulty !== undefined) {
+                localVarQueryParameter["minDifficulty"] = minDifficulty;
+            }
+
+            if (maxDifficulty !== undefined) {
+                localVarQueryParameter["maxDifficulty"] = maxDifficulty;
+            }
+
+            if (category) {
+                localVarQueryParameter["category"] = category;
+            }
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -257,13 +166,65 @@ export const UserApiAxiosParamCreator = function (
                 ...headersFromBaseOptions,
                 ...options.headers,
             };
-            const needsSerialization =
-                typeof body !== "string" ||
-                localVarRequestOptions.headers["Content-Type"] ===
-                    "application/json";
-            localVarRequestOptions.data = needsSerialization
-                ? JSON.stringify(body !== undefined ? body : {})
-                : body || "";
+
+            return {
+                url:
+                    localVarUrlObj.pathname +
+                    localVarUrlObj.search +
+                    localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Get all information about a quiz
+         * @param {string} id The ID of a quiz
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        quizIdGet: async (
+            id: string,
+            options: AxiosRequestConfig = {}
+        ): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError(
+                    "id",
+                    "Required parameter id was null or undefined when calling quizIdGet."
+                );
+            }
+            const localVarPath = `/quiz/{id}`.replace(
+                `{${"id"}}`,
+                encodeURIComponent(String(id))
+            );
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions: AxiosRequestConfig = {
+                method: "GET",
+                ...baseOptions,
+                ...options,
+            };
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = new URLSearchParams(query).toString();
+            let headersFromBaseOptions =
+                baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {
+                ...localVarHeaderParameter,
+                ...headersFromBaseOptions,
+                ...options.headers,
+            };
 
             return {
                 url:
@@ -277,19 +238,19 @@ export const UserApiAxiosParamCreator = function (
 };
 
 /**
- * UserApi - functional programming interface
+ * QuizApi - functional programming interface
  * @export
  */
-export const UserApiFp = function (configuration?: Configuration) {
+export const QuizApiFp = function (configuration?: Configuration) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Create a new quiz
+         * @param {QuizCreate} [body] Quiz creation information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteUser(
-            id: string,
+        async createQuiz(
+            body?: QuizCreate,
             options?: AxiosRequestConfig
         ): Promise<
             (
@@ -297,9 +258,9 @@ export const UserApiFp = function (configuration?: Configuration) {
                 basePath?: string
             ) => Promise<AxiosResponse<void>>
         > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
+            const localVarAxiosArgs = await QuizApiAxiosParamCreator(
                 configuration
-            ).deleteUser(id, options);
+            ).createQuiz(body, options);
             return (
                 axios: AxiosInstance = globalAxios,
                 basePath: string = BASE_PATH
@@ -312,81 +273,67 @@ export const UserApiFp = function (configuration?: Configuration) {
             };
         },
         /**
-         * Get a specific user
-         * @param {string} id The ID of the user
+         * Get first page of quizzes
+         * @param {number} [limit]
+         * @param {string} [textSearch]
+         * @param {number} [minDifficulty]
+         * @param {number} [maxDifficulty]
+         * @param {Array<Category>} [category]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async fetchUser(
+        async quizGet(
+            limit?: number,
+            textSearch?: string,
+            minDifficulty?: number,
+            maxDifficulty?: number,
+            category?: Array<Category>,
+            options?: AxiosRequestConfig
+        ): Promise<
+            (
+                axios?: AxiosInstance,
+                basePath?: string
+            ) => Promise<AxiosResponse<Array<QuizOverview>>>
+        > {
+            const localVarAxiosArgs = await QuizApiAxiosParamCreator(
+                configuration
+            ).quizGet(
+                limit,
+                textSearch,
+                minDifficulty,
+                maxDifficulty,
+                category,
+                options
+            );
+            return (
+                axios: AxiosInstance = globalAxios,
+                basePath: string = BASE_PATH
+            ) => {
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * Get all information about a quiz
+         * @param {string} id The ID of a quiz
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async quizIdGet(
             id: string,
             options?: AxiosRequestConfig
         ): Promise<
             (
                 axios?: AxiosInstance,
                 basePath?: string
-            ) => Promise<AxiosResponse<User>>
+            ) => Promise<AxiosResponse<Quiz>>
         > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
+            const localVarAxiosArgs = await QuizApiAxiosParamCreator(
                 configuration
-            ).fetchUser(id, options);
-            return (
-                axios: AxiosInstance = globalAxios,
-                basePath: string = BASE_PATH
-            ) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async registerUser(
-            body?: UserCreate,
-            options?: AxiosRequestConfig
-        ): Promise<
-            (
-                axios?: AxiosInstance,
-                basePath?: string
-            ) => Promise<AxiosResponse<User>>
-        > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
-                configuration
-            ).registerUser(body, options);
-            return (
-                axios: AxiosInstance = globalAxios,
-                basePath: string = BASE_PATH
-            ) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * Update the information of a user
-         * @param {UserUpdate} [body]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateUser(
-            body?: UserUpdate,
-            options?: AxiosRequestConfig
-        ): Promise<
-            (
-                axios?: AxiosInstance,
-                basePath?: string
-            ) => Promise<AxiosResponse<User>>
-        > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
-                configuration
-            ).updateUser(body, options);
+            ).quizIdGet(id, options);
             return (
                 axios: AxiosInstance = globalAxios,
                 basePath: string = BASE_PATH
@@ -402,139 +349,140 @@ export const UserApiFp = function (configuration?: Configuration) {
 };
 
 /**
- * UserApi - factory interface
+ * QuizApi - factory interface
  * @export
  */
-export const UserApiFactory = function (
+export const QuizApiFactory = function (
     configuration?: Configuration,
     basePath?: string,
     axios?: AxiosInstance
 ) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Create a new quiz
+         * @param {QuizCreate} [body] Quiz creation information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteUser(
-            id: string,
+        async createQuiz(
+            body?: QuizCreate,
             options?: AxiosRequestConfig
         ): Promise<AxiosResponse<void>> {
-            return UserApiFp(configuration)
-                .deleteUser(id, options)
+            return QuizApiFp(configuration)
+                .createQuiz(body, options)
                 .then((request) => request(axios, basePath));
         },
         /**
-         * Get a specific user
-         * @param {string} id The ID of the user
+         * Get first page of quizzes
+         * @param {number} [limit]
+         * @param {string} [textSearch]
+         * @param {number} [minDifficulty]
+         * @param {number} [maxDifficulty]
+         * @param {Array<Category>} [category]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async fetchUser(
+        async quizGet(
+            limit?: number,
+            textSearch?: string,
+            minDifficulty?: number,
+            maxDifficulty?: number,
+            category?: Array<Category>,
+            options?: AxiosRequestConfig
+        ): Promise<AxiosResponse<Array<QuizOverview>>> {
+            return QuizApiFp(configuration)
+                .quizGet(
+                    limit,
+                    textSearch,
+                    minDifficulty,
+                    maxDifficulty,
+                    category,
+                    options
+                )
+                .then((request) => request(axios, basePath));
+        },
+        /**
+         * Get all information about a quiz
+         * @param {string} id The ID of a quiz
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async quizIdGet(
             id: string,
             options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration)
-                .fetchUser(id, options)
-                .then((request) => request(axios, basePath));
-        },
-        /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async registerUser(
-            body?: UserCreate,
-            options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration)
-                .registerUser(body, options)
-                .then((request) => request(axios, basePath));
-        },
-        /**
-         * Update the information of a user
-         * @param {UserUpdate} [body]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateUser(
-            body?: UserUpdate,
-            options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration)
-                .updateUser(body, options)
+        ): Promise<AxiosResponse<Quiz>> {
+            return QuizApiFp(configuration)
+                .quizIdGet(id, options)
                 .then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * UserApi - object-oriented interface
+ * QuizApi - object-oriented interface
  * @export
- * @class UserApi
+ * @class QuizApi
  * @extends {BaseAPI}
  */
-export class UserApi extends BaseAPI {
+export class QuizApi extends BaseAPI {
     /**
-     * Delete a specific User
-     * @param {string} id The ID of the user
+     * Create a new quiz
+     * @param {QuizCreate} [body] Quiz creation information
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof QuizApi
      */
-    public async deleteUser(
-        id: string,
+    public async createQuiz(
+        body?: QuizCreate,
         options?: AxiosRequestConfig
     ): Promise<AxiosResponse<void>> {
-        return UserApiFp(this.configuration)
-            .deleteUser(id, options)
+        return QuizApiFp(this.configuration)
+            .createQuiz(body, options)
             .then((request) => request(this.axios, this.basePath));
     }
     /**
-     * Get a specific user
-     * @param {string} id The ID of the user
+     * Get first page of quizzes
+     * @param {number} [limit]
+     * @param {string} [textSearch]
+     * @param {number} [minDifficulty]
+     * @param {number} [maxDifficulty]
+     * @param {Array<Category>} [category]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof QuizApi
      */
-    public async fetchUser(
+    public async quizGet(
+        limit?: number,
+        textSearch?: string,
+        minDifficulty?: number,
+        maxDifficulty?: number,
+        category?: Array<Category>,
+        options?: AxiosRequestConfig
+    ): Promise<AxiosResponse<Array<QuizOverview>>> {
+        return QuizApiFp(this.configuration)
+            .quizGet(
+                limit,
+                textSearch,
+                minDifficulty,
+                maxDifficulty,
+                category,
+                options
+            )
+            .then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Get all information about a quiz
+     * @param {string} id The ID of a quiz
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof QuizApi
+     */
+    public async quizIdGet(
         id: string,
         options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration)
-            .fetchUser(id, options)
-            .then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * Register a user (create a user)
-     * @param {UserCreate} [body]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public async registerUser(
-        body?: UserCreate,
-        options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration)
-            .registerUser(body, options)
-            .then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * Update the information of a user
-     * @param {UserUpdate} [body]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public async updateUser(
-        body?: UserUpdate,
-        options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration)
-            .updateUser(body, options)
+    ): Promise<AxiosResponse<Quiz>> {
+        return QuizApiFp(this.configuration)
+            .quizIdGet(id, options)
             .then((request) => request(this.axios, this.basePath));
     }
 }

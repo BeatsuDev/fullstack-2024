@@ -17,30 +17,12 @@
  *
  *
  * @export
- * @interface UserUpdate
+ * @interface FeedbackCreate
  */
-export interface UserUpdate {
+export interface FeedbackCreate {
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof FeedbackCreate
      */
-    id: string;
-
-    /**
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    name: string;
-
-    /**
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    email: string;
-
-    /**
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    password?: string;
+    feedback: string;
 }

@@ -28,146 +28,38 @@ import {
     BaseAPI,
     RequiredError,
 } from "../base";
-import { User } from "../models";
-import { UserCreate } from "../models";
-import { UserUpdate } from "../models";
+import { QuestionCreate } from "../models";
 /**
- * UserApi - axios parameter creator
+ * QuestionApi - axios parameter creator
  * @export
  */
-export const UserApiAxiosParamCreator = function (
+export const QuestionApiAxiosParamCreator = function (
     configuration?: Configuration
 ) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Create a new question
+         * @param {string} id The ID of a quiz
+         * @param {QuestionCreate} [body] Question creation information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteUser: async (
+        createQuestion: async (
             id: string,
+            body?: QuestionCreate,
             options: AxiosRequestConfig = {}
         ): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError(
                     "id",
-                    "Required parameter id was null or undefined when calling deleteUser."
+                    "Required parameter id was null or undefined when calling createQuestion."
                 );
             }
-            const localVarPath = `/user/{id}`.replace(
+            const localVarPath = `/quiz/{id}/question`.replace(
                 `{${"id"}}`,
                 encodeURIComponent(String(id))
             );
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions: AxiosRequestConfig = {
-                method: "DELETE",
-                ...baseOptions,
-                ...options,
-            };
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = new URLSearchParams(query).toString();
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers,
-            };
-
-            return {
-                url:
-                    localVarUrlObj.pathname +
-                    localVarUrlObj.search +
-                    localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Get a specific user
-         * @param {string} id The ID of the user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        fetchUser: async (
-            id: string,
-            options: AxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError(
-                    "id",
-                    "Required parameter id was null or undefined when calling fetchUser."
-                );
-            }
-            const localVarPath = `/user/{id}`.replace(
-                `{${"id"}}`,
-                encodeURIComponent(String(id))
-            );
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions: AxiosRequestConfig = {
-                method: "GET",
-                ...baseOptions,
-                ...options,
-            };
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = new URLSearchParams(query).toString();
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers,
-            };
-
-            return {
-                url:
-                    localVarUrlObj.pathname +
-                    localVarUrlObj.search +
-                    localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        registerUser: async (
-            body?: UserCreate,
-            options: AxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
-            const localVarPath = `/user`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
@@ -216,16 +108,87 @@ export const UserApiAxiosParamCreator = function (
             };
         },
         /**
-         * Update the information of a user
-         * @param {UserUpdate} [body]
+         * Delete a question
+         * @param {number} questionId The ID of the question
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUser: async (
-            body?: UserUpdate,
+        deleteQuestion: async (
+            questionId: number,
             options: AxiosRequestConfig = {}
         ): Promise<RequestArgs> => {
-            const localVarPath = `/user`;
+            // verify required parameter 'questionId' is not null or undefined
+            if (questionId === null || questionId === undefined) {
+                throw new RequiredError(
+                    "questionId",
+                    "Required parameter questionId was null or undefined when calling deleteQuestion."
+                );
+            }
+            const localVarPath = `/question/{question_id}`.replace(
+                `{${"question_id"}}`,
+                encodeURIComponent(String(questionId))
+            );
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions: AxiosRequestConfig = {
+                method: "DELETE",
+                ...baseOptions,
+                ...options,
+            };
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = new URLSearchParams(query).toString();
+            let headersFromBaseOptions =
+                baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {
+                ...localVarHeaderParameter,
+                ...headersFromBaseOptions,
+                ...options.headers,
+            };
+
+            return {
+                url:
+                    localVarUrlObj.pathname +
+                    localVarUrlObj.search +
+                    localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Update a question
+         * @param {number} questionId The ID of the question
+         * @param {QuestionCreate} [body] Question update information
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateQuestion: async (
+            questionId: number,
+            body?: QuestionCreate,
+            options: AxiosRequestConfig = {}
+        ): Promise<RequestArgs> => {
+            // verify required parameter 'questionId' is not null or undefined
+            if (questionId === null || questionId === undefined) {
+                throw new RequiredError(
+                    "questionId",
+                    "Required parameter questionId was null or undefined when calling updateQuestion."
+                );
+            }
+            const localVarPath = `/question/{question_id}`.replace(
+                `{${"question_id"}}`,
+                encodeURIComponent(String(questionId))
+            );
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
@@ -277,19 +240,21 @@ export const UserApiAxiosParamCreator = function (
 };
 
 /**
- * UserApi - functional programming interface
+ * QuestionApi - functional programming interface
  * @export
  */
-export const UserApiFp = function (configuration?: Configuration) {
+export const QuestionApiFp = function (configuration?: Configuration) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Create a new question
+         * @param {string} id The ID of a quiz
+         * @param {QuestionCreate} [body] Question creation information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteUser(
+        async createQuestion(
             id: string,
+            body?: QuestionCreate,
             options?: AxiosRequestConfig
         ): Promise<
             (
@@ -297,9 +262,9 @@ export const UserApiFp = function (configuration?: Configuration) {
                 basePath?: string
             ) => Promise<AxiosResponse<void>>
         > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
+            const localVarAxiosArgs = await QuestionApiAxiosParamCreator(
                 configuration
-            ).deleteUser(id, options);
+            ).createQuestion(id, body, options);
             return (
                 axios: AxiosInstance = globalAxios,
                 basePath: string = BASE_PATH
@@ -312,23 +277,23 @@ export const UserApiFp = function (configuration?: Configuration) {
             };
         },
         /**
-         * Get a specific user
-         * @param {string} id The ID of the user
+         * Delete a question
+         * @param {number} questionId The ID of the question
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async fetchUser(
-            id: string,
+        async deleteQuestion(
+            questionId: number,
             options?: AxiosRequestConfig
         ): Promise<
             (
                 axios?: AxiosInstance,
                 basePath?: string
-            ) => Promise<AxiosResponse<User>>
+            ) => Promise<AxiosResponse<void>>
         > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
+            const localVarAxiosArgs = await QuestionApiAxiosParamCreator(
                 configuration
-            ).fetchUser(id, options);
+            ).deleteQuestion(questionId, options);
             return (
                 axios: AxiosInstance = globalAxios,
                 basePath: string = BASE_PATH
@@ -341,52 +306,25 @@ export const UserApiFp = function (configuration?: Configuration) {
             };
         },
         /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body]
+         * Update a question
+         * @param {number} questionId The ID of the question
+         * @param {QuestionCreate} [body] Question update information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerUser(
-            body?: UserCreate,
+        async updateQuestion(
+            questionId: number,
+            body?: QuestionCreate,
             options?: AxiosRequestConfig
         ): Promise<
             (
                 axios?: AxiosInstance,
                 basePath?: string
-            ) => Promise<AxiosResponse<User>>
+            ) => Promise<AxiosResponse<void>>
         > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
+            const localVarAxiosArgs = await QuestionApiAxiosParamCreator(
                 configuration
-            ).registerUser(body, options);
-            return (
-                axios: AxiosInstance = globalAxios,
-                basePath: string = BASE_PATH
-            ) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * Update the information of a user
-         * @param {UserUpdate} [body]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateUser(
-            body?: UserUpdate,
-            options?: AxiosRequestConfig
-        ): Promise<
-            (
-                axios?: AxiosInstance,
-                basePath?: string
-            ) => Promise<AxiosResponse<User>>
-        > {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(
-                configuration
-            ).updateUser(body, options);
+            ).updateQuestion(questionId, body, options);
             return (
                 axios: AxiosInstance = globalAxios,
                 basePath: string = BASE_PATH
@@ -402,139 +340,118 @@ export const UserApiFp = function (configuration?: Configuration) {
 };
 
 /**
- * UserApi - factory interface
+ * QuestionApi - factory interface
  * @export
  */
-export const UserApiFactory = function (
+export const QuestionApiFactory = function (
     configuration?: Configuration,
     basePath?: string,
     axios?: AxiosInstance
 ) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Create a new question
+         * @param {string} id The ID of a quiz
+         * @param {QuestionCreate} [body] Question creation information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteUser(
+        async createQuestion(
             id: string,
+            body?: QuestionCreate,
             options?: AxiosRequestConfig
         ): Promise<AxiosResponse<void>> {
-            return UserApiFp(configuration)
-                .deleteUser(id, options)
+            return QuestionApiFp(configuration)
+                .createQuestion(id, body, options)
                 .then((request) => request(axios, basePath));
         },
         /**
-         * Get a specific user
-         * @param {string} id The ID of the user
+         * Delete a question
+         * @param {number} questionId The ID of the question
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async fetchUser(
-            id: string,
+        async deleteQuestion(
+            questionId: number,
             options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration)
-                .fetchUser(id, options)
+        ): Promise<AxiosResponse<void>> {
+            return QuestionApiFp(configuration)
+                .deleteQuestion(questionId, options)
                 .then((request) => request(axios, basePath));
         },
         /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body]
+         * Update a question
+         * @param {number} questionId The ID of the question
+         * @param {QuestionCreate} [body] Question update information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerUser(
-            body?: UserCreate,
+        async updateQuestion(
+            questionId: number,
+            body?: QuestionCreate,
             options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration)
-                .registerUser(body, options)
-                .then((request) => request(axios, basePath));
-        },
-        /**
-         * Update the information of a user
-         * @param {UserUpdate} [body]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateUser(
-            body?: UserUpdate,
-            options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration)
-                .updateUser(body, options)
+        ): Promise<AxiosResponse<void>> {
+            return QuestionApiFp(configuration)
+                .updateQuestion(questionId, body, options)
                 .then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * UserApi - object-oriented interface
+ * QuestionApi - object-oriented interface
  * @export
- * @class UserApi
+ * @class QuestionApi
  * @extends {BaseAPI}
  */
-export class UserApi extends BaseAPI {
+export class QuestionApi extends BaseAPI {
     /**
-     * Delete a specific User
-     * @param {string} id The ID of the user
+     * Create a new question
+     * @param {string} id The ID of a quiz
+     * @param {QuestionCreate} [body] Question creation information
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof QuestionApi
      */
-    public async deleteUser(
+    public async createQuestion(
         id: string,
+        body?: QuestionCreate,
         options?: AxiosRequestConfig
     ): Promise<AxiosResponse<void>> {
-        return UserApiFp(this.configuration)
-            .deleteUser(id, options)
+        return QuestionApiFp(this.configuration)
+            .createQuestion(id, body, options)
             .then((request) => request(this.axios, this.basePath));
     }
     /**
-     * Get a specific user
-     * @param {string} id The ID of the user
+     * Delete a question
+     * @param {number} questionId The ID of the question
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof QuestionApi
      */
-    public async fetchUser(
-        id: string,
+    public async deleteQuestion(
+        questionId: number,
         options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration)
-            .fetchUser(id, options)
+    ): Promise<AxiosResponse<void>> {
+        return QuestionApiFp(this.configuration)
+            .deleteQuestion(questionId, options)
             .then((request) => request(this.axios, this.basePath));
     }
     /**
-     * Register a user (create a user)
-     * @param {UserCreate} [body]
+     * Update a question
+     * @param {number} questionId The ID of the question
+     * @param {QuestionCreate} [body] Question update information
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof QuestionApi
      */
-    public async registerUser(
-        body?: UserCreate,
+    public async updateQuestion(
+        questionId: number,
+        body?: QuestionCreate,
         options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration)
-            .registerUser(body, options)
-            .then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * Update the information of a user
-     * @param {UserUpdate} [body]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public async updateUser(
-        body?: UserUpdate,
-        options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration)
-            .updateUser(body, options)
+    ): Promise<AxiosResponse<void>> {
+        return QuestionApiFp(this.configuration)
+            .updateQuestion(questionId, body, options)
             .then((request) => request(this.axios, this.basePath));
     }
 }

@@ -2,7 +2,7 @@ import { computed, reactive } from "vue";
 import { defineStore } from "pinia";
 
 import type { User, UserLogin, UserCreate } from "@/api";
-import { UserApi } from "@/api";
+import { UserApi, UserSessionApi } from "@/api";
 import globalAxios from "axios";
 
 import router from "@/router";
@@ -15,7 +15,9 @@ type AuthenticationData = {
 
 export const useAuthenticationStore = defineStore("authentication", () => {
     const TIMEOUT_SECONDS = 5 * 60;
+
     const userApi = new UserApi();
+    const userSessionApi = new UserSessionApi();
 
     const authenticationData: AuthenticationData = reactive({
         authenticated: false,
@@ -50,8 +52,8 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         );
     }
 
-    function refresh(): ReturnType<typeof userApi.refreshToken> {
-        const promise = userApi.refreshToken();
+    function refresh(): ReturnType<typeof userSessionApi.refreshToken> {
+        const promise = userSessionApi.refreshToken();
 
         promise
             .then(() => setDeauthenticationTimer(TIMEOUT_SECONDS))
@@ -76,9 +78,9 @@ export const useAuthenticationStore = defineStore("authentication", () => {
 
     function authenticate(
         loginDetails: UserLogin,
-        options?: Parameters<typeof userApi.login>[1]
-    ): ReturnType<typeof userApi.login> {
-        const promise = userApi.login(loginDetails, options);
+        options?: Parameters<typeof userSessionApi.login>[1]
+    ): ReturnType<typeof userSessionApi.login> {
+        const promise = userSessionApi.login(loginDetails, options);
 
         promise
             .then((response) => {

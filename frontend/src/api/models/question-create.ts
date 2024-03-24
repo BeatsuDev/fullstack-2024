@@ -17,30 +17,34 @@
  *
  *
  * @export
- * @interface UserUpdate
+ * @interface QuestionCreate
  */
-export interface UserUpdate {
+export interface QuestionCreate {
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof QuestionCreate
      */
-    id: string;
+    type: QuestionCreateTypeEnum;
 
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof QuestionCreate
      */
-    name: string;
+    question: string;
 
     /**
-     * @type {string}
-     * @memberof UserUpdate
+     * @type {Array<string>}
+     * @memberof QuestionCreate
      */
-    email: string;
+    answerOptions?: Array<string>;
+}
 
-    /**
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    password?: string;
+/**
+ * @export
+ * @enum {string}
+ */
+export enum QuestionCreateTypeEnum {
+    MULTIPLE = "MULTIPLE",
+    BOOLEAN = "BOOLEAN",
+    TEXT = "TEXT",
 }

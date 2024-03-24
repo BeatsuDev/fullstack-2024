@@ -17,30 +17,46 @@
  *
  *
  * @export
- * @interface UserUpdate
+ * @interface Question
  */
-export interface UserUpdate {
+export interface Question {
     /**
-     * @type {string}
-     * @memberof UserUpdate
+     * @type {number}
+     * @memberof Question
      */
-    id: string;
+    id?: number;
 
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof Question
      */
-    name: string;
+    type: QuestionTypeEnum;
 
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof Question
      */
-    email: string;
+    question: string;
 
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof Question
      */
-    password?: string;
+    correctAnswer: string;
+
+    /**
+     * @type {string}
+     * @memberof Question
+     */
+    mediaUrl?: string;
+}
+
+/**
+ * @export
+ * @enum {string}
+ */
+export enum QuestionTypeEnum {
+    MULTIPLE = "MULTIPLE",
+    BOOLEAN = "BOOLEAN",
+    TEXT = "TEXT",
 }

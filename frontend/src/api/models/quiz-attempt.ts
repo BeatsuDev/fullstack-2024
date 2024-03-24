@@ -17,30 +17,18 @@
  *
  *
  * @export
- * @interface UserUpdate
+ * @interface QuizAttempt
  */
-export interface UserUpdate {
+export interface QuizAttempt {
     /**
-     * @type {string}
-     * @memberof UserUpdate
+     * @type {number}
+     * @memberof QuizAttempt
      */
-    id: string;
+    questionId?: number;
 
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof QuizAttempt
      */
-    name: string;
-
-    /**
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    email: string;
-
-    /**
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    password?: string;
+    answer?: string;
 }

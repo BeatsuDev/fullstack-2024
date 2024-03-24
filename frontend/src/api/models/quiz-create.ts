@@ -13,34 +13,35 @@
  * Do not edit the class manually.
  */
 
+import { Category } from "./category";
 /**
  *
  *
  * @export
- * @interface UserUpdate
+ * @interface QuizCreate
  */
-export interface UserUpdate {
+export interface QuizCreate {
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof QuizCreate
      */
-    id: string;
+    title: string;
 
     /**
      * @type {string}
-     * @memberof UserUpdate
+     * @memberof QuizCreate
      */
-    name: string;
+    description?: string;
 
     /**
-     * @type {string}
-     * @memberof UserUpdate
+     * @type {number}
+     * @memberof QuizCreate
      */
-    email: string;
+    difficulty?: number;
 
     /**
-     * @type {string}
-     * @memberof UserUpdate
+     * @type {Array<Category>}
+     * @memberof QuizCreate
      */
-    password?: string;
+    categories?: Array<Category>;
 }
