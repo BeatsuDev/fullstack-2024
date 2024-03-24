@@ -2,7 +2,10 @@
 import { ref } from "vue";
 import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
-import type { Category } from "@/api";
+
+import type { Category, QuizOverview } from "@/api";
+import { QuizApi } from "@/api";
+import { usePromise } from "@/composables/promise";
 
 // Search
 const searchQuery = ref("");
@@ -21,7 +24,6 @@ function toggleFiltersWindow() {
 }
 
 // Categories
-
 const categories = ref<Category[]>([
     { name: "Biology", color: "#0f0" },
     { name: "Science", color: "#ad0" },
@@ -70,6 +72,24 @@ function getCategoryStyle(category: Category) {
 // Difficulty range
 const minDifficulty = ref(1);
 const maxDifficulty = ref(10);
+
+// Quizzes
+const quizApi = new QuizApi();
+const foundQuizzes = ref<QuizOverview[]>([]);
+
+const { promise, loading: quizFetchLoading } = usePromise(
+    quizApi.quizGet(
+        50,
+        searchQuery.value,
+        minDifficulty.value,
+        maxDifficulty.value,
+        selectedCategories.value
+    )
+);
+
+promise.then((response) => {
+    foundQuizzes.value = response.data;
+});
 </script>
 
 <template>
@@ -138,6 +158,19 @@ const maxDifficulty = ref(10);
                         </fieldset>
                     </div>
                 </Transition>
+            </div>
+        </div>
+        <div class="found-quizzes-container">
+            <div v-if="quizFetchLoading">Loading...</div>
+            <div v-else-if="foundQuizzes.length === 0">No quizzes found.</div>
+            <div class="found-quizzes-grid" v-else>
+                <div
+                    v-for="(quiz, i) in foundQuizzes"
+                    :key="i"
+                    class="quiz-overview-card"
+                >
+                    <h4 style="margin-top: 0">{{ quiz.title }}</h4>
+                </div>
             </div>
         </div>
     </div>
