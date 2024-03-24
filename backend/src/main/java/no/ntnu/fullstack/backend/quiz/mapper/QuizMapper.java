@@ -20,7 +20,8 @@ public abstract class QuizMapper {
     @Mapping(source = "revision.difficulty", target = "difficulty"),
     @Mapping(source = "quiz.createdAt", target = "createdAt"),
     @Mapping(source = "quiz.creator", target = "creator"),
-    @Mapping(source = "revision.categories", target = "categories")
+    @Mapping(source = "revision.categories", target = "categories"),
+    @Mapping(source = "quiz.id", target = "id")
   })
   public abstract QuizDTO toDTO(Quiz quiz, Revision revision);
 
