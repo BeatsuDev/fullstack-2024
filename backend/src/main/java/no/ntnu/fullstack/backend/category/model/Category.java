@@ -18,4 +18,6 @@ public class Category {
   private UUID id;
 
   private String category;
+
+  private String color;
 }

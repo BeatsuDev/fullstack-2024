@@ -28,14 +28,14 @@ public class Startup {
     private void createCategories() {
 
        List<Category> categories = List.of(
-               Category.builder().category("Math").build(),
-                Category.builder().category("Science").build(),
-                Category.builder().category("History").build(),
-                Category.builder().category("Geography").build(),
-                Category.builder().category("Literature").build(),
-                Category.builder().category("Art").build(),
-                Category.builder().category("Music").build(),
-                Category.builder().category("Sports").build()
+               Category.builder().category("Math").color("#FF0000").build(),
+                Category.builder().category("Science").color("#00FF00").build(),
+                Category.builder().category("History").color("#0000FF").build(),
+                Category.builder().category("Geography").color("#FFFF00").build(),
+                Category.builder().category("Literature").color("#FF00FF").build(),
+                Category.builder().category("Art").color("#00FFFF").build(),
+                Category.builder().category("Music").color("#000000").build(),
+                Category.builder().category("Sports").color("#FFFFFF").build()
        );
 
          categories.forEach(categoryService::saveCategory);
