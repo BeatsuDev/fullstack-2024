@@ -39,33 +39,30 @@ const { authenticated } = storeToRefs(useAuthenticationStore());
         </nav>
     </header>
     <div id="app-container">
-        <main>
-            <RouterView v-slot="{ Component: viewComponent, route }">
-                <Transition
-                    :name="
-                        (route.meta.transitionName as string | undefined) ||
-                        'fade'
-                    "
-                    mode="out-in"
-                >
-                    <Component :is="viewComponent" id="view-container" />
-                </Transition>
-            </RouterView>
-            <NotificationsContainer />
-        </main>
+        <RouterView v-slot="{ Component: viewComponent, route }">
+            <Transition
+                :name="
+                    (route.meta.transitionName as string | undefined) || 'fade'
+                "
+                mode="out-in"
+            >
+                <Component :is="viewComponent" class="view-container" />
+            </Transition>
+        </RouterView>
+        <NotificationsContainer />
     </div>
 </template>
 
 <style scoped>
-main {
-    position: relative;
-    flex: 1;
-}
-
 #app-container {
+    position: relative;
     display: flex;
     flex-direction: row;
     flex: 1;
+}
+
+.view-container {
+    width: 100%;
 }
 
 #navigation-bar {
