@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import no.ntnu.fullstack.backend.category.model.Category;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -38,4 +40,8 @@ public class Revision {
   @ManyToOne
   @JoinColumn(name = "quiz_id")
   private Quiz quiz;
+
+  @OneToMany
+  @JoinColumn(name = "category_id")
+  private List<Category> categories;
 }

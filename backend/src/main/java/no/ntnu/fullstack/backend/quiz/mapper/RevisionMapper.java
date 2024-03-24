@@ -13,5 +13,6 @@ public abstract class RevisionMapper {
   @Mapping(source = "quizCreate.title", target = "title")
   @Mapping(source = "quizCreate.description", target = "description")
   @Mapping(source = "quizCreate.difficulty", target = "difficulty")
+  @Mapping(source = "quizCreate.categories", target = "categories")
   public abstract Revision fromQuizCreate(QuizCreateDTO quizCreate, User user);
 }
