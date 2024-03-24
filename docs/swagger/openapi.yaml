@@ -185,17 +185,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/QuizCreate"
-            example:
-              {
-                "title": "Biology: Chapter 1",
-                "description": null,
-                "difficulty": 8,
-                "categories":
-                  [
-                    { "name": "Biology", "color": "#0f0" },
-                    { "name": "Human Body", "color": "#ff19c2" },
-                  ],
-              }
       responses:
         "201":
           description: Successfully created Quiz
@@ -559,6 +548,9 @@ components:
         - name
         - color
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
           maxLength: 32
@@ -651,7 +643,10 @@ components:
         categories:
           type: array
           items:
-            $ref: "#/components/schemas/Category"
+            type: string
+            format: uuid
+
+            
     QuizOverview:
       type: object
       required:
