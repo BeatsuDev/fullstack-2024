@@ -7,7 +7,7 @@ import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
 import no.ntnu.fullstack.backend.quiz.mapper.QuizMapper;
 import no.ntnu.fullstack.backend.quiz.mapper.RevisionMapper;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
-import no.ntnu.fullstack.backend.quiz.model.LatestQuiz;
+import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
@@ -47,7 +47,7 @@ public class QuizController {
   @GetMapping
   @ResponseBody
   public ResponseEntity<List<QuizDTO>> listQuiz() {
-    List<LatestQuiz> quizzes = quizService.retrieveQuizzes();
+    List<QuizWithRevision> quizzes = quizService.retrieveQuizzes();
     return ResponseEntity.ok( quizzes.stream().map(quiz -> quizMapper.toDTO(quiz.getQuiz(), quiz.getLatestRevision())).toList() );
   }
 }
