@@ -1,0 +1,31 @@
+package no.ntnu.fullstack.backend.question;
+
+import java.util.ArrayList;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.question.dto.QuestionCreateDTO;
+import no.ntnu.fullstack.backend.question.dto.QuestionDTO;
+import no.ntnu.fullstack.backend.question.model.Question;
+import no.ntnu.fullstack.backend.question.model.QuestionOption;
+import org.mapstruct.Mapper;
+
+@Mapper
+@RequiredArgsConstructor
+public abstract class QuestionMapper {
+  public String fromOption(QuestionOption questionOption) {
+    return questionOption.getOption();
+  }
+
+  public QuestionOption toOption(String question) {
+    return new QuestionOption(question);
+  }
+
+  public List<QuestionOption> fromOptions(List<String> options) {
+    if (options == null) return new ArrayList<>();
+    return options.stream().map(this::toOption).toList();
+  }
+
+  public abstract QuestionDTO toDTO(Question question);
+
+  public abstract Question fromDTO(QuestionCreateDTO questionCreateDTO);
+}
