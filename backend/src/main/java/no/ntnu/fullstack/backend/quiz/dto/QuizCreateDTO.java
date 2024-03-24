@@ -1,12 +1,11 @@
 package no.ntnu.fullstack.backend.quiz.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.ntnu.fullstack.backend.category.model.Category;
-
-import java.util.List;
 
 /** The QuizCreateDTO class represents a quiz creation request. */
 @Getter
