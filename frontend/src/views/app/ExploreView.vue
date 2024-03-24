@@ -3,6 +3,15 @@ import { ref } from "vue";
 import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
+// Search
+const searchQuery = ref("");
+
+function searchQuizzes() {
+    filtersWindowOpen.value = false;
+    console.log("Searching for quizzes...");
+    alert("Searching for quizzes...");
+}
+
 // Filter window
 const filtersWindowOpen = ref(false);
 
@@ -63,14 +72,9 @@ function getCategoryStyle(category: TempCategory) {
     };
 }
 
-// Search
-const searchQuery = ref("");
-
-function searchQuizzes() {
-    filtersWindowOpen.value = false;
-    console.log("Searching for quizzes...");
-    alert("Searching for quizzes...");
-}
+// Difficulty range
+const minDifficulty = ref(1);
+const maxDifficulty = ref(10);
 </script>
 
 <template>
@@ -86,7 +90,7 @@ function searchQuizzes() {
                 type="text"
                 v-model="searchQuery"
                 placeholder="Search for quizzes..."
-                @input="searchQuizzes"
+                @keydown.enter="searchQuizzes"
             />
             <ButtonComponent @click="searchQuizzes" rounded large filled>
                 {{ $t("explore.search") }}
@@ -106,9 +110,33 @@ function searchQuizzes() {
                         >
                     </div>
                 </fieldset>
-                <div>
-                    <label>Difficulty</label>
-                </div>
+                <fieldset style="border: none">
+                    <legend>Difficulty</legend>
+                    <div>
+                        <label>
+                            Min ({{ minDifficulty }})
+                            <input
+                                v-model="minDifficulty"
+                                type="range"
+                                step="1"
+                                min="1"
+                                max="10"
+                                value="1"
+                        /></label>
+                        <br />
+                        <label>
+                            Max ({{ maxDifficulty }})
+                            <input
+                                v-model="maxDifficulty"
+                                type="range"
+                                step="1"
+                                min="1"
+                                max="10"
+                                value="10"
+                            />
+                        </label>
+                    </div>
+                </fieldset>
             </div>
         </div>
     </div>
@@ -135,7 +163,6 @@ function searchQuizzes() {
     position: absolute;
     display: flex;
     flex-direction: column;
-    align-items: center;
     top: 100%;
     left: 0;
     width: 100%;
@@ -159,7 +186,13 @@ function searchQuizzes() {
     user-select: none;
 }
 
-fieldset input {
+.category-filter-labels input {
     display: none;
+}
+
+fieldset > legend {
+    font-size: 1.2em;
+    margin: 0.5em;
+    font-weight: bold;
 }
 </style>
