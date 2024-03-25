@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -13,24 +12,19 @@
  * Do not edit the class manually.
  */
 
-/**
- *
+ /**
+ * 
  *
  * @export
  * @interface Question
  */
 export interface Question {
-    /**
-     * @type {number}
-     * @memberof Question
-     */
-    id?: number;
 
     /**
      * @type {string}
      * @memberof Question
      */
-    type: QuestionTypeEnum;
+    id?: string;
 
     /**
      * @type {string}
@@ -39,24 +33,8 @@ export interface Question {
     question: string;
 
     /**
-     * @type {string}
+     * @type {Array<string>}
      * @memberof Question
      */
-    correctAnswer: string;
-
-    /**
-     * @type {string}
-     * @memberof Question
-     */
-    mediaUrl?: string;
-}
-
-/**
- * @export
- * @enum {string}
- */
-export enum QuestionTypeEnum {
-    MULTIPLE = "MULTIPLE",
-    BOOLEAN = "BOOLEAN",
-    TEXT = "TEXT",
+    options?: Array<string>;
 }

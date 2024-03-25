@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -13,14 +12,14 @@
  * Do not edit the class manually.
  */
 
-import { Category } from "./category";
-/**
- *
+ /**
+ * 
  *
  * @export
  * @interface QuizCreate
  */
 export interface QuizCreate {
+
     /**
      * @type {string}
      * @memberof QuizCreate
@@ -40,8 +39,8 @@ export interface QuizCreate {
     difficulty?: number;
 
     /**
-     * @type {Array<Category>}
+     * @type {Array<string>}
      * @memberof QuizCreate
      */
-    categories?: Array<Category>;
+    categories?: Array<string>;
 }

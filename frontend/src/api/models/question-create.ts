@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -13,18 +12,19 @@
  * Do not edit the class manually.
  */
 
-/**
- *
+ /**
+ * 
  *
  * @export
  * @interface QuestionCreate
  */
 export interface QuestionCreate {
+
     /**
      * @type {string}
      * @memberof QuestionCreate
      */
-    type: QuestionCreateTypeEnum;
+    quizId: string;
 
     /**
      * @type {string}
@@ -33,18 +33,14 @@ export interface QuestionCreate {
     question: string;
 
     /**
+     * @type {any}
+     * @memberof QuestionCreate
+     */
+    answer?: any;
+
+    /**
      * @type {Array<string>}
      * @memberof QuestionCreate
      */
-    answerOptions?: Array<string>;
-}
-
-/**
- * @export
- * @enum {string}
- */
-export enum QuestionCreateTypeEnum {
-    MULTIPLE = "MULTIPLE",
-    BOOLEAN = "BOOLEAN",
-    TEXT = "TEXT",
+    options?: Array<string>;
 }

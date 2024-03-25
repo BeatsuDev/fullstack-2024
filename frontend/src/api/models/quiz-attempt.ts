@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -13,13 +12,14 @@
  * Do not edit the class manually.
  */
 
-/**
- *
+ /**
+ * 
  *
  * @export
  * @interface QuizAttempt
  */
 export interface QuizAttempt {
+
     /**
      * @type {number}
      * @memberof QuizAttempt
