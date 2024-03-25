@@ -606,24 +606,19 @@ components:
     Question:
       type: object
       required:
-        - type
         - question
-        - correct_answer
       properties:
         id:
-          type: integer
-        type:
           type: string
-          enum: ["MULTIPLE", "BOOLEAN", "TEXT"]
+          format: uuid
         question:
           type: string
           maxLength: 128
-        correct_answer:
-          type: string
-          maxLength: 128
-        media_url:
-          type: string
-          format: uri
+        options:
+          type: array
+          items:
+            type: string
+            maxLength: 4
     QuizCreate:
       type: object
       required:
@@ -644,7 +639,6 @@ components:
             type: string
             format: uuid
 
-            
     QuizOverview:
       type: object
       required:
