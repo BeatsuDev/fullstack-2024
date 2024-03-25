@@ -248,6 +248,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Quiz"
+    put:
+      tags:
+        - Quiz
+      description: Update a quiz' metadata.
+      operationId: updateQuiz
+      parameters:
+        - name: id
+          description: The ID of a quiz
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Quiz creation information
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizCreate"
+      responses:
+        "200":
+          description: "Successfully updated the quiz"
+          contetn:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quiz"
 
   /quiz/{id}/attempt:
     parameters:

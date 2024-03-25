@@ -18,7 +18,7 @@ public class RevisionService {
   private final QuestionService questionService;
   private final RevisionRepository revisionRepository;
 
-  private Revision newRevision(UUID quizId, Revision revision) throws QuizNotFoundException {
+  public Revision newRevision(UUID quizId, Revision revision) throws QuizNotFoundException {
     var latestQuiz =
         quizService
             .getLatestQuiz(quizId)

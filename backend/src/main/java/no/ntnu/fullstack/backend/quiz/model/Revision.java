@@ -42,7 +42,7 @@ public class Revision {
   @JoinColumn(name = "quiz_id")
   private Quiz quiz;
 
-  @OneToMany
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "category_id")
   private List<Category> categories;
 
