@@ -9,10 +9,10 @@ import no.ntnu.fullstack.backend.quiz.RevisionService;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller("/question")
+@RestController
+@RequestMapping(value = "/question")
 @RequiredArgsConstructor
 public class QuestionController {
   private final RevisionService revisionService;
@@ -30,16 +30,15 @@ public class QuestionController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteQuestion(@PathVariable("id") UUID id)
-      throws QuestionNotFoundException {
+      throws QuestionNotFoundException, QuizNotFoundException {
     revisionService.deleteQuestion(id);
     return ResponseEntity.noContent().build();
   }
 
-  @PostMapping("/")
-  public ResponseEntity<?> createQuestion(
-      @PathVariable("id") UUID quizId, @RequestBody QuestionCreateDTO create)
+  @PostMapping
+  public ResponseEntity<?> createQuestion(@RequestBody QuestionCreateDTO create)
       throws QuizNotFoundException {
-    revisionService.createQuestion(quizId, questionMapper.fromDTO(create));
+    revisionService.createQuestion(create.getQuizId(), questionMapper.fromDTO(create));
     return ResponseEntity.ok().build();
   }
 }
