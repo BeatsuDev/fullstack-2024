@@ -24,6 +24,7 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         user: undefined,
         timer: undefined,
     });
+    globalAxios.defaults.withCredentials = true;
 
     globalAxios.interceptors.request.use((response) => {
         setDeauthenticationTimer();
