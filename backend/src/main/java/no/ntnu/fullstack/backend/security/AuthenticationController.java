@@ -1,7 +1,16 @@
 package no.ntnu.fullstack.backend.security;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.io.IOException;
-
+import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.security.DTO.UserLogin;
+import no.ntnu.fullstack.backend.user.UserMapper;
+import no.ntnu.fullstack.backend.user.UserNotFoundException;
+import no.ntnu.fullstack.backend.user.UserService;
+import no.ntnu.fullstack.backend.user.dto.UserDTO;
+import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -15,17 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import no.ntnu.fullstack.backend.security.DTO.UserLogin;
-import no.ntnu.fullstack.backend.user.UserMapper;
-import no.ntnu.fullstack.backend.user.UserNotFoundException;
-import no.ntnu.fullstack.backend.user.UserService;
-import no.ntnu.fullstack.backend.user.dto.UserDTO;
-import no.ntnu.fullstack.backend.user.model.User;
 
 @Controller
 @RequestMapping(value = "/user/session")
@@ -57,7 +55,6 @@ public class AuthenticationController {
 
     if (encoder.matches(login.getPassword(), user.getPassword())) {
       Cookie jwtCookie = jwtService.generateTokenCookie(user);
-      response.reset();
       response.addCookie(jwtCookie);
     } else {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -68,17 +65,13 @@ public class AuthenticationController {
 
   @PutMapping
   @ResponseBody
-  public void refreshToken() {
-  }
+  public void refreshToken() {}
 
   @DeleteMapping
   @ResponseBody
   @ResponseStatus(value = HttpStatus.NO_CONTENT)
   public void logout(HttpServletResponse response) {
     Cookie cleanCookie = jwtService.getCleanCookie();
-
-    response.reset();
     response.addCookie(cleanCookie);
-    return;
   }
 }
