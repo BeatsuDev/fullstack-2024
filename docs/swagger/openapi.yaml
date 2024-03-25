@@ -17,6 +17,7 @@ tags:
   - name: User
   - name: User Session
   - name: Quiz
+  - name: Question
 
 paths:
   /category:
@@ -247,7 +248,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Quiz"
-  
+
   /quiz/{id}/attempt:
     parameters:
       - name: id
@@ -298,10 +299,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/FeedbackCreate"
-            example:
-              {
-                "feedback": "This quiz was great!"
-              }
+            example: { "feedback": "This quiz was great!" }
       responses:
         "201":
           description: Successfully created the question
@@ -327,7 +325,6 @@ paths:
           description: Not logged in
         "404":
           description: Quiz not found
-  
   /quiz/{id}/question:
     parameters:
       - name: id
@@ -337,32 +334,6 @@ paths:
         schema:
           type: string
           format: uuid
-    post:
-      tags:
-        - Question
-      description: Create a new question
-      operationId: createQuestion
-      requestBody:
-        description: Question creation information
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/QuestionCreate"
-            example:
-              {
-                "type": "MULTIPLE",
-                "question": "What is the capital of Norway?",
-                "correct_answer": "Oslo",
-                "media_url": "https://example.com/image.jpg",
-                "answer_options": ["Oslo", "Bergen", "Trondheim", "Stavanger"]
-              }
-      responses:
-        "201":
-          description: Successfully created the question
-        "401":
-          description: Not logged in
-        "403":
-          description: "Not the creator of the quiz"
   /quiz/{id}/collaborator:
     parameters:
       - name: id
@@ -383,10 +354,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/QuizAddCollaborator"
-              example:
-                {
-                  "email": "user@example.org"
-                }
+              example: { "email": "user@example.org" }
       responses:
         "200":
           description: Successfully added the collaborator
@@ -401,7 +369,7 @@ paths:
       operationId: getCollaborators
       responses:
         "200":
-          description: Successfully got the collaborators 
+          description: Successfully got the collaborators
           content:
             application/json:
               schema:
@@ -439,6 +407,33 @@ paths:
           description: Not logged in
         "404":
           description: Quiz not found
+  /question:
+    post:
+      tags:
+        - Question
+      description: Create a new question
+      operationId: createQuestion
+      requestBody:
+        description: Question creation information
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuestionCreate"
+            example:
+              {
+                "type": "MULTIPLE",
+                "question": "What is the capital of Norway?",
+                "correct_answer": "Oslo",
+                "media_url": "https://example.com/image.jpg",
+                "answer_options": ["Oslo", "Bergen", "Trondheim", "Stavanger"],
+              }
+      responses:
+        "201":
+          description: Successfully created the question
+        "401":
+          description: Not logged in
+        "403":
+          description: "Not the creator of the quiz"
   /question/{question_id}:
     parameters:
       - name: question_id
@@ -464,7 +459,7 @@ paths:
                 "question": "What is the capital of Norway?",
                 "correct_answer": "Oslo",
                 "media_url": "https://example.com/image.jpg",
-                "answer_options": ["Oslo", "Bergen", "Trondheim", "Stavanger"]
+                "answer_options": ["Oslo", "Bergen", "Trondheim", "Stavanger"],
               }
       responses:
         "200":
@@ -591,16 +586,19 @@ components:
     QuestionCreate:
       type: object
       required:
-        - type
+        - quizId
         - question
       properties:
-        type:
+        quizId:
           type: string
-          enum: ["MULTIPLE", "BOOLEAN", "TEXT"]
+          format: uuid
         question:
           type: string
           maxLength: 128
-        answer_options:
+        answer:
+          string:
+          maxLength: 128
+        options:
           type: array
           items:
             type: string
