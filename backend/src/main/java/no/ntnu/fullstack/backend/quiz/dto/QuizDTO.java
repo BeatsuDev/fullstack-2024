@@ -3,7 +3,6 @@ package no.ntnu.fullstack.backend.quiz.dto;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

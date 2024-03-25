@@ -17,7 +17,7 @@ public class Question {
 
   @ManyToOne private Revision revision;
 
-  @OneToMany(mappedBy = "question")
+  @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<QuestionOption> options;
 
   private int sequenceNumber;

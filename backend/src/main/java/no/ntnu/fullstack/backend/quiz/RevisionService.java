@@ -18,18 +18,19 @@ public class RevisionService {
   private final QuestionService questionService;
   private final RevisionRepository revisionRepository;
 
-  private void newRevision(UUID quizId, Revision revision) {
-    var latestQuiz = quizService.getLatestQuiz(quizId);
-    if (latestQuiz.isEmpty()) {
-      return;
-    }
+  private Revision newRevision(UUID quizId, Revision revision) throws QuizNotFoundException {
+    var latestQuiz =
+        quizService
+            .getLatestQuiz(quizId)
+            .orElseThrow(QuizNotFoundException::new)
+            .getLatestRevision();
 
     Revision newRevision = new Revision();
     newRevision.setTitle(revision.getTitle());
     newRevision.setDescription(revision.getDescription());
     newRevision.setDifficulty(revision.getDifficulty());
     newRevision.setCreator(revision.getCreator());
-    newRevision.setQuiz(latestQuiz.get().getQuiz());
+    newRevision.setQuiz(latestQuiz.getQuiz());
 
     newRevision.setQuestions(
         revision.getQuestions().stream()
@@ -41,7 +42,7 @@ public class RevisionService {
                 })
             .toList());
 
-    revisionRepository.saveAndFlush(newRevision);
+    return revisionRepository.saveAndFlush(newRevision);
   }
 
   public void updateQuestion(UUID quizId, Question update)
@@ -64,7 +65,8 @@ public class RevisionService {
     newRevision(quizId, latestRevision);
   }
 
-  public void deleteQuestion(UUID questionId) throws QuestionNotFoundException {
+  public void deleteQuestion(UUID questionId)
+      throws QuestionNotFoundException, QuizNotFoundException {
     var question =
         questionService.getQuestion(questionId).orElseThrow(QuestionNotFoundException::new);
     question.getRevision().getQuestions().remove(question);
@@ -83,8 +85,10 @@ public class RevisionService {
                 .map(Question::getSequenceNumber)
                 .reduce(0, Integer::max)
             + 1);
-
     latestRevision.getQuestions().add(question);
-    newRevision(quizId, latestRevision);
+
+    var revision = newRevision(quizId, latestRevision);
+    System.out.println(revision.getId());
+    question.setRevision(revision);
   }
 }
