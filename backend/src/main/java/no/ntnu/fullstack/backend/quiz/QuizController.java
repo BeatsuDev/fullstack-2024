@@ -6,6 +6,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.quiz.dto.QuizCreateDTO;
 import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
+import no.ntnu.fullstack.backend.quiz.dto.QuizOverviewDTO;
 import no.ntnu.fullstack.backend.quiz.mapper.QuizMapper;
 import no.ntnu.fullstack.backend.quiz.mapper.RevisionMapper;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
@@ -40,16 +41,16 @@ public class QuizController {
     Quiz quiz = quizMapper.fromCreateQuiz(user);
     Revision revision = revisionMapper.fromQuizCreate(createQuiz, user);
     Quiz createdQuiz = quizService.createQuiz(quiz, revision);
-    return ResponseEntity.ok(quizMapper.toDTO(createdQuiz, revision));
+    return ResponseEntity.ok(quizMapper.toQuizDTO(createdQuiz, revision));
   }
 
   @GetMapping
   @ResponseBody
-  public ResponseEntity<List<QuizDTO>> listQuiz() {
+  public ResponseEntity<List<QuizOverviewDTO>> listQuiz() {
     List<QuizWithRevision> quizzes = quizService.retrieveQuizzes();
     return ResponseEntity.ok(
         quizzes.stream()
-            .map(quiz -> quizMapper.toDTO(quiz.getQuiz(), quiz.getLatestRevision()))
+            .map(quiz -> quizMapper.toQuizOverviewDTO(quiz.getQuiz(), quiz.getLatestRevision()))
             .toList());
   }
 
@@ -61,6 +62,6 @@ public class QuizController {
       return ResponseEntity.notFound().build();
     }
 
-    return ResponseEntity.ok(quizMapper.toDTO(quiz.getQuiz(), quiz.getLatestRevision()));
+    return ResponseEntity.ok(quizMapper.toQuizDTO(quiz.getQuiz(), quiz.getLatestRevision()));
   }
 }
