@@ -36,7 +36,9 @@ public class QuizService {
   public Quiz createQuiz(Quiz quiz, Revision revision) {
     Quiz createdQuiz = quizRepository.saveAndFlush(quiz);
     revision.setQuiz(createdQuiz);
-    revision.setCategories(categoryService.getCategoriesById(revision.getCategories().stream().map(Category::getId).toList()));
+    revision.setCategories(
+        categoryService.getCategoriesById(
+            revision.getCategories().stream().map(Category::getId).toList()));
     revisionRepository.saveAndFlush(revision);
     return createdQuiz;
   }
@@ -46,8 +48,6 @@ public class QuizService {
   }
 
   public Optional<QuizWithRevision> getLatestQuiz(UUID quizId) {
-    return quizRepository.findWithFirstRevision().stream()
-        .filter(latestQuiz -> latestQuiz.getQuiz().getId().equals(quizId))
-        .findFirst();
+    return quizRepository.findWithFirstRevision(quizId);
   }
 }
