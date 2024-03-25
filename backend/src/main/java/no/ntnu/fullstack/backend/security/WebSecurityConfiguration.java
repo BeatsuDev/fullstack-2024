@@ -1,5 +1,8 @@
 package no.ntnu.fullstack.backend.security;
 
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,10 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import jakarta.servlet.DispatcherType;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 
 @EnableWebSecurity
 @Configuration
@@ -58,9 +58,7 @@ public class WebSecurityConfiguration {
   public SecurityFilterChain filterChain(final HttpSecurity http, JWTAuthFilter jwtAuthFilter)
       throws Exception {
     http
-        .csrf((csrfConfigurer) -> {
-          csrfConfigurer.disable();
-        })
+        .csrf(AbstractHttpConfigurer::disable)
         .exceptionHandling((exception) -> {
           exception.authenticationEntryPoint((request, response, e) -> {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
