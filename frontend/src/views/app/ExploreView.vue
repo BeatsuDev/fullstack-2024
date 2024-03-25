@@ -6,6 +6,7 @@ import ButtonComponent from "@/components/ButtonComponent.vue";
 import type { Category, QuizOverview } from "@/api";
 import { QuizApi } from "@/api";
 import { usePromise } from "@/composables/promise";
+import { useRouter } from "vue-router";
 
 // Search
 const searchQuery = ref("");
@@ -111,6 +112,14 @@ promise.then((response) => {
         ...response.data,
     ];
 });
+
+const router = useRouter();
+
+function onQuizCardClick(quiz: QuizOverview) {
+    router.push("/quizzes/" + quiz.id);
+}
+
+
 </script>
 
 <template>
@@ -189,6 +198,7 @@ promise.then((response) => {
                     v-for="(quiz, i) in foundQuizzes"
                     :key="i"
                     class="quiz-overview-card"
+                    @click="onQuizCardClick(quiz)"
                 >
                     <div
                         class="quiz-card-banner"

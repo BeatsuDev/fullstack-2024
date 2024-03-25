@@ -65,6 +65,14 @@ const router = createRouter({
                     },
                 },
                 {
+                    name: "quiz",
+                    path: "/quizzes/:id",
+                    component: () => import("@/views/app/QuizView.vue"),
+                    meta: {
+                        requiresAuth: true,
+                    },
+                },
+                {
                     path: "/profile",
                     name: "profile",
                     component: () => import("@/views/ProfilePageView.vue"),
