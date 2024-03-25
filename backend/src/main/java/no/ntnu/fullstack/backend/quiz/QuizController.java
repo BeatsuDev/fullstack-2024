@@ -1,6 +1,8 @@
 package no.ntnu.fullstack.backend.quiz;
 
 import jakarta.validation.Valid;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.quiz.dto.QuizCreateDTO;
 import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
@@ -13,10 +15,7 @@ import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/quiz")
@@ -48,6 +47,20 @@ public class QuizController {
   @ResponseBody
   public ResponseEntity<List<QuizDTO>> listQuiz() {
     List<QuizWithRevision> quizzes = quizService.retrieveQuizzes();
-    return ResponseEntity.ok( quizzes.stream().map(quiz -> quizMapper.toDTO(quiz.getQuiz(), quiz.getLatestRevision())).toList() );
+    return ResponseEntity.ok(
+        quizzes.stream()
+            .map(quiz -> quizMapper.toDTO(quiz.getQuiz(), quiz.getLatestRevision()))
+            .toList());
+  }
+
+  @GetMapping("/{id}")
+  @ResponseBody
+  public ResponseEntity<QuizDTO> getQuiz(@PathVariable UUID id) {
+    QuizWithRevision quiz = quizService.getLatestQuiz(id).orElse(null);
+    if (quiz == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    return ResponseEntity.ok(quizMapper.toDTO(quiz.getQuiz(), quiz.getLatestRevision()));
   }
 }

@@ -8,6 +8,7 @@ import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.quiz.RevisionService;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import org.mapstruct.factory.Mappers;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,6 @@ public class QuestionController {
   public ResponseEntity<?> createQuestion(@RequestBody QuestionCreateDTO create)
       throws QuizNotFoundException {
     revisionService.createQuestion(create.getQuizId(), questionMapper.fromDTO(create));
-    return ResponseEntity.ok().build();
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 }
