@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -13,29 +12,17 @@
  * Do not edit the class manually.
  */
 
-import globalAxios, {
-    AxiosResponse,
-    AxiosInstance,
-    AxiosRequestConfig,
-} from "axios";
-import { Configuration } from "../configuration";
+import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import {
-    BASE_PATH,
-    COLLECTION_FORMATS,
-    RequestArgs,
-    BaseAPI,
-    RequiredError,
-} from "../base";
-import { QuizAttempt } from "../models";
+import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { QuizAttempt } from '../models';
 /**
  * AttemptApi - axios parameter creator
  * @export
  */
-export const AttemptApiAxiosParamCreator = function (
-    configuration?: Configuration
-) {
+export const AttemptApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * Attempt a quiz
@@ -44,37 +31,24 @@ export const AttemptApiAxiosParamCreator = function (
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        attemptQuiz: async (
-            id: string,
-            body?: Array<QuizAttempt>,
-            options: AxiosRequestConfig = {}
-        ): Promise<RequestArgs> => {
+        attemptQuiz: async (id: string, body?: Array<QuizAttempt>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError(
-                    "id",
-                    "Required parameter id was null or undefined when calling attemptQuiz."
-                );
+                throw new RequiredError('id','Required parameter id was null or undefined when calling attemptQuiz.');
             }
-            const localVarPath = `/quiz/{id}/attempt`.replace(
-                `{${"id"}}`,
-                encodeURIComponent(String(id))
-            );
+            const localVarPath = `/quiz/{id}/attempt`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = {
-                method: "POST",
-                ...baseOptions,
-                ...options,
-            };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter["Content-Type"] = "application/json";
+            localVarHeaderParameter['Content-Type'] = 'application/json';
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -83,38 +57,25 @@ export const AttemptApiAxiosParamCreator = function (
             for (const key in options.params) {
                 query.set(key, options.params[key]);
             }
-            localVarUrlObj.search = new URLSearchParams(query).toString();
-            let headersFromBaseOptions =
-                baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {
-                ...localVarHeaderParameter,
-                ...headersFromBaseOptions,
-                ...options.headers,
-            };
-            const needsSerialization =
-                typeof body !== "string" ||
-                localVarRequestOptions.headers["Content-Type"] ===
-                    "application/json";
-            localVarRequestOptions.data = needsSerialization
-                ? JSON.stringify(body !== undefined ? body : {})
-                : body || "";
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
-                url:
-                    localVarUrlObj.pathname +
-                    localVarUrlObj.search +
-                    localVarUrlObj.hash,
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
  * AttemptApi - functional programming interface
  * @export
  */
-export const AttemptApiFp = function (configuration?: Configuration) {
+export const AttemptApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Attempt a quiz
@@ -123,42 +84,21 @@ export const AttemptApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async attemptQuiz(
-            id: string,
-            body?: Array<QuizAttempt>,
-            options?: AxiosRequestConfig
-        ): Promise<
-            (
-                axios?: AxiosInstance,
-                basePath?: string
-            ) => Promise<AxiosResponse<void>>
-        > {
-            const localVarAxiosArgs = await AttemptApiAxiosParamCreator(
-                configuration
-            ).attemptQuiz(id, body, options);
-            return (
-                axios: AxiosInstance = globalAxios,
-                basePath: string = BASE_PATH
-            ) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+        async attemptQuiz(id: string, body?: Array<QuizAttempt>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+            const localVarAxiosArgs = await AttemptApiAxiosParamCreator(configuration).attemptQuiz(id, body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
-    };
+    }
 };
 
 /**
  * AttemptApi - factory interface
  * @export
  */
-export const AttemptApiFactory = function (
-    configuration?: Configuration,
-    basePath?: string,
-    axios?: AxiosInstance
-) {
+export const AttemptApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * Attempt a quiz
@@ -167,14 +107,8 @@ export const AttemptApiFactory = function (
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async attemptQuiz(
-            id: string,
-            body?: Array<QuizAttempt>,
-            options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<void>> {
-            return AttemptApiFp(configuration)
-                .attemptQuiz(id, body, options)
-                .then((request) => request(axios, basePath));
+        async attemptQuiz(id: string, body?: Array<QuizAttempt>, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+            return AttemptApiFp(configuration).attemptQuiz(id, body, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -194,13 +128,7 @@ export class AttemptApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AttemptApi
      */
-    public async attemptQuiz(
-        id: string,
-        body?: Array<QuizAttempt>,
-        options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<void>> {
-        return AttemptApiFp(this.configuration)
-            .attemptQuiz(id, body, options)
-            .then((request) => request(this.axios, this.basePath));
+    public async attemptQuiz(id: string, body?: Array<QuizAttempt>, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+        return AttemptApiFp(this.configuration).attemptQuiz(id, body, options).then((request) => request(this.axios, this.basePath));
     }
 }

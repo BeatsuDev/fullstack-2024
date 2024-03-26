@@ -12,6 +12,7 @@
  * Do not edit the class manually.
  */
 export * from './apis/attempt-api';
+export * from './apis/category-api';
 export * from './apis/collaborator-api';
 export * from './apis/feedback-api';
 export * from './apis/question-api';
