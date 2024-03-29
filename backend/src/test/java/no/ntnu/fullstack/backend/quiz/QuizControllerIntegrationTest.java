@@ -1,28 +1,22 @@
 package no.ntnu.fullstack.backend.quiz;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Collections;
-import java.util.Optional;
-import java.util.UUID;
-
 import no.ntnu.fullstack.backend.category.component.Startup;
+import no.ntnu.fullstack.backend.quiz.model.Quiz;
+import no.ntnu.fullstack.backend.quiz.model.Revision;
 import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
 import no.ntnu.fullstack.backend.quiz.repository.RevisionRepository;
 import no.ntnu.fullstack.backend.security.UserDetailsImpl;
 import no.ntnu.fullstack.backend.security.UserDetailsServiceImpl;
 import no.ntnu.fullstack.backend.user.UserRepository;
-import no.ntnu.fullstack.backend.user.UserService;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.json.JSONObject;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +24,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,24 +33,13 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class QuizControllerIntegrationTest {
 
-  @Autowired
-  private MockMvc mockMvc;
-
-  @MockBean
-  private UserDetailsServiceImpl userDetailsService;
-
-  @Autowired
-  private Startup startup;
-
-  @Autowired
-  private UserRepository userRepository;
-  @Autowired
-  private QuizRepository quizRepository;
-  @Autowired
-  RevisionRepository revisionRepository;
-
-  @MockBean
-  private UserDetailsImpl userDetails;
+  @Autowired RevisionRepository revisionRepository;
+  @Autowired private MockMvc mockMvc;
+  @MockBean private UserDetailsServiceImpl userDetailsService;
+  @Autowired private Startup startup;
+  @Autowired private UserRepository userRepository;
+  @Autowired private QuizRepository quizRepository;
+  @MockBean private UserDetailsImpl userDetails;
 
   @BeforeEach
   public void setup() {
@@ -87,9 +69,9 @@ public class QuizControllerIntegrationTest {
     quizCreate.put("category", "[]");
     quizCreate.put("difficulty", 1);
 
-
     mockMvc
-        .perform(post("/quiz").contentType(MediaType.APPLICATION_JSON).content(quizCreate.toString()))
+        .perform(
+            post("/quiz").contentType(MediaType.APPLICATION_JSON).content(quizCreate.toString()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.title").value("Example Quiz"))
         .andExpect(jsonPath("$.description").value("An example quiz."));
@@ -103,11 +85,35 @@ public class QuizControllerIntegrationTest {
     quizCreate.put("category", "[]");
     quizCreate.put("difficulty", 0);
 
+    mockMvc
+        .perform(
+            post("/quiz").contentType(MediaType.APPLICATION_JSON).content(quizCreate.toString()))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void getQuiz_CorrectId_ReturnsQuiz() throws Exception {
+    Quiz quiz = new Quiz();
+    quiz.setCreator(userRepository.findAll().get(0));
+    quiz = quizRepository.saveAndFlush(quiz);
+
+    Revision revision = new Revision();
+    revision.setCategories(Collections.emptyList());
+    revision.setCreator(userRepository.findAll().get(0));
+    revision.setDescription("description");
+    revision.setDifficulty(1);
+    revision.setQuestions(Collections.emptyList());
+    revision.setTitle("title");
+    revision.setQuiz(quiz);
+    revisionRepository.saveAndFlush(revision);
 
     mockMvc
-            .perform(post("/quiz").contentType(MediaType.APPLICATION_JSON).content(quizCreate.toString()))
-            .andExpect(status().isBadRequest());
+        .perform(get("/quiz/" + quiz.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.title").value("title"))
+        .andExpect(jsonPath("$.description").value("description"));
   }
+
   @Test
   public void createQuiz_EmptyTitle_ReturnsBadRequest() throws Exception {
     JSONObject quizCreate = new JSONObject();
@@ -116,10 +122,10 @@ public class QuizControllerIntegrationTest {
     quizCreate.put("category", "[]");
     quizCreate.put("difficulty", 0);
 
-
     mockMvc
-            .perform(post("/quiz").contentType(MediaType.APPLICATION_JSON).content(quizCreate.toString()))
-            .andExpect(status().isBadRequest());
+        .perform(
+            post("/quiz").contentType(MediaType.APPLICATION_JSON).content(quizCreate.toString()))
+        .andExpect(status().isBadRequest());
   }
 
   @Test

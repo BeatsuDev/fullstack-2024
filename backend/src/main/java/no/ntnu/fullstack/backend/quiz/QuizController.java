@@ -56,7 +56,7 @@ public class QuizController {
 
   @GetMapping("/{id}")
   @ResponseBody
-  public ResponseEntity<QuizDTO> getQuiz(@PathVariable UUID id) {
+  public ResponseEntity<QuizDTO> getQuiz(@PathVariable("id") UUID id) {
     QuizWithRevision quiz = quizService.getLatestQuiz(id).orElse(null);
     if (quiz == null) {
       return ResponseEntity.notFound().build();
