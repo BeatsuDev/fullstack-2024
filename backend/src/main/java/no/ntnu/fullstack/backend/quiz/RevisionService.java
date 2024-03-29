@@ -3,6 +3,7 @@ package no.ntnu.fullstack.backend.quiz;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.question.QuestionService;
+import no.ntnu.fullstack.backend.question.exception.NoCorrectOptionException;
 import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
 import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
@@ -46,7 +47,8 @@ public class RevisionService {
   }
 
   public Question updateQuestion(UUID quizId, Question update)
-      throws QuizNotFoundException, QuestionNotFoundException {
+      throws QuizNotFoundException, QuestionNotFoundException, NoCorrectOptionException {
+    questionService.validateQuestion(update);
     Revision latestRevision =
         quizService.getLatestQuiz(quizId).map(QuizWithRevision::getLatestRevision).orElse(null);
     if (latestRevision == null) {
@@ -75,7 +77,9 @@ public class RevisionService {
     newRevision(question.getRevision().getQuiz().getId(), question.getRevision());
   }
 
-  public Question createQuestion(UUID quizId, Question question) throws QuizNotFoundException {
+  public Question createQuestion(UUID quizId, Question question)
+      throws QuizNotFoundException, NoCorrectOptionException {
+    questionService.validateQuestion(question);
     Revision latestRevision =
         quizService
             .getLatestQuiz(quizId)
