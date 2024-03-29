@@ -45,7 +45,7 @@ public class RevisionService {
     return revisionRepository.saveAndFlush(newRevision);
   }
 
-  public void updateQuestion(UUID quizId, Question update)
+  public Question updateQuestion(UUID quizId, Question update)
       throws QuizNotFoundException, QuestionNotFoundException {
     Revision latestRevision =
         quizService.getLatestQuiz(quizId).map(QuizWithRevision::getLatestRevision).orElse(null);
@@ -62,7 +62,9 @@ public class RevisionService {
     question.setOptions(update.getOptions());
     question.setAnswer(update.getAnswer());
 
-    newRevision(quizId, latestRevision);
+    Revision revision = newRevision(quizId, latestRevision);
+    question.setRevision(revision);
+    return question;
   }
 
   public void deleteQuestion(UUID questionId)
@@ -73,7 +75,7 @@ public class RevisionService {
     newRevision(question.getRevision().getQuiz().getId(), question.getRevision());
   }
 
-  public void createQuestion(UUID quizId, Question question) throws QuizNotFoundException {
+  public Question createQuestion(UUID quizId, Question question) throws QuizNotFoundException {
     Revision latestRevision =
         quizService
             .getLatestQuiz(quizId)
@@ -88,7 +90,7 @@ public class RevisionService {
     latestRevision.getQuestions().add(question);
 
     var revision = newRevision(quizId, latestRevision);
-    System.out.println(revision.getId());
     question.setRevision(revision);
+    return question;
   }
 }

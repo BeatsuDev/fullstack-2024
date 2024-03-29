@@ -436,17 +436,13 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/QuestionCreate"
-            example:
-              {
-                "type": "MULTIPLE",
-                "question": "What is the capital of Norway?",
-                "correct_answer": "Oslo",
-                "media_url": "https://example.com/image.jpg",
-                "answer_options": ["Oslo", "Bergen", "Trondheim", "Stavanger"],
-              }
       responses:
         "201":
           description: Successfully created the question
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuestionWithAnswer"
         "401":
           description: Not logged in
         "403":
@@ -470,17 +466,13 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/QuestionCreate"
-            example:
-              {
-                "type": "MULTIPLE",
-                "question": "What is the capital of Norway?",
-                "correct_answer": "Oslo",
-                "media_url": "https://example.com/image.jpg",
-                "answer_options": ["Oslo", "Bergen", "Trondheim", "Stavanger"],
-              }
       responses:
         "200":
           description: Successfully updated the question
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuestionWithAnswer"
         "404":
           description: Question not found
         "401":
@@ -632,6 +624,24 @@ components:
         question:
           type: string
           maxLength: 128
+        options:
+          type: array
+          items:
+            type: string
+            maxLength: 4
+    QuestionWithAnswer:
+      type: object
+      required:
+        - question
+      properties:
+        id:
+          type: string
+          format: uuid
+        question:
+          type: string
+          maxLength: 128
+        answer:
+          type: string
         options:
           type: array
           items:
