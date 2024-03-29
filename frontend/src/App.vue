@@ -60,6 +60,11 @@ const { authenticated } = storeToRefs(useAuthenticationStore());
     display: flex;
     flex-direction: row;
     flex: 1;
+    overflow: hidden;
+}
+
+.view-container {
+    width: 100%;
 }
 
 .view-container {

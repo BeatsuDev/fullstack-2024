@@ -34,6 +34,9 @@ export default {
                 "This is your profile information. You can edit it here.",
             changeValues: "Save Changes",
         },
+        explore: {
+            search: "Search",
+        },
     },
     no: {
         company: {
