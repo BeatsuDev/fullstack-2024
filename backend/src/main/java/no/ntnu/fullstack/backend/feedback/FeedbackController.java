@@ -11,6 +11,7 @@ import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class FeedbackController {
     FeedbackDTO feedbackDTO =
         feedbackMapper.toFeedbackDTO(feedbackService.createFeedback(feedback, quiz, user));
 
-    return ResponseEntity.ok(feedbackDTO);
+    return ResponseEntity.status(HttpStatus.CREATED).body(feedbackDTO);
   }
 
   @GetMapping
