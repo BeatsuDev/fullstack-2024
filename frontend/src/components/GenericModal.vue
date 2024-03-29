@@ -1,6 +1,6 @@
 <template>
     <dialog ref="dialog" @close="close" @abort="close">
-        <h3>{{props.title}}</h3>
+        <h3>{{ props.title }}</h3>
         <slot></slot>
     </dialog>
 </template>
@@ -12,7 +12,7 @@ const props = defineProps<{
 }>();
 
 const active = defineModel({
-    required: true
+    required: true,
 });
 
 const dialog = ref<HTMLDialogElement | null>();
@@ -31,7 +31,6 @@ watch(active, (value) => {
 function close() {
     active.value = false;
 }
-
 </script>
 <style scoped>
 dialog {

@@ -3,18 +3,22 @@
         <h3>1. {{ props.value.question }}</h3>
         <ul>
             <li v-for="option in props.value.options" :key="option">
-                {{option}}
+                {{ option }}
             </li>
         </ul>
         <div class="action-bar">
             <ButtonComponent
                 v-if="props.editable"
                 filled
-                @click="emit('delete', value)" >Delete</ButtonComponent>
+                @click="emit('delete', value)"
+                >Delete</ButtonComponent
+            >
             <ButtonComponent
                 v-if="props.editable"
                 filled
-                @click="emit('edit', value)" >Edit</ButtonComponent>
+                @click="emit('edit', value)"
+                >Edit</ButtonComponent
+            >
         </div>
     </div>
 </template>
@@ -32,8 +36,6 @@ const emit = defineEmits<{
     (event: "edit", value: Question): void;
     (event: "delete", value: Question): void;
 }>();
-
-
 </script>
 <style scoped>
 .card {

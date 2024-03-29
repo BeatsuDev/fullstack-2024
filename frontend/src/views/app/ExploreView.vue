@@ -118,8 +118,6 @@ const router = useRouter();
 function onQuizCardClick(quiz: QuizOverview) {
     router.push("/quizzes/" + quiz.id);
 }
-
-
 </script>
 
 <template>

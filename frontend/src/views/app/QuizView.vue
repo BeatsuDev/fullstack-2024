@@ -28,7 +28,12 @@
                     @delete="reveal"
                 />
             </div>
-            <ButtonComponent arge filled class="centered" @click="showModal = true">Add question
+            <ButtonComponent
+                arge
+                filled
+                class="centered"
+                @click="showModal = true"
+                >Add question
             </ButtonComponent>
         </div>
     </div>
@@ -42,7 +47,13 @@
     </GenericModal>
 </template>
 <script lang="ts" setup>
-import { type Question, QuestionApi, type QuestionCreate, type Quiz, QuizApi } from "@/api";
+import {
+    type Question,
+    QuestionApi,
+    type QuestionCreate,
+    type Quiz,
+    QuizApi,
+} from "@/api";
 import { usePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
@@ -78,7 +89,6 @@ const quiz = computed<Quiz>(() => data.value?.data as Quiz);
 
 const { isOwnerOrCollaborator } = useQuizPermissions(quiz);
 
-
 const showModal = ref(false);
 
 function blankQuestion() {
@@ -103,7 +113,6 @@ async function submitQuestion(value: QuestionCreate | Question) {
 }
 
 async function createQuestion(value: QuestionCreate) {
-
     try {
         const data = await questionApi.createQuestion(value);
     } catch (e) {
@@ -116,8 +125,6 @@ async function createQuestion(value: QuestionCreate) {
     if (data.status === 201) {
         quiz.value.questions.push(data.data);
     }
-
-
 }
 
 async function updateQuestion(value: Question) {
@@ -131,15 +138,8 @@ function editQuestion(value: Question) {
 
 const notificationStore = useNotificationStore();
 
-const {
-    isRevealed,
-    onConfirm,
-    confirm,
-    cancel,
-    onReveal,
-    reveal,
-
-} = useConfirmDialog();
+const { isRevealed, onConfirm, confirm, cancel, onReveal, reveal } =
+    useConfirmDialog();
 
 onReveal((value: Question) => {
     question.value = value;
@@ -154,7 +154,9 @@ const question = ref<QuestionCreate | Question>(blankQuestion());
 async function deleteQuestion(question: Question) {
     try {
         await questionApi.deleteQuestion(question.id);
-        quiz.value.questions = quiz.value.questions.filter((q) => q.id !== question.id);
+        quiz.value.questions = quiz.value.questions.filter(
+            (q) => q.id !== question.id
+        );
     } catch (e) {
         notificationStore.addNotification({
             message: "An unexpected error occurred. Please try again later.",
@@ -162,7 +164,6 @@ async function deleteQuestion(question: Question) {
         });
     }
 }
-
 </script>
 <style scoped>
 .container {
@@ -187,7 +188,6 @@ async function deleteQuestion(question: Question) {
 .container-centered-items {
     display: flex;
     justify-content: center;
-
 }
 
 @media (max-width: 768px) {
