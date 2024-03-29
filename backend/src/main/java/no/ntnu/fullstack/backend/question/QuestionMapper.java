@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.question.dto.QuestionCreateDTO;
 import no.ntnu.fullstack.backend.question.dto.QuestionDTO;
+import no.ntnu.fullstack.backend.question.dto.QuestionWithAnswerDTO;
 import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.question.model.QuestionOption;
 import org.mapstruct.Mapper;
@@ -26,6 +27,8 @@ public abstract class QuestionMapper {
   }
 
   public abstract QuestionDTO toDTO(Question question);
+
+  public abstract QuestionWithAnswerDTO toDTOWithAnswer(Question question);
 
   public abstract Question fromDTO(QuestionCreateDTO questionCreateDTO);
 }

@@ -3,6 +3,7 @@ package no.ntnu.fullstack.backend.question;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.question.dto.QuestionCreateDTO;
+import no.ntnu.fullstack.backend.question.dto.QuestionWithAnswerDTO;
 import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
 import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.quiz.RevisionService;
@@ -20,13 +21,13 @@ public class QuestionController {
   private final QuestionMapper questionMapper = Mappers.getMapper(QuestionMapper.class);
 
   @PutMapping("/{id}")
-  public ResponseEntity<?> updateQuestion(
+  public ResponseEntity<QuestionWithAnswerDTO> updateQuestion(
       @PathVariable("id") UUID id, @RequestBody QuestionCreateDTO update)
       throws QuizNotFoundException, QuestionNotFoundException {
     Question newQuestion = questionMapper.fromDTO(update);
     newQuestion.setId(id);
-    revisionService.updateQuestion(update.getQuizId(), newQuestion);
-    return ResponseEntity.ok().build();
+    Question question = revisionService.updateQuestion(update.getQuizId(), newQuestion);
+    return ResponseEntity.ok(questionMapper.toDTOWithAnswer(question));
   }
 
   @DeleteMapping("/{id}")
@@ -37,9 +38,11 @@ public class QuestionController {
   }
 
   @PostMapping
-  public ResponseEntity<?> createQuestion(@RequestBody QuestionCreateDTO create)
+  public ResponseEntity<QuestionWithAnswerDTO> createQuestion(@RequestBody QuestionCreateDTO create)
       throws QuizNotFoundException {
-    revisionService.createQuestion(create.getQuizId(), questionMapper.fromDTO(create));
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+    Question question =
+        revisionService.createQuestion(create.getQuizId(), questionMapper.fromDTO(create));
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(questionMapper.toDTOWithAnswer(question));
   }
 }
