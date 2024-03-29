@@ -81,7 +81,9 @@ router.beforeEach(async (to, from) => {
     const authenticationStore = useAuthenticationStore();
 
     if (!authenticationStore.authenticated) {
-        await authenticationStore.refresh();
+        await authenticationStore.refresh().catch((err) => {
+            console.error("No cookie / user session:", err);
+        });
     }
 
     // Set meta transition name for page transitions
