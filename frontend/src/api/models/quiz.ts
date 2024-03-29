@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -12,18 +13,17 @@
  * Do not edit the class manually.
  */
 
-import { Category } from './category';
-import { Feedback } from './feedback';
-import { Question } from './question';
-import { User } from './user';
- /**
- * 
+import { Category } from "./category";
+import { Feedback } from "./feedback";
+import { Question } from "./question";
+import { User } from "./user";
+/**
+ *
  *
  * @export
  * @interface Quiz
  */
 export interface Quiz {
-
     /**
      * @type {string}
      * @memberof Quiz

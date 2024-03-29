@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -12,14 +13,13 @@
  * Do not edit the class manually.
  */
 
- /**
- * 
+/**
+ *
  *
  * @export
  * @interface QuizAddCollaborator
  */
 export interface QuizAddCollaborator {
-
     /**
      * @type {string}
      * @memberof QuizAddCollaborator
