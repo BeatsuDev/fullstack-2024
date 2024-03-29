@@ -160,6 +160,23 @@ public class QuestionControllerIntegrationTest {
   }
 
   @Test
+  public void createQuestion_AnswerNotInOptions_ReturnsBadRequest() throws Exception {
+    JSONObject question = new JSONObject();
+    question.put("question", "What is the capital of Norway?");
+    question.put("answer", "Helsinki");
+    question.put("options", new String[] {"Oslo", "Stockholm", "Copenhagen"});
+    question.put("quizId", quizId.toString());
+
+    mockMvc
+        .perform(
+            post("/question")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(question.toJSONString()))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   public void deleteQuestion_RemovesQuestion() throws Exception {
     JSONObject question = new JSONObject();
     question.put("question", "What is the capital of Norway?");
