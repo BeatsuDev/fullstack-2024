@@ -77,7 +77,7 @@ async function register() {
 </script>
 
 <template>
-    <div>
+    <main>
         <LoadingCircle :loading="loading" />
         <div id="register-container">
             <h1>{{ $t("login.register") }}</h1>
@@ -132,7 +132,7 @@ async function register() {
                 </div>
             </form>
         </div>
-    </div>
+    </main>
 </template>
 
 <style scoped>

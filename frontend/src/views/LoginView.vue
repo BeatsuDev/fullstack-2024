@@ -65,7 +65,7 @@ async function login() {
 </script>
 
 <template>
-    <div>
+    <main>
         <LoadingCircle :loading="loading" />
         <div id="login-container">
             <h1>{{ $t("login.title") }}</h1>
@@ -102,7 +102,7 @@ async function login() {
                 </div>
             </form>
         </div>
-    </div>
+    </main>
 </template>
 
 <style scoped>
