@@ -185,7 +185,7 @@ promise.then((response) => {
             <div v-if="quizFetchLoading">Loading...</div>
             <div v-else-if="foundQuizzes.length === 0">No quizzes found.</div>
             <div class="found-quizzes-grid" v-else>
-                <div
+                <a
                     v-for="(quiz, i) in foundQuizzes"
                     :key="i"
                     class="quiz-overview-card"
@@ -207,7 +207,7 @@ promise.then((response) => {
                         <h4 style="margin-top: 0">{{ quiz.title }}</h4>
                         <p>{{ quiz.description }}</p>
                     </div>
-                </div>
+                </a>
             </div>
         </main>
     </div>
