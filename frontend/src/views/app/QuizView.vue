@@ -63,13 +63,15 @@ const quizApi = new QuizApi();
 const { data, loading, error } = usePromise(quizApi.quizIdGet(quizId));
 
 const errorMessage = computed(() => {
-    if (error.status = "404") {
+    if (!error.value) {
+        return "";
+    }
+    if (error.value.status == "404") {
         return "Quiz not found.";
     }
     if (error.value) {
         return "An unexpected error occurred. Please try again later.";
     }
-    return "";
 });
 
 const quiz = computed<Quiz>(() => data.value?.data as Quiz);
