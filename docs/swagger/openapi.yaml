@@ -186,6 +186,25 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/QuizCreate"
+            example:
+              {
+                "title": "Biology: Chapter 1",
+                "description": "Quiz about the human body.",
+                "difficulty": 8,
+                "categories":
+                  [
+                    {
+                      "id": "8db1639d-75ed-485d-8f7f-a01c4e25b8e3",
+                      "name": "Biology",
+                      "color": "#0f0",
+                    },
+                    {
+                      "id": "bde00ae0-24a1-47d1-92e8-f932788da89c",
+                      "name": "Human Body",
+                      "color": "#ff19c2",
+                    },
+                  ],
+              }
       responses:
         "201":
           description: Successfully created Quiz
@@ -248,7 +267,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Quiz"
-
   /quiz/{id}/attempt:
     parameters:
       - name: id
@@ -278,7 +296,6 @@ paths:
           description: Not logged in
         "404":
           description: Quiz not found
-
   /quiz/{id}/feedback:
     parameters:
       - name: id
@@ -540,6 +557,7 @@ components:
     Category:
       type: object
       required:
+        - id
         - name
         - color
       properties:
@@ -638,7 +656,6 @@ components:
           items:
             type: string
             format: uuid
-
     QuizOverview:
       type: object
       required:
