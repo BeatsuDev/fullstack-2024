@@ -33,10 +33,10 @@ export interface QuestionCreate {
     question: string;
 
     /**
-     * @type {any}
+     * @type {string}
      * @memberof QuestionCreate
      */
-    answer?: any;
+    answer?: string;
 
     /**
      * @type {Array<string>}
