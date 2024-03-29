@@ -33,4 +33,7 @@ public class Quiz {
 
   @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
   private List<Revision> revisions;
+
+  @ManyToMany(cascade = CascadeType.DETACH)
+  private List<User> collaborators;
 }

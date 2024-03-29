@@ -7,11 +7,13 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.category.CategoryService;
 import no.ntnu.fullstack.backend.category.model.Category;
+import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
 import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
 import no.ntnu.fullstack.backend.quiz.repository.RevisionRepository;
+import no.ntnu.fullstack.backend.user.model.User;
 import org.springframework.stereotype.Service;
 
 /**
@@ -49,5 +51,21 @@ public class QuizService {
 
   public Optional<QuizWithRevision> getLatestQuiz(UUID quizId) {
     return quizRepository.findWithFirstRevision(quizId);
+  }
+
+  public Quiz addCollaborator(UUID quizId, User user) throws QuizNotFoundException {
+    Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::new);
+    quiz.getCollaborators().add(user);
+    return quizRepository.saveAndFlush(quiz);
+  }
+
+  public Quiz getQuizById(UUID quizId) throws QuizNotFoundException {
+    return quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::new);
+  }
+
+  public Quiz removeCollaborator(UUID quizId, UUID userId) throws QuizNotFoundException {
+    Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::new);
+    quiz.getCollaborators().removeIf(user -> user.getId().equals(userId));
+    return quizRepository.saveAndFlush(quiz);
   }
 }
