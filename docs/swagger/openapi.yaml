@@ -614,7 +614,7 @@ components:
           type: string
           maxLength: 128
         answer:
-          string:
+          type: string
           maxLength: 128
         options:
           type: array
