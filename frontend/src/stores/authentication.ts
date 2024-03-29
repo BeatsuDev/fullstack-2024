@@ -24,8 +24,8 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         user: undefined,
         timer: undefined,
     });
-    globalAxios.defaults.withCredentials = true;
 
+    globalAxios.defaults.withCredentials = true;
     globalAxios.interceptors.request.use((response) => {
         setDeauthenticationTimer();
         return response;
@@ -53,11 +53,15 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         );
     }
 
-    function refresh(): ReturnType<typeof userSessionApi.refreshToken> {
-        const promise = userSessionApi.refreshToken();
+    function refresh(): ReturnType<typeof userSessionApi.loggedInUser> {
+        const promise = userSessionApi.loggedInUser();
 
         promise
-            .then(() => setDeauthenticationTimer(TIMEOUT_SECONDS))
+            .then((user) => {
+                authenticationData.authenticated = true;
+                authenticationData.user = user.data;
+                setDeauthenticationTimer(TIMEOUT_SECONDS);
+            })
             .catch(deauthenticate);
 
         return promise;

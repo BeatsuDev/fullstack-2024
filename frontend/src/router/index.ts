@@ -77,8 +77,12 @@ const router = createRouter({
     ],
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
     const authenticationStore = useAuthenticationStore();
+
+    if (!authenticationStore.authenticated) {
+        await authenticationStore.refresh();
+    }
 
     // Set meta transition name for page transitions
     const toDepth = to.path.split("/").filter((i) => i).length;
