@@ -54,7 +54,6 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
 }
 
 .app-route {
