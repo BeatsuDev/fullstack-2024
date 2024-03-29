@@ -1,7 +1,6 @@
 package no.ntnu.fullstack.backend.question;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Collections;
@@ -182,7 +181,7 @@ public class QuestionControllerIntegrationTest {
             .map(q -> q.getLatestRevision().getQuestions().get(0).getId())
             .orElseThrow();
 
-    mockMvc.perform(put("/question/" + questionId)).andExpect(status().isOk());
+    mockMvc.perform(delete("/question/" + questionId)).andExpect(status().isNoContent());
 
     quizRepository
         .findWithFirstRevision(quizId)
