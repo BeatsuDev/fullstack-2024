@@ -23,22 +23,25 @@ class JWTAuthFilter extends OncePerRequestFilter {
   private final UserService userService;
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    jwtService.resolveJWT(request)
-        .flatMap((userDetails) -> {
-          return userService.getUserByEmail(userDetails.getUsername())
-              .map((user) -> {
-                return new UsernamePasswordAuthenticationToken(
-                    user,
-                    null,
-                    userDetails.getAuthorities());
-              });
-        }).ifPresent((auth) -> {
-          auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-          SecurityContextHolder.getContext().setAuthentication(auth);
-          response.addCookie(jwtService.generateTokenCookie((User) auth.getPrincipal()));
-        });
+    jwtService
+        .resolveJWT(request)
+        .flatMap(
+            (userDetails) ->
+                userService
+                    .getUserByEmail(userDetails.getUsername())
+                    .map(
+                        (user) ->
+                            new UsernamePasswordAuthenticationToken(
+                                user, null, userDetails.getAuthorities())))
+        .ifPresent(
+            (auth) -> {
+              auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+              SecurityContextHolder.getContext().setAuthentication(auth);
+              response.addCookie(jwtService.generateTokenCookie((User) auth.getPrincipal()));
+            });
 
     filterChain.doFilter(request, response);
   }
