@@ -3,6 +3,7 @@ export * from './feedback';
 export * from './feedback-create';
 export * from './question';
 export * from './question-create';
+export * from './question-with-answer';
 export * from './quiz';
 export * from './quiz-add-collaborator';
 export * from './quiz-attempt';

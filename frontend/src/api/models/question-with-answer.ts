@@ -17,24 +17,30 @@
  *
  *
  * @export
- * @interface Category
+ * @interface QuestionWithAnswer
  */
-export interface Category {
+export interface QuestionWithAnswer {
     /**
      * @type {string}
-     * @memberof Category
+     * @memberof QuestionWithAnswer
      */
-    id: string;
+    id?: string;
 
     /**
      * @type {string}
-     * @memberof Category
+     * @memberof QuestionWithAnswer
      */
-    name: string;
+    question: string;
 
     /**
      * @type {string}
-     * @memberof Category
+     * @memberof QuestionWithAnswer
      */
-    color: string;
+    answer?: string;
+
+    /**
+     * @type {Array<string>}
+     * @memberof QuestionWithAnswer
+     */
+    options?: Array<string>;
 }

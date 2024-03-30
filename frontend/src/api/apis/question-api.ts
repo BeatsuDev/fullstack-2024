@@ -29,6 +29,7 @@ import {
     RequiredError,
 } from "../base";
 import { QuestionCreate } from "../models";
+import { QuestionWithAnswer } from "../models";
 /**
  * QuestionApi - axios parameter creator
  * @export
@@ -246,7 +247,7 @@ export const QuestionApiFp = function (configuration?: Configuration) {
             (
                 axios?: AxiosInstance,
                 basePath?: string
-            ) => Promise<AxiosResponse<void>>
+            ) => Promise<AxiosResponse<QuestionWithAnswer>>
         > {
             const localVarAxiosArgs = await QuestionApiAxiosParamCreator(
                 configuration
@@ -306,7 +307,7 @@ export const QuestionApiFp = function (configuration?: Configuration) {
             (
                 axios?: AxiosInstance,
                 basePath?: string
-            ) => Promise<AxiosResponse<void>>
+            ) => Promise<AxiosResponse<QuestionWithAnswer>>
         > {
             const localVarAxiosArgs = await QuestionApiAxiosParamCreator(
                 configuration
@@ -344,7 +345,7 @@ export const QuestionApiFactory = function (
         async createQuestion(
             body?: QuestionCreate,
             options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<void>> {
+        ): Promise<AxiosResponse<QuestionWithAnswer>> {
             return QuestionApiFp(configuration)
                 .createQuestion(body, options)
                 .then((request) => request(axios, basePath));
@@ -374,7 +375,7 @@ export const QuestionApiFactory = function (
             questionId: number,
             body?: QuestionCreate,
             options?: AxiosRequestConfig
-        ): Promise<AxiosResponse<void>> {
+        ): Promise<AxiosResponse<QuestionWithAnswer>> {
             return QuestionApiFp(configuration)
                 .updateQuestion(questionId, body, options)
                 .then((request) => request(axios, basePath));
@@ -399,7 +400,7 @@ export class QuestionApi extends BaseAPI {
     public async createQuestion(
         body?: QuestionCreate,
         options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<void>> {
+    ): Promise<AxiosResponse<QuestionWithAnswer>> {
         return QuestionApiFp(this.configuration)
             .createQuestion(body, options)
             .then((request) => request(this.axios, this.basePath));
@@ -431,7 +432,7 @@ export class QuestionApi extends BaseAPI {
         questionId: number,
         body?: QuestionCreate,
         options?: AxiosRequestConfig
-    ): Promise<AxiosResponse<void>> {
+    ): Promise<AxiosResponse<QuestionWithAnswer>> {
         return QuestionApiFp(this.configuration)
             .updateQuestion(questionId, body, options)
             .then((request) => request(this.axios, this.basePath));
