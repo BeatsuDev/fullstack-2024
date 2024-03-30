@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.colleborator.CollaboratorService;
 import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.quiz.dto.QuizCreateDTO;
 import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
@@ -28,6 +29,7 @@ public class QuizController {
   private final QuizMapper quizMapper = Mappers.getMapper(QuizMapper.class);
   private final RevisionService revisionService;
   private final RevisionMapper revisionMapper = Mappers.getMapper(RevisionMapper.class);
+  private final CollaboratorService collaboratorService;
 
   /**
    * Create a new quiz with the given quiz data that becomes the first revision.
@@ -78,6 +80,10 @@ public class QuizController {
     Revision newRevision =
         revisionMapper.fromQuizCreate(updateQuiz, (User) authentication.getPrincipal());
     QuizWithRevision quiz = revisionService.updateQuizInfo(id, newRevision);
+
+    if (!collaboratorService.loggedInUserIsCollaborator(quiz.getQuiz()))
+      quiz.getLatestRevision().getQuestions().forEach(q -> q.setAnswer(null));
+
     return ResponseEntity.ok(quizMapper.toQuizDTO(quiz.getQuiz(), quiz.getLatestRevision()));
   }
 }
