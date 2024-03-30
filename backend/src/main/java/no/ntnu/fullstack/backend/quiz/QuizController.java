@@ -4,9 +4,11 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.quiz.dto.QuizCreateDTO;
 import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
 import no.ntnu.fullstack.backend.quiz.dto.QuizOverviewDTO;
+import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.mapper.QuizMapper;
 import no.ntnu.fullstack.backend.quiz.mapper.RevisionMapper;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class QuizController {
   private final QuizService quizService;
   private final QuizMapper quizMapper = Mappers.getMapper(QuizMapper.class);
+  private final RevisionService revisionService;
   private final RevisionMapper revisionMapper = Mappers.getMapper(RevisionMapper.class);
 
   /**
@@ -62,6 +65,19 @@ public class QuizController {
       return ResponseEntity.notFound().build();
     }
 
+    return ResponseEntity.ok(quizMapper.toQuizDTO(quiz.getQuiz(), quiz.getLatestRevision()));
+  }
+
+  @PutMapping("/{id}")
+  @ResponseBody
+  public ResponseEntity<QuizDTO> updateQuiz(
+      Authentication authentication,
+      @PathVariable("id") UUID id,
+      @Valid @RequestBody QuizCreateDTO updateQuiz)
+      throws QuizNotFoundException, NotCollaboratorException {
+    Revision newRevision =
+        revisionMapper.fromQuizCreate(updateQuiz, (User) authentication.getPrincipal());
+    QuizWithRevision quiz = revisionService.updateQuizInfo(id, newRevision);
     return ResponseEntity.ok(quizMapper.toQuizDTO(quiz.getQuiz(), quiz.getLatestRevision()));
   }
 }
