@@ -59,7 +59,6 @@
 </template>
 <script lang="ts" setup>
 import { defineProps, type Ref, ref, watchEffect } from "vue";
-import { type Question } from "../api/models/question";
 import useVuelidate from "@vuelidate/core";
 import ValidatedInput from "./ValidatedInput.vue";
 import ButtonComponent from "./ButtonComponent.vue";
@@ -72,15 +71,15 @@ import {
 } from "@/composables/useQuestionType";
 
 const props = defineProps<{
-    value: QuestionCreate | Question;
+    value: QuestionCreate;
 }>();
 
 const emit = defineEmits<{
-    submit: [value: QuestionCreate | Question];
+    submit: [value: QuestionCreate];
 }>();
 
 const questionType = ref<QuestionTypes>(QuestionTypes.MULTIPLE);
-const editable = ref(props.value) as Ref<QuestionCreate | Question>;
+const editable = ref(props.value) as Ref<QuestionCreate>;
 
 watchEffect(() => {
     editable.value = props.value;
