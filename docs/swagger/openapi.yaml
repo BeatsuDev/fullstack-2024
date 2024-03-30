@@ -267,6 +267,25 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Quiz"
+    put:
+      tags:
+        - Quiz
+      description: Update quiz info
+      parameters:
+        - name: id
+          description: The ID of a quiz
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: "Successful update"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quiz"
   /quiz/{id}/attempt:
     parameters:
       - name: id

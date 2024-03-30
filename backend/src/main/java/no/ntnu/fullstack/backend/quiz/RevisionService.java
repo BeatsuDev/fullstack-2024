@@ -105,4 +105,19 @@ public class RevisionService {
     question.setRevision(revision);
     return question;
   }
+
+  public QuizWithRevision updateQuizInfo(UUID quizId, Revision revision)
+      throws QuizNotFoundException, NotCollaboratorException {
+    QuizWithRevision latestQuiz =
+        quizService.getLatestQuiz(quizId).orElseThrow(QuizNotFoundException::new);
+
+    latestQuiz.getLatestRevision().setTitle(revision.getTitle());
+    latestQuiz.getLatestRevision().setDescription(revision.getDescription());
+    latestQuiz.getLatestRevision().setDifficulty(revision.getDifficulty());
+    latestQuiz.getLatestRevision().setCategories(revision.getCategories());
+
+    Revision newRevision = newRevision(quizId, latestQuiz.getLatestRevision());
+    latestQuiz.setLatestRevision(newRevision);
+    return latestQuiz;
+  }
 }

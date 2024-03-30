@@ -2,11 +2,12 @@ package no.ntnu.fullstack.backend.quiz;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Collections;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import no.ntnu.fullstack.backend.category.component.Startup;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
@@ -131,6 +132,43 @@ public class QuizControllerIntegrationTest {
         .perform(
             post("/quiz").contentType(MediaType.APPLICATION_JSON).content(quizCreate.toString()))
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void updateQuiz_ValidRequest_ReturnsQuiz() throws Exception {
+    JSONObject quizCreate = new JSONObject();
+    quizCreate.put("title", "Example Quiz");
+    quizCreate.put("description", "An example quiz.");
+    quizCreate.put("category", "[]");
+    quizCreate.put("difficulty", 1);
+
+    AtomicReference<UUID> quizId = new AtomicReference<>();
+    mockMvc
+        .perform(
+            post("/quiz").contentType(MediaType.APPLICATION_JSON).content(quizCreate.toString()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.title").value("Example Quiz"))
+        .andExpect(jsonPath("$.description").value("An example quiz."))
+        .andDo(
+            result -> {
+              JSONObject json = new JSONObject(result.getResponse().getContentAsString());
+              quizId.set(UUID.fromString(json.getString("id")));
+            });
+
+    JSONObject quizUpdate = new JSONObject();
+    quizUpdate.put("title", "Updated Quiz");
+    quizUpdate.put("description", "An updated quiz.");
+    quizUpdate.put("category", "[]");
+    quizUpdate.put("difficulty", 2);
+
+    mockMvc
+        .perform(
+            put("/quiz/" + quizId.get())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(quizUpdate.toString()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.title").value("Updated Quiz"))
+        .andExpect(jsonPath("$.description").value("An updated quiz."));
   }
 
   @Test
