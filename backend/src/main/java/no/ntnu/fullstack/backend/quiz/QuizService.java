@@ -7,6 +7,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.category.CategoryService;
 import no.ntnu.fullstack.backend.category.model.Category;
+import no.ntnu.fullstack.backend.colleborator.CollaboratorService;
+import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
@@ -26,6 +28,7 @@ public class QuizService {
   private final QuizRepository quizRepository;
   private final RevisionRepository revisionRepository;
   private final CategoryService categoryService;
+  private final CollaboratorService collaboratorService;
 
   /**
    * Creates a new quiz with a given revision. The revision is the first version of the quiz.
@@ -53,8 +56,10 @@ public class QuizService {
     return quizRepository.findWithFirstRevision(quizId);
   }
 
-  public Quiz addCollaborator(UUID quizId, User user) throws QuizNotFoundException {
+  public Quiz addCollaborator(UUID quizId, User user)
+      throws QuizNotFoundException, NotCollaboratorException {
     Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::new);
+    collaboratorService.loggedInUserIsCollaboratorOrThrow(quiz);
     quiz.getCollaborators().add(user);
     return quizRepository.saveAndFlush(quiz);
   }
@@ -63,8 +68,10 @@ public class QuizService {
     return quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::new);
   }
 
-  public Quiz removeCollaborator(UUID quizId, UUID userId) throws QuizNotFoundException {
+  public Quiz removeCollaborator(UUID quizId, UUID userId)
+      throws QuizNotFoundException, NotCollaboratorException {
     Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::new);
+    collaboratorService.loggedInUserIsCollaboratorOrThrow(quiz);
     quiz.getCollaborators().removeIf(user -> user.getId().equals(userId));
     return quizRepository.saveAndFlush(quiz);
   }

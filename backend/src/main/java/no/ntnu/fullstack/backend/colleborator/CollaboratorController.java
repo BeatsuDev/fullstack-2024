@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.colleborator.dto.AddCollaboratorDTO;
+import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.quiz.QuizService;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
@@ -27,7 +28,7 @@ public class CollaboratorController {
   @PostMapping
   public ResponseEntity<List<UserDTO>> addCollaborator(
       @PathVariable("quizId") UUID quizId, @RequestBody AddCollaboratorDTO collaborator)
-      throws UserNotFoundException, QuizNotFoundException {
+      throws UserNotFoundException, QuizNotFoundException, NotCollaboratorException {
     User user = userService.getUserByEmailOrThrow(collaborator.getEmail());
     Quiz quiz = quizService.addCollaborator(quizId, user);
     return ResponseEntity.ok(userMapper.toUserDTOList(quiz.getCollaborators()));
@@ -43,7 +44,7 @@ public class CollaboratorController {
   @DeleteMapping("/{userId}")
   public ResponseEntity<List<UserDTO>> removeCollaborator(
       @PathVariable("quizId") UUID quizId, @PathVariable("userId") UUID userId)
-      throws QuizNotFoundException {
+      throws QuizNotFoundException, NotCollaboratorException {
     Quiz quiz = quizService.removeCollaborator(quizId, userId);
     return ResponseEntity.ok(userMapper.toUserDTOList(quiz.getCollaborators()));
   }
