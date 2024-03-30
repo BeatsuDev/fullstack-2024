@@ -1,6 +1,6 @@
 <template>
     <main>
-        <div class="container">
+        <div class="app-container">
             <div v-if="errorMessage">
                 <p>{{ errorMessage }}</p>
             </div>
@@ -8,7 +8,7 @@
                 <div v-if="loading">Loading...</div>
             </div>
             <div v-else-if="quiz">
-                <QuizHero :quiz="quiz" :editable="isOwnerOrCollaborator" @edit="quizModal = true"  playable/>
+                <QuizHero :quiz="quiz" :editable="isOwnerOrCollaborator" @edit="editQuiz"  playable/>
                 <div v-if="isOwnerOrCollaborator">
                     <h3>Questions</h3>
                     <QuestionCard
@@ -51,9 +51,6 @@
     <GenericModal v-model="questionModal" title="Add question">
         <QuestionForm :value="question" @submit="submitQuestion" />
     </GenericModal>
-    <GenericModal v-model="quizModal" title="Edit quiz">
-        <QuizForm :value="quiz" @submit="updateQuiz" />
-    </GenericModal>
 </template>
 <script lang="ts" setup>
 import { type Question, QuestionApi, type QuestionCreate, type Quiz, QuizApi, FeedbackApi, type Feedback, type FeedbackCreate } from "@/api";
@@ -61,7 +58,7 @@ import { usePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
 import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import QuestionCard from "@/components/QuestionCard.vue";
 import GenericModal from "@/components/GenericModal.vue";
 import QuestionForm from "@/components/QuestionForm.vue";
@@ -84,16 +81,9 @@ const quizId = route.params.id.toString();
 const quizApi = new QuizApi();
 
 const { data, loading, error } = usePromise(quizApi.quizIdGet(quizId));
+const router = useRouter();
 
 const loadingDebounced = useDebounceLoading(loading);
-
-const quizModal = ref(false);
-
-function updateQuiz(value: Quiz) {
-    // quizApi.updateQuiz(quizId, value);
-    quizModal.value = false;
-    throw "Hello, please fix swagger codegen."
-}
 
 const errorMessage = computed(() => {
     if (!error.value) {
@@ -111,6 +101,11 @@ const errorMessage = computed(() => {
 const quiz = computed<Quiz>(() => data.value?.data as Quiz);
 
 const { isOwnerOrCollaborator } = useQuizPermissions(quiz);
+
+
+function editQuiz() {
+    router.push("/quizzes/" + quizId + "/edit");
+}
 
 
 /**
@@ -238,16 +233,4 @@ main {
     height: calc(100vh - 66px - 86px);
 }
 
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 1rem;
-}
-
-
-@media (max-width: 768px) {
-    .container {
-        width: 100%;
-    }
-}
 </style>
