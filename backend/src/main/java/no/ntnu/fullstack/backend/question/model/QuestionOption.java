@@ -1,9 +1,7 @@
 package no.ntnu.fullstack.backend.question.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+
 import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +15,9 @@ public class QuestionOption {
   @Id
   @GeneratedValue(generator = "UUID")
   private UUID id;
-  @ManyToOne private Question question;
+  @ManyToOne
+  private Question question;
+  @Column(name="question_option")
   private String option;
   public QuestionOption(String option) {
     this.option = option;

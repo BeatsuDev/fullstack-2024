@@ -52,7 +52,7 @@
 </template>
 <script lang="ts" setup>
 import { type Question, QuestionApi, type QuestionCreate, type Quiz, QuizApi } from "@/api";
-import { useExecutablePromise } from "@/composables/promise";
+import { useExecutablePromise, usePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
 import { computed, ref } from "vue";
@@ -71,19 +71,16 @@ const quizId = route.params.id.toString();
 
 const quizApi = new QuizApi();
 
-const { data, loading, error, execute } = useExecutablePromise(() => quizApi.quizIdGet(quizId));
+const { data, loading, error } = usePromise(quizApi.quizIdGet(quizId));
 
 const loadingDebounced = useDebounceLoading(loading);
-
-execute();
 
 const quizModal = ref(false);
 
 function updateQuiz(value: Quiz) {
-    //quizApi. updateQuiz(quizId, value);
+    //// quizApi.updateQuiz(quizId, value);
     console.log(value);
     quizModal.value = false;
-    execute();
 }
 
 const errorMessage = computed(() => {
@@ -127,8 +124,10 @@ async function submitQuestion(value: QuestionCreate) {
 
 async function createQuestion(value: QuestionCreate) {
     try {
-        await questionApi.createQuestion(value);
-        execute();
+        const question = await questionApi.createQuestion(value);
+        if (quiz.value) {
+            quiz.value.questions.push(question as Question);
+        }
     } catch (e) {
         notificationStore.addNotification({
             message: "An unexpected error occurred. Please try again later.",
@@ -137,9 +136,20 @@ async function createQuestion(value: QuestionCreate) {
     }
 }
 
-async function updateQuestion(value: QuestionCreate, id: string) {
-    await questionApi.updateQuestion(value, id);
-    execute();
+async function updateQuestion(value: Question, id: string) {
+    try {
+        await questionApi.updateQuestion(value, id);
+        const index = quiz.value.questions.findIndex((q) => q.id == id);
+        if (index != -1) {
+            quiz.value.questions[index] = value as Question;
+        }
+    } catch (e) {
+        notificationStore.addNotification({
+            message: "An unexpected error occurred. Please try again later.",
+            type: "error",
+        });
+    }
+
 }
 
 function editQuestion(value: Question) {
@@ -165,7 +175,7 @@ const question = ref<QuestionCreate | Question>(blankQuestion());
 async function deleteQuestion(question: Question) {
     try {
         await questionApi.deleteQuestion(question.id);
-        execute();
+        quiz.value.questions = quiz.value.questions.filter((q) => q.id != question.id);
     } catch (e) {
         notificationStore.addNotification({
             message: "An unexpected error occurred. Please try again later.",
