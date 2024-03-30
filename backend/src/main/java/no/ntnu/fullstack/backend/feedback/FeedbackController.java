@@ -26,7 +26,7 @@ public class FeedbackController {
 
   @PostMapping
   public ResponseEntity<FeedbackDTO> addFeedbackOnQuiz(
-      @PathVariable UUID quizId,
+      @PathVariable("quizId") UUID quizId,
       @Valid @RequestBody FeedbackCreate feedbackCreate,
       Authentication authentication)
       throws QuizNotFoundException {
@@ -41,7 +41,7 @@ public class FeedbackController {
   }
 
   @GetMapping
-  public ResponseEntity<List<FeedbackDTO>> getFeedbacksOnQuiz(@PathVariable UUID quizId) {
+  public ResponseEntity<List<FeedbackDTO>> getFeedbacksOnQuiz(@PathVariable("quizId") UUID quizId) {
     List<Feedback> feedbacks = feedbackService.getFeedbacksByQuizId(quizId);
 
     return ResponseEntity.ok(feedbacks.stream().map(feedbackMapper::toFeedbackDTO).toList());
