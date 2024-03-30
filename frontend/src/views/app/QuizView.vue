@@ -176,15 +176,16 @@ function editQuestion(value: Question) {
 
 const notificationStore = useNotificationStore();
 
+const questionToDelete = ref<Question | null>(null);
 const { isRevealed, onConfirm, confirm, cancel, onReveal, reveal } =
     useConfirmDialog();
 
 onReveal((value: Question) => {
-    question.value = value;
+    questionToDelete.value = value;
 });
 
 onConfirm(() => {
-    deleteQuestion(question.value);
+    deleteQuestion(questionToDelete.value!);
 });
 
 const question = ref<QuestionCreate | Question>(blankQuestion());
