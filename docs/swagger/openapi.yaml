@@ -599,6 +599,8 @@ components:
       required:
         - quizId
         - question
+        - answer
+        - options
       properties:
         quizId:
           type: string
@@ -619,6 +621,7 @@ components:
       required:
         - id
         - question
+        - options
       properties:
         id:
           type: string
@@ -636,6 +639,8 @@ components:
       required:
         - id
         - question
+        - answer
+        - options
       properties:
         id:
           type: string
@@ -654,6 +659,9 @@ components:
       type: object
       required:
         - title
+        - description
+        - difficulty
+        - categories
       properties:
         title:
           type: string
