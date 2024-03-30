@@ -26,6 +26,16 @@ export default function useQuestionType(
     };
 }
 
+export function getQuestionType(question: QuestionCreate | Question) {
+    if (isText(question)) {
+        return QuestionTypes.TEXT;
+    }
+    if (isBoolean(question)) {
+        return QuestionTypes.BOOLEAN;
+    }
+    return QuestionTypes.MULTIPLE;
+}
+
 export const QuestionTypes = {
     MULTIPLE: "MULTIPLE",
     TEXT: "TEXT",

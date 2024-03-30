@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { ref, computed } from "vue";
 import { QuizApi } from "@/api";
 import { usePromise } from "@/composables/promise";
 import router from "@/router";
+
+import QuestionPlayer from "@/components/quiz-player/QuestionPlayer.vue";
 
 const quizApi = new QuizApi();
 const {
@@ -18,6 +21,11 @@ const {
 promise.then((response) => {
     console.log(response.data);
 });
+
+const questionNumber = ref(0);
+const currentQuestion = computed(
+    () => response.value?.data.questions[questionNumber.value] ?? null
+);
 </script>
 
 <template>
@@ -26,6 +34,7 @@ promise.then((response) => {
         <div v-else-if="error">{{ error }}</div>
         <div v-else-if="response">
             <h1>{{ response.data.title }}</h1>
+            <QuestionPlayer :question="currentQuestion" />
         </div>
     </main>
 </template>
