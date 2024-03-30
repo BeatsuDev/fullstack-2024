@@ -17,6 +17,9 @@
                         <h3>Description</h3>
                         <p>{{ quiz.description }}</p>
                     </div>
+                    <h3>Description</h3>
+                    <p>{{ quiz.description }}</p>
+                    <ButtonComponent @click="quizModal = true">Edit</ButtonComponent>
                 </div>
                 <div v-if="isOwnerOrCollaborator">
                     <h3>Questions</h3>
@@ -29,24 +32,38 @@
                         @delete="reveal"
                     />
                 </div>
-                <ButtonComponent
-                    arge
-                    filled
-                    class="centered"
-                    @click="showModal = true"
-                    >Add question
-                </ButtonComponent>
             </div>
+            <div v-if="isOwnerOrCollaborator">
+                <h3>Questions</h3>
+                <QuestionCard
+                    v-for="question in quiz.questions"
+                    :key="question.id"
+                    :value="question"
+                    editable
+                    @edit="editQuestion"
+                    @delete="reveal"
+                />
+            </div>
+            <ButtonComponent
+                arge
+                filled
+                class="centered"
+                @click="questionModal = true"
+                >Add question
+            </ButtonComponent>
         </div>
-        <GenericModal v-model="isRevealed" title="Delete question">
-            <p>Are you sure you want to delete this question?</p>
-            <ButtonComponent filled @click="confirm">Yes</ButtonComponent>
-            <ButtonComponent @click="cancel">No</ButtonComponent>
-        </GenericModal>
-        <GenericModal v-model="showModal" title="Add question">
-            <QuestionForm :value="question" @submit="submitQuestion" />
-        </GenericModal>
     </main>
+    <GenericModal v-model="isRevealed" title="Delete question">
+        <p>Are you sure you want to delete this question?</p>
+        <ButtonComponent filled @click="confirm">Yes</ButtonComponent>
+        <ButtonComponent @click="cancel">No</ButtonComponent>
+    </GenericModal>
+    <GenericModal v-model="questionModal" title="Add question">
+        <QuestionForm :value="question" @submit="submitQuestion" />
+    </GenericModal>
+    <GenericModal v-model="quizModal" title="Edit quiz">
+        <QuizForm :value="quiz" @submit="updateQuiz" />
+        </GenericModal>
 </template>
 <script lang="ts" setup>
 import {
@@ -56,7 +73,7 @@ import {
     type Quiz,
     QuizApi,
 } from "@/api";
-import { usePromise } from "@/composables/promise";
+import { useExecutablePromise, usePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
 import { computed, ref } from "vue";
@@ -66,6 +83,7 @@ import GenericModal from "@/components/GenericModal.vue";
 import QuestionForm from "@/components/QuestionForm.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
+import QuizForm from "@/components/QuizForm.vue";
 
 const route = useRoute();
 
@@ -73,7 +91,18 @@ const quizId = route.params.id.toString();
 
 const quizApi = new QuizApi();
 
-const { data, loading, error } = usePromise(quizApi.quizIdGet(quizId));
+const { data, loading, error, execute } = useExecutablePromise(() => quizApi.quizIdGet(quizId));
+
+execute();
+
+const quizModal = ref(false);
+
+function updateQuiz(value: Quiz) {
+    //quizApi. updateQuiz(quizId, value);
+    console.log(value)
+    quizModal.value = false;
+    execute();
+}
 
 const errorMessage = computed(() => {
     if (!error.value) {
@@ -91,7 +120,7 @@ const quiz = computed<Quiz>(() => data.value?.data as Quiz);
 
 const { isOwnerOrCollaborator } = useQuizPermissions(quiz);
 
-const showModal = ref(false);
+const questionModal = ref(false);
 
 function blankQuestion() {
     return {
@@ -104,8 +133,8 @@ function blankQuestion() {
 
 const questionApi = new QuestionApi();
 
-async function submitQuestion(value: QuestionCreate) {
-    showModal.value = false;
+async function submitQuestion(value: QuestionCreate | Question) {
+    questionModal.value = false;
     if ("id" in value) {
         await updateQuestion(value);
     } else {
@@ -117,25 +146,23 @@ async function submitQuestion(value: QuestionCreate) {
 async function createQuestion(value: QuestionCreate) {
     try {
         const data = await questionApi.createQuestion(value);
+        execute();
     } catch (e) {
         notificationStore.addNotification({
             message: "An unexpected error occurred. Please try again later.",
             type: "error",
         });
     }
-
-    if (data.status === 201) {
-        quiz.value.questions.push(data.data);
-    }
 }
 
 async function updateQuestion(value: QuestionCreate) {
-    await questionApi.updateQuestion(value, value.id);
+    await questionApi.updateQuestion(value, value?.id);
+    execute();
 }
 
 function editQuestion(value: Question) {
     question.value = value;
-    showModal.value = true;
+    questionModal.value = true;
 }
 
 const notificationStore = useNotificationStore();
@@ -147,18 +174,14 @@ onReveal((value: Question) => {
     question.value = value;
 });
 
-onConfirm(() => {
-    deleteQuestion(question.value);
-});
+onConfirm(() => { deleteQuestion(question.value); });
 
 const question = ref<QuestionCreate | Question>(blankQuestion());
 
 async function deleteQuestion(question: Question) {
     try {
         await questionApi.deleteQuestion(question.id);
-        quiz.value.questions = quiz.value.questions.filter(
-            (q) => q.id !== question.id
-        );
+        execute();
     } catch (e) {
         notificationStore.addNotification({
             message: "An unexpected error occurred. Please try again later.",
