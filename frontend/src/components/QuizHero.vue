@@ -2,7 +2,7 @@
     <div class="header">
         <h1 style="margin-top: 0">{{ props.quiz.title }}</h1>
         <div class="action-bar">
-            <ButtonComponent filled large>Play</ButtonComponent>
+            <ButtonComponent filled large v-if="props.playable">Play</ButtonComponent>
         </div>
         <h3>Description</h3>
         <p>{{ props.quiz.description }}</p>
@@ -17,6 +17,7 @@ import type { Quiz } from "@/api";
 const props = defineProps<{
     quiz: Quiz;
     editable?: boolean;
+    playable?: boolean;
 }>();
 
 const emit = defineEmits<{

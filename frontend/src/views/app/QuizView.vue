@@ -8,7 +8,7 @@
                 <div v-if="loading">Loading...</div>
             </div>
             <div v-else-if="quiz">
-                <QuizHero :quiz="quiz" :editable="isOwnerOrCollaborator" @edit="quizModal = true" />
+                <QuizHero :quiz="quiz" :editable="isOwnerOrCollaborator" @edit="quizModal = true"  playable/>
                 <div v-if="isOwnerOrCollaborator">
                     <h3>Questions</h3>
                     <QuestionCard
