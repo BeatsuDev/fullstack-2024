@@ -68,17 +68,21 @@ export const useAuthenticationStore = defineStore("authentication", () => {
     }
 
     function deauthenticate() {
-        if (authenticationData.timer) {
-            clearTimeout(authenticationData.timer);
-        }
-        authenticationData.authenticated = false;
-        authenticationData.timer = undefined;
+        const promise = userSessionApi.logout();
 
-        if (router.currentRoute.value.meta.requiresAuth) {
-            router.push({ name: "login" });
-        }
+        promise.then(() => {
+            if (authenticationData.timer) {
+                clearTimeout(authenticationData.timer);
+            }
+            authenticationData.authenticated = false;
+            authenticationData.timer = undefined;
 
-        // TODO: Send a request to the server to remove the cookie
+            if (router.currentRoute.value.meta.requiresAuth) {
+                router.push({ name: "login" });
+            }
+        });
+
+        return promise;
     }
 
     function authenticate(
