@@ -34,6 +34,12 @@ export interface Question {
     question: string;
 
     /**
+     * @type {string}
+     * @memberof Question
+     */
+    answer?: string;
+
+    /**
      * @type {Array<string>}
      * @memberof Question
      */

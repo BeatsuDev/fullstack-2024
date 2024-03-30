@@ -18,6 +18,7 @@ export * from './apis/collaborator-api';
 export * from './apis/feedback-api';
 export * from './apis/question-api';
 export * from './apis/quiz-api';
+export * from './apis/revision-api';
 export * from './apis/user-api';
 export * from './apis/user-session-api';
 

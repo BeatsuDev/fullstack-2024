@@ -13,35 +13,24 @@
  * Do not edit the class manually.
  */
 
+import { Quiz } from './quiz';
  /**
  * 
  *
  * @export
- * @interface QuestionWithAnswer
+ * @interface Revision
  */
-export interface QuestionWithAnswer {
+export interface Revision {
 
     /**
      * @type {string}
-     * @memberof QuestionWithAnswer
+     * @memberof Revision
      */
-    id: string;
+    revisionId?: string;
 
     /**
-     * @type {string}
-     * @memberof QuestionWithAnswer
+     * @type {Quiz}
+     * @memberof Revision
      */
-    question: string;
-
-    /**
-     * @type {string}
-     * @memberof QuestionWithAnswer
-     */
-    answer: string;
-
-    /**
-     * @type {Array<string>}
-     * @memberof QuestionWithAnswer
-     */
-    options: Array<string>;
+    quiz?: Quiz;
 }
