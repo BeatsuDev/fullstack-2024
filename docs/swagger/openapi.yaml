@@ -503,7 +503,7 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: quizId
+        - name: revisionId
           description: The ID of the revision
           in: path
           required: true
