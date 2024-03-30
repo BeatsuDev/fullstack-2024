@@ -56,8 +56,8 @@ export function isBoolean(question) {
 }
 
 export function removeFieldsNotInType(
-    question: QuestionCreate | Question,
-    questionType: keyof typeof QuestionTypes
+    question: QuestionCreate,
+    questionType: QuestionTypes
 ) {
     if (questionType === QuestionTypes.TEXT) {
         delete question.options;
