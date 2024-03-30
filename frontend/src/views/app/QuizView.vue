@@ -36,7 +36,11 @@
                 >Add question
                 </ButtonComponent>
             </div>
-            <div v-if="feedbacks">
+            <div v-if="feedbackIsLoading">
+                loading...
+
+            </div>
+            <div v-else-if="feedbacks">
                 <FeedbackCard
                     v-for="feedback in feedbacks"
                     :key="feedback.id"
@@ -199,6 +203,8 @@ async function deleteQuestion(question: Question) {
 const feedbackApi = new FeedbackApi();
 
 const {data: feedbackData, loading: feedbacksLoading} = usePromise(feedbackApi.getFeedback(quizId));
+
+const feedbackIsLoading = useDebounceLoading(feedbacksLoading);
 
 const feedbacks = computed(() => feedbackData.value?.data as Feedback[]);
 
