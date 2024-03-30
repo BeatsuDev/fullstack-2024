@@ -20,11 +20,11 @@ export default function useQuestionType(
     };
 }
 
-export const QuestionTypes = {
-    MULTIPLE: "multiple",
-    TEXT: "text",
-    BOOLEAN: "boolean",
-};
+export enum QuestionTypes {
+    MULTIPLE = "multiple",
+    TEXT = "text",
+    BOOLEAN = "boolean",
+}
 
 export function getReadableQuestionType(type) {
     switch (type) {
