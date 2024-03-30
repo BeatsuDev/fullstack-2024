@@ -9,13 +9,9 @@
             </div>
             <div v-else-if="quiz">
                 <div class="header">
-                    <div>
-                        <h1 style="margin-top: 0">{{ quiz.title }}</h1>
-                        <div class="action-bar">
-                            <ButtonComponent filled large>Play</ButtonComponent>
-                        </div>
-                        <h3>Description</h3>
-                        <p>{{ quiz.description }}</p>
+                    <h1 style="margin-top: 0">{{ quiz.title }}</h1>
+                    <div class="action-bar">
+                        <ButtonComponent filled large>Play</ButtonComponent>
                     </div>
                     <h3>Description</h3>
                     <p>{{ quiz.description }}</p>
