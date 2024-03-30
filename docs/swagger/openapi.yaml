@@ -610,9 +610,9 @@ components:
           maxLength: 128
         options:
           type: array
+          maxLength: 4
           items:
             type: string
-            maxLength: 4
     Question:
       type: object
       required:
@@ -626,9 +626,9 @@ components:
           maxLength: 128
         options:
           type: array
+          maxLength: 4
           items:
             type: string
-            maxLength: 4
     QuestionWithAnswer:
       type: object
       required:
@@ -644,9 +644,9 @@ components:
           type: string
         options:
           type: array
+          maxLength: 4
           items:
             type: string
-            maxLength: 4
     QuizCreate:
       type: object
       required:
