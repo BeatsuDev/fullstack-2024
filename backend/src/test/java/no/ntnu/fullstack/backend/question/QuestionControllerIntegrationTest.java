@@ -15,6 +15,7 @@ import no.ntnu.fullstack.backend.quiz.repository.RevisionRepository;
 import no.ntnu.fullstack.backend.security.UserDetailsImpl;
 import no.ntnu.fullstack.backend.user.UserRepository;
 import no.ntnu.fullstack.backend.user.model.User;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,6 @@ public class QuestionControllerIntegrationTest {
 
   @BeforeEach
   public void setup() {
-    revisionRepository.deleteAll();
-    quizRepository.deleteAll();
-    userRepository.deleteAll();
     startup.onApplicationEvent(null);
 
     User user = new User();
@@ -70,6 +68,13 @@ public class QuestionControllerIntegrationTest {
 
     Authentication auth = new TestingAuthenticationToken(user, "password", Collections.emptyList());
     SecurityContextHolder.getContext().setAuthentication(auth);
+  }
+
+  @AfterEach
+  public void tearDown() {
+    revisionRepository.deleteAll();
+    quizRepository.deleteAll();
+    userRepository.deleteAll();
   }
 
   @Test
