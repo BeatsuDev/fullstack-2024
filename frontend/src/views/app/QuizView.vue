@@ -67,7 +67,6 @@ import FeedbackForm from "@/components/FeedbackForm.vue";
 import QuizHero from "@/components/QuizHero.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
-import QuizForm from "@/components/QuizForm.vue";
 import useDebounceLoading from "@/composables/useDebounceLoading";
 
 const route = useRoute();
@@ -141,6 +140,10 @@ async function createQuestion(value: QuestionCreate) {
         if (quiz.value) {
             quiz.value.questions.push(question as Question);
         }
+        notificationStore.addNotification({
+            message: "Question created successfully.",
+            type: "success",
+        });
     } catch (e) {
         notificationStore.addNotification({
             message: "An unexpected error occurred. Please try again later.",
@@ -156,6 +159,10 @@ async function updateQuestion(value: Question) {
         if (index != -1) {
             quiz.value.questions[index] = value as Question;
         }
+        notificationStore.addNotification({
+            message: "Question updated successfully.",
+            type: "success",
+        });
     } catch (e) {
         notificationStore.addNotification({
             message: "An unexpected error occurred. Please try again later.",
@@ -180,6 +187,7 @@ onReveal((value: Question) => {
 });
 
 onConfirm(() => {
+
     deleteQuestion(question.value);
 });
 
@@ -189,6 +197,10 @@ async function deleteQuestion(question: Question) {
     try {
         await questionApi.deleteQuestion(question.id);
         quiz.value.questions = quiz.value.questions.filter((q) => q.id != question.id);
+        notificationStore.addNotification({
+            message: "Question deleted successfully.",
+            type: "success",
+        });
     } catch (e) {
         notificationStore.addNotification({
             message: "An unexpected error occurred. Please try again later.",
