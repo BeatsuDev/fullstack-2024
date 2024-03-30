@@ -13,6 +13,9 @@
                     type="warning">
                     <div style="display:flex">
                     You are viewing a revision of this quiz. You can't edit it.
+                    <ButtonComponent @click="cancelRevert" style="margin-left: auto">
+                        Go back to the latest version
+                        </ButtonComponent>
                     <ButtonComponent @click="revert" style="margin-left: auto">
                         Revert to this version
                         </ButtonComponent>
@@ -134,10 +137,18 @@ async function fetchQuiz() {
     }
 }
 
+function cancelRevert() {
+    router.push("/quizzes/" + quizId);
+}
+
 async function revert() {
     if (revisionId.value) {
         await revisionApi.revertToRevision(quizId, revisionId.value);
         router.push("/quizzes/" + quizId);
+        notificationStore.addNotification({
+            message: "Reverted to revision successfully.",
+            type: "success",
+        });
     }
 }
 

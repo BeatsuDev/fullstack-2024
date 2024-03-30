@@ -16,12 +16,9 @@
             <QuizForm :value="data.data" @submit="updateQuiz" />
         </div>
         <div v-if="revisions">
-            <RevisionCard
-                v-for="revision in revisions.data"
-                :key="revision.revisionId"
-                :value="revision" 
-                @click="viewRevision(revision)"
-                />
+            <RevisionInfiniteScroll
+                :value="revisions.data"
+                @view="viewRevision" />
         </div>
         <div>
             <h3>Collaborators</h3>
@@ -75,7 +72,7 @@ import { email, required } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import UserCard from "@/components/UserCard.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
-import RevisionCard from "@/components/RevisionCard.vue";
+import RevisionInfiniteScroll from "@/components/RevisionInfiniteScroll.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 
