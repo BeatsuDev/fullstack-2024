@@ -2,6 +2,8 @@ package no.ntnu.fullstack.backend.quiz;
 
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.colleborator.CollaboratorService;
+import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.question.QuestionService;
 import no.ntnu.fullstack.backend.question.exception.NoCorrectOptionException;
 import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
@@ -18,13 +20,16 @@ public class RevisionService {
   private final QuizService quizService;
   private final QuestionService questionService;
   private final RevisionRepository revisionRepository;
+  private final CollaboratorService collaboratorService;
 
-  private Revision newRevision(UUID quizId, Revision revision) throws QuizNotFoundException {
+  private Revision newRevision(UUID quizId, Revision revision)
+      throws QuizNotFoundException, NotCollaboratorException {
     var latestQuiz =
         quizService
             .getLatestQuiz(quizId)
             .orElseThrow(QuizNotFoundException::new)
             .getLatestRevision();
+    collaboratorService.loggedInUserIsCollaboratorOrThrow(latestQuiz.getQuiz());
 
     Revision newRevision = new Revision();
     newRevision.setTitle(revision.getTitle());
@@ -47,7 +52,10 @@ public class RevisionService {
   }
 
   public Question updateQuestion(UUID quizId, Question update)
-      throws QuizNotFoundException, QuestionNotFoundException, NoCorrectOptionException {
+      throws QuizNotFoundException,
+          QuestionNotFoundException,
+          NoCorrectOptionException,
+          NotCollaboratorException {
     questionService.validateQuestion(update);
     Revision latestRevision =
         quizService.getLatestQuiz(quizId).map(QuizWithRevision::getLatestRevision).orElse(null);
@@ -70,7 +78,7 @@ public class RevisionService {
   }
 
   public void deleteQuestion(UUID questionId)
-      throws QuestionNotFoundException, QuizNotFoundException {
+      throws QuestionNotFoundException, QuizNotFoundException, NotCollaboratorException {
     var question =
         questionService.getQuestion(questionId).orElseThrow(QuestionNotFoundException::new);
     question.getRevision().getQuestions().remove(question);
@@ -78,7 +86,7 @@ public class RevisionService {
   }
 
   public Question createQuestion(UUID quizId, Question question)
-      throws QuizNotFoundException, NoCorrectOptionException {
+      throws QuizNotFoundException, NoCorrectOptionException, NotCollaboratorException {
     questionService.validateQuestion(question);
     Revision latestRevision =
         quizService

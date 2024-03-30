@@ -3,6 +3,7 @@ package no.ntnu.fullstack.backend.question;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.question.dto.QuestionCreateDTO;
 import no.ntnu.fullstack.backend.question.dto.QuestionWithAnswerDTO;
 import no.ntnu.fullstack.backend.question.exception.NoCorrectOptionException;
@@ -25,7 +26,10 @@ public class QuestionController {
   @PutMapping("/{id}")
   public ResponseEntity<QuestionWithAnswerDTO> updateQuestion(
       @PathVariable("id") UUID id, @Valid @RequestBody QuestionCreateDTO update)
-      throws QuizNotFoundException, QuestionNotFoundException, NoCorrectOptionException {
+      throws QuizNotFoundException,
+          QuestionNotFoundException,
+          NoCorrectOptionException,
+          NotCollaboratorException {
     Question newQuestion = questionMapper.fromDTO(update);
     newQuestion.setId(id);
     Question question = revisionService.updateQuestion(update.getQuizId(), newQuestion);
@@ -34,7 +38,7 @@ public class QuestionController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteQuestion(@PathVariable("id") UUID id)
-      throws QuestionNotFoundException, QuizNotFoundException {
+      throws QuestionNotFoundException, QuizNotFoundException, NotCollaboratorException {
     revisionService.deleteQuestion(id);
     return ResponseEntity.noContent().build();
   }
@@ -42,7 +46,7 @@ public class QuestionController {
   @PostMapping
   public ResponseEntity<QuestionWithAnswerDTO> createQuestion(
       @Valid @RequestBody QuestionCreateDTO create)
-      throws QuizNotFoundException, NoCorrectOptionException {
+      throws QuizNotFoundException, NoCorrectOptionException, NotCollaboratorException {
     Question question =
         revisionService.createQuestion(create.getQuizId(), questionMapper.fromDTO(create));
 
