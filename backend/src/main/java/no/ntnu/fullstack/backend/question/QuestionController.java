@@ -25,13 +25,13 @@ public class QuestionController {
 
   @PutMapping("/{id}")
   public ResponseEntity<QuestionWithAnswerDTO> updateQuestion(
-      @PathVariable("id") UUID id, @Valid @RequestBody QuestionCreateDTO update)
+      @PathVariable("id") UUID questionId, @Valid @RequestBody QuestionCreateDTO update)
       throws QuizNotFoundException,
           QuestionNotFoundException,
           NoCorrectOptionException,
           NotCollaboratorException {
     Question newQuestion = questionMapper.fromDTO(update);
-    newQuestion.setId(id);
+    newQuestion.setQuestionId(questionId);
     Question question = revisionService.updateQuestion(update.getQuizId(), newQuestion);
     return ResponseEntity.ok(questionMapper.toDTOWithAnswer(question));
   }

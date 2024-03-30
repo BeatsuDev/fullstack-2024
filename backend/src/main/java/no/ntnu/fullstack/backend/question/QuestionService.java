@@ -19,10 +19,15 @@ public class QuestionService {
     return questionRepository.findById(id);
   }
 
+  public Optional<Question> getLatestQuestionByQuestionId(UUID questionId) {
+    return questionRepository.findLatestByQuestionId(questionId);
+  }
+
   public Question makeQuestionCopy(Question question) {
     Question copy = new Question();
     copy.setQuestion(question.getQuestion());
     copy.setAnswer(question.getAnswer());
+    copy.setQuestionId(question.getQuestionId());
 
     copy.setOptions(new ArrayList<>());
     for (QuestionOption option : question.getOptions()) {

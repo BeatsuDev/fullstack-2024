@@ -93,7 +93,6 @@ public class QuestionControllerIntegrationTest {
                 .content(question.toJSONString()))
         .andExpect(status().isCreated());
 
-    System.out.println(quizId);
     quizRepository
         .findWithFirstRevision(quizId)
         .ifPresentOrElse(
@@ -130,7 +129,7 @@ public class QuestionControllerIntegrationTest {
     UUID questionId =
         quizRepository
             .findWithFirstRevision(quizId)
-            .map(q -> q.getLatestRevision().getQuestions().get(0).getId())
+            .map(q -> q.getLatestRevision().getQuestions().get(0).getQuestionId())
             .orElseThrow();
 
     JSONObject updatedQuestion = new JSONObject();
@@ -200,7 +199,7 @@ public class QuestionControllerIntegrationTest {
     UUID questionId =
         quizRepository
             .findWithFirstRevision(quizId)
-            .map(q -> q.getLatestRevision().getQuestions().get(0).getId())
+            .map(q -> q.getLatestRevision().getQuestions().get(0).getQuestionId())
             .orElseThrow();
 
     mockMvc.perform(delete("/question/" + questionId)).andExpect(status().isNoContent());
