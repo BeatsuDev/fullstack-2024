@@ -22,7 +22,7 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
                 ><SearchIcon />Find a Quiz</RouterLink
             >
             <RouterLink
-                to="create"
+                to="/create"
                 class="icon-navigation"
                 :class="{
                     'active-route': $route.name === 'create',
@@ -30,7 +30,7 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
                 ><AddIcon />Create Quiz</RouterLink
             >
             <RouterLink
-                to="quizzes"
+                to="/quizzes"
                 class="icon-navigation"
                 :class="{
                     'active-route': $route.name === 'quizzes',
@@ -38,7 +38,7 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
                 ><FolderIcon />My Quizzes</RouterLink
             >
             <RouterLink
-                to="profile"
+                to="/profile"
                 class="icon-navigation"
                 :class="{
                     'active-route': $route.name === 'profile',
