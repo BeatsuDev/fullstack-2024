@@ -23,7 +23,15 @@ const freeTextInput = ref("");
 <template>
     <div class="question-player-container">
         <div class="question-container">
-            <h2>{{ question.question }}</h2>
+            <h2>Question: {{ question.question }}</h2>
+            <div class="media-container">
+                <img
+                    v-if="question.mediaUrl"
+                    :src="question.mediaUrl"
+                    alt="Question media"
+                />
+                <div class="placeholder-media"></div>
+            </div>
             <div class="answers-container">
                 <MultipleChoiceQuestionPlayer
                     v-if="questionType === 'multiple'"
@@ -46,3 +54,33 @@ const freeTextInput = ref("");
         </div>
     </div>
 </template>
+
+<style scoped>
+.question-player-container {
+    width: 100%;
+    flex: 1;
+}
+
+.question-container {
+    height: 100%;
+}
+
+.media-container {
+    margin: auto;
+    width: 95%;
+    height: 60%;
+}
+
+.media-container > * {
+    width: 100%;
+    height: 100%;
+}
+
+.media-container > img {
+    object-fit: contain;
+}
+
+.media-container > .placeholder-media {
+    background-color: red;
+}
+</style>

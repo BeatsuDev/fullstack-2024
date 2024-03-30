@@ -30,17 +30,31 @@ const currentQuestion = computed(
 
 <template>
     <main>
-        <div v-if="loading">Loading...</div>
-        <div v-else-if="error">{{ error }}</div>
-        <div v-else-if="response">
+        <div class="player-container" v-if="loading">Loading...</div>
+        <div class="player-container" v-else-if="error">{{ error }}</div>
+        <div class="player-container" v-else-if="response">
             <h1>{{ response.data.title }}</h1>
-            <QuestionPlayer :question="currentQuestion" />
+            <QuestionPlayer
+                v-if="currentQuestion"
+                :question="currentQuestion"
+            />
+            <div v-else>No question selected...</div>
         </div>
     </main>
 </template>
 
 <style scoped>
-main {
-    height: calc(100vh - 66px);
+.player-container {
+    height: calc(100vh - 66px - 4em);
+    padding: 2em;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.player-container > h1 {
+    margin-top: 1em;
+    width: 100%;
+    text-align: center;
 }
 </style>
