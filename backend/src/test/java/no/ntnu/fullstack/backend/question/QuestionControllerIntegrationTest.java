@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 import net.minidev.json.JSONObject;
-import no.ntnu.fullstack.backend.category.component.Startup;
+import no.ntnu.fullstack.backend.category.component.SeedCategories;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
 import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
@@ -32,7 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class QuestionControllerIntegrationTest {
   @Autowired private MockMvc mockMvc;
-  @Autowired private Startup startup;
+  @Autowired private SeedCategories seedCategories;
   @Autowired private UserRepository userRepository;
   @Autowired private RevisionRepository revisionRepository;
   @Autowired private QuizRepository quizRepository;
@@ -41,7 +41,7 @@ public class QuestionControllerIntegrationTest {
 
   @BeforeEach
   public void setup() {
-    startup.onApplicationEvent(null);
+    seedCategories.onApplicationEvent(null);
 
     User user = new User();
     user.setEmail("user@example");

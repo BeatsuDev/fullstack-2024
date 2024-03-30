@@ -1,5 +1,6 @@
 package no.ntnu.fullstack.backend.category.component;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.category.CategoryService;
 import no.ntnu.fullstack.backend.category.model.Category;
@@ -7,11 +8,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
-public class Startup {
+public class SeedCategories {
 
    private final CategoryService categoryService;
 

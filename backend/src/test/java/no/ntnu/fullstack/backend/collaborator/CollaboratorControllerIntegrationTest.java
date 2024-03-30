@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Collections;
 import java.util.UUID;
 import net.minidev.json.JSONObject;
-import no.ntnu.fullstack.backend.category.component.Startup;
+import no.ntnu.fullstack.backend.category.component.SeedCategories;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
 import no.ntnu.fullstack.backend.quiz.repository.RevisionRepository;
@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class CollaboratorControllerIntegrationTest {
   @Autowired private MockMvc mockMvc;
-  @Autowired private Startup startup;
+  @Autowired private SeedCategories seedCategories;
   @Autowired private UserRepository userRepository;
   @Autowired private QuizRepository quizRepository;
   @Autowired private RevisionRepository revisionRepository;
@@ -37,7 +37,7 @@ public class CollaboratorControllerIntegrationTest {
 
   @BeforeEach
   public void setup() {
-    startup.onApplicationEvent(null);
+    seedCategories.onApplicationEvent(null);
 
     User user = new User();
     user.setEmail("user@example");
