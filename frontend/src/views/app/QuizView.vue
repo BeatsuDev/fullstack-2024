@@ -8,15 +8,7 @@
                 <div v-if="loading">Loading...</div>
             </div>
             <div v-else-if="quiz">
-                <div class="header">
-                    <h1 style="margin-top: 0">{{ quiz.title }}</h1>
-                    <div class="action-bar">
-                        <ButtonComponent filled large>Play</ButtonComponent>
-                    </div>
-                    <h3>Description</h3>
-                    <p>{{ quiz.description }}</p>
-                    <ButtonComponent @click="quizModal = true">Edit</ButtonComponent>
-                </div>
+                <QuizHero :quiz="quiz" :editable="isOwnerOrCollaborator" @edit="quizModal = true" />
                 <div v-if="isOwnerOrCollaborator">
                     <h3>Questions</h3>
                     <QuestionCard
@@ -41,6 +33,7 @@
 
             </div>
             <div v-else-if="feedbacks">
+                <h3>Feedbacks</h3>
                 <FeedbackCard
                     v-for="feedback in feedbacks"
                     :key="feedback.id"
@@ -74,12 +67,17 @@ import GenericModal from "@/components/GenericModal.vue";
 import QuestionForm from "@/components/QuestionForm.vue";
 import FeedbackCard from "@/components/FeedbackCard.vue";
 import FeedbackForm from "@/components/FeedbackForm.vue";
+import QuizHero from "@/components/QuizHero.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 import QuizForm from "@/components/QuizForm.vue";
 import useDebounceLoading from "@/composables/useDebounceLoading";
 
 const route = useRoute();
+
+/**
+ * Quiz
+ */
 
 const quizId = route.params.id.toString();
 
@@ -113,6 +111,11 @@ const errorMessage = computed(() => {
 const quiz = computed<Quiz>(() => data.value?.data as Quiz);
 
 const { isOwnerOrCollaborator } = useQuizPermissions(quiz);
+
+
+/**
+ * Questions
+ */
 
 const questionModal = ref(false);
 
@@ -200,6 +203,11 @@ async function deleteQuestion(question: Question) {
 } 
 
 
+/*
+* Feedback
+*/
+
+
 const feedbackApi = new FeedbackApi();
 
 const {data: feedbackData, loading: feedbacksLoading} = usePromise(feedbackApi.getFeedback(quizId));
@@ -236,18 +244,6 @@ main {
     padding: 1rem;
 }
 
-.header {
-    padding: 1rem;
-    border-bottom: 1px solid var(--primary-200);
-    border-radius: 1rem;
-    background-color: var(--primary-200);
-}
-
-.action-bar {
-    justify-content: end;
-    width: 100%;
-    display: flex;
-}
 
 @media (max-width: 768px) {
     .container {
