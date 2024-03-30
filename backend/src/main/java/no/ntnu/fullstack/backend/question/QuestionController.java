@@ -5,7 +5,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.question.dto.QuestionCreateDTO;
-import no.ntnu.fullstack.backend.question.dto.QuestionWithAnswerDTO;
+import no.ntnu.fullstack.backend.question.dto.QuestionDTO;
 import no.ntnu.fullstack.backend.question.exception.NoCorrectOptionException;
 import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
 import no.ntnu.fullstack.backend.question.model.Question;
@@ -24,7 +24,7 @@ public class QuestionController {
   private final QuestionMapper questionMapper = Mappers.getMapper(QuestionMapper.class);
 
   @PutMapping("/{id}")
-  public ResponseEntity<QuestionWithAnswerDTO> updateQuestion(
+  public ResponseEntity<QuestionDTO> updateQuestion(
       @PathVariable("id") UUID questionId, @Valid @RequestBody QuestionCreateDTO update)
       throws QuizNotFoundException,
           QuestionNotFoundException,
@@ -33,7 +33,7 @@ public class QuestionController {
     Question newQuestion = questionMapper.fromDTO(update);
     newQuestion.setQuestionId(questionId);
     Question question = revisionService.updateQuestion(update.getQuizId(), newQuestion);
-    return ResponseEntity.ok(questionMapper.toDTOWithAnswer(question));
+    return ResponseEntity.ok(questionMapper.toDTO(question));
   }
 
   @DeleteMapping("/{id}")
@@ -44,12 +44,10 @@ public class QuestionController {
   }
 
   @PostMapping
-  public ResponseEntity<QuestionWithAnswerDTO> createQuestion(
-      @Valid @RequestBody QuestionCreateDTO create)
+  public ResponseEntity<QuestionDTO> createQuestion(@Valid @RequestBody QuestionCreateDTO create)
       throws QuizNotFoundException, NoCorrectOptionException, NotCollaboratorException {
     Question question =
         revisionService.createQuestion(create.getQuizId(), questionMapper.fromDTO(create));
-
-    return ResponseEntity.status(HttpStatus.CREATED).body(questionMapper.toDTOWithAnswer(question));
+    return ResponseEntity.status(HttpStatus.CREATED).body(questionMapper.toDTO(question));
   }
 }

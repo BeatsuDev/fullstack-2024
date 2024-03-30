@@ -12,5 +12,6 @@ import lombok.Setter;
 public class QuestionDTO {
   private final UUID id;
   private final String question;
+  private final String answer;
   private final List<String> options;
 }

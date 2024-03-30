@@ -461,7 +461,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/QuestionWithAnswer"
+                $ref: "#/components/schemas/Question"
         "401":
           description: Not logged in
         "403":
@@ -493,7 +493,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/QuestionWithAnswer"
+                $ref: "#/components/schemas/Question"
         "404":
           description: Question not found
         "401":
@@ -641,25 +641,6 @@ components:
       required:
         - id
         - question
-        - options
-      properties:
-        id:
-          type: string
-          format: uuid
-        question:
-          type: string
-          maxLength: 128
-        options:
-          type: array
-          maxLength: 4
-          items:
-            type: string
-    QuestionWithAnswer:
-      type: object
-      required:
-        - id
-        - question
-        - answer
         - options
       properties:
         id:
