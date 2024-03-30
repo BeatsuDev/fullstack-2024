@@ -1,50 +1,52 @@
 <template>
-    <div class="container">
-        <div v-if="errorMessage">
-            <p>{{ errorMessage }}</p>
-        </div>
-        <div v-else-if="loading">
-            <div v-if="loading">Loading...</div>
-        </div>
-        <div v-else>
-            <div class="header">
-                <div>
-                    <h1 style="margin-top: 0">{{ quiz.title }}</h1>
-                    <div class="action-bar">
-                        <ButtonComponent filled large>Play</ButtonComponent>
+    <main>
+        <div class="container">
+            <div v-if="errorMessage">
+                <p>{{ errorMessage }}</p>
+            </div>
+            <div v-else-if="loading">
+                <div v-if="loading">Loading...</div>
+            </div>
+            <div v-else>
+                <div class="header">
+                    <div>
+                        <h1 style="margin-top: 0">{{ quiz.title }}</h1>
+                        <div class="action-bar">
+                            <ButtonComponent filled large>Play</ButtonComponent>
+                        </div>
+                        <h3>Description</h3>
+                        <p>{{ quiz.description }}</p>
                     </div>
-                    <h3>Description</h3>
-                    <p>{{ quiz.description }}</p>
                 </div>
+                <div v-if="isOwnerOrCollaborator">
+                    <h3>Questions</h3>
+                    <QuestionCard
+                        v-for="question in quiz.questions"
+                        :key="question.id"
+                        :value="question"
+                        editable
+                        @edit="editQuestion"
+                        @delete="reveal"
+                    />
+                </div>
+                <ButtonComponent
+                    arge
+                    filled
+                    class="centered"
+                    @click="showModal = true"
+                    >Add question
+                </ButtonComponent>
             </div>
-            <div v-if="isOwnerOrCollaborator">
-                <h3>Questions</h3>
-                <QuestionCard
-                    v-for="question in quiz.questions"
-                    :key="question.id"
-                    :value="question"
-                    editable
-                    @edit="editQuestion"
-                    @delete="reveal"
-                />
-            </div>
-            <ButtonComponent
-                arge
-                filled
-                class="centered"
-                @click="showModal = true"
-                >Add question
-            </ButtonComponent>
         </div>
-    </div>
-    <GenericModal v-model="isRevealed" title="Delete question">
-        <p>Are you sure you want to delete this question?</p>
-        <ButtonComponent filled @click="confirm">Yes</ButtonComponent>
-        <ButtonComponent @click="cancel">No</ButtonComponent>
-    </GenericModal>
-    <GenericModal v-model="showModal" title="Add question">
-        <QuestionForm :value="question" @submit="submitQuestion" />
-    </GenericModal>
+        <GenericModal v-model="isRevealed" title="Delete question">
+            <p>Are you sure you want to delete this question?</p>
+            <ButtonComponent filled @click="confirm">Yes</ButtonComponent>
+            <ButtonComponent @click="cancel">No</ButtonComponent>
+        </GenericModal>
+        <GenericModal v-model="showModal" title="Add question">
+            <QuestionForm :value="question" @submit="submitQuestion" />
+        </GenericModal>
+    </main>
 </template>
 <script lang="ts" setup>
 import {
@@ -102,12 +104,12 @@ function blankQuestion() {
 
 const questionApi = new QuestionApi();
 
-async function submitQuestion(value: QuestionCreate | Question) {
+async function submitQuestion(value: QuestionCreate) {
     showModal.value = false;
     if ("id" in value) {
-        await updateQuestion(value as Question);
+        await updateQuestion(value);
     } else {
-        await createQuestion(value as QuestionCreate);
+        await createQuestion(value);
     }
     question.value = blankQuestion();
 }
@@ -127,8 +129,8 @@ async function createQuestion(value: QuestionCreate) {
     }
 }
 
-async function updateQuestion(value: Question) {
-    await questionApi.updateQuestion(value.id, value);
+async function updateQuestion(value: QuestionCreate) {
+    await questionApi.updateQuestion(value, value.id);
 }
 
 function editQuestion(value: Question) {
@@ -166,6 +168,12 @@ async function deleteQuestion(question: Question) {
 }
 </script>
 <style scoped>
+/* Fucking hacky as fuck. I wish I didn't have to do this. Change if can! */
+/* 100vh - (nav height + nav y-padding) - (bottom nav height + bottom nav y-padding)*/
+main {
+    height: calc(100vh - 66px - 86px);
+}
+
 .container {
     width: 80%;
     margin: 0 auto;
