@@ -454,7 +454,8 @@ paths:
         in: path
         required: true
         schema:
-          type: uuid
+          type: string
+          format: uuid
     put:
       tags:
         - Question
