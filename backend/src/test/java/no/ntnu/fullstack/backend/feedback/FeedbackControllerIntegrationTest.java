@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Collections;
 import java.util.UUID;
 import net.minidev.json.JSONObject;
-import no.ntnu.fullstack.backend.category.component.SeedCategories;
+import no.ntnu.fullstack.backend.StartupSeed;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
 import no.ntnu.fullstack.backend.security.UserDetailsImpl;
@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class FeedbackControllerIntegrationTest {
   @Autowired private MockMvc mockMvc;
-  @Autowired private SeedCategories seedCategories;
+  @Autowired private StartupSeed startupSeed;
   @Autowired private UserRepository userRepository;
   @Autowired private QuizRepository quizRepository;
   @Autowired private FeedbackRepository feedbackRepository;
@@ -37,7 +37,7 @@ public class FeedbackControllerIntegrationTest {
 
   @BeforeEach
   public void setup() {
-    seedCategories.onApplicationEvent(null);
+    startupSeed.onApplicationEvent(null);
 
     User user = new User();
     user.setEmail("user@example");

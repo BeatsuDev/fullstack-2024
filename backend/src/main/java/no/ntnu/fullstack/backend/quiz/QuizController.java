@@ -45,8 +45,9 @@ public class QuizController {
     User user = (User) authentication.getPrincipal();
     Quiz quiz = quizMapper.fromCreateQuiz(user);
     Revision revision = revisionMapper.fromQuizCreate(createQuiz, user);
-    Quiz createdQuiz = quizService.createQuiz(quiz, revision);
-    return ResponseEntity.ok(quizMapper.toQuizDTO(createdQuiz, revision));
+    QuizWithRevision createdQuiz = quizService.createQuiz(quiz, revision);
+    return ResponseEntity.ok(
+        quizMapper.toQuizDTO(createdQuiz.getQuiz(), createdQuiz.getLatestRevision()));
   }
 
   @GetMapping

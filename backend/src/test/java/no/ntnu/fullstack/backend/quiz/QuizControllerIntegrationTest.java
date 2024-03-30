@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import no.ntnu.fullstack.backend.category.component.SeedCategories;
+import no.ntnu.fullstack.backend.StartupSeed;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
 import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
@@ -38,14 +38,14 @@ public class QuizControllerIntegrationTest {
   @Autowired RevisionRepository revisionRepository;
   @Autowired private MockMvc mockMvc;
   @MockBean private UserDetailsServiceImpl userDetailsService;
-  @Autowired private SeedCategories seedCategories;
+  @Autowired private StartupSeed startupSeed;
   @Autowired private UserRepository userRepository;
   @Autowired private QuizRepository quizRepository;
   @MockBean private UserDetailsImpl userDetails;
 
   @BeforeEach
   public void setup() {
-    seedCategories.onApplicationEvent(null);
+    startupSeed.onApplicationEvent(null);
 
     User user = new User();
     user.setEmail("user@example");

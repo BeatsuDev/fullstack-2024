@@ -38,14 +38,14 @@ public class QuizService {
    * @return The created quiz.
    */
   @Transactional
-  public Quiz createQuiz(Quiz quiz, Revision revision) {
+  public QuizWithRevision createQuiz(Quiz quiz, Revision revision) {
     Quiz createdQuiz = quizRepository.saveAndFlush(quiz);
     revision.setQuiz(createdQuiz);
     revision.setCategories(
         categoryService.getCategoriesById(
             revision.getCategories().stream().map(Category::getId).toList()));
     revisionRepository.saveAndFlush(revision);
-    return createdQuiz;
+    return new QuizWithRevision(createdQuiz, revision);
   }
 
   public List<QuizWithRevision> retrieveQuizzes() {

@@ -1,17 +1,18 @@
 package no.ntnu.fullstack.backend.question.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
-
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import no.ntnu.fullstack.backend.quiz.model.Revision;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Question {
   @Id
   @GeneratedValue(generator = "UUID")
