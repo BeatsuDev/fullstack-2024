@@ -18,6 +18,8 @@ tags:
   - name: User Session
   - name: Quiz
   - name: Question
+  - name: Revision
+  - name: Category
 
 paths:
   /category:
@@ -466,6 +468,57 @@ paths:
           description: Not logged in
         "403":
           description: "Not the creator of the quiz"
+  /quiz/{quizId}/revision:
+    get:
+      tags:
+        - Revision
+      parameters:
+        - name: quizId
+          description: The ID of the question
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      description: Get revisions of a quiz
+      operationId: getRevisions
+      responses:
+        "200":
+          description: A list of revisions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Revision"
+  /quiz/{quizId}/revision/{revisionId}:
+    put:
+      tags:
+        - Revision
+      parameters:
+        - name: quizId
+          description: The ID of the quiz
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: quizId
+          description: The ID of the revision
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      description: Revert to a specific revision
+      operationId: revertToRevision
+      responses:
+        "200":
+          description: The current quiz
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quiz"
   /question/{question_id}:
     parameters:
       - name: question_id
@@ -760,3 +813,11 @@ components:
       properties:
         email:
           type: string
+    Revision:
+      type: object
+      properties:
+        revisionId:
+          type: string
+          format: uuid
+        quiz:
+          $ref: "#/components/schemas/Quiz"
