@@ -36,6 +36,14 @@
                 >Add question
                 </ButtonComponent>
             </div>
+            <div v-if="feedbacks">
+                <FeedbackCard
+                    v-for="feedback in feedbacks"
+                    :key="feedback.id"
+                    :feedback="feedback"></FeedbackCard>
+                <FeedbackForm @submit="submitFeedback" />
+
+            </div>
         </div>
     </main>
     <GenericModal v-model="isRevealed" title="Delete question">
@@ -51,8 +59,8 @@
     </GenericModal>
 </template>
 <script lang="ts" setup>
-import { type Question, QuestionApi, type QuestionCreate, type Quiz, QuizApi } from "@/api";
-import { useExecutablePromise, usePromise } from "@/composables/promise";
+import { type Question, QuestionApi, type QuestionCreate, type Quiz, QuizApi, FeedbackApi, type Feedback, type FeedbackCreate } from "@/api";
+import { usePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
 import { computed, ref } from "vue";
@@ -60,6 +68,8 @@ import { useRoute } from "vue-router";
 import QuestionCard from "@/components/QuestionCard.vue";
 import GenericModal from "@/components/GenericModal.vue";
 import QuestionForm from "@/components/QuestionForm.vue";
+import FeedbackCard from "@/components/FeedbackCard.vue";
+import FeedbackForm from "@/components/FeedbackForm.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 import QuizForm from "@/components/QuizForm.vue";
@@ -78,9 +88,9 @@ const loadingDebounced = useDebounceLoading(loading);
 const quizModal = ref(false);
 
 function updateQuiz(value: Quiz) {
-    //// quizApi.updateQuiz(quizId, value);
-    console.log(value);
+    // quizApi.updateQuiz(quizId, value);
     quizModal.value = false;
+    throw "Hello, please fix swagger codegen."
 }
 
 const errorMessage = computed(() => {
@@ -93,6 +103,7 @@ const errorMessage = computed(() => {
     if (error.value) {
         return "An unexpected error occurred. Please try again later.";
     }
+    return "";
 });
 
 const quiz = computed<Quiz>(() => data.value?.data as Quiz);
@@ -112,10 +123,10 @@ function blankQuestion() {
 
 const questionApi = new QuestionApi();
 
-async function submitQuestion(value: QuestionCreate) {
+async function submitQuestion(value: QuestionCreate | Question) {
     questionModal.value = false;
     if ("id" in value) {
-        await updateQuestion(value, value.id);
+        await updateQuestion(value);
     } else {
         await createQuestion(value);
     }
@@ -136,10 +147,10 @@ async function createQuestion(value: QuestionCreate) {
     }
 }
 
-async function updateQuestion(value: Question, id: string) {
+async function updateQuestion(value: Question) {
     try {
-        await questionApi.updateQuestion(value, id);
-        const index = quiz.value.questions.findIndex((q) => q.id == id);
+        await questionApi.updateQuestion(value as QuestionCreate, value.id);
+        const index = quiz.value.questions.findIndex((q) => q.id == value.id);
         if (index != -1) {
             quiz.value.questions[index] = value as Question;
         }
@@ -182,7 +193,29 @@ async function deleteQuestion(question: Question) {
             type: "error",
         });
     }
+} 
+
+
+const feedbackApi = new FeedbackApi();
+
+const {data: feedbackData, loading: feedbacksLoading} = usePromise(feedbackApi.getFeedback(quizId));
+
+const feedbacks = computed(() => feedbackData.value?.data as Feedback[]);
+
+async function submitFeedback(value: FeedbackCreate) {
+    try {
+        const newFeedback = await feedbackApi.giveFeedback(quizId, value);
+        feedbackData.value?.data.push(newFeedback);
+        
+    } catch (e) {
+        notificationStore.addNotification({
+            message: "An unexpected error occurred. Please try again later.",
+            type: "error",
+        });
+    }
 }
+
+
 </script>
 <style scoped>
 /* Fucking hacky as fuck. I wish I didn't have to do this. Change if can! */

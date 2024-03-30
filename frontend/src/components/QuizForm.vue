@@ -25,7 +25,7 @@ import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 
 const props = defineProps<{
-    value: QuizCreate | Quiz;
+    value?: QuizCreate | Quiz;
     loading?: boolean;
 }>();
 

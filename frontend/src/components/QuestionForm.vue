@@ -72,7 +72,7 @@ import {
 } from "@/composables/useQuestionType";
 
 const props = defineProps<{
-    value: QuestionCreate | Question;
+    value?: QuestionCreate | Question;
 }>();
 
 const emit = defineEmits<{
@@ -80,10 +80,19 @@ const emit = defineEmits<{
 }>();
 
 const questionType = ref<QuestionTypes>(QuestionTypes.MULTIPLE);
-const editable = ref(props.value) as Ref<QuestionCreate | Question>;
+const editable = ref(props.value|| {
+    question: "",
+    options: [""],
+    answer: "",
+
+}) as Ref<QuestionCreate | Question>;
 
 watchEffect(() => {
-    editable.value = props.value;
+    editable.value = props.value || {
+        question: "",
+        options: [""],
+        answer: "",
+    } as QuestionCreate;
 });
 
 const selectedOption = ref(0);
