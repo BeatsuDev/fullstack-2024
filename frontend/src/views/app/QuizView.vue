@@ -68,25 +68,21 @@
     </GenericModal>
 </template>
 <script lang="ts" setup>
-import { AxiosError } from "axios";
-import {
-    type Question,
-    QuestionApi,
-    type QuestionCreate,
-    type Quiz,
-    QuizApi,
-} from "@/api";
-import { useExecutablePromise, usePromise } from "@/composables/promise";
-import ButtonComponent from "@/components/ButtonComponent.vue";
-import useQuizPermissions from "@/composables/useQuizPermissions";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
+import { AxiosError } from "axios";
+import { useConfirmDialog } from "@vueuse/core";
+
+import type { Question, QuestionCreate, Quiz } from "@/api";
+import { QuestionApi, QuizApi } from "@/api";
+import { useExecutablePromise } from "@/composables/promise";
+import { useNotificationStore } from "@/stores/notification";
+
+import ButtonComponent from "@/components/ButtonComponent.vue";
+import useQuizPermissions from "@/composables/useQuizPermissions";
 import QuestionCard from "@/components/QuestionCard.vue";
 import GenericModal from "@/components/GenericModal.vue";
 import QuestionForm from "@/components/QuestionForm.vue";
-import { useNotificationStore } from "@/stores/notification";
-import { useConfirmDialog } from "@vueuse/core";
-import QuizForm from "@/components/QuizForm.vue";
 
 const route = useRoute();
 
