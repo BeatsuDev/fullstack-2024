@@ -19,7 +19,9 @@
                     </div>
                     <h3>Description</h3>
                     <p>{{ quiz.description }}</p>
-                    <ButtonComponent @click="quizModal = true">Edit</ButtonComponent>
+                    <ButtonComponent @click="quizModal = true"
+                        >Edit</ButtonComponent
+                    >
                 </div>
                 <div v-if="isOwnerOrCollaborator">
                     <h3>Questions</h3>
@@ -63,7 +65,7 @@
     </GenericModal>
     <GenericModal v-model="quizModal" title="Edit quiz">
         <QuizForm :value="quiz" @submit="updateQuiz" />
-        </GenericModal>
+    </GenericModal>
 </template>
 <script lang="ts" setup>
 import {
@@ -91,7 +93,9 @@ const quizId = route.params.id.toString();
 
 const quizApi = new QuizApi();
 
-const { data, loading, error, execute } = useExecutablePromise(() => quizApi.quizIdGet(quizId));
+const { data, loading, error, execute } = useExecutablePromise(() =>
+    quizApi.quizIdGet(quizId)
+);
 
 execute();
 
@@ -99,7 +103,7 @@ const quizModal = ref(false);
 
 function updateQuiz(value: Quiz) {
     //quizApi. updateQuiz(quizId, value);
-    console.log(value)
+    console.log(value);
     quizModal.value = false;
     execute();
 }
@@ -145,7 +149,7 @@ async function submitQuestion(value: QuestionCreate | Question) {
 
 async function createQuestion(value: QuestionCreate) {
     try {
-        const data = await questionApi.createQuestion(value);
+        await questionApi.createQuestion(value);
         execute();
     } catch (e) {
         notificationStore.addNotification({
@@ -174,7 +178,9 @@ onReveal((value: Question) => {
     question.value = value;
 });
 
-onConfirm(() => { deleteQuestion(question.value); });
+onConfirm(() => {
+    deleteQuestion(question.value);
+});
 
 const question = ref<QuestionCreate | Question>(blankQuestion());
 
