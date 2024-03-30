@@ -65,7 +65,7 @@ public class RevisionService {
 
     var question =
         latestRevision.getQuestions().stream()
-            .filter(q -> q.getId().equals(update.getId()))
+            .filter(q -> q.getQuestionId().equals(update.getQuestionId()))
             .findFirst()
             .orElseThrow(QuestionNotFoundException::new);
     question.setQuestion(update.getQuestion());
@@ -80,7 +80,9 @@ public class RevisionService {
   public void deleteQuestion(UUID questionId)
       throws QuestionNotFoundException, QuizNotFoundException, NotCollaboratorException {
     var question =
-        questionService.getQuestion(questionId).orElseThrow(QuestionNotFoundException::new);
+        questionService
+            .getLatestQuestionByQuestionId(questionId)
+            .orElseThrow(QuestionNotFoundException::new);
     question.getRevision().getQuestions().remove(question);
     newRevision(question.getRevision().getQuiz().getId(), question.getRevision());
   }
@@ -88,6 +90,8 @@ public class RevisionService {
   public Question createQuestion(UUID quizId, Question question)
       throws QuizNotFoundException, NoCorrectOptionException, NotCollaboratorException {
     questionService.validateQuestion(question);
+    question.setQuestionId(UUID.randomUUID());
+
     Revision latestRevision =
         quizService
             .getLatestQuiz(quizId)

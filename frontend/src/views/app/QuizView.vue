@@ -4,18 +4,14 @@
             <div v-if="errorMessage">
                 <p>{{ errorMessage }}</p>
             </div>
-            <div v-else-if="loading">
+            <div v-else-if="loadingDebounced">
                 <div v-if="loading">Loading...</div>
             </div>
-            <div v-else>
+            <div v-else-if="quiz">
                 <div class="header">
-                    <div>
-                        <h1 style="margin-top: 0">{{ quiz.title }}</h1>
-                        <div class="action-bar">
-                            <ButtonComponent filled large>Play</ButtonComponent>
-                        </div>
-                        <h3>Description</h3>
-                        <p>{{ quiz.description }}</p>
+                    <h1 style="margin-top: 0">{{ quiz.title }}</h1>
+                    <div class="action-bar">
+                        <ButtonComponent filled large>Play</ButtonComponent>
                     </div>
                     <h3>Description</h3>
                     <p>{{ quiz.description }}</p>
@@ -32,25 +28,14 @@
                         @delete="reveal"
                     />
                 </div>
-            </div>
-            <div v-if="isOwnerOrCollaborator">
-                <h3>Questions</h3>
-                <QuestionCard
-                    v-for="question in quiz.questions"
-                    :key="question.id"
-                    :value="question"
-                    editable
-                    @edit="editQuestion"
-                    @delete="reveal"
-                />
-            </div>
-            <ButtonComponent
-                arge
-                filled
-                class="centered"
-                @click="questionModal = true"
+                <ButtonComponent
+                    arge
+                    filled
+                    class="centered"
+                    @click="questionModal = true"
                 >Add question
-            </ButtonComponent>
+                </ButtonComponent>
+            </div>
         </div>
     </main>
     <GenericModal v-model="isRevealed" title="Delete question">
@@ -63,17 +48,11 @@
     </GenericModal>
     <GenericModal v-model="quizModal" title="Edit quiz">
         <QuizForm :value="quiz" @submit="updateQuiz" />
-        </GenericModal>
+    </GenericModal>
 </template>
 <script lang="ts" setup>
-import {
-    type Question,
-    QuestionApi,
-    type QuestionCreate,
-    type Quiz,
-    QuizApi,
-} from "@/api";
-import { useExecutablePromise, usePromise } from "@/composables/promise";
+import { type Question, QuestionApi, type QuestionCreate, type Quiz, QuizApi } from "@/api";
+import { useExecutablePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
 import { computed, ref } from "vue";
@@ -84,6 +63,7 @@ import QuestionForm from "@/components/QuestionForm.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 import QuizForm from "@/components/QuizForm.vue";
+import useDebounceLoading from "@/composables/useDebounceLoading";
 
 const route = useRoute();
 
@@ -93,13 +73,15 @@ const quizApi = new QuizApi();
 
 const { data, loading, error, execute } = useExecutablePromise(() => quizApi.quizIdGet(quizId));
 
+const loadingDebounced = useDebounceLoading(loading);
+
 execute();
 
 const quizModal = ref(false);
 
 function updateQuiz(value: Quiz) {
     //quizApi. updateQuiz(quizId, value);
-    console.log(value)
+    console.log(value);
     quizModal.value = false;
     execute();
 }
@@ -133,10 +115,10 @@ function blankQuestion() {
 
 const questionApi = new QuestionApi();
 
-async function submitQuestion(value: QuestionCreate | Question) {
+async function submitQuestion(value: QuestionCreate) {
     questionModal.value = false;
     if ("id" in value) {
-        await updateQuestion(value);
+        await updateQuestion(value, value.id);
     } else {
         await createQuestion(value);
     }
@@ -145,7 +127,7 @@ async function submitQuestion(value: QuestionCreate | Question) {
 
 async function createQuestion(value: QuestionCreate) {
     try {
-        const data = await questionApi.createQuestion(value);
+        await questionApi.createQuestion(value);
         execute();
     } catch (e) {
         notificationStore.addNotification({
@@ -155,8 +137,8 @@ async function createQuestion(value: QuestionCreate) {
     }
 }
 
-async function updateQuestion(value: QuestionCreate) {
-    await questionApi.updateQuestion(value, value?.id);
+async function updateQuestion(value: QuestionCreate, id: string) {
+    await questionApi.updateQuestion(value, id);
     execute();
 }
 
@@ -174,7 +156,9 @@ onReveal((value: Question) => {
     question.value = value;
 });
 
-onConfirm(() => { deleteQuestion(question.value); });
+onConfirm(() => {
+    deleteQuestion(question.value);
+});
 
 const question = ref<QuestionCreate | Question>(blankQuestion());
 
@@ -214,11 +198,6 @@ main {
     justify-content: end;
     width: 100%;
     display: flex;
-}
-
-.container-centered-items {
-    display: flex;
-    justify-content: center;
 }
 
 @media (max-width: 768px) {
