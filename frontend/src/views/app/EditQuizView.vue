@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <main class="app-container">
         <div v-if="errorMessage">
             <p>{{ errorMessage }}</p>
         </div>
@@ -14,6 +14,14 @@
             <QuizHero :quiz="data.data" />
             <h3>Edit quiz</h3>
             <QuizForm :value="data.data" @submit="updateQuiz" />
+        </div>
+        <div v-if="revisions">
+            <RevisionCard
+                v-for="revision in revisions.data"
+                :key="revision.revisionId"
+                :value="revision" 
+                @click="viewRevision(revision)"
+                />
         </div>
         <div>
             <h3>Collaborators</h3>
@@ -48,12 +56,12 @@
             <ButtonComponent filled @click="confirm">Yes</ButtonComponent>
             <ButtonComponent @click="cancel">No</ButtonComponent>
         </GenericModal>
-    </div>
+    </main>
 </template>
 <script lang="ts" setup>
 import { useRoute, useRouter } from "vue-router";
-import type { Collaborator } from "@/api";
-import { CollaboratorApi, QuizApi } from "@/api";
+import type { Collaborator, Revision } from "@/api";
+import { CollaboratorApi, QuizApi, RevisionApi } from "@/api";
 import { usePromise } from "@/composables/promise";
 import useDebounceLoading from "@/composables/useDebounceLoading";
 import QuizForm from "@/components/QuizForm.vue";
@@ -67,6 +75,7 @@ import { email, required } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import UserCard from "@/components/UserCard.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
+import RevisionCard from "@/components/RevisionCard.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 
@@ -199,4 +208,25 @@ function deleteCollaborator(collaborator: Collaborator) {
         });
     }
 }
+
+const revisionApi = new RevisionApi();
+
+const {data: revisions } = usePromise(revisionApi.getRevisions(quizId));
+
+
+function viewRevision(revision: Revision) {
+    router.push(`/quizzes/${quizId}?revision=${revision.revisionId}`);
+
+
+}
+
+
+
 </script>
+<style scoped>
+/* Fucking hacky as fuck. I wish I didn't have to do this. Change if can! */
+/* 100vh - (nav height + nav y-padding) - (bottom nav height + bottom nav y-padding)*/
+main {
+    height: calc(100vh - 66px - 86px);
+}
+</style>

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -26,6 +25,51 @@ import { Revision } from '../models';
  */
 export const RevisionApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * Get a specific revision
+         * @param {string} quizId The ID of the quiz
+         * @param {string} revisionId The ID of the revision
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRevision: async (quizId: string, revisionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'quizId' is not null or undefined
+            if (quizId === null || quizId === undefined) {
+                throw new RequiredError('quizId','Required parameter quizId was null or undefined when calling getRevision.');
+            }
+            // verify required parameter 'revisionId' is not null or undefined
+            if (revisionId === null || revisionId === undefined) {
+                throw new RequiredError('revisionId','Required parameter revisionId was null or undefined when calling getRevision.');
+            }
+            const localVarPath = `/quiz/{quizId}/revision/{revisionId}`
+                .replace(`{${"quizId"}}`, encodeURIComponent(String(quizId)))
+                .replace(`{${"revisionId"}}`, encodeURIComponent(String(revisionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * Get revisions of a quiz
          * @param {string} quizId The ID of the question
@@ -120,6 +164,20 @@ export const RevisionApiAxiosParamCreator = function (configuration?: Configurat
 export const RevisionApiFp = function(configuration?: Configuration) {
     return {
         /**
+         * Get a specific revision
+         * @param {string} quizId The ID of the quiz
+         * @param {string} revisionId The ID of the revision
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getRevision(quizId: string, revisionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Quiz>>> {
+            const localVarAxiosArgs = await RevisionApiAxiosParamCreator(configuration).getRevision(quizId, revisionId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
          * Get revisions of a quiz
          * @param {string} quizId The ID of the question
          * @param {*} [options] Override http request option.
@@ -156,6 +214,16 @@ export const RevisionApiFp = function(configuration?: Configuration) {
 export const RevisionApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
+         * Get a specific revision
+         * @param {string} quizId The ID of the quiz
+         * @param {string} revisionId The ID of the revision
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getRevision(quizId: string, revisionId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Quiz>> {
+            return RevisionApiFp(configuration).getRevision(quizId, revisionId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Get revisions of a quiz
          * @param {string} quizId The ID of the question
          * @param {*} [options] Override http request option.
@@ -184,6 +252,17 @@ export const RevisionApiFactory = function (configuration?: Configuration, baseP
  * @extends {BaseAPI}
  */
 export class RevisionApi extends BaseAPI {
+    /**
+     * Get a specific revision
+     * @param {string} quizId The ID of the quiz
+     * @param {string} revisionId The ID of the revision
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RevisionApi
+     */
+    public async getRevision(quizId: string, revisionId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Quiz>> {
+        return RevisionApiFp(this.configuration).getRevision(quizId, revisionId, options).then((request) => request(this.axios, this.basePath));
+    }
     /**
      * Get revisions of a quiz
      * @param {string} quizId The ID of the question

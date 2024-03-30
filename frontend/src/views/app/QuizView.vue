@@ -8,14 +8,26 @@
                 <div v-if="loading">Loading...</div>
             </div>
             <div v-else-if="quiz">
-                <QuizHero :quiz="quiz" :editable="isOwnerOrCollaborator" @edit="editQuiz"  playable/>
+                <AlertComponent
+                    v-if="revisionId"
+                    type="warning">
+                    <div style="display:flex">
+                    You are viewing a revision of this quiz. You can't edit it.
+                    <ButtonComponent @click="revert" style="margin-left: auto">
+                        Revert to this version
+                        </ButtonComponent>
+
+                    </div>
+                </AlertComponent>
+
+                <QuizHero :quiz="quiz" :editable="isOwnerOrCollaborator && !revisionId" @edit="editQuiz"  playable/>
                 <div v-if="isOwnerOrCollaborator">
                     <h3>Questions</h3>
                     <QuestionCard
                         v-for="question in quiz.questions"
                         :key="question.id"
                         :value="question"
-                        editable
+                        :editable="isOwnerOrCollaborator && !revisionId"
                         @edit="editQuestion"
                         @delete="reveal"
                     />
@@ -38,7 +50,7 @@
                     v-for="feedback in feedbacks"
                     :key="feedback.id"
                     :feedback="feedback"></FeedbackCard>
-                <FeedbackForm @submit="submitFeedback" />
+                <FeedbackForm @submit="submitFeedback" v-if="!revisionId" />
 
             </div>
         </div>
@@ -53,21 +65,23 @@
     </GenericModal>
 </template>
 <script lang="ts" setup>
-import { type Question, QuestionApi, type QuestionCreate, type Quiz, QuizApi, FeedbackApi, type Feedback, type FeedbackCreate } from "@/api";
-import { usePromise } from "@/composables/promise";
+import { type Question, QuestionApi, type QuestionCreate, type Quiz, QuizApi, FeedbackApi, type Feedback, type FeedbackCreate, RevisionApi } from "@/api";
+import { useExecutablePromise, usePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import QuestionCard from "@/components/QuestionCard.vue";
 import GenericModal from "@/components/GenericModal.vue";
 import QuestionForm from "@/components/QuestionForm.vue";
 import FeedbackCard from "@/components/FeedbackCard.vue";
+import AlertComponent from "@/components/AlertComponent.vue";
 import FeedbackForm from "@/components/FeedbackForm.vue";
 import QuizHero from "@/components/QuizHero.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 import useDebounceLoading from "@/composables/useDebounceLoading";
+import { watchEffect } from "vue";
 
 const route = useRoute();
 
@@ -77,14 +91,28 @@ const route = useRoute();
 
 const quizId = route.params.id.toString();
 
-const quizApi = new QuizApi();
+const revisionId = computed(() => route.query.revision?.toString());
 
-const { data, loading, error } = usePromise(quizApi.quizIdGet(quizId));
+const quizApi = new QuizApi();
+const revisionApi = new RevisionApi();
+
+const { data, loading, error, execute } = useExecutablePromise(fetchQuiz);
 const router = useRouter();
 
 const loadingDebounced = useDebounceLoading(loading);
 
+
+watch(
+    route,
+    () => {
+        console.log("mo")
+        execute();
+    },
+    { immediate: true }
+)
+
 const errorMessage = computed(() => {
+    console.log(error.value);
     if (!error.value) {
         return "";
     }
@@ -96,6 +124,22 @@ const errorMessage = computed(() => {
     }
     return "";
 });
+
+
+async function fetchQuiz() {
+    if (revisionId.value) {
+        return await revisionApi.getRevision(quizId, revisionId.value);
+    } else {
+        return await quizApi.quizIdGet(quizId);
+    }
+}
+
+async function revert() {
+    if (revisionId.value) {
+        await revisionApi.revertToRevision(quizId, revisionId.value);
+        router.push("/quizzes/" + quizId);
+    }
+}
 
 const quiz = computed<Quiz>(() => data.value?.data as Quiz);
 
