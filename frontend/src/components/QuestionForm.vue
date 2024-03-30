@@ -76,7 +76,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (event: "submit", value: QuestionCreate | Question): void;
+    submit: [value: QuestionCreate | Question];
 }>();
 
 const questionType = ref<QuestionTypes>(QuestionTypes.MULTIPLE);
