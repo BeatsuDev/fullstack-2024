@@ -26,7 +26,7 @@ export const QuestionTypes = {
     BOOLEAN: "boolean",
 };
 
-export function getReadableQuestionType(type) {
+export function getReadableQuestionType(type: keyof typeof QuestionTypes) {
     switch (type) {
         case QuestionTypes.MULTIPLE:
             return "Multiple Choice";
@@ -37,7 +37,7 @@ export function getReadableQuestionType(type) {
     }
 }
 
-export function isMultipleChoice(question) {
+export function isMultipleChoice(question: Question | QuestionCreate) {
     return !(isBoolean(question) || isText(question));
 }
 
@@ -45,13 +45,13 @@ export function isText(question: QuestionCreate | Question) {
     return question.options?.length <= 0;
 }
 
-export function isBoolean(question) {
+export function isBoolean(question: Question | QuestionCreate) {
     if (question.options?.length !== 2) {
         return false;
     }
     return (
-        question.options[0].text === "True" &&
-        question.options[1].text === "False"
+        question.options[0] === "True" &&
+        question.options[1] === "False"
     );
 }
 
@@ -60,9 +60,8 @@ export function removeFieldsNotInType(
     questionType: keyof typeof QuestionTypes
 ) {
     if (questionType === QuestionTypes.TEXT) {
-        delete question.options;
-    }
-    if (questionType === QuestionTypes.BOOLEAN) {
+        question.options = [];
+    } else if (questionType === QuestionTypes.BOOLEAN) {
         question.options = ["True", "False"];
     }
 
