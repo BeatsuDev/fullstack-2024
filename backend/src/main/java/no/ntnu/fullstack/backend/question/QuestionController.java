@@ -9,7 +9,7 @@ import no.ntnu.fullstack.backend.question.dto.QuestionDTO;
 import no.ntnu.fullstack.backend.question.exception.NoCorrectOptionException;
 import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
 import no.ntnu.fullstack.backend.question.model.Question;
-import no.ntnu.fullstack.backend.quiz.RevisionService;
+import no.ntnu.fullstack.backend.revision.RevisionService;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;

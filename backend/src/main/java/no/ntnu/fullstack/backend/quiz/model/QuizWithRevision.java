@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.ntnu.fullstack.backend.revision.model.Revision;
 
 /** The QuizWithRevision entity represents a quiz with its latest revision. */
 @Getter

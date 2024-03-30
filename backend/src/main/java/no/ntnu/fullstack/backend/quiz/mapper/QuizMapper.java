@@ -6,7 +6,7 @@ import no.ntnu.fullstack.backend.question.QuestionMapper;
 import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
 import no.ntnu.fullstack.backend.quiz.dto.QuizOverviewDTO;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
-import no.ntnu.fullstack.backend.quiz.model.Revision;
+import no.ntnu.fullstack.backend.revision.model.Revision;
 import no.ntnu.fullstack.backend.user.UserMapper;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.Mapper;

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 import lombok.*;
-import no.ntnu.fullstack.backend.quiz.model.Revision;
+import no.ntnu.fullstack.backend.revision.model.Revision;
 
 @Entity
 @Getter

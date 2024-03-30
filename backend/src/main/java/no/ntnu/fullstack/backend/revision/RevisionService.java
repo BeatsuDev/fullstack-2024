@@ -1,5 +1,6 @@
-package no.ntnu.fullstack.backend.quiz;
+package no.ntnu.fullstack.backend.revision;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.colleborator.CollaboratorService;
@@ -8,10 +9,13 @@ import no.ntnu.fullstack.backend.question.QuestionService;
 import no.ntnu.fullstack.backend.question.exception.NoCorrectOptionException;
 import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
 import no.ntnu.fullstack.backend.question.model.Question;
+import no.ntnu.fullstack.backend.quiz.QuizService;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
+import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
-import no.ntnu.fullstack.backend.quiz.model.Revision;
-import no.ntnu.fullstack.backend.quiz.repository.RevisionRepository;
+import no.ntnu.fullstack.backend.revision.exception.RevisionNotFound;
+import no.ntnu.fullstack.backend.revision.model.Revision;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -123,5 +127,18 @@ public class RevisionService {
     Revision newRevision = newRevision(quizId, latestQuiz.getLatestRevision());
     latestQuiz.setLatestRevision(newRevision);
     return latestQuiz;
+  }
+
+  public Pair<Quiz, List<Revision>> getAllRevisions(UUID quizId) throws QuizNotFoundException {
+    Quiz quiz = quizService.getLatestQuiz(quizId).orElseThrow(QuizNotFoundException::new).getQuiz();
+    List<Revision> revisions = revisionRepository.findByQuizId(quizId);
+    return Pair.of(quiz, revisions);
+  }
+
+  public QuizWithRevision revertToRevision(UUID quizId, UUID revisionId)
+      throws QuizNotFoundException, RevisionNotFound, NotCollaboratorException {
+    Revision revision = revisionRepository.findById(revisionId).orElseThrow(RevisionNotFound::new);
+    newRevision(quizId, revision);
+    return quizService.getLatestQuiz(quizId).orElseThrow(QuizNotFoundException::new);
   }
 }

@@ -1,4 +1,4 @@
-package no.ntnu.fullstack.backend.quiz.model;
+package no.ntnu.fullstack.backend.revision.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -11,6 +11,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import no.ntnu.fullstack.backend.category.model.Category;
 import no.ntnu.fullstack.backend.question.model.Question;
+import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.hibernate.annotations.CreationTimestamp;
 

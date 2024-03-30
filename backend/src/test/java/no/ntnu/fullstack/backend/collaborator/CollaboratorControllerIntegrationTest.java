@@ -9,7 +9,7 @@ import net.minidev.json.JSONObject;
 import no.ntnu.fullstack.backend.StartupSeed;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
-import no.ntnu.fullstack.backend.quiz.repository.RevisionRepository;
+import no.ntnu.fullstack.backend.revision.RevisionRepository;
 import no.ntnu.fullstack.backend.security.UserDetailsImpl;
 import no.ntnu.fullstack.backend.user.UserRepository;
 import no.ntnu.fullstack.backend.user.model.User;

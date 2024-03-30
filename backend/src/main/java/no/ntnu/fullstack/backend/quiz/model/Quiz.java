@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.ntnu.fullstack.backend.revision.model.Revision;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.hibernate.annotations.CreationTimestamp;
 
