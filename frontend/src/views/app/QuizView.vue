@@ -68,6 +68,7 @@
     </GenericModal>
 </template>
 <script lang="ts" setup>
+import { AxiosError } from "axios";
 import {
     type Question,
     QuestionApi,
@@ -112,12 +113,20 @@ const errorMessage = computed(() => {
     if (!error.value) {
         return "";
     }
-    if (error.value.status == "404") {
-        return "Quiz not found.";
+
+    if (error.value instanceof AxiosError && error.value.response) {
+        const statusCode = error.value.response.status;
+        switch (statusCode) {
+            case 404:
+                return "Quiz not found";
+            default:
+                return (
+                    "An unexpected error occurred. Status code: " + statusCode
+                );
+        }
     }
-    if (error.value) {
-        return "An unexpected error occurred. Please try again later.";
-    }
+
+    return "An unexpected error occurred. Please try again later.";
 });
 
 const quiz = computed<Quiz>(() => data.value?.data as Quiz);
