@@ -164,12 +164,12 @@ async function createQuestion(value: QuestionCreate) {
     }
 }
 
-async function updateQuestion(value: QuestionCreate) {
+async function updateQuestion(value: Question) {
     await questionApi.updateQuestion(value, value?.id);
     execute();
 }
 
-function editQuestion(value: Question) {
+function editQuestion(value: QuestionCreate) {
     question.value = value;
     questionModal.value = true;
 }
@@ -188,7 +188,7 @@ onConfirm(() => {
     deleteQuestion(questionToDelete.value!);
 });
 
-const question = ref<QuestionCreate | Question>(blankQuestion());
+const question = ref<QuestionCreate>(blankQuestion());
 
 async function deleteQuestion(question: Question) {
     try {
