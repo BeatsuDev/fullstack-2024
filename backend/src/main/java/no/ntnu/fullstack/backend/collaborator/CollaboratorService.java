@@ -1,8 +1,8 @@
-package no.ntnu.fullstack.backend.colleborator;
+package no.ntnu.fullstack.backend.collaborator;
 
 import lombok.RequiredArgsConstructor;
-import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
-import no.ntnu.fullstack.backend.colleborator.exceptions.NotCreatorException;
+import no.ntnu.fullstack.backend.collaborator.exceptions.NotCollaboratorException;
+import no.ntnu.fullstack.backend.collaborator.exceptions.NotCreatorException;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.springframework.security.core.Authentication;

@@ -1,10 +1,10 @@
-package no.ntnu.fullstack.backend.colleborator;
+package no.ntnu.fullstack.backend.collaborator;
 
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import no.ntnu.fullstack.backend.colleborator.dto.AddCollaboratorDTO;
-import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
+import no.ntnu.fullstack.backend.collaborator.dto.AddCollaboratorDTO;
+import no.ntnu.fullstack.backend.collaborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.quiz.QuizService;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;

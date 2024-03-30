@@ -7,14 +7,14 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.category.CategoryService;
 import no.ntnu.fullstack.backend.category.model.Category;
-import no.ntnu.fullstack.backend.colleborator.CollaboratorService;
-import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
+import no.ntnu.fullstack.backend.collaborator.CollaboratorService;
+import no.ntnu.fullstack.backend.collaborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
-import no.ntnu.fullstack.backend.revision.model.Revision;
 import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
 import no.ntnu.fullstack.backend.revision.RevisionRepository;
+import no.ntnu.fullstack.backend.revision.model.Revision;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.springframework.stereotype.Service;
 

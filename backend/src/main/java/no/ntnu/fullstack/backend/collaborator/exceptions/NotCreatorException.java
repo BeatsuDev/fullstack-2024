@@ -1,4 +1,4 @@
-package no.ntnu.fullstack.backend.colleborator.exceptions;
+package no.ntnu.fullstack.backend.collaborator.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

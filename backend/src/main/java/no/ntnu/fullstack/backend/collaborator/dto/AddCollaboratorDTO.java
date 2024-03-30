@@ -1,4 +1,4 @@
-package no.ntnu.fullstack.backend.colleborator.dto;
+package no.ntnu.fullstack.backend.collaborator.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,7 +3,7 @@ package no.ntnu.fullstack.backend.revision;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
+import no.ntnu.fullstack.backend.collaborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.mapper.QuizMapper;
