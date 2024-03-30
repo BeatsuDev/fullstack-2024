@@ -87,24 +87,7 @@ const { promise, loading: quizFetchLoading } = usePromise(
 );
 
 promise.then((response) => {
-    foundQuizzes.value = [
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-        ...response.data,
-    ];
+    foundQuizzes.value = [...response.data];
 });
 
 const router = useRouter();
