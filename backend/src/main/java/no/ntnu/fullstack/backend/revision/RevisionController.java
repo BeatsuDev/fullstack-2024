@@ -2,6 +2,8 @@ package no.ntnu.fullstack.backend.revision;
 
 import java.util.List;
 import java.util.UUID;
+
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.colleborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
@@ -30,6 +32,16 @@ public class RevisionController {
       throws QuizNotFoundException {
     Pair<Quiz, List<Revision>> revisions = revisionService.getAllRevisions(quizId);
     return ResponseEntity.ok(revisionMapper.toRevisionDTOs(revisions));
+  }
+
+  @GetMapping("/{revisionId}")
+  public ResponseEntity<RevisionDTO> getRevision(
+      @PathVariable("quizId") UUID quizId, @PathVariable("revisionId") UUID revisionId)
+      throws QuizNotFoundException, RevisionNotFound {
+    QuizWithRevision quizWithRevision = revisionService.getRevision(quizId, revisionId);
+    return ResponseEntity.ok(
+        revisionMapper.toRevisionDTO(
+            quizWithRevision.getQuiz(), quizWithRevision.getLatestRevision()));
   }
 
   @PutMapping("/{revisionId}")

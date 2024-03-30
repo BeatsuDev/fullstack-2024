@@ -141,4 +141,15 @@ public class RevisionService {
     newRevision(quizId, revision);
     return quizService.getLatestQuiz(quizId).orElseThrow(QuizNotFoundException::new);
   }
+
+  public QuizWithRevision getRevision(UUID quizId, UUID revisionId)
+      throws RevisionNotFound, QuizNotFoundException {
+    Quiz quiz =
+        quizService
+            .getLatestQuiz(quizId)
+            .map(QuizWithRevision::getQuiz)
+            .orElseThrow(QuizNotFoundException::new);
+    Revision revision = revisionRepository.findById(revisionId).orElseThrow(RevisionNotFound::new);
+    return new QuizWithRevision(quiz, revision);
+  }
 }

@@ -492,24 +492,36 @@ paths:
                 items:
                   $ref: "#/components/schemas/Revision"
   /quiz/{quizId}/revision/{revisionId}:
+    parameters:
+      - name: quizId
+        description: The ID of the quiz
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: revisionId
+        description: The ID of the revision
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags:
+        - Revision
+      description: Get a specific revision
+      operationId: getRevision
+      responses:
+        "200":
+          description: The specific revision
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quiz"
     put:
       tags:
         - Revision
-      parameters:
-        - name: quizId
-          description: The ID of the quiz
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: revisionId
-          description: The ID of the revision
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
       description: Revert to a specific revision
       operationId: revertToRevision
       responses:
