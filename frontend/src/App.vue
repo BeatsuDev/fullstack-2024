@@ -3,9 +3,24 @@ import { storeToRefs } from "pinia";
 import { RouterLink, RouterView } from "vue-router";
 import NotificationsContainer from "@/components/NotificationsContainer.vue";
 import { useAuthenticationStore } from "./stores/authentication";
+import { useNotificationStore } from "./stores/notification";
 
 const authenticationStore = useAuthenticationStore();
+const notificationStore = useNotificationStore();
 const { authenticated } = storeToRefs(useAuthenticationStore());
+
+function logout(): void {
+    authenticationStore.deauthenticate().catch((error: any) => {
+        notificationStore.addNotification({
+            message:
+                "Failed to log out. Please try again. " +
+                (error instanceof Error)
+                    ? error.message
+                    : "",
+            type: "error",
+        });
+    });
+}
 </script>
 
 <template>
@@ -24,9 +39,7 @@ const { authenticated } = storeToRefs(useAuthenticationStore());
                     to="login"
                     >{{ $t("navbar.login") }}</RouterLink
                 >
-                <a v-else @click="authenticationStore.deauthenticate"
-                    >Log out</a
-                >
+                <a v-else @click="logout()">Log out</a>
                 <select id="locale-selector" v-model="$i18n.locale">
                     <option
                         v-for="locale in $i18n.availableLocales"
