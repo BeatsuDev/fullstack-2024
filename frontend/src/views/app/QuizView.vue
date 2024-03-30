@@ -219,7 +219,7 @@ const feedbacks = computed(() => feedbackData.value?.data as Feedback[]);
 async function submitFeedback(value: FeedbackCreate) {
     try {
         const newFeedback = await feedbackApi.giveFeedback(quizId, value);
-        feedbackData.value?.data.push(newFeedback);
+        feedbackData.value?.data.push(newFeedback.data);
         
     } catch (e) {
         notificationStore.addNotification({
