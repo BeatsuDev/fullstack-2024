@@ -37,5 +37,5 @@ export interface Question {
      * @type {Array<string>}
      * @memberof Question
      */
-    options?: Array<string>;
+    options: Array<string>;
 }

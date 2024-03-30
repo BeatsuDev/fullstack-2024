@@ -31,17 +31,17 @@ export interface QuizCreate {
      * @type {string}
      * @memberof QuizCreate
      */
-    description?: string;
+    description: string;
 
     /**
      * @type {number}
      * @memberof QuizCreate
      */
-    difficulty?: number;
+    difficulty: number;
 
     /**
      * @type {Array<string>}
      * @memberof QuizCreate
      */
-    categories?: Array<string>;
+    categories: Array<string>;
 }

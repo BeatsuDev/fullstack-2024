@@ -37,11 +37,11 @@ export interface QuestionWithAnswer {
      * @type {string}
      * @memberof QuestionWithAnswer
      */
-    answer?: string;
+    answer: string;
 
     /**
      * @type {Array<string>}
      * @memberof QuestionWithAnswer
      */
-    options?: Array<string>;
+    options: Array<string>;
 }

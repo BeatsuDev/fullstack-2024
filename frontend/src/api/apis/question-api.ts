@@ -20,7 +20,6 @@ import { Configuration } from '../configuration';
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 import { QuestionCreate } from '../models';
 import { QuestionWithAnswer } from '../models';
-import { Uuid } from '../models';
 /**
  * QuestionApi - axios parameter creator
  * @export
@@ -67,11 +66,11 @@ export const QuestionApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * Delete a question
-         * @param {Uuid} questionId The ID of the question
+         * @param {string} questionId The ID of the question
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteQuestion: async (questionId: Uuid, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteQuestion: async (questionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'questionId' is not null or undefined
             if (questionId === null || questionId === undefined) {
                 throw new RequiredError('questionId','Required parameter questionId was null or undefined when calling deleteQuestion.');
@@ -107,11 +106,11 @@ export const QuestionApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * Update a question
          * @param {QuestionCreate} body Question update information
-         * @param {Uuid} questionId The ID of the question
+         * @param {string} questionId The ID of the question
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateQuestion: async (body: QuestionCreate, questionId: Uuid, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateQuestion: async (body: QuestionCreate, questionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
                 throw new RequiredError('body','Required parameter body was null or undefined when calling updateQuestion.');
@@ -176,11 +175,11 @@ export const QuestionApiFp = function(configuration?: Configuration) {
         },
         /**
          * Delete a question
-         * @param {Uuid} questionId The ID of the question
+         * @param {string} questionId The ID of the question
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteQuestion(questionId: Uuid, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+        async deleteQuestion(questionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
             const localVarAxiosArgs = await QuestionApiAxiosParamCreator(configuration).deleteQuestion(questionId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -190,11 +189,11 @@ export const QuestionApiFp = function(configuration?: Configuration) {
         /**
          * Update a question
          * @param {QuestionCreate} body Question update information
-         * @param {Uuid} questionId The ID of the question
+         * @param {string} questionId The ID of the question
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateQuestion(body: QuestionCreate, questionId: Uuid, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<QuestionWithAnswer>>> {
+        async updateQuestion(body: QuestionCreate, questionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<QuestionWithAnswer>>> {
             const localVarAxiosArgs = await QuestionApiAxiosParamCreator(configuration).updateQuestion(body, questionId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -221,21 +220,21 @@ export const QuestionApiFactory = function (configuration?: Configuration, baseP
         },
         /**
          * Delete a question
-         * @param {Uuid} questionId The ID of the question
+         * @param {string} questionId The ID of the question
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteQuestion(questionId: Uuid, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+        async deleteQuestion(questionId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
             return QuestionApiFp(configuration).deleteQuestion(questionId, options).then((request) => request(axios, basePath));
         },
         /**
          * Update a question
          * @param {QuestionCreate} body Question update information
-         * @param {Uuid} questionId The ID of the question
+         * @param {string} questionId The ID of the question
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateQuestion(body: QuestionCreate, questionId: Uuid, options?: AxiosRequestConfig): Promise<AxiosResponse<QuestionWithAnswer>> {
+        async updateQuestion(body: QuestionCreate, questionId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<QuestionWithAnswer>> {
             return QuestionApiFp(configuration).updateQuestion(body, questionId, options).then((request) => request(axios, basePath));
         },
     };
@@ -260,23 +259,23 @@ export class QuestionApi extends BaseAPI {
     }
     /**
      * Delete a question
-     * @param {Uuid} questionId The ID of the question
+     * @param {string} questionId The ID of the question
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof QuestionApi
      */
-    public async deleteQuestion(questionId: Uuid, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+    public async deleteQuestion(questionId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
         return QuestionApiFp(this.configuration).deleteQuestion(questionId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Update a question
      * @param {QuestionCreate} body Question update information
-     * @param {Uuid} questionId The ID of the question
+     * @param {string} questionId The ID of the question
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof QuestionApi
      */
-    public async updateQuestion(body: QuestionCreate, questionId: Uuid, options?: AxiosRequestConfig) : Promise<AxiosResponse<QuestionWithAnswer>> {
+    public async updateQuestion(body: QuestionCreate, questionId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<QuestionWithAnswer>> {
         return QuestionApiFp(this.configuration).updateQuestion(body, questionId, options).then((request) => request(this.axios, this.basePath));
     }
 }
