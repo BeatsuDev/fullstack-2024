@@ -4,10 +4,10 @@
             <div v-if="errorMessage">
                 <p>{{ errorMessage }}</p>
             </div>
-            <div v-else-if="loading">
+            <div v-else-if="loadingDebounced">
                 <div v-if="loading">Loading...</div>
             </div>
-            <div v-else>
+            <div v-else-if="quiz">
                 <div class="header">
                     <div>
                         <h1 style="margin-top: 0">{{ quiz.title }}</h1>
@@ -32,25 +32,14 @@
                         @delete="reveal"
                     />
                 </div>
-            </div>
-            <div v-if="isOwnerOrCollaborator">
-                <h3>Questions</h3>
-                <QuestionCard
-                    v-for="question in quiz.questions"
-                    :key="question.id"
-                    :value="question"
-                    editable
-                    @edit="editQuestion"
-                    @delete="reveal"
-                />
-            </div>
-            <ButtonComponent
-                arge
-                filled
-                class="centered"
-                @click="questionModal = true"
+                <ButtonComponent
+                    arge
+                    filled
+                    class="centered"
+                    @click="questionModal = true"
                 >Add question
-            </ButtonComponent>
+                </ButtonComponent>
+            </div>
         </div>
     </main>
     <GenericModal v-model="isRevealed" title="Delete question">
@@ -63,16 +52,10 @@
     </GenericModal>
     <GenericModal v-model="quizModal" title="Edit quiz">
         <QuizForm :value="quiz" @submit="updateQuiz" />
-        </GenericModal>
+    </GenericModal>
 </template>
 <script lang="ts" setup>
-import {
-    type Question,
-    QuestionApi,
-    type QuestionCreate,
-    type Quiz,
-    QuizApi,
-} from "@/api";
+import { type Question, QuestionApi, type QuestionCreate, type Quiz, QuizApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
@@ -84,6 +67,7 @@ import QuestionForm from "@/components/QuestionForm.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 import QuizForm from "@/components/QuizForm.vue";
+import useDebounceLoading from "@/composables/useDebounceLoading";
 
 const route = useRoute();
 
@@ -93,13 +77,15 @@ const quizApi = new QuizApi();
 
 const { data, loading, error, execute } = useExecutablePromise(() => quizApi.quizIdGet(quizId));
 
+const loadingDebounced = useDebounceLoading(loading);
+
 execute();
 
 const quizModal = ref(false);
 
 function updateQuiz(value: Quiz) {
     //quizApi. updateQuiz(quizId, value);
-    console.log(value)
+    console.log(value);
     quizModal.value = false;
     execute();
 }
@@ -145,7 +131,7 @@ async function submitQuestion(value: QuestionCreate) {
 
 async function createQuestion(value: QuestionCreate) {
     try {
-         await questionApi.createQuestion(value);
+        await questionApi.createQuestion(value);
         execute();
     } catch (e) {
         notificationStore.addNotification({
@@ -174,7 +160,9 @@ onReveal((value: Question) => {
     question.value = value;
 });
 
-onConfirm(() => { deleteQuestion(question.value); });
+onConfirm(() => {
+    deleteQuestion(question.value);
+});
 
 const question = ref<QuestionCreate | Question>(blankQuestion());
 
