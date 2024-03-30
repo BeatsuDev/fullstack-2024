@@ -462,6 +462,7 @@ paths:
       operationId: updateQuestion
       requestBody:
         description: Question update information
+        required: true
         content:
           application/json:
             schema:
