@@ -29,4 +29,18 @@ public class Question {
   private int sequenceNumber;
   private String question;
   private String answer;
+
+  public Question copy() {
+    Question question = new Question();
+    question.setQuestionId(this.questionId);
+    question.setOptions(
+        this.options.stream()
+            .map(QuestionOption::copy)
+            .peek(o -> o.setQuestion(question))
+            .toList());
+    question.setSequenceNumber(this.sequenceNumber);
+    question.setQuestion(this.question);
+    question.setAnswer(this.answer);
+    return question;
+  }
 }

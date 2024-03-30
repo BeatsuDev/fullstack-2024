@@ -49,4 +49,16 @@ public class Revision {
 
   @OneToMany(mappedBy = "revision", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private List<Question> questions;
+
+  public Revision copy() {
+    Revision revision = new Revision();
+    revision.setTitle(this.title);
+    revision.setDescription(this.description);
+    revision.setDifficulty(this.difficulty);
+    revision.setQuiz(this.quiz);
+    revision.setCategories(this.categories.stream().toList());
+    revision.setQuestions(
+        this.questions.stream().map(Question::copy).peek(q -> q.setRevision(revision)).toList());
+    return revision;
+  }
 }

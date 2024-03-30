@@ -1,6 +1,5 @@
 package no.ntnu.fullstack.backend.question;
 
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -21,23 +20,6 @@ public class QuestionService {
 
   public Optional<Question> getLatestQuestionByQuestionId(UUID questionId) {
     return questionRepository.findLatestByQuestionId(questionId);
-  }
-
-  public Question makeQuestionCopy(Question question) {
-    Question copy = new Question();
-    copy.setQuestion(question.getQuestion());
-    copy.setAnswer(question.getAnswer());
-    copy.setQuestionId(question.getQuestionId());
-
-    copy.setOptions(new ArrayList<>());
-    for (QuestionOption option : question.getOptions()) {
-      QuestionOption optionCopy = new QuestionOption();
-      optionCopy.setOption(option.getOption());
-      optionCopy.setQuestion(copy);
-      copy.getOptions().add(optionCopy);
-    }
-
-    return copy;
   }
 
   public void validateQuestion(Question question) throws NoCorrectOptionException {

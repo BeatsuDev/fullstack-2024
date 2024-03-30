@@ -15,7 +15,9 @@ import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
 import no.ntnu.fullstack.backend.revision.exception.RevisionNotFound;
 import no.ntnu.fullstack.backend.revision.model.Revision;
+import no.ntnu.fullstack.backend.user.model.User;
 import org.springframework.data.util.Pair;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,25 +36,14 @@ public class RevisionService {
             .orElseThrow(QuizNotFoundException::new)
             .getLatestRevision();
     collaboratorService.loggedInUserIsCollaboratorOrThrow(latestQuiz.getQuiz());
+    User loggedInUser =
+        (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-    Revision newRevision = new Revision();
-    newRevision.setTitle(revision.getTitle());
-    newRevision.setDescription(revision.getDescription());
-    newRevision.setDifficulty(revision.getDifficulty());
-    newRevision.setCreator(revision.getCreator());
-    newRevision.setQuiz(latestQuiz.getQuiz());
+    Revision newRevision = revision.copy();
+    revision.setQuiz(latestQuiz.getQuiz());
+    newRevision.setCreator(loggedInUser);
 
-    newRevision.setQuestions(
-        revision.getQuestions().stream()
-            .map(
-                question -> {
-                  var newQuestion = questionService.makeQuestionCopy(question);
-                  newQuestion.setRevision(newRevision);
-                  return newQuestion;
-                })
-            .toList());
-
-    return revisionRepository.saveAndFlush(newRevision);
+    return revisionRepository.save(newRevision);
   }
 
   public Question updateQuestion(UUID quizId, Question update)
@@ -116,17 +107,20 @@ public class RevisionService {
 
   public QuizWithRevision updateQuizInfo(UUID quizId, Revision revision)
       throws QuizNotFoundException, NotCollaboratorException {
-    QuizWithRevision latestQuiz =
-        quizService.getLatestQuiz(quizId).orElseThrow(QuizNotFoundException::new);
+    Revision latestRevision =
+        quizService
+            .getLatestQuiz(quizId)
+            .orElseThrow(QuizNotFoundException::new)
+            .getLatestRevision()
+            .copy();
 
-    latestQuiz.getLatestRevision().setTitle(revision.getTitle());
-    latestQuiz.getLatestRevision().setDescription(revision.getDescription());
-    latestQuiz.getLatestRevision().setDifficulty(revision.getDifficulty());
-    latestQuiz.getLatestRevision().setCategories(revision.getCategories());
+    latestRevision.setTitle(revision.getTitle());
+    latestRevision.setDescription(revision.getDescription());
+    latestRevision.setDifficulty(revision.getDifficulty());
+    latestRevision.setCategories(revision.getCategories());
 
-    Revision newRevision = newRevision(quizId, latestQuiz.getLatestRevision());
-    latestQuiz.setLatestRevision(newRevision);
-    return latestQuiz;
+    newRevision(quizId, latestRevision);
+    return quizService.getLatestQuiz(quizId).orElseThrow(QuizNotFoundException::new);
   }
 
   public Pair<Quiz, List<Revision>> getAllRevisions(UUID quizId) throws QuizNotFoundException {
