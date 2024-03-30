@@ -67,6 +67,10 @@ onMounted(() => {
 </template>
 
 <style scoped>
+main {
+    height: 100%;
+}
+
 .profile-page-container > h1 {
     width: 100%;
     text-align: center;
