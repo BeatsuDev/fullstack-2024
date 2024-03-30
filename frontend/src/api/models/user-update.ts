@@ -13,13 +13,14 @@
  * Do not edit the class manually.
  */
 
-/**
- *
+ /**
+ * 
  *
  * @export
  * @interface UserUpdate
  */
 export interface UserUpdate {
+
     /**
      * @type {string}
      * @memberof UserUpdate

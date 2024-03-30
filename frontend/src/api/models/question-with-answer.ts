@@ -13,18 +13,19 @@
  * Do not edit the class manually.
  */
 
-/**
- *
+ /**
+ * 
  *
  * @export
  * @interface QuestionWithAnswer
  */
 export interface QuestionWithAnswer {
+
     /**
      * @type {string}
      * @memberof QuestionWithAnswer
      */
-    id?: string;
+    id: string;
 
     /**
      * @type {string}
