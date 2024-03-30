@@ -4,9 +4,10 @@ import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
 import type { Category, QuizOverview } from "@/api";
-import { QuizApi } from "@/api";
+import { CategoryApi, QuizApi } from "@/api";
 import { usePromise } from "@/composables/promise";
 import { useRouter } from "vue-router";
+import { watch } from "fs";
 
 // Search
 const searchQuery = ref("");
@@ -25,22 +26,15 @@ function toggleFiltersWindow() {
 }
 
 // Categories
-const categories = ref<Category[]>([
-    { name: "Biology", color: "#0f0" },
-    { name: "Science", color: "#ad0" },
-    { name: "Math", color: "#f00" },
-    { name: "History", color: "#00f" },
-    { name: "Geography", color: "#f0f" },
-    { name: "Literature", color: "#0ff" },
-    { name: "Art", color: "#ff0" },
-    { name: "Music", color: "#f80" },
-    { name: "Movies", color: "#f08" },
-    { name: "Sports", color: "#8f0" },
-    { name: "Technology", color: "#08f" },
-    { name: "General Knowledge", color: "#80f" },
-]);
+const categoryApi = new CategoryApi();
 
+const categories = ref<Category[]>();
 const selectedCategories = ref<Category[]>([]);
+
+categoryApi.getCategories().then((response) => {
+    categories.value = response.data;
+    console.log(categories.value);
+});
 
 function isCategorySelected(category: Category): boolean {
     return selectedCategories.value.map((c) => c.name).includes(category.name);
