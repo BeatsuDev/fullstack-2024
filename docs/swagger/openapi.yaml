@@ -616,6 +616,7 @@ components:
     Question:
       type: object
       required:
+        - id
         - question
       properties:
         id:
@@ -632,6 +633,7 @@ components:
     QuestionWithAnswer:
       type: object
       required:
+        - id
         - question
       properties:
         id:
