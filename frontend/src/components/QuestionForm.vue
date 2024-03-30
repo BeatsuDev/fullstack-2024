@@ -103,7 +103,7 @@ function submit() {
     if (questionType.value == QuestionTypes.MULTIPLE) {
         editable.value.answer = editable.value.options[selectedOption.value];
     } else if (questionType.value == QuestionTypes.BOOLEAN) {
-        editable.value.answer = booleanAnswer.value;
+        editable.value.answer = booleanAnswer.value ? "True" : "False";
         editable.value.options = ["True", "False"];
     }
 
