@@ -73,7 +73,7 @@ import {
     type Quiz,
     QuizApi,
 } from "@/api";
-import { useExecutablePromise, usePromise } from "@/composables/promise";
+import { useExecutablePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
 import { computed, ref } from "vue";
@@ -133,10 +133,10 @@ function blankQuestion() {
 
 const questionApi = new QuestionApi();
 
-async function submitQuestion(value: QuestionCreate | Question) {
+async function submitQuestion(value: QuestionCreate) {
     questionModal.value = false;
     if ("id" in value) {
-        await updateQuestion(value);
+        await updateQuestion(value, value.id);
     } else {
         await createQuestion(value);
     }
@@ -145,7 +145,7 @@ async function submitQuestion(value: QuestionCreate | Question) {
 
 async function createQuestion(value: QuestionCreate) {
     try {
-        const data = await questionApi.createQuestion(value);
+         await questionApi.createQuestion(value);
         execute();
     } catch (e) {
         notificationStore.addNotification({
@@ -155,8 +155,8 @@ async function createQuestion(value: QuestionCreate) {
     }
 }
 
-async function updateQuestion(value: QuestionCreate) {
-    await questionApi.updateQuestion(value, value?.id);
+async function updateQuestion(value: QuestionCreate, id: string) {
+    await questionApi.updateQuestion(value, id);
     execute();
 }
 
@@ -214,11 +214,6 @@ main {
     justify-content: end;
     width: 100%;
     display: flex;
-}
-
-.container-centered-items {
-    display: flex;
-    justify-content: center;
 }
 
 @media (max-width: 768px) {
