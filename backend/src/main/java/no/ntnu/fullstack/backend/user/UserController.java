@@ -1,8 +1,16 @@
 package no.ntnu.fullstack.backend.user;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
-
+import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.security.JWTService;
+import no.ntnu.fullstack.backend.user.dto.UserCreate;
+import no.ntnu.fullstack.backend.user.dto.UserDTO;
+import no.ntnu.fullstack.backend.user.dto.UserUpdate;
+import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,31 +25,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import no.ntnu.fullstack.backend.security.JWTService;
-import no.ntnu.fullstack.backend.user.dto.UserCreate;
-import no.ntnu.fullstack.backend.user.dto.UserDTO;
-import no.ntnu.fullstack.backend.user.dto.UserUpdate;
-import no.ntnu.fullstack.backend.user.model.User;
-
 @RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {
-  private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
   private final UserService userService;
   private final JWTService jwtService;
+  private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
   @PostMapping
   @ResponseBody
-  public UserDTO registerUser(@Valid @RequestBody UserCreate userCreate) {
+  public UserDTO registerUser(@Valid @RequestBody UserCreate userCreate, HttpServletResponse response) {
     User user = userMapper.fromUserCreate(userCreate);
-    Optional<User> result = userService.createUser(user);
+    User result = userService.createUser(user).orElseThrow();
 
-    return userMapper.toUserDTO(result.orElseThrow(() -> new RuntimeException("Could not create user.")));
+    response.addCookie(jwtService.generateTokenCookie(result));
+    return userMapper.toUserDTO(result);
   }
 
   @PutMapping
