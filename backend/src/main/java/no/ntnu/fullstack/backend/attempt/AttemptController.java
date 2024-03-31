@@ -46,6 +46,20 @@ public class AttemptController {
     return ResponseEntity.ok(attemptMapper.toQuizAttemptDTOs(quizAttempts));
   }
 
+  @GetMapping("/{attemptId}")
+  public ResponseEntity<QuizAttemptDTO> getAttempt(
+      Authentication auth,
+      @PathVariable("quizId") UUID quizId,
+      @PathVariable("attemptId") UUID attemptId)
+      throws AttemptNotFoundException, QuizNotFoundException {
+    User loggedInUser = (User) auth.getPrincipal();
+    QuizAttempt quizAttempt = attemptService.getAttempt(quizId, attemptId);
+    if (!quizAttempt.getAttemptedBy().getId().equals(loggedInUser.getId()))
+      throw new AttemptNotFoundException();
+
+    return ResponseEntity.ok(attemptMapper.toQuizAttemptDTO(quizAttempt));
+  }
+
   @PostMapping("/{attemptId}")
   public ResponseEntity<QuestionAttemptDTO> submitAttempt(
       Authentication auth,
