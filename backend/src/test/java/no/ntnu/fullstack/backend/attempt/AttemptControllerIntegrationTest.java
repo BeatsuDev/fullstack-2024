@@ -14,6 +14,7 @@ import no.ntnu.fullstack.backend.StartupSeed;
 import no.ntnu.fullstack.backend.attempt.repository.QuestionAttemptRepository;
 import no.ntnu.fullstack.backend.attempt.repository.QuizAttemptRepository;
 import no.ntnu.fullstack.backend.collaborator.exceptions.NotCollaboratorException;
+import no.ntnu.fullstack.backend.image.exception.ImageNotFound;
 import no.ntnu.fullstack.backend.question.exception.NoCorrectOptionException;
 import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.question.model.QuestionOption;
@@ -59,7 +60,10 @@ public class AttemptControllerIntegrationTest {
 
   @BeforeEach
   public void setup()
-      throws NotCollaboratorException, QuizNotFoundException, NoCorrectOptionException {
+      throws NotCollaboratorException,
+          QuizNotFoundException,
+          NoCorrectOptionException,
+          ImageNotFound {
     startupSeed.onApplicationEvent(null);
 
     User user = new User();
@@ -90,7 +94,7 @@ public class AttemptControllerIntegrationTest {
             .answer("2")
             .options(Stream.of("1", "2", "3", "4").map(QuestionOption::new).toList())
             .build();
-    questions.add(revisionService.createQuestion(quizId, question));
+    questions.add(revisionService.createQuestion(quizId, question, null));
 
     question =
         Question.builder()
@@ -98,7 +102,7 @@ public class AttemptControllerIntegrationTest {
             .answer("4")
             .options(Stream.of("3", "4", "5", "6").map(QuestionOption::new).toList())
             .build();
-    questions.add(revisionService.createQuestion(quizId, question));
+    questions.add(revisionService.createQuestion(quizId, question, null));
   }
 
   @AfterEach

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.collaborator.exceptions.NotCollaboratorException;
+import no.ntnu.fullstack.backend.image.exception.ImageNotFound;
 import no.ntnu.fullstack.backend.question.dto.QuestionCreateDTO;
 import no.ntnu.fullstack.backend.question.dto.QuestionDTO;
 import no.ntnu.fullstack.backend.question.exception.NoCorrectOptionException;
@@ -29,10 +30,12 @@ public class QuestionController {
       throws QuizNotFoundException,
           QuestionNotFoundException,
           NoCorrectOptionException,
-          NotCollaboratorException {
+          NotCollaboratorException,
+          ImageNotFound {
     Question newQuestion = questionMapper.fromDTO(update);
     newQuestion.setQuestionId(questionId);
-    Question question = revisionService.updateQuestion(update.getQuizId(), newQuestion);
+    Question question =
+        revisionService.updateQuestion(update.getQuizId(), newQuestion, update.getImageId());
     return ResponseEntity.ok(questionMapper.toDTO(question));
   }
 
@@ -45,9 +48,13 @@ public class QuestionController {
 
   @PostMapping
   public ResponseEntity<QuestionDTO> createQuestion(@Valid @RequestBody QuestionCreateDTO create)
-      throws QuizNotFoundException, NoCorrectOptionException, NotCollaboratorException {
+      throws QuizNotFoundException,
+          NoCorrectOptionException,
+          NotCollaboratorException,
+          ImageNotFound {
     Question question =
-        revisionService.createQuestion(create.getQuizId(), questionMapper.fromDTO(create));
+        revisionService.createQuestion(
+            create.getQuizId(), questionMapper.fromDTO(create), create.getImageId());
     return ResponseEntity.status(HttpStatus.CREATED).body(questionMapper.toDTO(question));
   }
 }

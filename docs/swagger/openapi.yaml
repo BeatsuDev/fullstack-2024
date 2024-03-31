@@ -774,6 +774,7 @@ components:
         - question
         - answer
         - options
+        - imageId
       properties:
         quizId:
           type: string
@@ -784,6 +785,9 @@ components:
         answer:
           type: string
           maxLength: 128
+        imageId:
+          type: string
+          format: uuid
         options:
           type: array
           maxLength: 4

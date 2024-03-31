@@ -14,4 +14,5 @@ public class QuestionCreateDTO {
   @NotNull private UUID quizId;
   @NotBlank private String answer;
   @NotNull private List<String> options;
+  private UUID imageId;
 }

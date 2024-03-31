@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 import lombok.*;
+import no.ntnu.fullstack.backend.image.model.Image;
 import no.ntnu.fullstack.backend.revision.model.Revision;
 
 @Entity
@@ -22,6 +23,8 @@ public class Question {
   @NotNull private UUID questionId;
 
   @ManyToOne private Revision revision;
+
+  @ManyToOne private Image image;
 
   @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<QuestionOption> options;
@@ -41,6 +44,7 @@ public class Question {
     question.setSequenceNumber(this.sequenceNumber);
     question.setQuestion(this.question);
     question.setAnswer(this.answer);
+    question.setImage(this.image);
     return question;
   }
 }

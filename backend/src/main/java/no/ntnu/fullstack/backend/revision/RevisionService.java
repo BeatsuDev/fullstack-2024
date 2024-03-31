@@ -5,6 +5,9 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.collaborator.CollaboratorService;
 import no.ntnu.fullstack.backend.collaborator.exceptions.NotCollaboratorException;
+import no.ntnu.fullstack.backend.image.ImageService;
+import no.ntnu.fullstack.backend.image.exception.ImageNotFound;
+import no.ntnu.fullstack.backend.image.model.Image;
 import no.ntnu.fullstack.backend.question.QuestionService;
 import no.ntnu.fullstack.backend.question.exception.NoCorrectOptionException;
 import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
@@ -27,6 +30,7 @@ public class RevisionService {
   private final QuestionService questionService;
   private final RevisionRepository revisionRepository;
   private final CollaboratorService collaboratorService;
+  private final ImageService imageService;
 
   private Revision newRevision(UUID quizId, Revision revision)
       throws QuizNotFoundException, NotCollaboratorException {
@@ -42,11 +46,17 @@ public class RevisionService {
     return revisionRepository.save(newRevision);
   }
 
-  public Question updateQuestion(UUID quizId, Question update)
+  public Question updateQuestion(UUID quizId, Question update, UUID imageId)
       throws QuizNotFoundException,
           QuestionNotFoundException,
           NoCorrectOptionException,
-          NotCollaboratorException {
+          NotCollaboratorException,
+          ImageNotFound {
+    Image image = null;
+    if (imageId != null) {
+      image = imageService.getImage(imageId);
+    }
+
     questionService.validateQuestion(update);
     Revision latestRevision = quizService.getLatestQuiz(quizId).getLatestRevision();
 
@@ -58,6 +68,7 @@ public class RevisionService {
     question.setQuestion(update.getQuestion());
     question.setOptions(update.getOptions());
     question.setAnswer(update.getAnswer());
+    question.setImage(image);
 
     Revision revision = newRevision(quizId, latestRevision);
     question.setRevision(revision);
@@ -74,10 +85,19 @@ public class RevisionService {
     newRevision(question.getRevision().getQuiz().getId(), question.getRevision());
   }
 
-  public Question createQuestion(UUID quizId, Question question)
-      throws QuizNotFoundException, NoCorrectOptionException, NotCollaboratorException {
+  public Question createQuestion(UUID quizId, Question question, UUID imageId)
+      throws QuizNotFoundException,
+          NoCorrectOptionException,
+          NotCollaboratorException,
+          ImageNotFound {
+    Image image = null;
+    if (imageId != null) {
+      image = imageService.getImage(imageId);
+    }
+
     questionService.validateQuestion(question);
     question.setQuestionId(UUID.randomUUID());
+    question.setImage(image);
 
     Revision latestRevision = quizService.getLatestQuiz(quizId).getLatestRevision();
 

@@ -11,9 +11,9 @@ import no.ntnu.fullstack.backend.category.model.Category;
 import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.question.model.QuestionOption;
 import no.ntnu.fullstack.backend.quiz.QuizService;
-import no.ntnu.fullstack.backend.revision.RevisionService;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
+import no.ntnu.fullstack.backend.revision.RevisionService;
 import no.ntnu.fullstack.backend.revision.model.Revision;
 import no.ntnu.fullstack.backend.user.UserRepository;
 import no.ntnu.fullstack.backend.user.model.User;
@@ -95,7 +95,7 @@ public class StartupSeed {
         .forEach(
             question -> {
               try {
-                revisionService.createQuestion(newQuiz.getQuiz().getId(), question);
+                revisionService.createQuestion(newQuiz.getQuiz().getId(), question, null);
               } catch (Exception e) {
                 throw new RuntimeException(e);
               }
