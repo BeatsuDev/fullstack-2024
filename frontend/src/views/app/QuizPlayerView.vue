@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { AttemptApi } from "@/api";
-import { usePromise } from "@/composables/promise";
+import { AttemptApi, type AnswerDTO } from "@/api";
+import { usePromise, useExecutablePromise } from "@/composables/promise";
 import router from "@/router";
 
 import QuestionPlayer from "@/components/quiz-player/QuestionPlayer.vue";
 
-const quizApi = new AttemptApi();
+const attemptApi = new AttemptApi();
 const {
     promise,
     data: response,
     loading,
     error,
 } = usePromise(
-    quizApi.attemptQuiz(
+    attemptApi.attemptQuiz(
         (router.currentRoute.value.params.id as unknown as string) ?? ""
     )
 );
@@ -27,14 +27,47 @@ const currentQuestion = computed(
     () => response.value?.data.quiz!.questions[questionNumber.value] ?? null
 );
 const currentQuiz = computed(() => response.value?.data ?? null);
+const currentAttemptId = computed(() => response.value?.data.id ?? null);
 
-function nextQuestion() {
-    questionNumber.value++;
+const { execute: executeSubmitAnswer } = useExecutablePromise(
+    async (
+        ...args: Parameters<typeof attemptApi.quizIdAttemptQuizAttemptPost>
+    ) => {
+        return await attemptApi.quizIdAttemptQuizAttemptPost(...args);
+    }
+);
+
+async function submitAnswer(answer: string) {
     if (currentQuiz.value == null) return;
-    if (questionNumber.value >= currentQuiz.value.quiz!.questions.length) {
+    if (currentQuestion.value == null) return;
+    if (currentAttemptId.value == null) return;
+
+    // Send the answer to the server
+    const response = await executeSubmitAnswer(
+        {
+            questionId: currentQuestion.value.id,
+            answer,
+        } as AnswerDTO,
+        currentQuiz.value.id,
+        currentAttemptId.value
+    );
+
+    const solutionData = response.data;
+
+    alert(
+        `Your answer was ${
+            solutionData.correct
+                ? "correct!"
+                : "incorrect! The correct answer was:" + solutionData.answer
+        }`
+    );
+
+    // Check if the quiz is finished
+    if (questionNumber.value >= currentQuiz.value.quiz!.questions.length - 1) {
         console.log("Quiz finished!");
         return;
     }
+    questionNumber.value++;
 }
 </script>
 
@@ -47,7 +80,7 @@ function nextQuestion() {
             <QuestionPlayer
                 v-if="currentQuestion"
                 :question="currentQuestion"
-                @answerSelected="nextQuestion"
+                @answerSelected="submitAnswer"
             />
             <div v-else>No question selected...</div>
         </div>
