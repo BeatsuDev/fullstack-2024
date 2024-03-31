@@ -1,13 +1,15 @@
 import type { Ref } from "vue";
-import {  QuizApi, RevisionApi } from "@/api";
-import type { Quiz} from "@/api/models/quiz";
+import { QuizApi, RevisionApi } from "@/api";
+import type { Quiz } from "@/api/models/quiz";
 import { useExecutablePromise } from "@/composables/promise";
 import { useRouter } from "vue-router";
 import { computed, ref, watch, watchEffect } from "vue";
 import { useNotificationStore } from "@/stores/notification";
 
-export default function useQuizApi(quizId: Ref<string>, revisionId: Ref<string | null> = ref(null)) {
-
+export default function useQuizApi(
+    quizId: Ref<string>,
+    revisionId: Ref<string | null> = ref(null)
+) {
     const router = useRouter();
 
     const quizApi = new QuizApi();
@@ -27,11 +29,14 @@ export default function useQuizApi(quizId: Ref<string>, revisionId: Ref<string |
         if (!error.value) {
             return "";
         }
-        console.log(error.value)
-        if (error.value.response.status == "404" || error.value.response.status == "422") {
-            return "Quiz not found.";
-        }
+        console.log("Handled error:", error.value);
         if (error.value) {
+            if (
+                error.value.response.status == "404" ||
+                error.value.response.status == "422"
+            ) {
+                return "Quiz not found.";
+            }
             return "An unexpected error occurred. Please try again later.";
         }
         return "";
@@ -39,9 +44,12 @@ export default function useQuizApi(quizId: Ref<string>, revisionId: Ref<string |
 
     async function fetchQuiz() {
         if (revisionId.value) {
-            return await revisionApi.getRevision(quizId.value, revisionId.value);
+            return await revisionApi.getRevision(
+                quizId.value,
+                revisionId.value
+            );
         } else {
-            return await quizApi.quizIdGet(quizId.value);
+            return await quizApi.getQuiz(quizId.value);
         }
     }
 
@@ -66,6 +74,4 @@ export default function useQuizApi(quizId: Ref<string>, revisionId: Ref<string |
         errorMessage,
         revert,
     };
-
-
 }

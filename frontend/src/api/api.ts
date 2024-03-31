@@ -16,6 +16,7 @@ export * from './apis/attempt-api';
 export * from './apis/category-api';
 export * from './apis/collaborator-api';
 export * from './apis/feedback-api';
+export * from './apis/image-api';
 export * from './apis/question-api';
 export * from './apis/quiz-api';
 export * from './apis/revision-api';

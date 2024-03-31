@@ -13,7 +13,11 @@
         <div v-else-if="data">
             <QuizHero :quiz="quizReadOnly" />
             <h3>Edit quiz</h3>
-            <QuizForm :value="data?.data" @submit="updateQuiz" style="margin:auto" />
+            <QuizForm
+                :value="data?.data"
+                @submit="updateQuiz"
+                style="margin: auto"
+            />
         </div>
         <div v-if="revisions">
             <h3>Revisions</h3>
@@ -23,17 +27,18 @@
             />
         </div>
         <h3>Collaborators</h3>
-        <div
-            v-for="collaborator in collaborators?.data"
-            :key="collaborator.id"
-        >
+        <div v-for="collaborator in collaborators?.data" :key="collaborator.id">
             <UserCard :value="collaborator" editable @delete="reveal" />
         </div>
         <div style="display: flex; justify-content: center">
-            <ButtonComponent filled large @click="collaboratorModal = true" style="margin-top: 10px;">
+            <ButtonComponent
+                filled
+                large
+                @click="collaboratorModal = true"
+                style="margin-top: 10px"
+            >
                 Add collaborator
             </ButtonComponent>
-
         </div>
         <GenericModal v-model="collaboratorModal" title="Add collaborator">
             <form @submit.prevent>
@@ -57,9 +62,7 @@
             <ButtonComponent @click="cancel">No</ButtonComponent>
         </GenericModal>
 
-        <h3>
-            Export quiz to template
-        </h3>
+        <h3>Export quiz to template</h3>
 
         <ButtonComponent filled @click="exportQuiz">
             Export quiz to template
@@ -92,15 +95,13 @@ const route = useRoute();
 
 const quizId = computed(() => route.params.id.toString());
 
-const {data, loading, errorMessage, quizReadOnly} = useQuizApi(quizId);
-
+const { data, loading, errorMessage, quizReadOnly } = useQuizApi(quizId);
 
 const { isOwnerOrCollaborator } = useQuizPermissions(
-    computed(() => data.value?.data),
+    computed(() => data.value?.data)
 );
 
 const loadingDebounced = useDebounceLoading(loading);
-
 
 const router = useRouter();
 
@@ -108,7 +109,7 @@ const quizApi = new QuizApi();
 
 function updateQuiz(value: Quiz) {
     try {
-        quizApi.quizIdPut(quizId.value, value);
+        quizApi.updateQuiz(quizId.value, value);
         notificationStore.addNotification({
             message: "Quiz updated successfully.",
             type: "success",
@@ -126,7 +127,7 @@ function updateQuiz(value: Quiz) {
 const collaboratorApi = new CollaboratorApi();
 
 const { data: collaborators } = usePromise(
-    collaboratorApi.getCollaborators(quizId.value),
+    collaboratorApi.getCollaborators(quizId.value)
 );
 
 const collaborator = reactive({
@@ -149,7 +150,7 @@ async function addCollaborator() {
     try {
         const data = await collaboratorApi.addCollaborator(
             quizId.value,
-            collaborator,
+            collaborator
         );
         collaborators.value?.data.push(data.data as Collaborator);
         notificationStore.addNotification({
@@ -196,7 +197,7 @@ function deleteCollaborator(collaborator: Collaborator) {
         });
         if (collaborators.value) {
             collaborators.value.data = collaborators.value.data.filter(
-                (c) => c.id !== collaborator.id,
+                (c) => c.id !== collaborator.id
             );
         }
     } catch (e) {
@@ -210,7 +211,6 @@ function deleteCollaborator(collaborator: Collaborator) {
 const revisionApi = new RevisionApi();
 
 const { data: revisions } = usePromise(revisionApi.getRevisions(quizId.value));
-
 
 function viewRevision(revision: Revision) {
     router.push(`/quizzes/${quizId.value}?revision=${revision.revisionId}`);
@@ -228,8 +228,6 @@ function exportQuiz() {
     URL.revokeObjectURL(element.href);
     document.body.removeChild(element);
 }
-
-
 </script>
 <style scoped>
 /* Fucking hacky as fuck. I wish I didn't have to do this. Change if can! */

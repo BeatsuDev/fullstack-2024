@@ -19,8 +19,8 @@ const {
     error,
     loading,
 } = useExecutablePromise(
-    async (...args: Parameters<typeof quizApi.quizGet>) => {
-        return (await quizApi.quizGet(...args)).data;
+    async (...args: Parameters<typeof quizApi.getQuizzes>) => {
+        return (await quizApi.getQuizzes(...args)).data;
     }
 );
 

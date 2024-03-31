@@ -13,42 +13,23 @@
  * Do not edit the class manually.
  */
 
-import { Image } from './image';
  /**
  * 
  *
  * @export
- * @interface Question
+ * @interface Image
  */
-export interface Question {
+export interface Image {
 
     /**
      * @type {string}
-     * @memberof Question
+     * @memberof Image
      */
     id: string;
 
     /**
      * @type {string}
-     * @memberof Question
+     * @memberof Image
      */
-    question: string;
-
-    /**
-     * @type {string}
-     * @memberof Question
-     */
-    answer?: string;
-
-    /**
-     * @type {Image}
-     * @memberof Question
-     */
-    image: Image;
-
-    /**
-     * @type {Array<string>}
-     * @memberof Question
-     */
-    options: Array<string>;
+    path: string;
 }

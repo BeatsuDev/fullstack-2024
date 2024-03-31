@@ -24,8 +24,8 @@ const {
     error,
     loading: quizFetchLoading,
 } = useExecutablePromise(
-    async (...args: Parameters<typeof quizApi.quizGet>) =>
-        await quizApi.quizGet(...args)
+    async (...args: Parameters<typeof quizApi.getQuizzes>) =>
+        await quizApi.getQuizzes(...args)
 );
 
 function searchQuizzes() {

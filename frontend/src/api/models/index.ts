@@ -2,6 +2,7 @@ export * from './answer-dto';
 export * from './category';
 export * from './feedback';
 export * from './feedback-create';
+export * from './image';
 export * from './question';
 export * from './question-attempt';
 export * from './question-create';

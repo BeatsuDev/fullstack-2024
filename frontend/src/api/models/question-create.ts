@@ -40,6 +40,12 @@ export interface QuestionCreate {
     answer: string;
 
     /**
+     * @type {string}
+     * @memberof QuestionCreate
+     */
+    imageId: string;
+
+    /**
      * @type {Array<string>}
      * @memberof QuestionCreate
      */

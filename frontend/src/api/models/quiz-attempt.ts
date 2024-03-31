@@ -46,4 +46,10 @@ export interface QuizAttempt {
      * @memberof QuizAttempt
      */
     complete: boolean;
+
+    /**
+     * @type {string}
+     * @memberof QuizAttempt
+     */
+    attemptedAt?: string;
 }

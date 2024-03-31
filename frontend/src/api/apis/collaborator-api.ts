@@ -170,7 +170,7 @@ export const CollaboratorApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addCollaborator(id: string, body?: QuizAddCollaborator, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+        async addCollaborator(id: string, body?: QuizAddCollaborator, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<User>>> {
             const localVarAxiosArgs = await CollaboratorApiAxiosParamCreator(configuration).addCollaborator(id, body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -220,7 +220,7 @@ export const CollaboratorApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addCollaborator(id: string, body?: QuizAddCollaborator, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+        async addCollaborator(id: string, body?: QuizAddCollaborator, options?: AxiosRequestConfig): Promise<AxiosResponse<User>> {
             return CollaboratorApiFp(configuration).addCollaborator(id, body, options).then((request) => request(axios, basePath));
         },
         /**
@@ -260,7 +260,7 @@ export class CollaboratorApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CollaboratorApi
      */
-    public async addCollaborator(id: string, body?: QuizAddCollaborator, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+    public async addCollaborator(id: string, body?: QuizAddCollaborator, options?: AxiosRequestConfig) : Promise<AxiosResponse<User>> {
         return CollaboratorApiFp(this.configuration).addCollaborator(id, body, options).then((request) => request(this.axios, this.basePath));
     }
     /**

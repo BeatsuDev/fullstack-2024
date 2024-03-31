@@ -33,10 +33,8 @@ const currentAttemptId = computed(() => response.value?.data.id ?? null);
 
 const { execute: executeSubmitAnswer, error: submitError } =
     useExecutablePromise(
-        async (
-            ...args: Parameters<typeof attemptApi.quizIdAttemptQuizAttemptPost>
-        ) => {
-            return await attemptApi.quizIdAttemptQuizAttemptPost(...args);
+        async (...args: Parameters<typeof attemptApi.submitAnswer>) => {
+            return await attemptApi.submitAnswer(...args);
         }
     );
 
