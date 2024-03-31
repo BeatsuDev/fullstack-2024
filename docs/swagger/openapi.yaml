@@ -238,6 +238,16 @@ paths:
             type: array
             items:
               $ref: "#/components/schemas/Category"
+        - in: query
+          name: creator
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: collaborator
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: Successfully got the first page of quizzes

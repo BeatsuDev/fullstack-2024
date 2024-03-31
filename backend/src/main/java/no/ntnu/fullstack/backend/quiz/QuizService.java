@@ -83,6 +83,17 @@ public class QuizService {
                       .getDescription()
                       .contains(filters.getTextSearch()));
     }
+    if (filters.getCreator() != null) {
+      quizzes.removeIf(
+          quizWithRevision ->
+              !quizWithRevision.getQuiz().getCreator().getId().equals(filters.getCreator()));
+    }
+    if (filters.getCollaborator() != null) {
+      quizzes.removeIf(
+          quizWithRevision ->
+              quizWithRevision.getQuiz().getCollaborators().stream()
+                  .noneMatch(user -> user.getId().equals(filters.getCollaborator())));
+    }
 
     int start = filters.getPage() * filters.getPageSize();
     int end = Math.min(start + filters.getPageSize(), quizzes.size());

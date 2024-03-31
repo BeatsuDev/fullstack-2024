@@ -16,6 +16,8 @@ public class QuizFilters {
   private Integer minDifficulty;
   private Integer maxDifficulty;
   private List<UUID> category;
+  private UUID creator;
+  private UUID collaborator;
 
   public QuizFilters(
       Integer page,
@@ -23,12 +25,16 @@ public class QuizFilters {
       String textSearch,
       Integer minDifficulty,
       Integer maxDifficulty,
-      List<UUID> category) {
+      List<UUID> category,
+      UUID creator,
+      UUID collaborator) {
     if (page != null) this.page = page;
     if (pageSize != null) this.pageSize = pageSize;
     this.textSearch = textSearch;
     this.minDifficulty = minDifficulty;
     this.maxDifficulty = maxDifficulty;
     this.category = category;
+    this.creator = creator;
+    this.collaborator = collaborator;
   }
 }

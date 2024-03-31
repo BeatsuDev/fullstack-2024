@@ -61,10 +61,20 @@ public class QuizController {
       @RequestParam(required = false) String textSearch,
       @RequestParam(required = false) Integer minDifficulty,
       @RequestParam(required = false) Integer maxDifficulty,
+      @RequestParam(required = false) UUID collaborator,
+      @RequestParam(required = false) UUID creator,
       @RequestParam(required = false) List<UUID> category)
       throws NoQuizzesFoundException {
     QuizFilters filters =
-        new QuizFilters(page, pageSize, textSearch, minDifficulty, maxDifficulty, category);
+        new QuizFilters(
+            page,
+            pageSize,
+            textSearch,
+            minDifficulty,
+            maxDifficulty,
+            category,
+            creator,
+            collaborator);
     List<QuizWithRevision> quizzes = quizService.retrieveQuizzes(filters);
     return ResponseEntity.ok(
         quizzes.stream()
