@@ -50,7 +50,6 @@
                     />
                     <div class="centered">
                         <ButtonComponent
-                            arge
                             filled
                             large
                             @click="questionModal = true"
