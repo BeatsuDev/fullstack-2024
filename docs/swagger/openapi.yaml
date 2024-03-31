@@ -947,6 +947,9 @@ components:
           $ref: "#/components/schemas/Quiz"
         complete:
           type: boolean
+        attemptedAt:
+          type: string
+          format: date
       required:
         - id
         - questionAttempts
