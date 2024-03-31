@@ -81,19 +81,6 @@
     </GenericModal>
 </template>
 <script lang="ts" setup>
-<<<<<<< HEAD
-import {
-    type Question,
-    QuestionApi,
-    type QuestionCreate,
-    type Quiz,
-    QuizApi,
-    FeedbackApi,
-    type Feedback,
-    type FeedbackCreate,
-    RevisionApi,
-} from "@/api";
-=======
 import type {
     Question,
     QuestionCreate,
@@ -102,7 +89,6 @@ import type {
     FeedbackCreate,
 } from "@/api";
 import { QuestionApi, QuizApi, RevisionApi, FeedbackApi } from "@/api";
->>>>>>> 3cdf9e9 (fix: forgot some merge conflicts...)
 import { useExecutablePromise, usePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
