@@ -3,6 +3,7 @@ package no.ntnu.fullstack.backend.competition;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.competition.dto.CompetitionDTO;
+import no.ntnu.fullstack.backend.competition.dto.PreCompetitionInfoDTO;
 import no.ntnu.fullstack.backend.competition.exception.CompetitionAlreadyStartedException;
 import no.ntnu.fullstack.backend.competition.exception.CompetitionNotFoundException;
 import no.ntnu.fullstack.backend.competition.model.Competition;
@@ -27,12 +28,12 @@ public class CompetitionController {
   }
 
   @PostMapping("/competition/{joinCode}")
-  public ResponseEntity<CompetitionDTO> joinCompetition(
+  public ResponseEntity<PreCompetitionInfoDTO> joinCompetition(
       Authentication authentication, @PathVariable("joinCode") Integer joinCode)
       throws CompetitionNotFoundException, CompetitionAlreadyStartedException {
     User loggedInUser = (User) authentication.getPrincipal();
     Competition competition = competitionService.joinCompetition(joinCode, loggedInUser);
-    return ResponseEntity.ok(competitionMapper.toDTO(competition));
+    return ResponseEntity.ok(competitionMapper.toPreCompetitionInfoDTO(competition));
   }
 
   @GetMapping("/competition/{joinCode}")

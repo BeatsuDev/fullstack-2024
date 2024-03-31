@@ -731,7 +731,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Competition"
+                $ref: "#/components/schemas/PrecompetitionInfo"
     get:
       parameters:
         - name: joinCode
@@ -1066,6 +1066,9 @@ components:
           $ref: "#/components/schemas/Quiz"
     Competition:
       type: object
+      required:
+        - attempts
+        - joinCode
       properties:
         attempts:
           type: array
@@ -1073,3 +1076,13 @@ components:
             $ref: "#/components/schemas/QuizAttempt"
         joinCode:
           type: number
+    PrecompetitionInfo:
+      type: object
+      required:
+        - webSocketUrl
+        - competition
+      properties:
+        webSocketUrl:
+          type: string
+        competition:
+          $ref: "#/components/schemas/Competition"
