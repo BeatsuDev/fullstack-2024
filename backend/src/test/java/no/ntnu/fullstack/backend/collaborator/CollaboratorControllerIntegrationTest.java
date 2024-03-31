@@ -77,7 +77,7 @@ public class CollaboratorControllerIntegrationTest {
             post("/quiz/" + quizId + "/collaborator")
                 .contentType("application/json")
                 .content(collaboratorJson.toJSONString()))
-        .andExpect(status().isOk())
+        .andExpect(status().isCreated())
         .andExpect(
             result -> {
               if (!result.getResponse().getContentAsString().contains(collaborator.getEmail())) {
@@ -101,7 +101,7 @@ public class CollaboratorControllerIntegrationTest {
             post("/quiz/" + quizId + "/collaborator")
                 .contentType("application/json")
                 .content(collaboratorJson.toJSONString()))
-        .andExpect(status().isOk());
+        .andExpect(status().isCreated());
 
     mockMvc
         .perform(get("/quiz/" + quizId + "/collaborator"))
@@ -129,16 +129,10 @@ public class CollaboratorControllerIntegrationTest {
             post("/quiz/" + quizId + "/collaborator")
                 .contentType("application/json")
                 .content(collaboratorJson.toJSONString()))
-        .andExpect(status().isOk());
+        .andExpect(status().isCreated());
 
     mockMvc
         .perform(delete("/quiz/" + quizId + "/collaborator/" + collaborator.getId()))
-        .andExpect(status().isOk())
-        .andExpect(
-            result -> {
-              if (result.getResponse().getContentAsString().contains(collaborator.getEmail())) {
-                throw new AssertionError("Response contains collaborator email");
-              }
-            });
+        .andExpect(status().isNoContent());
   }
 }
