@@ -56,6 +56,14 @@
             <ButtonComponent filled @click="confirm">Yes</ButtonComponent>
             <ButtonComponent @click="cancel">No</ButtonComponent>
         </GenericModal>
+
+        <h3>
+            Export quiz to template
+        </h3>
+
+        <ButtonComponent filled @click="exportQuiz">
+            Export quiz to template
+        </ButtonComponent>
     </main>
 </template>
 <script lang="ts" setup>
@@ -216,8 +224,19 @@ const { data: revisions } = usePromise(revisionApi.getRevisions(quizId));
 
 function viewRevision(revision: Revision) {
     router.push(`/quizzes/${quizId}?revision=${revision.revisionId}`);
+}
 
-
+function exportQuiz() {
+    const element = document.createElement("a");
+    const file = new Blob([JSON.stringify(data.value?.data)], {
+        type: "application/json",
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = "quiz.json";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+    URL.revokeObjectURL(element.href);
+    document.body.removeChild(element);
 }
 
 

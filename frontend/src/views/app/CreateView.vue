@@ -3,7 +3,7 @@
         <h3>Create quiz</h3>
         <QuizForm :value="quiz" @submit="createQuiz" :loading="loading" />
         <div style="margin-top: 10px;">
-            <a @click="inspirationModal = true" style="cursor: pointer;">Need some inspiration?</a>
+            <a @click="inspirationModal = true" style="cursor: pointer;">Need some inspiration? Or import quiz.</a>
         </div>
         <GenericModal title="Templates" v-model="inspirationModal">
             <div style="display: flex; flex-direction: column;">
@@ -16,7 +16,14 @@
                     {{ template.title }}
                 </option>
             </SelectComponent>
+                <p>or upload template</p>
+                <input type="file" @change="uploadJson" style="margin-bottom: 1rem"
+                       accept=".json"
+                />
             <ButtonComponent @click="createQuiz()">Use template</ButtonComponent>
+                <div class="error-message" style="margin-top: 1rem" v-if="error">
+                    {{ error }}
+                </div>
             </div>
         </GenericModal>
     </div>
@@ -55,7 +62,23 @@ interface QuizTemplate extends QuizCreate {
 
 const inspirationModal = ref(false);
 
-const selectedTemplate = ref<QuizTemplate>(templates[0]);
+const selectedTemplate = ref<QuizTemplate | null>();
+
+const error = ref<string | null>(null);
+function uploadJson(file) {
+
+const reader = new FileReader();
+    reader.onload = async (e) => {
+        try {
+            const json = JSON.parse(e.target.result as string);
+            selectedTemplate.value = json;
+        } catch (e) {
+            error.value = "Invalid json file";
+        }
+    };
+    reader.readAsText(file.target.files[0]);
+
+}
 
 const questionsApi = new QuestionApi();
 
@@ -63,10 +86,15 @@ function createQuiz(quiz?: QuizCreate) {
     let questions =  []
 
     if (!quiz ) {
+        if (!selectedTemplate.value) {
+            error.value = "Please select a template or upload a json file";
+            return;
+        }
         quiz = selectedTemplate.value
         console.log(quiz)
         questions = selectedTemplate.value.questions
         delete selectedTemplate.value.questions
+
     }
     quizApi
         .createQuiz(quiz)
