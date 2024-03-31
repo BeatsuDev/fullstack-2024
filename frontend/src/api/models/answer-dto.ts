@@ -17,19 +17,19 @@
  * 
  *
  * @export
- * @interface UserLogin
+ * @interface AnswerDTO
  */
-export interface UserLogin {
+export interface AnswerDTO {
 
     /**
      * @type {string}
-     * @memberof UserLogin
+     * @memberof AnswerDTO
      */
-    email: string;
+    questionId: string;
 
     /**
      * @type {string}
-     * @memberof UserLogin
+     * @memberof AnswerDTO
      */
-    password: string;
+    answer: string;
 }

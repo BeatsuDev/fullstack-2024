@@ -13,23 +13,36 @@
  * Do not edit the class manually.
  */
 
+import { Question } from './question';
  /**
  * 
  *
  * @export
- * @interface UserLogin
+ * @interface QuestionAttempt
  */
-export interface UserLogin {
+export interface QuestionAttempt {
 
     /**
      * @type {string}
-     * @memberof UserLogin
+     * @memberof QuestionAttempt
      */
-    email: string;
+    id: string;
+
+    /**
+     * @type {Question}
+     * @memberof QuestionAttempt
+     */
+    question: Question;
 
     /**
      * @type {string}
-     * @memberof UserLogin
+     * @memberof QuestionAttempt
      */
-    password: string;
+    answer: string;
+
+    /**
+     * @type {boolean}
+     * @memberof QuestionAttempt
+     */
+    correct: boolean;
 }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -165,10 +166,11 @@ export const QuizApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Update quiz info
          * @param {string} id The ID of a quiz
+         * @param {QuizCreate} [body] The updated quiz info
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        quizIdPut: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        quizIdPut: async (id: string, body?: QuizCreate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling quizIdPut.');
@@ -185,6 +187,8 @@ export const QuizApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
                 query.set(key, localVarQueryParameter[key]);
@@ -195,6 +199,8 @@ export const QuizApiAxiosParamCreator = function (configuration?: Configuration)
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -256,11 +262,12 @@ export const QuizApiFp = function(configuration?: Configuration) {
         /**
          * Update quiz info
          * @param {string} id The ID of a quiz
+         * @param {QuizCreate} [body] The updated quiz info
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async quizIdPut(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Quiz>>> {
-            const localVarAxiosArgs = await QuizApiAxiosParamCreator(configuration).quizIdPut(id, options);
+        async quizIdPut(id: string, body?: QuizCreate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Quiz>>> {
+            const localVarAxiosArgs = await QuizApiAxiosParamCreator(configuration).quizIdPut(id, body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -309,11 +316,12 @@ export const QuizApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Update quiz info
          * @param {string} id The ID of a quiz
+         * @param {QuizCreate} [body] The updated quiz info
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async quizIdPut(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Quiz>> {
-            return QuizApiFp(configuration).quizIdPut(id, options).then((request) => request(axios, basePath));
+        async quizIdPut(id: string, body?: QuizCreate, options?: AxiosRequestConfig): Promise<AxiosResponse<Quiz>> {
+            return QuizApiFp(configuration).quizIdPut(id, body, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -362,11 +370,12 @@ export class QuizApi extends BaseAPI {
     /**
      * Update quiz info
      * @param {string} id The ID of a quiz
+     * @param {QuizCreate} [body] The updated quiz info
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof QuizApi
      */
-    public async quizIdPut(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Quiz>> {
-        return QuizApiFp(this.configuration).quizIdPut(id, options).then((request) => request(this.axios, this.basePath));
+    public async quizIdPut(id: string, body?: QuizCreate, options?: AxiosRequestConfig) : Promise<AxiosResponse<Quiz>> {
+        return QuizApiFp(this.configuration).quizIdPut(id, body, options).then((request) => request(this.axios, this.basePath));
     }
 }

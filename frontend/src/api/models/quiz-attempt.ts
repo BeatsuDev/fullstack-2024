@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -12,6 +13,8 @@
  * Do not edit the class manually.
  */
 
+import { QuestionAttempt } from './question-attempt';
+import { Quiz } from './quiz';
  /**
  * 
  *
@@ -21,14 +24,26 @@
 export interface QuizAttempt {
 
     /**
-     * @type {number}
-     * @memberof QuizAttempt
-     */
-    questionId?: number;
-
-    /**
      * @type {string}
      * @memberof QuizAttempt
      */
-    answer?: string;
+    id: string;
+
+    /**
+     * @type {Array<QuestionAttempt>}
+     * @memberof QuizAttempt
+     */
+    questionAttempts: Array<QuestionAttempt>;
+
+    /**
+     * @type {Quiz}
+     * @memberof QuizAttempt
+     */
+    quiz?: Quiz;
+
+    /**
+     * @type {boolean}
+     * @memberof QuizAttempt
+     */
+    complete: boolean;
 }
