@@ -127,7 +127,7 @@ public class AttemptControllerIntegrationTest {
             });
 
     JSONObject jsonObject = new JSONObject();
-    jsonObject.put("questionId", questions.get(0).getId().toString());
+    jsonObject.put("questionId", questions.get(0).getQuestionId().toString());
     jsonObject.put("answer", "2");
     mockMvc
         .perform(
@@ -143,7 +143,7 @@ public class AttemptControllerIntegrationTest {
             });
 
     jsonObject = new JSONObject();
-    jsonObject.put("questionId", questions.get(1).getId().toString());
+    jsonObject.put("questionId", questions.get(1).getQuestionId().toString());
     jsonObject.put("answer", "3");
     mockMvc
         .perform(
