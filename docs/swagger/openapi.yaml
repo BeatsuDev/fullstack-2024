@@ -25,6 +25,7 @@ tags:
   - name: Feedback
   - name: Collaborator
   - name: Image
+  - name: Competition
 
 paths:
   /category:
@@ -693,6 +694,62 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Image"
+  /quiz/{quizId}/competition:
+    post:
+      parameters:
+        - name: quizId
+          description: The ID of the quiz
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      operationId: createCompetition
+      description: Create a new competition
+      responses:
+        "201":
+          description: The created competition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Competition"
+  /competition/{joinCode}:
+    post:
+      parameters:
+        - name: joinCode
+          description: The join code
+          in: path
+          required: true
+          schema:
+            type: number
+            maxLength: 6
+      operationId: joinCompetition
+      description: Join a competition
+      responses:
+        "200":
+          description: The joined competition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Competition"
+    get:
+      parameters:
+        - name: joinCode
+          description: The join code
+          in: path
+          required: true
+          schema:
+            type: number
+            maxLength: 6
+      operationId: getCompetition
+      description: Get a competition
+      responses:
+        "200":
+          description: The competition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Competition"
 components:
   schemas:
     Image:
@@ -1007,3 +1064,12 @@ components:
           format: uuid
         quiz:
           $ref: "#/components/schemas/Quiz"
+    Competition:
+      type: object
+      properties:
+        attempts:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuizAttempt"
+        joinCode:
+          type: number

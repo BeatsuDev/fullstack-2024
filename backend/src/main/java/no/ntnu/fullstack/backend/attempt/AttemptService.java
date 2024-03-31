@@ -14,6 +14,7 @@ import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.quiz.QuizService;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
+import no.ntnu.fullstack.backend.revision.model.Revision;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +27,13 @@ public class AttemptService {
 
   public QuizAttempt createAttempt(UUID quizId, User user) throws QuizNotFoundException {
     QuizWithRevision quizWithRevision = quizService.getLatestQuiz(quizId);
+    return createAttempt(quizWithRevision.getLatestRevision(), user);
+  }
+
+  public QuizAttempt createAttempt(Revision revision, User user) {
     QuizAttempt attempt = new QuizAttempt();
     attempt.setAttemptedBy(user);
-    attempt.setRevision(quizWithRevision.getLatestRevision());
+    attempt.setRevision(revision);
     return quizAttemptRepository.saveAndFlush(attempt);
   }
 
