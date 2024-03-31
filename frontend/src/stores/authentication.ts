@@ -40,7 +40,12 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         clearTimeout(authenticationData.timer);
         authenticationData.timer = setTimeout(deauthenticate, 60 * 1000);
 
-        alert("You will be deauthenticated in 1 minute. Refresh?");
+        // Give the previous lines of code time to run
+        setTimeout(
+            alert,
+            500,
+            "You will be deauthenticated in 1 minute. Refresh?"
+        );
     }
 
     function setDeauthenticationTimer(seconds: number = 5 * 60) {
@@ -70,7 +75,7 @@ export const useAuthenticationStore = defineStore("authentication", () => {
     function deauthenticate() {
         const promise = userSessionApi.logout();
 
-        promise.then(() => {
+        function clearAuthenticationData() {
             if (authenticationData.timer) {
                 clearTimeout(authenticationData.timer);
             }
@@ -79,6 +84,12 @@ export const useAuthenticationStore = defineStore("authentication", () => {
 
             if (router.currentRoute.value.meta.requiresAuth) {
                 router.push({ name: "login" });
+            }
+        }
+
+        promise.then(clearAuthenticationData).catch((error) => {
+            if (error.response.status === 401) {
+                clearAuthenticationData();
             }
         });
 
