@@ -16,7 +16,7 @@
                     <div v-if="bestAttempt">
                         <h3>History</h3>
                         <p>
-                            You had your highest score on attempt {{ bestAttempt.id }},
+                            You had your highest score on {{ new Date(bestAttempt.attemptedAt).toLocaleString() }},
                             with a score of {{ bestAttemptScore }}.
                         </p>
                         <p v-if="numOfUncompletedAttempts">

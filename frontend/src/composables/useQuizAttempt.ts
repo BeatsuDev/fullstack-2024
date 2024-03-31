@@ -20,11 +20,15 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
     const chartDataBasedOnAttempts = computed(() => {
         const chartData = {
             labels: [],
-            datasets: [{ data: [] }],
+            datasets: [{ data: [],
+                label: "Correct Answers",
+                backgroundColor: "lightgreen",
+            }],
         };
 
         data.value?.data?.forEach((attempt: QuizAttempt) => {
-            chartData.labels.push(attempt.id);
+            const formattedDate = new Date(attempt.attemptedAt).toLocaleString();
+            chartData.labels.push(formattedDate);
 
             const totalCorrectOnAttempt = attempt.questionAttempts.map((questionAttempt) => {
                 return questionAttempt.correct ? 1 : 0;
@@ -33,7 +37,6 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
             chartData.datasets[0].data.push(totalCorrectOnAttempt);
         });
 
-        console.log(chartData);
         return chartData;
     });
 
@@ -43,17 +46,19 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
 
         data.value?.data?.forEach((attempt: QuizAttempt) => {
             attempt.questionAttempts.forEach((questionAttempt) => {
-                if (!incorrect[questionAttempt.question.id]) {
-                    incorrect[questionAttempt.question.id] = 0;
+                if (!incorrect[questionAttempt.question.question]) {
+                    incorrect[questionAttempt.question.question] = 0;
                 }
-                incorrect[questionAttempt.question.id]++;
+                incorrect[questionAttempt.question.question]++;
             });
         });
 
         const sortedKeys = Object.keys(incorrect).sort((a, b) => incorrect[a] - incorrect[b]);
         return  {
             labels: sortedKeys,
-            datasets: sortedKeys.map((key) => incorrect[key]),
+            datasets: [{ data: sortedKeys.map((key) => incorrect[key]), label: "Incorrect Answers",
+                backgroundColor: "lightblue",
+            }],
         }
     });
 
