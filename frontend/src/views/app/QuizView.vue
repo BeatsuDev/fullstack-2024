@@ -81,6 +81,7 @@
     </GenericModal>
 </template>
 <script lang="ts" setup>
+<<<<<<< HEAD
 import {
     type Question,
     QuestionApi,
@@ -92,6 +93,16 @@ import {
     type FeedbackCreate,
     RevisionApi,
 } from "@/api";
+=======
+import type {
+    Question,
+    QuestionCreate,
+    Quiz,
+    Feedback,
+    FeedbackCreate,
+} from "@/api";
+import { QuestionApi, QuizApi, RevisionApi, FeedbackApi } from "@/api";
+>>>>>>> 3cdf9e9 (fix: forgot some merge conflicts...)
 import { useExecutablePromise, usePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
@@ -107,7 +118,6 @@ import QuizHero from "@/components/QuizHero.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 import useDebounceLoading from "@/composables/useDebounceLoading";
-import { watchEffect } from "vue";
 
 const route = useRoute();
 
