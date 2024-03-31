@@ -38,13 +38,13 @@ public class ImageService {
     }
 
     Image newImage = new Image();
-    newImage.setId(UUID.randomUUID());
     newImage.setUploadedBy(uploader);
     newImage.setExtension(extension);
+    newImage = imageRepository.saveAndFlush(newImage);
 
-    Path imagePath = Paths.get(UPLOAD_DIR + newImage.getId()  + extension);
+    Path imagePath = Paths.get(UPLOAD_DIR + "/" + newImage.getId() + extension);
     image.transferTo(imagePath);
-    return imageRepository.saveAndFlush(newImage);
+    return newImage;
   }
 
   public Image getImage(UUID id) throws ImageNotFound {
