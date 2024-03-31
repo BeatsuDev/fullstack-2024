@@ -19,8 +19,7 @@
 </script>
 <style scoped>
 .feedback-item {
-  background-color: #f0f0f0;
-  border-radius: 8px;
+  background-color: var(--color-background-mute);
   padding: 16px;
   margin-bottom: 16px;
 }
@@ -42,7 +41,7 @@
 }
 
 .feedback-content {
-  border-left: 4px solid #007bff; /* You can change this color as per your design */
+  border-left: 4px solid var(--primary-400);
   padding-left: 12px;
 }
 </style>

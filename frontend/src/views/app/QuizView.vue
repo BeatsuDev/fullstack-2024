@@ -35,13 +35,14 @@
                         @delete="reveal"
                     />
                 </div>
-                <ButtonComponent
-                    arge
-                    filled
-                    class="centered"
-                    @click="questionModal = true"
-                >Add question
-                </ButtonComponent>
+                <div class="centered">
+                    <ButtonComponent
+                        arge
+                        filled
+                        @click="questionModal = true"
+                    >Add question
+                    </ButtonComponent>
+                </div>
             </div>
             <div v-if="feedbackIsLoading">
                 loading...
@@ -192,9 +193,8 @@ async function submitQuestion(value: QuestionCreate | Question) {
 async function createQuestion(value: QuestionCreate) {
     try {
         const question = await questionApi.createQuestion(value);
-        if (quiz.value) {
-            quiz.value.questions.push(question as Question);
-        }
+        // @ts-ignore
+            data.value.data.questions.push(question.data);
         notificationStore.addNotification({
             message: "Question created successfully.",
             type: "success",
@@ -298,6 +298,11 @@ async function submitFeedback(value: FeedbackCreate) {
 /* 100vh - (nav height + nav y-padding) - (bottom nav height + bottom nav y-padding)*/
 main {
     height: calc(100vh - 66px - 86px);
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
 }
 
 </style>
