@@ -58,11 +58,11 @@ public class StartupSeed {
         List.of(
             Category.builder().name("Science").color("#00FF00").build(),
             Category.builder().name("History").color("#0000FF").build(),
-            Category.builder().name("Geography").color("#FFFF00").build(),
+            Category.builder().name("Geography").color("#FF9B00").build(),
             Category.builder().name("Literature").color("#FF00FF").build(),
-            Category.builder().name("Art").color("#00FFFF").build(),
+            Category.builder().name("Art").color("#009E9E").build(),
             Category.builder().name("Music").color("#000000").build(),
-            Category.builder().name("Sports").color("#FFFFFF").build());
+            Category.builder().name("Sports").color("#555555").build());
 
     categories.forEach(categoryService::saveCategory);
   }
