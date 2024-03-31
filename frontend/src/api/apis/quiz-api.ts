@@ -68,7 +68,8 @@ export const QuizApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * Get first page of quizzes
-         * @param {number} [limit] 
+         * @param {number} [pageSize] 
+         * @param {number} [page] 
          * @param {string} [textSearch] 
          * @param {number} [minDifficulty] 
          * @param {number} [maxDifficulty] 
@@ -76,7 +77,7 @@ export const QuizApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        quizGet: async (limit?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        quizGet: async (pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/quiz`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -88,8 +89,12 @@ export const QuizApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
+            if (pageSize !== undefined) {
+                localVarQueryParameter['pageSize'] = pageSize;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
             }
 
             if (textSearch !== undefined) {
@@ -231,7 +236,8 @@ export const QuizApiFp = function(configuration?: Configuration) {
         },
         /**
          * Get first page of quizzes
-         * @param {number} [limit] 
+         * @param {number} [pageSize] 
+         * @param {number} [page] 
          * @param {string} [textSearch] 
          * @param {number} [minDifficulty] 
          * @param {number} [maxDifficulty] 
@@ -239,8 +245,8 @@ export const QuizApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async quizGet(limit?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<QuizOverview>>>> {
-            const localVarAxiosArgs = await QuizApiAxiosParamCreator(configuration).quizGet(limit, textSearch, minDifficulty, maxDifficulty, category, options);
+        async quizGet(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<QuizOverview>>>> {
+            const localVarAxiosArgs = await QuizApiAxiosParamCreator(configuration).quizGet(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -293,7 +299,8 @@ export const QuizApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * Get first page of quizzes
-         * @param {number} [limit] 
+         * @param {number} [pageSize] 
+         * @param {number} [page] 
          * @param {string} [textSearch] 
          * @param {number} [minDifficulty] 
          * @param {number} [maxDifficulty] 
@@ -301,8 +308,8 @@ export const QuizApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async quizGet(limit?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<QuizOverview>>> {
-            return QuizApiFp(configuration).quizGet(limit, textSearch, minDifficulty, maxDifficulty, category, options).then((request) => request(axios, basePath));
+        async quizGet(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<QuizOverview>>> {
+            return QuizApiFp(configuration).quizGet(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, options).then((request) => request(axios, basePath));
         },
         /**
          * Get all information about a quiz
@@ -345,7 +352,8 @@ export class QuizApi extends BaseAPI {
     }
     /**
      * Get first page of quizzes
-     * @param {number} [limit] 
+     * @param {number} [pageSize] 
+     * @param {number} [page] 
      * @param {string} [textSearch] 
      * @param {number} [minDifficulty] 
      * @param {number} [maxDifficulty] 
@@ -354,8 +362,8 @@ export class QuizApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof QuizApi
      */
-    public async quizGet(limit?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<QuizOverview>>> {
-        return QuizApiFp(this.configuration).quizGet(limit, textSearch, minDifficulty, maxDifficulty, category, options).then((request) => request(this.axios, this.basePath));
+    public async quizGet(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<QuizOverview>>> {
+        return QuizApiFp(this.configuration).quizGet(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Get all information about a quiz
