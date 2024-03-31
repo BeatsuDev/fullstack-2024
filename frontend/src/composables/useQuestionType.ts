@@ -17,12 +17,11 @@ export default function useQuestionType(
 
     const readableQuestionType = computed(() => {
         return getReadableQuestionType(questionType.value);
-    })
+    });
 
     return {
         questionType,
         readableQuestionType,
-
     };
 }
 
@@ -65,10 +64,7 @@ export function isBoolean(question: Question | QuestionCreate) {
     if (question.options?.length !== 2) {
         return false;
     }
-    return (
-        question.options[0] === "true" &&
-        question.options[1] === "false"
-    );
+    return question.options[0] === "true" && question.options[1] === "false";
 }
 
 export function removeFieldsNotInType(

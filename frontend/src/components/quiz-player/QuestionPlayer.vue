@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, watch } from "vue";
 
 import type { Question } from "@/api";
 import { getQuestionType, QuestionTypes } from "@/composables/useQuestionType";
 import MultipleChoiceOptions from "./MultipleChoiceOptions.vue";
-import ButtonComponent from "../ButtonComponent.vue";
+import TextAnswer from "./TextAnswer.vue";
+import BooleanAnswer from "./BooleanAnswer.vue";
 
 const props = defineProps<{
     question: Question;
@@ -14,10 +15,11 @@ const emit = defineEmits<{
     answerSelected: [option: string];
 }>();
 
-const questionType = getQuestionType(props.question);
+const questionType = computed(() => getQuestionType(props.question));
 
-// Free text input
-const freeTextInput = ref("");
+watch(questionType, (newVal) => {
+    console.log("Question type changed to", newVal);
+});
 </script>
 
 <template>
@@ -34,23 +36,22 @@ const freeTextInput = ref("");
             </div>
             <div class="answers-container">
                 <MultipleChoiceOptions
-                    v-if="questionType === 'multiple'"
+                    v-if="questionType === QuestionTypes.MULTIPLE"
                     :question="question"
+                    @answerSelected="(option) => emit('answerSelected', option)"
+                />
+                <TextAnswer
+                    v-else-if="questionType == QuestionTypes.TEXT"
+                    @answerSelected="(option) => emit('answerSelected', option)"
+                />
+                <BooleanAnswer
+                    v-else-if="questionType == QuestionTypes.BOOLEAN"
                     @answerSelected="(option) => emit('answerSelected', option)"
                 />
                 <div v-else>
                     <p>Question type not supported</p>
                 </div>
             </div>
-        </div>
-        <div v-if="questionType == QuestionTypes.TEXT" class="action-bar">
-            <input ref="freeTextInput" type="text" />
-            <ButtonComponent
-                @click="emit('answerSelected', freeTextInput)"
-                filled
-            >
-                Submit Answer
-            </ButtonComponent>
         </div>
     </div>
 </template>
