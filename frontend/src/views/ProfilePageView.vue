@@ -13,16 +13,12 @@ const formData = reactive({
     name: "",
     email: "",
     password: "",
-    repeatPassword: "",
 });
 
 const rules = {
     name: {},
     email: { email },
     password: {},
-    repeatPassword: {
-        sameAsPassword: sameAs(computed(() => formData.password)),
-    },
 };
 
 const v$ = useVuelidate(rules, formData);

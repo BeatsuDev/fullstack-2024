@@ -95,5 +95,6 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
 a {
     text-decoration: none;
     color: var(--color-text);
+    cursor: pointer;
 }
 </style>

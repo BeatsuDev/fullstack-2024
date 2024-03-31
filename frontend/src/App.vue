@@ -12,16 +12,19 @@ const notificationStore = useNotificationStore();
 const { authenticated } = storeToRefs(useAuthenticationStore());
 
 function logout(): void {
-    authenticationStore.deauthenticate().catch((error: any) => {
-        notificationStore.addNotification({
-            message:
-                "Failed to log out. Please try again. " +
-                (error instanceof Error)
-                    ? error.message
-                    : "",
-            type: "error",
+    authenticationStore
+        .deauthenticate()
+        .then(() => router.push({ name: "home" }))
+        .catch((error: any) => {
+            notificationStore.addNotification({
+                message:
+                    "Failed to log out. Please try again. " +
+                    (error instanceof Error)
+                        ? error.message
+                        : "",
+                type: "error",
+            });
         });
-    });
 }
 </script>
 
@@ -94,6 +97,8 @@ function logout(): void {
     font-size: 1.5em;
     text-decoration: none;
     color: white;
+    cursor: pointer;
+    user-select: none;
 }
 
 #routes > a {
@@ -101,6 +106,8 @@ function logout(): void {
     color: var(--gray-200);
     text-decoration: none;
     transition: color 50ms;
+    cursor: pointer;
+    user-select: none;
 }
 
 #routes > a:hover {
