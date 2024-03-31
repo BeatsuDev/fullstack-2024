@@ -4,6 +4,7 @@ target/
 database
 **/src/main/**/target/
 **/src/test/**/target/
+uploads/images/**
 
 ### STS ###
 .apt_generated
