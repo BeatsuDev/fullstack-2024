@@ -26,6 +26,16 @@ const questionNumber = ref(0);
 const currentQuestion = computed(
     () => response.value?.data.questions[questionNumber.value] ?? null
 );
+const currentQuiz = computed(() => response.value?.data ?? null);
+
+function nextQuestion() {
+    if (currentQuiz.value == null) return;
+    if (questionNumber.value >= (response.value?.data.questions.length ?? 0)) {
+        console.log("Quiz finished!");
+        return;
+    }
+    questionNumber.value++;
+}
 </script>
 
 <template>
@@ -37,6 +47,7 @@ const currentQuestion = computed(
             <QuestionPlayer
                 v-if="currentQuestion"
                 :question="currentQuestion"
+                @answerSelected="nextQuestion"
             />
             <div v-else>No question selected...</div>
         </div>
