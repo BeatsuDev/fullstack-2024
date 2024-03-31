@@ -3,7 +3,7 @@ import { ref } from "vue";
 
 import type { Question } from "@/api";
 import { getQuestionType, QuestionTypes } from "@/composables/useQuestionType";
-import MultipleChoiceQuestionPlayer from "./MultipleChoiceQuestionPlayer.vue";
+import MultipleChoiceOptions from "./MultipleChoiceOptions.vue";
 import ButtonComponent from "../ButtonComponent.vue";
 
 const props = defineProps<{
@@ -33,7 +33,7 @@ const freeTextInput = ref("");
                 <div class="placeholder-media"></div>
             </div>
             <div class="answers-container">
-                <MultipleChoiceQuestionPlayer
+                <MultipleChoiceOptions
                     v-if="questionType === 'multiple'"
                     :question="question"
                     @answerSelected="(option) => emit('answerSelected', option)"
@@ -67,7 +67,7 @@ const freeTextInput = ref("");
 
 .media-container {
     margin: auto;
-    width: 95%;
+    width: 100%;
     height: 60%;
 }
 

@@ -29,12 +29,12 @@ const currentQuestion = computed(
 const currentQuiz = computed(() => response.value?.data ?? null);
 
 function nextQuestion() {
+    questionNumber.value++;
     if (currentQuiz.value == null) return;
-    if (questionNumber.value >= (response.value?.data.questions.length ?? 0)) {
+    if (questionNumber.value >= currentQuiz.value.questions.length) {
         console.log("Quiz finished!");
         return;
     }
-    questionNumber.value++;
 }
 </script>
 
