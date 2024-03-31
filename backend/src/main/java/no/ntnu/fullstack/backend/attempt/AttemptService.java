@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.attempt.exception.AttemptNotFoundException;
+import no.ntnu.fullstack.backend.attempt.exception.QuestionAlreadyAnswered;
 import no.ntnu.fullstack.backend.attempt.model.QuestionAttempt;
 import no.ntnu.fullstack.backend.attempt.model.QuizAttempt;
 import no.ntnu.fullstack.backend.attempt.repository.QuestionAttemptRepository;
 import no.ntnu.fullstack.backend.attempt.repository.QuizAttemptRepository;
+import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
+import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.quiz.QuizService;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
@@ -48,9 +51,35 @@ public class AttemptService {
   }
 
   public QuestionAttempt submitAttempt(
-      UUID quizId, UUID attemptId, QuestionAttempt questionAttempt, User loggedInUser)
-      throws AttemptNotFoundException, QuizNotFoundException {
+      UUID quizId,
+      UUID attemptId,
+      UUID questionId,
+      QuestionAttempt questionAttempt,
+      User loggedInUser)
+      throws AttemptNotFoundException,
+          QuizNotFoundException,
+          QuestionAlreadyAnswered,
+          QuestionNotFoundException {
     QuizAttempt quizAttempt = getAttempt(quizId, attemptId);
+    if (!quizAttempt.getAttemptedBy().getId().equals(loggedInUser.getId()))
+      throw new AttemptNotFoundException();
+
+    Question question =
+        quizAttempt.getRevision().getQuestions().stream()
+            .filter(q -> q.getQuestionId().equals(questionId))
+            .findFirst()
+            .orElseThrow(QuestionNotFoundException::new);
+    questionAttempt.setQuestion(question);
+
+    if (quizAttempt.getQuestionAttempts().stream()
+        .anyMatch(
+            qa ->
+                qa.getQuestion()
+                    .getQuestionId()
+                    .equals(questionAttempt.getQuestion().getQuestionId()))) {
+      throw new QuestionAlreadyAnswered();
+    }
+
     questionAttempt.setQuizAttempt(quizAttempt);
     return questionAttemptRepository.saveAndFlush(questionAttempt);
   }

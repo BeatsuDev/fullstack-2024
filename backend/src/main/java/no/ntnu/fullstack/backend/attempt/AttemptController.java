@@ -8,10 +8,10 @@ import no.ntnu.fullstack.backend.attempt.dto.AnswerDTO;
 import no.ntnu.fullstack.backend.attempt.dto.QuestionAttemptDTO;
 import no.ntnu.fullstack.backend.attempt.dto.QuizAttemptDTO;
 import no.ntnu.fullstack.backend.attempt.exception.AttemptNotFoundException;
+import no.ntnu.fullstack.backend.attempt.exception.QuestionAlreadyAnswered;
 import no.ntnu.fullstack.backend.attempt.model.QuestionAttempt;
 import no.ntnu.fullstack.backend.attempt.model.QuizAttempt;
 import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
-import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
@@ -66,21 +66,16 @@ public class AttemptController {
       @PathVariable("quizId") UUID quizId,
       @PathVariable("attemptId") UUID attemptId,
       @Valid @RequestBody AnswerDTO answerDTO)
-      throws AttemptNotFoundException, QuizNotFoundException, QuestionNotFoundException {
+      throws AttemptNotFoundException,
+          QuizNotFoundException,
+          QuestionNotFoundException,
+          QuestionAlreadyAnswered {
     User loggedInUser = (User) auth.getPrincipal();
     QuestionAttempt questionAttempt = attemptMapper.toQuestionAttempt(answerDTO);
-    QuizAttempt quizAttempt = attemptService.getAttempt(quizId, attemptId);
-
-    UUID questionId = answerDTO.getQuestionId();
-    Question question =
-        quizAttempt.getRevision().getQuestions().stream()
-            .filter(q -> q.getQuestionId().equals(questionId))
-            .findFirst()
-            .orElseThrow(QuestionNotFoundException::new);
-    questionAttempt.setQuestion(question);
 
     questionAttempt =
-        attemptService.submitAttempt(quizId, attemptId, questionAttempt, loggedInUser);
+        attemptService.submitAttempt(
+            quizId, attemptId, answerDTO.getQuestionId(), questionAttempt, loggedInUser);
     return ResponseEntity.ok(attemptMapper.toQuestionAttemptDTO(questionAttempt));
   }
 }
