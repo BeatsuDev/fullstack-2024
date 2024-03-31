@@ -25,7 +25,7 @@ function logout(): void {
 
 <template>
     <header>
-        <nav v-if="!$route.meta.hideNavbar" id="navigation-bar">
+        <nav id="navigation-bar">
             <RouterLink to="/" id="company-name">
                 {{ $t("company.name") }}
             </RouterLink>
