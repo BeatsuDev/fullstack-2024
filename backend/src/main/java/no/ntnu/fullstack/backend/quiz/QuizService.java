@@ -8,6 +8,7 @@ import no.ntnu.fullstack.backend.category.CategoryService;
 import no.ntnu.fullstack.backend.category.model.Category;
 import no.ntnu.fullstack.backend.collaborator.CollaboratorService;
 import no.ntnu.fullstack.backend.collaborator.exceptions.NotCollaboratorException;
+import no.ntnu.fullstack.backend.quiz.dto.QuizFilters;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
@@ -49,6 +50,41 @@ public class QuizService {
 
   public List<QuizWithRevision> retrieveQuizzes() {
     return quizRepository.findWithFirstRevision();
+  }
+
+  public List<QuizWithRevision> retrieveQuizzes(QuizFilters filters) {
+    List<QuizWithRevision> quizzes = retrieveQuizzes();
+    if (filters.getCategory() != null && !filters.getCategory().isEmpty()) {
+      quizzes.removeIf(
+          quizWithRevision ->
+              quizWithRevision.getLatestRevision().getCategories().stream()
+                  .map(Category::getId)
+                  .noneMatch(
+                      category -> filters.getCategory().stream().anyMatch(category::equals)));
+    }
+    if (filters.getMinDifficulty() != null) {
+      quizzes.removeIf(
+          quizWithRevision ->
+              quizWithRevision.getLatestRevision().getDifficulty() < filters.getMinDifficulty());
+    }
+    if (filters.getMaxDifficulty() != null) {
+      quizzes.removeIf(
+          quizWithRevision ->
+              quizWithRevision.getLatestRevision().getDifficulty() > filters.getMaxDifficulty());
+    }
+    if (filters.getTextSearch() != null && !filters.getTextSearch().isEmpty()) {
+      quizzes.removeIf(
+          quizWithRevision ->
+              !quizWithRevision.getLatestRevision().getTitle().contains(filters.getTextSearch())
+                  && !quizWithRevision
+                      .getLatestRevision()
+                      .getDescription()
+                      .contains(filters.getTextSearch()));
+    }
+
+    int start = filters.getPage() * filters.getPageSize();
+    int end = Math.min(start + filters.getPageSize(), quizzes.size());
+    return quizzes.subList(start, end);
   }
 
   public QuizWithRevision getLatestQuiz(UUID quizId) throws QuizNotFoundException {

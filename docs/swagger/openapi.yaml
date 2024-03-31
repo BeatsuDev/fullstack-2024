@@ -219,7 +219,11 @@ paths:
       description: Get first page of quizzes
       parameters:
         - in: query
-          name: limit
+          name: pageSize
+          schema:
+            type: integer
+        - in: query
+          name: page
           schema:
             type: integer
         - in: query

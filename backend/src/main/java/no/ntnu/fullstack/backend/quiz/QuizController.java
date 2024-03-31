@@ -8,6 +8,7 @@ import no.ntnu.fullstack.backend.collaborator.CollaboratorService;
 import no.ntnu.fullstack.backend.collaborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.quiz.dto.QuizCreateDTO;
 import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
+import no.ntnu.fullstack.backend.quiz.dto.QuizFilters;
 import no.ntnu.fullstack.backend.quiz.dto.QuizOverviewDTO;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.mapper.QuizMapper;
@@ -53,8 +54,16 @@ public class QuizController {
 
   @GetMapping
   @ResponseBody
-  public ResponseEntity<List<QuizOverviewDTO>> listQuiz() {
-    List<QuizWithRevision> quizzes = quizService.retrieveQuizzes();
+  public ResponseEntity<List<QuizOverviewDTO>> listQuiz(
+      @RequestParam(required = false) Integer page,
+      @RequestParam(required = false) Integer pageSize,
+      @RequestParam(required = false) String textSearch,
+      @RequestParam(required = false) Integer minDifficulty,
+      @RequestParam(required = false) Integer maxDifficulty,
+      @RequestParam(required = false) List<UUID> category) {
+    QuizFilters filters =
+        new QuizFilters(page, pageSize, textSearch, minDifficulty, maxDifficulty, category);
+    List<QuizWithRevision> quizzes = quizService.retrieveQuizzes(filters);
     return ResponseEntity.ok(
         quizzes.stream()
             .map(quiz -> quizMapper.toQuizOverviewDTO(quiz.getQuiz(), quiz.getLatestRevision()))
