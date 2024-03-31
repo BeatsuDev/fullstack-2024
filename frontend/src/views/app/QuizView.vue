@@ -11,15 +11,16 @@
                 <AlertComponent
                     v-if="revisionId"
                     type="warning">
-                    <div style="display:flex">
+                    <div style="display:flex; justify-content: space-between; align-items: center;">
                     You are viewing a revision of this quiz. You can't edit it.
-                    <ButtonComponent @click="cancelRevert" style="margin-left: auto">
-                        Go back to the latest version
-                        </ButtonComponent>
-                    <ButtonComponent @click="revert" style="margin-left: auto">
-                        Revert to this version
-                        </ButtonComponent>
-
+                        <div>
+                            <ButtonComponent @click="cancelRevert">
+                                Go back to the latest version
+                            </ButtonComponent>
+                            <ButtonComponent @click="revert" style="margin-left: 1rem;">
+                                Revert to this version
+                            </ButtonComponent>
+                        </div>
                     </div>
                 </AlertComponent>
 
@@ -50,7 +51,7 @@
 
             </div>
             <div v-else-if="feedbacks">
-                <h3>Feedbacks</h3>
+                <h3 v-if="feedbacks.length > 0">Feedbacks</h3>
                 <FeedbackCard
                     v-for="feedback in feedbacks"
                     :key="feedback.id"
