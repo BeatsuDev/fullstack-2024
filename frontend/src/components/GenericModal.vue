@@ -34,7 +34,7 @@ function close() {
 </script>
 <style scoped>
 dialog {
-    padding: 50px;
+    padding: 1rem;
     border-radius: 5px;
     border: 0;
 }

@@ -1,10 +1,10 @@
 <template>
     <form @submit.prevent="true">
-        <select v-model="questionType">
+        <SelectComponent v-model="questionType">
             <option v-for="type in QuestionTypes" :key="type" :value="type">
                 {{ getReadableQuestionType(type) }}
             </option>
-        </select>
+        </SelectComponent>
         <h4>Question</h4>
         <ValidatedInput
             id="question"
@@ -67,6 +67,7 @@ import ButtonComponent from "./ButtonComponent.vue";
 import { required } from "@vuelidate/validators";
 import { QuestionApi, type QuestionCreate, type QuizCreate } from "@/api";
 import { getReadableQuestionType, QuestionTypes, removeFieldsNotInType } from "@/composables/useQuestionType";
+import SelectComponent from "@/components/SelectComponent.vue";
 
 const props = defineProps<{
     value?: QuestionCreate | Question;
@@ -153,11 +154,6 @@ input[type="radio"]:checked {
 form {
     display: flex;
     flex-direction: column;
-}
-
-select {
-    margin-bottom: 20px;
-    padding: 10px;
 }
 
 .boolean-options {

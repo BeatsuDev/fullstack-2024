@@ -2,17 +2,22 @@
     <div class="centered-container">
         <h3>Create quiz</h3>
         <QuizForm :value="quiz" @submit="createQuiz" :loading="loading" />
-        <div>
-            <a @click="inspirationModal = true">Need some inspiration?</a>
+        <div style="margin-top: 10px;">
+            <a @click="inspirationModal = true" style="cursor: pointer;">Need some inspiration?</a>
         </div>
         <GenericModal title="Templates" v-model="inspirationModal">
-            <p>Here are some templates you can use:</p>
-            <select v-model="selectedTemplate">
+            <div style="display: flex; flex-direction: column;">
+
+            <p>
+                Choose a template to get started with your quiz
+            </p>
+            <SelectComponent v-model="selectedTemplate">
                 <option v-for="template in templates" :key="template.title" :value="template">
                     {{ template.title }}
                 </option>
-            </select>
+            </SelectComponent>
             <ButtonComponent @click="createQuiz()">Use template</ButtonComponent>
+            </div>
         </GenericModal>
     </div>
 </template>
@@ -26,6 +31,7 @@ import QuizForm from "@/components/QuizForm.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import GenericModal from "@/components/GenericModal.vue";
 import {templates} from "@/composables/templates";
+import SelectComponent from "@/components/SelectComponent.vue";
 
 const quiz = reactive({
     title: "",
