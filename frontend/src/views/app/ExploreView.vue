@@ -23,12 +23,16 @@ const {
     execute: executeSearch,
     error,
     loading: quizFetchLoading,
-} = useExecutablePromise(async (...args) => await quizApi.quizGet(...args));
+} = useExecutablePromise(
+    async (...args: Parameters<typeof quizApi.quizGet>) =>
+        await quizApi.quizGet(...args)
+);
 
 function searchQuizzes() {
     filtersWindowOpen.value = false;
     executeSearch(
         50,
+        0,
         searchQuery.value,
         filterOptions.minDifficulty,
         filterOptions.maxDifficulty,
@@ -43,6 +47,7 @@ const foundQuizzes = ref<QuizOverview[]>([]);
 
 executeSearch(
     50,
+    0,
     searchQuery.value,
     filterOptions.minDifficulty,
     filterOptions.maxDifficulty,
