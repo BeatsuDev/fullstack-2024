@@ -637,8 +637,38 @@ paths:
           description: Not logged in
         "403":
           description: "Not the creator of the quiz"
+  /image:
+    post:
+      tags:
+        - Image
+      description: Upload a new image
+      requestBody:
+        description: The new image
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "201":
+          description: Image uploaded successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Image"
 components:
   schemas:
+    Image:
+      type: object
+      required:
+        - id
+        - path
+      properties:
+        id:
+          type: string
+          format: uuid
+        path:
+          type: string
     User:
       type: object
       required:
