@@ -5,6 +5,7 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import no.ntnu.fullstack.backend.image.dto.ImageDTO;
 
 @Getter
 @Setter
@@ -14,4 +15,5 @@ public class QuestionDTO {
   private final String question;
   private final String answer;
   private final List<String> options;
+  private final ImageDTO image;
 }

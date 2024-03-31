@@ -3,6 +3,7 @@ package no.ntnu.fullstack.backend.question;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.image.ImageMapper;
 import no.ntnu.fullstack.backend.question.dto.QuestionCreateDTO;
 import no.ntnu.fullstack.backend.question.dto.QuestionDTO;
 import no.ntnu.fullstack.backend.question.model.Question;
@@ -11,7 +12,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-@Mapper
+@Mapper(uses = {ImageMapper.class})
 @RequiredArgsConstructor
 public abstract class QuestionMapper {
   public String fromOption(QuestionOption questionOption) {
