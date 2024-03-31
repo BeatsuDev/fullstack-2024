@@ -94,6 +94,11 @@ const router = createRouter({
                     component: () => import("@/views/app/QuizPlayerView.vue"),
                 },
                 {
+                    name: "quiz-lobby",
+                    path: "/lobby/:lobbyCode",
+                    component: () => import("@/views/app/QuizLobbyView.vue"),
+                },
+                {
                     path: "/profile",
                     name: "profile",
                     component: () => import("@/views/ProfilePageView.vue"),
