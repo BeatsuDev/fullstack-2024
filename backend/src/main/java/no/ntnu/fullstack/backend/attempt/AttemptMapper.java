@@ -25,7 +25,8 @@ public abstract class AttemptMapper {
 
   @Mappings({
     @Mapping(target = "id", source = "id"),
-    @Mapping(target = "quiz", source = "revision")
+    @Mapping(target = "quiz", source = "revision"),
+    @Mapping(target = "attemptedAt", source = "createdAt"),
   })
   public abstract QuizAttemptDTO toQuizAttemptDTO(QuizAttempt attempt);
 

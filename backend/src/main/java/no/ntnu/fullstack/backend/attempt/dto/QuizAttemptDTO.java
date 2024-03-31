@@ -1,5 +1,6 @@
 package no.ntnu.fullstack.backend.attempt.dto;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
@@ -13,4 +14,5 @@ public class QuizAttemptDTO {
   private final QuizDTO quiz;
   private final List<QuestionAttemptDTO> questionAttempts;
   private final boolean complete;
+  private final Date attemptedAt;
 }
