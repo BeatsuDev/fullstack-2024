@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AttemptController {
   private final AttemptService attemptService;
-  private final QuestionRepository questionRepository;
+  private final QuestionService questionService;
   private final AttemptMapper attemptMapper = Mappers.getMapper(AttemptMapper.class);
 
   @PostMapping
