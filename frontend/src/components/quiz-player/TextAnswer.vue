@@ -16,7 +16,10 @@ const emit = defineEmits<{
             type="text"
             @keyup.enter="emit('answerSelected', freeTextInput)"
         />
-        <ButtonComponent @click="emit('answerSelected', freeTextInput)" filled>
+        <ButtonComponent
+            @click="emit('answerSelected', freeTextInput.value)"
+            filled
+        >
             Submit Answer
         </ButtonComponent>
     </div>

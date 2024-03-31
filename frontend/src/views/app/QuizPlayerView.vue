@@ -41,6 +41,7 @@ const { execute: executeSubmitAnswer, error: submitError } =
     );
 
 async function submitAnswer(answer: string) {
+    console.log(answer);
     if (currentQuiz.value == null) return;
     if (currentQuestion.value == null) return;
     if (currentAttemptId.value == null) return;
@@ -61,10 +62,7 @@ async function submitAnswer(answer: string) {
 
             notificationStore.addNotification({
                 message: `Your answer was ${
-                    solutionData.correct
-                        ? "correct!"
-                        : "incorrect! The correct answer was:" +
-                          solutionData.answer
+                    solutionData.correct ? "correct!" : "incorrect!"
                 }`,
                 type: solutionData.correct ? "success" : "warning",
             });
