@@ -113,12 +113,12 @@ router.beforeEach(async (to, from) => {
 
     // Redirect to login if not authenticated and attempting to go to authenticated route
     if (to.meta.requiresAuth && !authenticationStore.authenticated) {
-        return "/login";
+        return { name: "login" };
     }
 
     // Rediirect to app if authenticated and attempting to go to non-authenticated route
     if (to.meta.redirectIfAuthenticated && authenticationStore.authenticated) {
-        return "/app";
+        return { name: "explore" };
     }
 });
 
