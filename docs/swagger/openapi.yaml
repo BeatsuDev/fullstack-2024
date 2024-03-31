@@ -11,8 +11,8 @@ info:
     url: "https://opensource.org/licenses/MIT"
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/
-  - url: https://api.kazoot.no/
+  - url: http://localhost:8080
+  - url: https://api.kazoot.no
 tags:
   - name: User
   - name: User Session
@@ -21,6 +21,10 @@ tags:
   - name: Revision
   - name: Category
   - name: Answer
+  - name: Attempt
+  - name: Feedback
+  - name: Collaborator
+  - name: Image
 
 paths:
   /category:
@@ -194,19 +198,7 @@ paths:
                 "title": "Biology: Chapter 1",
                 "description": "Quiz about the human body.",
                 "difficulty": 8,
-                "categories":
-                  [
-                    {
-                      "id": "8db1639d-75ed-485d-8f7f-a01c4e25b8e3",
-                      "name": "Biology",
-                      "color": "#0f0",
-                    },
-                    {
-                      "id": "bde00ae0-24a1-47d1-92e8-f932788da89c",
-                      "name": "Human Body",
-                      "color": "#ff19c2",
-                    },
-                  ],
+                "categories": [],
               }
       responses:
         "201":
@@ -217,6 +209,7 @@ paths:
       tags:
         - Quiz
       description: Get first page of quizzes
+      operationId: getQuizzes
       parameters:
         - in: query
           name: pageSize
@@ -259,6 +252,7 @@ paths:
       tags:
         - Quiz
       description: Get all information about a quiz
+      operationId: getQuiz
       parameters:
         - name: id
           description: The ID of a quiz
@@ -278,6 +272,7 @@ paths:
       tags:
         - Quiz
       description: Update quiz info
+      operationId: updateQuiz
       parameters:
         - name: id
           description: The ID of a quiz
@@ -361,7 +356,8 @@ paths:
           schema:
             type: string
             format: uuid
-      summary: Submit quiz attempt
+      description: Submit question attempt
+      operationId: submitAnswer
       requestBody:
         required: true
         content:
@@ -450,7 +446,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/QuizAddCollaborator"
-              example: { "email": "user@example.org" }
       responses:
         "200":
           description: Successfully added the collaborator
@@ -641,6 +636,7 @@ paths:
     post:
       tags:
         - Image
+      operationId: uploadImage
       description: Upload a new image
       requestBody:
         description: The new image
