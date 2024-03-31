@@ -449,6 +449,10 @@ paths:
       responses:
         "200":
           description: Successfully added the collaborator
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
         "401":
           description: Not logged in
         "404":
@@ -459,7 +463,7 @@ paths:
       description: Get all collaborators of a quiz
       operationId: getCollaborators
       responses:
-        "200":
+        "201":
           description: Successfully got the collaborators
           content:
             application/json:

@@ -91,23 +91,24 @@ public class QuizService {
     return quizRepository.findWithFirstRevision(quizId).orElseThrow(QuizNotFoundException::new);
   }
 
-  public Quiz addCollaborator(UUID quizId, User user)
+  public User addCollaborator(UUID quizId, User user)
       throws QuizNotFoundException, NotCollaboratorException {
     Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::new);
     collaboratorService.loggedInUserIsCollaboratorOrThrow(quiz);
     quiz.getCollaborators().add(user);
-    return quizRepository.saveAndFlush(quiz);
+    quizRepository.save(quiz);
+    return user;
   }
 
   public Quiz getQuizById(UUID quizId) throws QuizNotFoundException {
     return quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::new);
   }
 
-  public Quiz removeCollaborator(UUID quizId, UUID userId)
+  public void removeCollaborator(UUID quizId, UUID userId)
       throws QuizNotFoundException, NotCollaboratorException {
     Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::new);
     collaboratorService.loggedInUserIsCollaboratorOrThrow(quiz);
     quiz.getCollaborators().removeIf(user -> user.getId().equals(userId));
-    return quizRepository.saveAndFlush(quiz);
+    quizRepository.save(quiz);
   }
 }

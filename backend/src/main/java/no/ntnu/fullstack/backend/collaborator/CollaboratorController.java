@@ -14,6 +14,7 @@ import no.ntnu.fullstack.backend.user.UserService;
 import no.ntnu.fullstack.backend.user.dto.UserDTO;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +27,12 @@ public class CollaboratorController {
   private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
   @PostMapping
-  public ResponseEntity<List<UserDTO>> addCollaborator(
+  public ResponseEntity<UserDTO> addCollaborator(
       @PathVariable("quizId") UUID quizId, @RequestBody AddCollaboratorDTO collaborator)
       throws UserNotFoundException, QuizNotFoundException, NotCollaboratorException {
     User user = userService.getUserByEmailOrThrow(collaborator.getEmail());
-    Quiz quiz = quizService.addCollaborator(quizId, user);
-    return ResponseEntity.ok(userMapper.toUserDTOList(quiz.getCollaborators()));
+    User newCollaborator = quizService.addCollaborator(quizId, user);
+    return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.toUserDTO(newCollaborator));
   }
 
   @GetMapping
@@ -42,10 +43,10 @@ public class CollaboratorController {
   }
 
   @DeleteMapping("/{userId}")
-  public ResponseEntity<List<UserDTO>> removeCollaborator(
+  public ResponseEntity<?> removeCollaborator(
       @PathVariable("quizId") UUID quizId, @PathVariable("userId") UUID userId)
       throws QuizNotFoundException, NotCollaboratorException {
-    Quiz quiz = quizService.removeCollaborator(quizId, userId);
-    return ResponseEntity.ok(userMapper.toUserDTOList(quiz.getCollaborators()));
+    quizService.removeCollaborator(quizId, userId);
+    return ResponseEntity.noContent().build();
   }
 }
