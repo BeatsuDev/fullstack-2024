@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="true" style="max-width: 500px">
+    <form @submit.prevent style="max-width: 300px">
         <SelectComponent v-model="questionType">
             <option v-for="type in QuestionTypes" :key="type" :value="type">
                 {{ getReadableQuestionType(type) }}
@@ -13,10 +13,13 @@
             placeholder="Enter your question here"
         >
         </ValidatedInput>
-        <input type="file" @change="uploadImage"
-               accept=".jpeg , .png , .jpg"
-        />
-        <div v-if="editable.image" style="width: 100%;">
+        <div v-if="!editable.image">
+            <h4>Image</h4>
+            <input  type="file" @change="uploadImage"
+                   accept=".jpeg , .png , .jpg"
+            />
+        </div>
+        <div v-else style="width: 100%;">
             <img :src="BASE_PATH + '/'  + editable.image.path" v-if="editable.image"
                  style="max-width: 100%; margin-top: 10px"
                  alt="image" />
@@ -112,15 +115,12 @@ const selectedOption = ref(0);
 const booleanAnswer = ref(true);
 
 const formRules = {
-    question: {
-        required: required,
-    },
+    question: { required },
 };
 
 const v$ = useVuelidate(formRules, editable);
-
-function submit() {
-    if (v$.value.$invalid) {
+async function submit() {
+    if (!(await v$.value.$validate())) {
         return;
     }
     if (questionType.value == QuestionTypes.MULTIPLE) {
