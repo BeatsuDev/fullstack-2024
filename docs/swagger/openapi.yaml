@@ -20,6 +20,7 @@ tags:
   - name: Question
   - name: Revision
   - name: Category
+  - name: Answer
 
 paths:
   /category:
@@ -281,6 +282,12 @@ paths:
           schema:
             type: string
             format: uuid
+      requestBody:
+        description: The updated quiz info
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizCreate"
       responses:
         "200":
           description: "Successful update"
