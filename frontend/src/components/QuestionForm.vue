@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="true">
+    <form @submit.prevent="true" style="max-width: 500px">
         <SelectComponent v-model="questionType">
             <option v-for="type in QuestionTypes" :key="type" :value="type">
                 {{ getReadableQuestionType(type) }}
@@ -16,7 +16,7 @@
         <input type="file" @change="uploadImage"
                accept=".jpeg , .png , .jpg"
         />
-        <div v-if="editable.image">
+        <div v-if="editable.image" style="width: 100%;">
             <img :src="BASE_PATH + '/'  + editable.image.path" v-if="editable.image"
                  style="max-width: 100%; margin-top: 10px"
                  alt="image" />

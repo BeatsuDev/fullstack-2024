@@ -6,6 +6,7 @@ import { getQuestionType, QuestionTypes } from "@/composables/useQuestionType";
 import MultipleChoiceOptions from "./MultipleChoiceOptions.vue";
 import TextAnswer from "./TextAnswer.vue";
 import BooleanAnswer from "./BooleanAnswer.vue";
+import { BASE_PATH } from "@/api/base";
 
 const props = defineProps<{
     question: Question;
@@ -29,7 +30,7 @@ watch(questionType, (newVal) => {
             <div class="media-container">
                 <img
                     v-if="question.image"
-                    :src="question.image.path"
+                    :src="BASE_PATH + '/' + question.image.path"
                     alt="Question media"
                 />
                 <div class="placeholder-media" v-else></div>
@@ -59,6 +60,7 @@ watch(questionType, (newVal) => {
 <style scoped>
 .question-player-container {
     width: 100%;
+    height: 70svh;
     flex: 1;
 }
 
