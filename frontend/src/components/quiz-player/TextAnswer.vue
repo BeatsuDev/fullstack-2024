@@ -12,14 +12,11 @@ const emit = defineEmits<{
 <template>
     <div class="text-answer-container">
         <input
-            ref="freeTextInput"
+            v-model="freeTextInput"
             type="text"
             @keyup.enter="emit('answerSelected', freeTextInput)"
         />
-        <ButtonComponent
-            @click="emit('answerSelected', freeTextInput.value)"
-            filled
-        >
+        <ButtonComponent @click="emit('answerSelected', freeTextInput)" filled>
             Submit Answer
         </ButtonComponent>
     </div>
