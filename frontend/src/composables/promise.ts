@@ -70,7 +70,10 @@ export function useExecutablePromise<Params extends any[], ReturnType>(
         const promise = callable(...args);
         promise
             .then((result) => (data.value = result))
-            .catch((err) => (error.value = err))
+            .catch((err) => {
+                error.value = err;
+                data.value = null;
+            })
             .finally(() => {
                 loading.value = false;
                 finished.value = true;
