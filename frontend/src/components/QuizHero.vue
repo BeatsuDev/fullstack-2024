@@ -4,6 +4,23 @@
             <h1>{{ props.quiz.title }}</h1>
             <div class="action-bar">
                 <ButtonComponent
+                    style="margin-right: 1em"
+                    filled
+                    large
+                    v-if="props.playable"
+                    @click="
+                        $router.push({
+                            name: 'quiz-lobby',
+                            params: {
+                                lobbyCode:
+                                    100000 + Math.floor(Math.random() * 900000),
+                            },
+                        })
+                    "
+                >
+                    Multiplayer
+                </ButtonComponent>
+                <ButtonComponent
                     filled
                     large
                     v-if="props.playable"
@@ -13,8 +30,9 @@
                             params: { id: quiz.id },
                         })
                     "
-                    >Play</ButtonComponent
                 >
+                    Play
+                </ButtonComponent>
             </div>
         </div>
         <div class="description">
