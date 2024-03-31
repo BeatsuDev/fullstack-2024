@@ -39,6 +39,10 @@ public abstract class QuizMapper {
   })
   public abstract QuizOverviewDTO toQuizOverviewDTO(Quiz quiz, Revision revision);
 
+  public QuizDTO toQuizDTO(Revision revision) {
+    return toQuizDTO(revision.getQuiz(), revision);
+  }
+
   @Mapping(source = "user", target = "creator")
   public abstract Quiz fromCreateQuiz(User user);
 }

@@ -296,34 +296,107 @@ paths:
               schema:
                 $ref: "#/components/schemas/Quiz"
   /quiz/{id}/attempt:
-    parameters:
-      - name: id
-        description: The ID of a quiz
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
     post:
+      parameters:
+        - name: id
+          description: The ID of a quiz
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
       tags:
         - Attempt
       description: Attempt a quiz
       operationId: attemptQuiz
+      responses:
+        "200":
+          description: A new quiz attempt.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizAttempt"
+    get:
+      parameters:
+        - name: id
+          description: The ID of a quiz
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - Attempt
+      description: Get all attempts (by the user) for a given quiz
+      operationId: getAttempts
+      responses:
+        "200":
+          description: All quiz attempts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/QuizAttempt"
+  /quiz/{id}/attempt/{quizAttempt}:
+    get:
+      tags:
+        - Attempt
+      parameters:
+        - name: id
+          description: The ID of a quiz
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: quizAttempt
+          description: The ID of a quiz attempt
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      description: Get quiz attempt
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizAttempt"
+    post:
+      tags:
+        - Attempt
+      parameters:
+        - name: id
+          description: The ID of a quiz
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: quizAttempt
+          description: The ID of a quiz attempt
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      summary: Submit quiz attempt
       requestBody:
-        description: Answers to the quiz
+        required: true
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/QuizAttempt"
+              $ref: "#/components/schemas/AnswerDTO"
       responses:
         "200":
-          description: Successfully attempted the quiz
-        "401":
-          description: Not logged in
-        "404":
-          description: Quiz not found
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuestionAttempt"
   /quiz/{id}/feedback:
     parameters:
       - name: id
@@ -821,10 +894,49 @@ components:
     QuizAttempt:
       type: object
       properties:
-        question_id:
-          type: integer
+        id:
+          type: string
+          format: uuid
+        questionAttempts:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuestionAttempt"
+        quiz:
+          $ref: "#/components/schemas/Quiz"
+        complete:
+          type: boolean
+      required:
+        - id
+        - questionAttempts
+        - complete
+    QuestionAttempt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        question:
+          $ref: "#/components/schemas/Question"
         answer:
           type: string
+        correct:
+          type: boolean
+      required:
+        - id
+        - question
+        - answer
+        - correct
+    AnswerDTO:
+      type: object
+      properties:
+        questionId:
+          type: string
+          format: uuid
+        answer:
+          type: string
+      required:
+        - questionId
+        - answer
     QuizAddCollaborator:
       type: object
       required:
