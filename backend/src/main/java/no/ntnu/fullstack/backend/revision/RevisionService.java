@@ -30,17 +30,13 @@ public class RevisionService {
 
   private Revision newRevision(UUID quizId, Revision revision)
       throws QuizNotFoundException, NotCollaboratorException {
-    var latestQuiz =
-        quizService
-            .getLatestQuiz(quizId)
-            .orElseThrow(QuizNotFoundException::new)
-            .getLatestRevision();
-    collaboratorService.loggedInUserIsCollaboratorOrThrow(latestQuiz.getQuiz());
+    var quiz = quizService.getQuizById(quizId);
+    collaboratorService.loggedInUserIsCollaboratorOrThrow(quiz);
     User loggedInUser =
         (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     Revision newRevision = revision.copy();
-    revision.setQuiz(latestQuiz.getQuiz());
+    newRevision.setQuiz(quiz);
     newRevision.setCreator(loggedInUser);
 
     return revisionRepository.save(newRevision);
@@ -52,11 +48,7 @@ public class RevisionService {
           NoCorrectOptionException,
           NotCollaboratorException {
     questionService.validateQuestion(update);
-    Revision latestRevision =
-        quizService.getLatestQuiz(quizId).map(QuizWithRevision::getLatestRevision).orElse(null);
-    if (latestRevision == null) {
-      throw new QuizNotFoundException();
-    }
+    Revision latestRevision = quizService.getLatestQuiz(quizId).getLatestRevision();
 
     var question =
         latestRevision.getQuestions().stream()
@@ -87,11 +79,7 @@ public class RevisionService {
     questionService.validateQuestion(question);
     question.setQuestionId(UUID.randomUUID());
 
-    Revision latestRevision =
-        quizService
-            .getLatestQuiz(quizId)
-            .map(QuizWithRevision::getLatestRevision)
-            .orElseThrow(QuizNotFoundException::new);
+    Revision latestRevision = quizService.getLatestQuiz(quizId).getLatestRevision();
 
     question.setSequenceNumber(
         latestRevision.getQuestions().stream()
@@ -107,12 +95,7 @@ public class RevisionService {
 
   public QuizWithRevision updateQuizInfo(UUID quizId, Revision revision)
       throws QuizNotFoundException, NotCollaboratorException {
-    Revision latestRevision =
-        quizService
-            .getLatestQuiz(quizId)
-            .orElseThrow(QuizNotFoundException::new)
-            .getLatestRevision()
-            .copy();
+    Revision latestRevision = quizService.getLatestQuiz(quizId).getLatestRevision().copy();
 
     latestRevision.setTitle(revision.getTitle());
     latestRevision.setDescription(revision.getDescription());
@@ -120,11 +103,11 @@ public class RevisionService {
     latestRevision.setCategories(revision.getCategories());
 
     newRevision(quizId, latestRevision);
-    return quizService.getLatestQuiz(quizId).orElseThrow(QuizNotFoundException::new);
+    return quizService.getLatestQuiz(quizId);
   }
 
   public Pair<Quiz, List<Revision>> getAllRevisions(UUID quizId) throws QuizNotFoundException {
-    Quiz quiz = quizService.getLatestQuiz(quizId).orElseThrow(QuizNotFoundException::new).getQuiz();
+    Quiz quiz = quizService.getQuizById(quizId);
     List<Revision> revisions = revisionRepository.findByQuizId(quizId);
     return Pair.of(quiz, revisions);
   }
@@ -133,16 +116,12 @@ public class RevisionService {
       throws QuizNotFoundException, RevisionNotFound, NotCollaboratorException {
     Revision revision = revisionRepository.findById(revisionId).orElseThrow(RevisionNotFound::new);
     newRevision(quizId, revision);
-    return quizService.getLatestQuiz(quizId).orElseThrow(QuizNotFoundException::new);
+    return quizService.getLatestQuiz(quizId);
   }
 
   public QuizWithRevision getRevision(UUID quizId, UUID revisionId)
       throws RevisionNotFound, QuizNotFoundException {
-    Quiz quiz =
-        quizService
-            .getLatestQuiz(quizId)
-            .map(QuizWithRevision::getQuiz)
-            .orElseThrow(QuizNotFoundException::new);
+    Quiz quiz = quizService.getQuizById(quizId);
     Revision revision = revisionRepository.findById(revisionId).orElseThrow(RevisionNotFound::new);
     return new QuizWithRevision(quiz, revision);
   }

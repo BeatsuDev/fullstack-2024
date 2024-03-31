@@ -2,7 +2,6 @@ package no.ntnu.fullstack.backend.quiz;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.category.CategoryService;
@@ -52,8 +51,8 @@ public class QuizService {
     return quizRepository.findWithFirstRevision();
   }
 
-  public Optional<QuizWithRevision> getLatestQuiz(UUID quizId) {
-    return quizRepository.findWithFirstRevision(quizId);
+  public QuizWithRevision getLatestQuiz(UUID quizId) throws QuizNotFoundException {
+    return quizRepository.findWithFirstRevision(quizId).orElseThrow(QuizNotFoundException::new);
   }
 
   public Quiz addCollaborator(UUID quizId, User user)
