@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterView, RouterLink } from "vue-router";
+import { RouterView } from "vue-router";
 
 import SearchIcon from "@/assets/icons/navbar/SearchIcon.vue";
 import AddIcon from "@/assets/icons/navbar/AddIcon.vue";
@@ -13,37 +13,37 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
             <RouterView />
         </div>
         <nav class="app-navbar">
-            <RouterLink
-                to="explore"
+            <a
+                @click="() => $router.push({ name: 'explore' })"
                 class="icon-navigation"
                 :class="{
                     'active-route': $route.name === 'explore',
                 }"
-                ><SearchIcon />Find a Quiz</RouterLink
+                ><SearchIcon />Find a Quiz</a
             >
-            <RouterLink
-                to="/create"
+            <a
+                @click="() => $router.push({ name: 'create' })"
                 class="icon-navigation"
                 :class="{
                     'active-route': $route.name === 'create',
                 }"
-                ><AddIcon />Create Quiz</RouterLink
+                ><AddIcon />Create Quiz</a
             >
-            <RouterLink
-                to="/quizzes"
+            <a
+                @click="() => $router.push({ name: 'quizzes' })"
                 class="icon-navigation"
                 :class="{
                     'active-route': $route.name === 'quizzes',
                 }"
-                ><FolderIcon />My Quizzes</RouterLink
+                ><FolderIcon />My Quizzes</a
             >
-            <RouterLink
-                to="/profile"
+            <a
+                @click="() => $router.push({ name: 'profile' })"
                 class="icon-navigation"
                 :class="{
                     'active-route': $route.name === 'profile',
                 }"
-                ><ProfileIcon />My Profile</RouterLink
+                ><ProfileIcon />My Profile</a
             >
         </nav>
     </div>
