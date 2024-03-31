@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import type { ArgumentsType } from "vitest";
 import { reactive, computed, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { email, sameAs } from "@vuelidate/validators";
+import { email, minLength, sameAs } from "@vuelidate/validators";
 import { useAuthenticationStore } from "@/stores/authentication";
+
+import type { UserUpdate } from "@/api";
+import { UserApi } from "@/api";
+import { useExecutablePromise } from "@/composables/promise";
 
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
@@ -13,16 +18,12 @@ const formData = reactive({
     name: "",
     email: "",
     password: "",
-    repeatPassword: "",
 });
 
 const rules = {
     name: {},
     email: { email },
-    password: {},
-    repeatPassword: {
-        sameAsPassword: sameAs(computed(() => formData.password)),
-    },
+    password: { minLength: minLength(8) },
 };
 
 const v$ = useVuelidate(rules, formData);
@@ -31,6 +32,44 @@ onMounted(() => {
     formData.name = authenticationStore.loggedInUser?.name || "";
     formData.email = authenticationStore.loggedInUser?.email || "";
 });
+
+// User update web request
+const userApi = new UserApi();
+const {
+    data: response,
+    error,
+    loading,
+    execute: executeUserUpdate,
+} = useExecutablePromise(
+    async (...args: ArgumentsType<typeof userApi.updateUser>) =>
+        userApi.updateUser(...args)
+);
+
+async function updateProfile(): Promise<void> {
+    if (!(await v$.value.$validate())) {
+        return;
+    }
+
+    if (
+        authenticationStore.loggedInUser === null ||
+        !authenticationStore.loggedInUser
+    ) {
+        error.value =
+            "Currently not logged in as a user. Please refresh the page and try again.";
+        response.value = null;
+        loading.value = false;
+        return;
+    }
+
+    const newUser: UserUpdate = {
+        id: authenticationStore.loggedInUser.id || "",
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+    };
+
+    executeUserUpdate(newUser);
+}
 </script>
 
 <template>
@@ -38,7 +77,7 @@ onMounted(() => {
         <h1>{{ $t("profile.title") }}</h1>
         <p>{{ $t("profile.information") }}</p>
 
-        <form id="change-values-container" @submit.prevent="">
+        <form id="change-values-container" @submit.prevent="updateProfile">
             <ValidatedInput
                 id="name"
                 type="text"
@@ -53,6 +92,13 @@ onMounted(() => {
                 :validator="v$.email"
                 :label="$t('login.email')"
             />
+            <ValidatedInput
+                id="password"
+                type="password"
+                v-model="formData.password"
+                :validator="v$.password"
+                :label="$t('login.password')"
+            />
             <ButtonComponent
                 id="change-values-button"
                 type="submit"
@@ -63,6 +109,10 @@ onMounted(() => {
                 {{ $t("profile.changeValues") }}
             </ButtonComponent>
         </form>
+
+        <p>
+            {{ error }}
+        </p>
     </main>
 </template>
 
