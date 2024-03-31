@@ -1082,7 +1082,8 @@ components:
         - webSocketUrl
         - competition
       properties:
-        webSocketUrl:
+        comeptitionId:
           type: string
+          format: uuid
         competition:
           $ref: "#/components/schemas/Competition"

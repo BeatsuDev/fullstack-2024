@@ -12,12 +12,8 @@ import org.mapstruct.Mappings;
 public abstract class CompetitionMapper {
   public abstract CompetitionDTO toDTO(Competition competition);
 
-  public String getWebSocketUrl() {
-    return "ws://localhost:8080";
-  }
-
   @Mappings({
-    @Mapping(target = "webSocketUrl", expression = "java(getWebSocketUrl())"),
+    @Mapping(target = "competitionId", source = "competition.id"),
     @Mapping(target = "competition", source = "competition")
   })
   public abstract PreCompetitionInfoDTO toPreCompetitionInfoDTO(Competition competition);

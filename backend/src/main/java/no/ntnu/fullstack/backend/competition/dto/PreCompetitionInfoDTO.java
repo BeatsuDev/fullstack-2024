@@ -1,11 +1,12 @@
 package no.ntnu.fullstack.backend.competition.dto;
 
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class PreCompetitionInfoDTO {
-  private String webSocketUrl;
+  private UUID competitionId;
   private CompetitionDTO competition;
 }
