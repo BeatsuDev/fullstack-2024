@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { QuizApi } from "@/api";
+import { AttemptApi } from "@/api";
 import { usePromise } from "@/composables/promise";
 import router from "@/router";
 
 import QuestionPlayer from "@/components/quiz-player/QuestionPlayer.vue";
 
-const quizApi = new QuizApi();
+const quizApi = new AttemptApi();
 const {
     promise,
     data: response,
     loading,
     error,
 } = usePromise(
-    quizApi.quizIdGet(
+    quizApi.attemptQuiz(
         (router.currentRoute.value.params.id as unknown as string) ?? ""
     )
 );
@@ -24,14 +24,14 @@ promise.then((response) => {
 
 const questionNumber = ref(0);
 const currentQuestion = computed(
-    () => response.value?.data.questions[questionNumber.value] ?? null
+    () => response.value?.data.quiz!.questions[questionNumber.value] ?? null
 );
 const currentQuiz = computed(() => response.value?.data ?? null);
 
 function nextQuestion() {
     questionNumber.value++;
     if (currentQuiz.value == null) return;
-    if (questionNumber.value >= currentQuiz.value.questions.length) {
+    if (questionNumber.value >= currentQuiz.value.quiz!.questions.length) {
         console.log("Quiz finished!");
         return;
     }
@@ -43,7 +43,7 @@ function nextQuestion() {
         <div class="player-container" v-if="loading">Loading...</div>
         <div class="player-container" v-else-if="error">{{ error }}</div>
         <div class="player-container" v-else-if="response">
-            <h1>{{ response.data.title }}</h1>
+            <h1>{{ response.data.quiz!.title }}</h1>
             <QuestionPlayer
                 v-if="currentQuestion"
                 :question="currentQuestion"
