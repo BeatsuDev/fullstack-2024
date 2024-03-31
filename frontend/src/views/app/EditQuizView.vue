@@ -11,9 +11,9 @@
         </div>
         <div v-else-if="loadingDebounced">loading...</div>
         <div v-else-if="data">
-            <QuizHero :quiz="data.data" />
+            <QuizHero :quiz="quizReadOnly" />
             <h3>Edit quiz</h3>
-            <QuizForm :value="data.data" @submit="updateQuiz" style="margin:auto" />
+            <QuizForm :value="data?.data" @submit="updateQuiz" style="margin:auto" />
         </div>
         <div v-if="revisions">
             <h3>Revisions</h3>
@@ -68,7 +68,7 @@
 </template>
 <script lang="ts" setup>
 import { useRoute, useRouter } from "vue-router";
-import type { Collaborator, Revision } from "@/api";
+import type { Collaborator, Quiz, Revision } from "@/api";
 import { CollaboratorApi, QuizApi, RevisionApi } from "@/api";
 import { usePromise } from "@/composables/promise";
 import useDebounceLoading from "@/composables/useDebounceLoading";
@@ -86,14 +86,14 @@ import ButtonComponent from "@/components/ButtonComponent.vue";
 import RevisionInfiniteScroll from "@/components/RevisionInfiniteScroll.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
+import useQuizApi from "@/composables/useQuizApi";
 
 const route = useRoute();
 
-const quizId = route.params.id.toString();
+const quizId = computed(() => route.params.id.toString());
 
-const quizApi = new QuizApi();
+const {data, loading, errorMessage, quizReadOnly} = useQuizApi(quizId);
 
-const { data, loading, error } = usePromise(quizApi.quizIdGet(quizId));
 
 const { isOwnerOrCollaborator } = useQuizPermissions(
     computed(() => data.value?.data),
@@ -101,29 +101,19 @@ const { isOwnerOrCollaborator } = useQuizPermissions(
 
 const loadingDebounced = useDebounceLoading(loading);
 
-const errorMessage = computed(() => {
-    if (!error.value) {
-        return "";
-    }
-    if (error.value.status == "404") {
-        return "Quiz not found.";
-    }
-    if (error.value) {
-        return "An unexpected error occurred. Please try again later.";
-    }
-    return "";
-});
 
 const router = useRouter();
 
+const quizApi = new QuizApi();
+
 function updateQuiz(value: Quiz) {
     try {
-        quizApi.quizIdPut(quizId, value);
+        quizApi.quizIdPut(quizId.value, value);
         notificationStore.addNotification({
             message: "Quiz updated successfully.",
             type: "success",
         });
-        router.push("/quizzes/" + quizId);
+        router.push("/quizzes/" + quizId.value);
     } catch (e) {
         notificationStore.addNotification({
             message: "An unexpected error occurred.",
@@ -136,7 +126,7 @@ function updateQuiz(value: Quiz) {
 const collaboratorApi = new CollaboratorApi();
 
 const { data: collaborators } = usePromise(
-    collaboratorApi.getCollaborators(quizId),
+    collaboratorApi.getCollaborators(quizId.value),
 );
 
 const collaborator = reactive({
@@ -158,7 +148,7 @@ const notificationStore = useNotificationStore();
 async function addCollaborator() {
     try {
         const data = await collaboratorApi.addCollaborator(
-            quizId,
+            quizId.value,
             collaborator,
         );
         collaborators.value?.data.push(data.data as Collaborator);
@@ -199,7 +189,7 @@ onConfirm(() => {
 
 function deleteCollaborator(collaborator: Collaborator) {
     try {
-        collaboratorApi.removeCollaborator(quizId, collaborator.id);
+        collaboratorApi.removeCollaborator(quizId.value, collaborator.id);
         notificationStore.addNotification({
             message: "Collaborator removed successfully.",
             type: "success",
@@ -219,11 +209,11 @@ function deleteCollaborator(collaborator: Collaborator) {
 
 const revisionApi = new RevisionApi();
 
-const { data: revisions } = usePromise(revisionApi.getRevisions(quizId));
+const { data: revisions } = usePromise(revisionApi.getRevisions(quizId.value));
 
 
 function viewRevision(revision: Revision) {
-    router.push(`/quizzes/${quizId}?revision=${revision.revisionId}`);
+    router.push(`/quizzes/${quizId.value}?revision=${revision.revisionId}`);
 }
 
 function exportQuiz() {

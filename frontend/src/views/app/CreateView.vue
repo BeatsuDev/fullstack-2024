@@ -96,13 +96,14 @@ function createQuiz(quiz?: QuizCreate) {
         delete selectedTemplate.value.questions
 
     }
+    // @ts-ignore
+    if (quiz.id) {
+        // @ts-ignore
+        delete quiz.id;
+    }
     quizApi
         .createQuiz(quiz)
         .then((data) => {
-            notificationStore.addNotification({
-                message: "Quiz created",
-                type: "success",
-            });
             if (questions.length > 0) {
                 questions.forEach(async (question) => {
                     await questionsApi.createQuestion({
@@ -112,6 +113,10 @@ function createQuiz(quiz?: QuizCreate) {
                 });
 
             }
+            notificationStore.addNotification({
+                message: "Quiz created",
+                type: "success",
+            });
             router.push("/quizzes/" + data.data.id);
         })
         .catch(() => {

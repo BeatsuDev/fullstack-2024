@@ -5,9 +5,9 @@
                 <p>{{ errorMessage }}</p>
             </div>
             <div v-else-if="loadingDebounced">
-                <div v-if="loading">Loading...</div>
+                <div>Loading...</div>
             </div>
-            <div v-else-if="quiz">
+            <div v-else-if="quizReadOnly">
                 <AlertComponent v-if="revisionId" type="warning">
                     <div
                         style="
@@ -33,15 +33,30 @@
                 </AlertComponent>
 
                 <QuizHero
-                    :quiz="quiz"
+                    :quiz="quizReadOnly"
                     :editable="isOwnerOrCollaborator && !revisionId"
                     @edit="editQuiz"
                     playable
                 />
+                <AlertComponent v-if="attempts?.data.length > 0" type="info">
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                        "
+                    >
+                        You have tried this quiz before.
+                        <ButtonComponent @click="router.push(route.fullPath + '/results')" filled>
+                                See previous results
+                        </ButtonComponent>
+                    </div>
+
+                </AlertComponent>
                 <div v-if="isOwnerOrCollaborator">
                     <h3>Questions</h3>
                     <QuestionCard
-                        v-for="question in quiz.questions"
+                        v-for="question in quizReadOnly.questions"
                         :key="question.id"
                         :value="question"
                         :editable="isOwnerOrCollaborator && !revisionId"
@@ -58,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="feedbackIsLoading">loading...</div>
+            <div v-if="feedbackIsLoading">Loading...</div>
             <div v-else-if="feedbacks">
                 <h3>Feedbacks</h3>
                 <FeedbackCard
@@ -80,12 +95,12 @@
     </GenericModal>
 </template>
 <script lang="ts" setup>
-import type {
-    Question,
-    QuestionCreate,
-    Quiz,
-    Feedback,
-    FeedbackCreate,
+import {
+    type Question,
+    type QuestionCreate,
+    type Quiz,
+    type Feedback,
+    type FeedbackCreate, AttemptApi,
 } from "@/api";
 import { QuestionApi, QuizApi, RevisionApi, FeedbackApi } from "@/api";
 import { useExecutablePromise, usePromise } from "@/composables/promise";
@@ -103,6 +118,7 @@ import QuizHero from "@/components/QuizHero.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 import useDebounceLoading from "@/composables/useDebounceLoading";
+import useQuizApi from "@/composables/useQuizApi";
 
 const route = useRoute();
 
@@ -110,71 +126,34 @@ const route = useRoute();
  * Quiz
  */
 
-const quizId = route.params.id.toString();
+const quizId = computed(() => route.params.id.toString());
 
 const revisionId = computed(() => route.query.revision?.toString());
 
-const quizApi = new QuizApi();
-const revisionApi = new RevisionApi();
-
-const { data, loading, error, execute } = useExecutablePromise(fetchQuiz);
 const router = useRouter();
+
+const { data, loading, revert, quizReadOnly, errorMessage } = useQuizApi(quizId, revisionId);
 
 const loadingDebounced = useDebounceLoading(loading);
 
-watch(
-    route,
-    () => {
-        console.log("mo");
-        execute();
-    },
-    { immediate: true }
-);
-
-const errorMessage = computed(() => {
-    console.log(error.value);
-    if (!error.value) {
-        return "";
-    }
-    if (error.value.status == "404") {
-        return "Quiz not found.";
-    }
-    if (error.value) {
-        return "An unexpected error occurred. Please try again later.";
-    }
-    return "";
-});
-
-async function fetchQuiz() {
-    if (revisionId.value) {
-        return await revisionApi.getRevision(quizId, revisionId.value);
-    } else {
-        return await quizApi.quizIdGet(quizId);
-    }
-}
+const { isOwnerOrCollaborator } = useQuizPermissions(quizReadOnly);
 
 function cancelRevert() {
-    router.push("/quizzes/" + quizId);
+    router.push("/quizzes/" + quizId.value);
 }
-
-async function revert() {
-    if (revisionId.value) {
-        await revisionApi.revertToRevision(quizId, revisionId.value);
-        router.push("/quizzes/" + quizId);
-        notificationStore.addNotification({
-            message: "Reverted to revision successfully.",
-            type: "success",
-        });
-    }
-}
-
-const quiz = computed<Quiz>(() => data.value?.data as Quiz);
-
-const { isOwnerOrCollaborator } = useQuizPermissions(quiz);
-
 function editQuiz() {
-    router.push("/quizzes/" + quizId + "/edit");
+    router.push("/quizzes/" + quizId.value + "/edit");
 }
+
+
+/**
+ * Results
+ */
+
+const attemptApi = new AttemptApi();
+
+const {data: attempts} = usePromise(attemptApi.getAttempts(quizId.value));
+
 
 /**
  * Questions
@@ -184,7 +163,7 @@ const questionModal = ref(false);
 
 function blankQuestion() {
     return {
-        quizId: quizId,
+        quizId: quizId.value,
         question: "",
         options: [""],
         answer: "",
@@ -222,10 +201,10 @@ async function createQuestion(value: QuestionCreate) {
 
 async function updateQuestion(value: Question) {
     try {
-        await questionApi.updateQuestion({...value, quizId: quizId} as QuestionCreate , value.id);
-        const index = quiz.value.questions.findIndex((q) => q.id == value.id);
+        await questionApi.updateQuestion({...value, quizId: quizId.value} as QuestionCreate , value.id);
+        const index = data.value.data.questions.findIndex((q) => q.id == value.id);
         if (index != -1) {
-            quiz.value.questions[index] = value as Question;
+            data.value.data.questions[index] = value as Question;
         }
         notificationStore.addNotification({
             message: "Question updated successfully.",
@@ -262,7 +241,7 @@ const question = ref<QuestionCreate | Question>(blankQuestion());
 async function deleteQuestion(question: Question) {
     try {
         await questionApi.deleteQuestion(question.id);
-        quiz.value.questions = quiz.value.questions.filter(
+        data.value.data.questions = data.value.data.questions.filter(
             (q) => q.id != question.id
         );
         notificationStore.addNotification({
@@ -284,7 +263,7 @@ async function deleteQuestion(question: Question) {
 const feedbackApi = new FeedbackApi();
 
 const { data: feedbackData, loading: feedbacksLoading } = usePromise(
-    feedbackApi.getFeedback(quizId)
+    feedbackApi.getFeedback(quizId.value)
 );
 
 const feedbackIsLoading = useDebounceLoading(feedbacksLoading);
@@ -293,7 +272,7 @@ const feedbacks = computed(() => feedbackData.value?.data as Feedback[]);
 
 async function submitFeedback(value: FeedbackCreate) {
     try {
-        const newFeedback = await feedbackApi.giveFeedback(quizId, value);
+        const newFeedback = await feedbackApi.giveFeedback(quizId.value, value);
         feedbackData.value?.data.push(newFeedback.data);
     } catch (e) {
         notificationStore.addNotification({
