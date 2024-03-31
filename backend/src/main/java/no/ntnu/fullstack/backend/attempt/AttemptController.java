@@ -1,5 +1,6 @@
 package no.ntnu.fullstack.backend.attempt;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +10,11 @@ import no.ntnu.fullstack.backend.attempt.dto.QuizAttemptDTO;
 import no.ntnu.fullstack.backend.attempt.exception.AttemptNotFoundException;
 import no.ntnu.fullstack.backend.attempt.model.QuestionAttempt;
 import no.ntnu.fullstack.backend.attempt.model.QuizAttempt;
+import no.ntnu.fullstack.backend.question.repository.QuestionRepository;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AttemptController {
   private final AttemptService attemptService;
+  private final QuestionRepository questionRepository;
   private final AttemptMapper attemptMapper = Mappers.getMapper(AttemptMapper.class);
 
   @PostMapping
@@ -29,7 +33,8 @@ public class AttemptController {
     User loggedInUser = (User) auth.getPrincipal();
     QuizAttempt quizAttempt = attemptService.createAttempt(quizId, loggedInUser);
 
-    return ResponseEntity.ok(attemptMapper.toQuizAttemptDTO(quizAttempt));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(attemptMapper.toQuizAttemptDTO(quizAttempt));
   }
 
   @GetMapping
@@ -41,28 +46,16 @@ public class AttemptController {
     return ResponseEntity.ok(attemptMapper.toQuizAttemptDTOs(quizAttempts));
   }
 
-  @GetMapping("/{attemptId}")
-  public ResponseEntity<QuizAttemptDTO> getAttempt(
-      Authentication auth,
-      @PathVariable("quizId") UUID quizId,
-      @PathVariable("attemptId") UUID attemptId)
-      throws QuizNotFoundException, AttemptNotFoundException {
-    QuizAttempt quizAttempt = attemptService.getAttempt(quizId, attemptId);
-
-    if (quizAttempt.getAttemptedBy().getId() != ((User) auth.getPrincipal()).getId())
-      throw new AttemptNotFoundException();
-    return ResponseEntity.ok(attemptMapper.toQuizAttemptDTO(quizAttempt));
-  }
-
   @PostMapping("/{attemptId}")
   public ResponseEntity<QuestionAttemptDTO> submitAttempt(
       Authentication auth,
       @PathVariable("quizId") UUID quizId,
       @PathVariable("attemptId") UUID attemptId,
-      @RequestBody AnswerDTO answerDTO)
+      @Valid @RequestBody AnswerDTO answerDTO)
       throws AttemptNotFoundException, QuizNotFoundException {
     User loggedInUser = (User) auth.getPrincipal();
     QuestionAttempt questionAttempt = attemptMapper.toQuestionAttempt(answerDTO);
+    questionAttempt.setQuestion(questionRepository.getReferenceById(answerDTO.getQuestionId()));
     questionAttempt =
         attemptService.submitAttempt(quizId, attemptId, questionAttempt, loggedInUser);
     return ResponseEntity.ok(attemptMapper.toQuestionAttemptDTO(questionAttempt));

@@ -28,6 +28,7 @@ public class QuizAttempt {
   @ManyToOne private Revision revision;
 
   public boolean isComplete() {
+    if (questionAttempts == null) return false;
     return questionAttempts.size() == revision.getQuestions().size();
   }
 }

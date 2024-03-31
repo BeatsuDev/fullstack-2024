@@ -43,8 +43,8 @@ public class Revision {
   @JoinColumn(name = "quiz_id")
   private Quiz quiz;
 
-  @OneToMany
   @JoinColumn(name = "category_id")
+  @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
   private List<Category> categories;
 
   @OneToMany(mappedBy = "revision", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

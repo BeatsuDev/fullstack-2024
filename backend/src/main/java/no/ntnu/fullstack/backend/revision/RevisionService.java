@@ -89,7 +89,12 @@ public class RevisionService {
     latestRevision.getQuestions().add(question);
 
     var revision = newRevision(quizId, latestRevision);
-    question.setRevision(revision);
+    UUID questionId = question.getQuestionId();
+    question =
+        revision.getQuestions().stream()
+            .filter(q -> q.getQuestionId().equals(questionId))
+            .findFirst()
+            .orElseThrow();
     return question;
   }
 

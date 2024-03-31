@@ -1,6 +1,7 @@
 package no.ntnu.fullstack.backend.attempt;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.attempt.dto.AnswerDTO;
 import no.ntnu.fullstack.backend.attempt.dto.QuestionAttemptDTO;
 import no.ntnu.fullstack.backend.attempt.dto.QuizAttemptDTO;
@@ -13,7 +14,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 @Mapper(uses = {QuizMapper.class, QuestionMapper.class})
+@RequiredArgsConstructor
 public abstract class AttemptMapper {
+
   public abstract QuestionAttempt toQuestionAttempt(AnswerDTO dto);
 
   public abstract QuestionAttemptDTO toQuestionAttemptDTO(QuestionAttempt question);

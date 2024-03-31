@@ -338,25 +338,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/QuizAttempt"
-  /quiz/{id}/attempt/{quizAttempt}:
-    get:
-      tags:
-        - Attempt
-      parameters:
-        - name: id
-          description: The ID of a quiz
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: quizAttempt
-          description: The ID of a quiz attempt
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
       description: Get quiz attempt
       responses:
         "200":

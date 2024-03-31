@@ -16,5 +16,5 @@ public interface QuizAttemptRepository extends JpaRepository<QuizAttempt, UUID> 
   @Query(
       "SELECT qa FROM QuizAttempt qa WHERE qa.attemptedBy.id = :userId AND qa.revision.quiz.id = :quizId order by qa.createdAt desc")
   List<QuizAttempt> getQuizAttemptsByAttemptedByAndQuiz(
-      @Param("userId") UUID userId, @Param("userId") UUID quizId);
+      @Param("userId") UUID userId, @Param("quizId") UUID quizId);
 }
