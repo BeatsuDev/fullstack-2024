@@ -5,25 +5,8 @@ import ButtonComponent from "@/components/ButtonComponent.vue";
 
 import type { Category, QuizOverview } from "@/api";
 import { CategoryApi, QuizApi } from "@/api";
-import { usePromise } from "@/composables/promise";
-import { useRouter } from "vue-router";
-import { watch } from "fs";
-
-// Search
-const searchQuery = ref("");
-
-function searchQuizzes() {
-    filtersWindowOpen.value = false;
-    console.log("Searching for quizzes...");
-    alert("Searching for quizzes...");
-}
-
-// Filter window
-const filtersWindowOpen = ref(false);
-
-function toggleFiltersWindow() {
-    filtersWindowOpen.value = !filtersWindowOpen.value;
-}
+import { useExecutablePromise } from "@/composables/promise";
+import router from "@/router";
 
 // Categories
 const categoryApi = new CategoryApi();
@@ -68,32 +51,53 @@ function getCategoryStyle(category: Category) {
     };
 }
 
-// Difficulty range
-const minDifficulty = ref(1);
-const maxDifficulty = ref(10);
-
-// Quizzes
+// Search
 const quizApi = new QuizApi();
-const foundQuizzes = ref<QuizOverview[]>([]);
+const searchQuery = ref("");
+const {
+    execute: executeSearch,
+    error,
+    loading: quizFetchLoading,
+} = useExecutablePromise(async (...args) => await quizApi.quizGet(...args));
 
-const { promise, loading: quizFetchLoading } = usePromise(
-    quizApi.quizGet(
+function searchQuizzes() {
+    filtersWindowOpen.value = false;
+    executeSearch(
         50,
         searchQuery.value,
         minDifficulty.value,
         maxDifficulty.value,
         selectedCategories.value
-    )
-);
+    ).then((response) => {
+        foundQuizzes.value = [...response.data];
+    });
+}
 
-promise.then((response) => {
+// Difficulty range
+const minDifficulty = ref(1);
+const maxDifficulty = ref(10);
+
+// Quizzes
+const foundQuizzes = ref<QuizOverview[]>([]);
+
+executeSearch(
+    50,
+    searchQuery.value,
+    minDifficulty.value,
+    maxDifficulty.value,
+    selectedCategories.value
+).then((response) => {
     foundQuizzes.value = [...response.data];
 });
+// Filter window
+const filtersWindowOpen = ref(false);
 
-const router = useRouter();
+function toggleFiltersWindow() {
+    filtersWindowOpen.value = !filtersWindowOpen.value;
+}
 
 function onQuizCardClick(quiz: QuizOverview) {
-    router.push("/quizzes/" + quiz.id);
+    router.push({ name: "quiz", params: { id: quiz.id } });
 }
 </script>
 
@@ -167,6 +171,7 @@ function onQuizCardClick(quiz: QuizOverview) {
         </div>
         <main class="found-quizzes-container">
             <div v-if="quizFetchLoading">Loading...</div>
+            <div v-else-if="error">{{ error }}</div>
             <div v-else-if="foundQuizzes.length === 0">No quizzes found.</div>
             <div class="found-quizzes-grid" v-else>
                 <div
