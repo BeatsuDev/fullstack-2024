@@ -96,12 +96,10 @@ public class QuizService {
     }
 
     int start = filters.getPage() * filters.getPageSize();
+    if (start >= quizzes.size()) throw new NoQuizzesFoundException();
     int end = Math.min(start + filters.getPageSize(), quizzes.size());
-    try {
-      return quizzes.subList(start, end);
-    } catch (IndexOutOfBoundsException e) {
-      throw new NoQuizzesFoundException();
-    }
+
+    return quizzes.subList(start, end);
   }
 
   public QuizWithRevision getLatestQuiz(UUID quizId) throws QuizNotFoundException {
