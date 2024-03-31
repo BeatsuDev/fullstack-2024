@@ -11,6 +11,7 @@ import no.ntnu.fullstack.backend.attempt.exception.AttemptNotFoundException;
 import no.ntnu.fullstack.backend.attempt.model.QuestionAttempt;
 import no.ntnu.fullstack.backend.attempt.model.QuizAttempt;
 import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
+import no.ntnu.fullstack.backend.question.QuestionService;
 import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.question.repository.QuestionRepository;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
