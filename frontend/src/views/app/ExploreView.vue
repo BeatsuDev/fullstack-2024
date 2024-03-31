@@ -3,11 +3,11 @@ import { ref, reactive } from "vue";
 import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import FilterOptions from "@/components/FilterOptions.vue";
+import QuizGrid from "@/components/QuizGrid.vue";
 
 import type { QuizOverview, Category } from "@/api";
 import { QuizApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
-import router from "@/router";
 
 //
 const filterOptions = reactive({
@@ -56,35 +56,6 @@ const filtersWindowOpen = ref(false);
 function toggleFiltersWindow() {
     filtersWindowOpen.value = !filtersWindowOpen.value;
 }
-
-function onQuizCardClick(quiz: QuizOverview) {
-    router.push({ name: "quiz", params: { id: quiz.id } });
-}
-
-function isCategorySelected(category: Category): boolean {
-    if (!filterOptions) return false;
-    return filterOptions.selectedCategories
-        .map((c) => c.name)
-        .includes(category.name);
-}
-
-function getCategoryStyle(category: Category) {
-    if (category.name == "string")
-        return {
-            border: `2px solid red`,
-        };
-    if (isCategorySelected(category)) {
-        return {
-            border: `2px solid ${category.color}`,
-            backgroundColor: category.color,
-            color: "white",
-            "box-shadow": "1px 1px 2px rgb(0 0 0 / 50%)",
-        };
-    }
-    return {
-        border: `2px solid ${category.color}`,
-    };
-}
 </script>
 
 <template>
@@ -120,32 +91,7 @@ function getCategoryStyle(category: Category) {
             <div v-if="quizFetchLoading">Loading...</div>
             <div v-else-if="error">{{ error }}</div>
             <div v-else-if="foundQuizzes.length === 0">No quizzes found.</div>
-            <div class="found-quizzes-grid" v-else>
-                <div
-                    v-for="(quiz, i) in foundQuizzes"
-                    :key="i"
-                    class="quiz-overview-card"
-                    @click="onQuizCardClick(quiz)"
-                >
-                    <div
-                        class="quiz-card-banner"
-                        :style="`background-color: hsl(${Math.random() * 360}deg ${60 + Math.random() * 40}% 50%);`"
-                    ></div>
-                    <div class="quiz-card-content">
-                        <div class="quiz-card-categories">
-                            <div
-                                v-for="(category, i) in quiz.categories"
-                                :key="i"
-                                :style="getCategoryStyle(category)"
-                            >
-                                {{ category.name }}
-                            </div>
-                        </div>
-                        <h4 style="margin-top: 0">{{ quiz.title }}</h4>
-                        <p>{{ quiz.description }}</p>
-                    </div>
-                </div>
-            </div>
+            <QuizGrid v-else :quizzes="foundQuizzes" />
         </main>
     </div>
 </template>
@@ -189,6 +135,11 @@ main {
     width: 100%;
 }
 
+.found-quizzes-container {
+    padding: 1em;
+    max-height: 100%;
+}
+
 .v-enter-active,
 .v-leave-active {
     transition: transform 150ms cubic-bezier(0.85, 0, 0.15, 1);
@@ -197,52 +148,5 @@ main {
 .v-enter-from,
 .v-leave-to {
     transform: translateY(-100%);
-}
-
-.found-quizzes-container {
-    padding: 1em;
-    max-height: 100%;
-}
-
-.found-quizzes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1em;
-}
-
-.quiz-overview-card {
-    border: 1px solid black;
-    border-radius: 1em;
-    transition-duration: 150ms;
-}
-
-.quiz-overview-card:hover {
-    box-shadow: 2px 2px 4px rgb(0 0 0 / 50%);
-    transform: translate(-2px, -2px);
-    cursor: pointer;
-}
-
-.quiz-overview-card .quiz-card-banner {
-    border-top-left-radius: 1em;
-    border-top-right-radius: 1em;
-    height: 5em;
-}
-
-.quiz-overview-card .quiz-card-content {
-    padding: 1em;
-}
-
-.quiz-overview-card .quiz-card-categories {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5em;
-    margin-bottom: 0.5em;
-}
-
-.quiz-overview-card .quiz-card-categories div {
-    padding: 0.25em 0.5em;
-    border-radius: 1em;
-    font-size: 0.8em;
-    text-transform: uppercase;
 }
 </style>
