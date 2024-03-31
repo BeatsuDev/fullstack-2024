@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -112,7 +111,7 @@ export class ImageApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ImageApi
      */
-    public async uploadImage(options?: AxiosRequestConfig) : Promise<AxiosResponse<Image>> {
+    public async uploadImage( options?: AxiosRequestConfig) : Promise<AxiosResponse<Image>> {
         return ImageApiFp(this.configuration).uploadImage(options).then((request) => request(this.axios, this.basePath));
     }
 }

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -113,10 +112,12 @@ export const QuizApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {number} [minDifficulty] 
          * @param {number} [maxDifficulty] 
          * @param {Array<Category>} [category] 
+         * @param {string} [creator] 
+         * @param {string} [collaborator] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getQuizzes: async (pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getQuizzes: async (pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, creator?: string, collaborator?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/quiz`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -150,6 +151,14 @@ export const QuizApiAxiosParamCreator = function (configuration?: Configuration)
 
             if (category) {
                 localVarQueryParameter['category'] = category;
+            }
+
+            if (creator !== undefined) {
+                localVarQueryParameter['creator'] = creator;
+            }
+
+            if (collaborator !== undefined) {
+                localVarQueryParameter['collaborator'] = collaborator;
             }
 
             const query = new URLSearchParams(localVarUrlObj.search);
@@ -255,11 +264,13 @@ export const QuizApiFp = function(configuration?: Configuration) {
          * @param {number} [minDifficulty] 
          * @param {number} [maxDifficulty] 
          * @param {Array<Category>} [category] 
+         * @param {string} [creator] 
+         * @param {string} [collaborator] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<QuizOverview>>>> {
-            const localVarAxiosArgs = await QuizApiAxiosParamCreator(configuration).getQuizzes(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, options);
+        async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, creator?: string, collaborator?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<QuizOverview>>>> {
+            const localVarAxiosArgs = await QuizApiAxiosParamCreator(configuration).getQuizzes(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, creator, collaborator, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -314,11 +325,13 @@ export const QuizApiFactory = function (configuration?: Configuration, basePath?
          * @param {number} [minDifficulty] 
          * @param {number} [maxDifficulty] 
          * @param {Array<Category>} [category] 
+         * @param {string} [creator] 
+         * @param {string} [collaborator] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<QuizOverview>>> {
-            return QuizApiFp(configuration).getQuizzes(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, options).then((request) => request(axios, basePath));
+        async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, creator?: string, collaborator?: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<QuizOverview>>> {
+            return QuizApiFp(configuration).getQuizzes(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, creator, collaborator, options).then((request) => request(axios, basePath));
         },
         /**
          * Update quiz info
@@ -368,12 +381,14 @@ export class QuizApi extends BaseAPI {
      * @param {number} [minDifficulty] 
      * @param {number} [maxDifficulty] 
      * @param {Array<Category>} [category] 
+     * @param {string} [creator] 
+     * @param {string} [collaborator] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof QuizApi
      */
-    public async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<QuizOverview>>> {
-        return QuizApiFp(this.configuration).getQuizzes(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, options).then((request) => request(this.axios, this.basePath));
+    public async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, creator?: string, collaborator?: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<QuizOverview>>> {
+        return QuizApiFp(this.configuration).getQuizzes(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, creator, collaborator, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Update quiz info

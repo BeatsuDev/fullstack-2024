@@ -13,6 +13,17 @@
             placeholder="Enter your question here"
         >
         </ValidatedInput>
+        <input type="file" @change="uploadImage"
+               accept=".jpeg , .png , .jpg"
+        />
+        <div v-if="editable.image">
+            <img :src="BASE_PATH + '/'  + editable.image.path" v-if="editable.image"
+                 style="max-width: 100%; margin-top: 10px"
+                 alt="image" />
+            <ButtonComponent @click="editable.image = null" filled block style="margin-top: 10px">Remove image
+            </ButtonComponent>
+
+        </div>
         <div v-if="questionType == QuestionTypes.BOOLEAN" class="boolean-options">
             <input type="radio" v-model="booleanAnswer" :value="true" />
             <label>True</label>
@@ -59,15 +70,18 @@
     </form>
 </template>
 <script lang="ts" setup>
-import { defineProps, type Ref, ref, watchEffect } from "vue";
+import { defineProps, ref, watchEffect } from "vue";
 import { type Question } from "../api/models/question";
 import useVuelidate from "@vuelidate/core";
 import ValidatedInput from "./ValidatedInput.vue";
 import ButtonComponent from "./ButtonComponent.vue";
 import { required } from "@vuelidate/validators";
-import { QuestionApi, type QuestionCreate, type QuizCreate } from "@/api";
+import { type Image, type QuestionCreate } from "@/api";
 import { getReadableQuestionType, QuestionTypes, removeFieldsNotInType } from "@/composables/useQuestionType";
 import SelectComponent from "@/components/SelectComponent.vue";
+import { useNotificationStore } from "@/stores/notification";
+import axios from "axios";
+import { BASE_PATH } from "@/api/base";
 
 const props = defineProps<{
     value?: QuestionCreate | Question;
@@ -78,12 +92,13 @@ const emit = defineEmits<{
 }>();
 
 const questionType = ref<QuestionTypes>(QuestionTypes.MULTIPLE);
-const editable = ref(props.value || {
+// @ts-ignore
+const editable = ref<Question | QuestionCreate>(props.value || {
     question: "",
     options: [""],
     answer: "",
 
-}) as Ref<QuestionCreate | Question>;
+});
 
 watchEffect(() => {
     editable.value = props.value || {
@@ -114,12 +129,43 @@ function submit() {
         editable.value.answer = booleanAnswer.value.toString();
         editable.value.options = ["true", "false"];
     }
+    //@ts-ignore
+    editable.value.imageId = editable.value.image?.id;
 
     emit("submit", removeFieldsNotInType(editable.value, questionType.value));
 }
 
 function addAnswer() {
     editable.value?.options.push("");
+}
+
+const notificationStore = useNotificationStore();
+const api = axios.create({
+    baseURL: BASE_PATH,
+});
+
+function uploadImage() {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) {
+        return;
+    }
+
+
+    const formData = new FormData();
+    formData.append("image", file);
+    const data = api.post<Image>("/image", formData).then((response) => {
+        editable.value.image = response.data;
+        notificationStore.addNotification({
+            message: "Image uploaded successfully.",
+            type: "success",
+        });
+    }).catch(() => {
+        notificationStore.addNotification({
+            message: "An unexpected error occurred.",
+            type: "error",
+        });
+    });
+
 }
 </script>
 <style scoped>

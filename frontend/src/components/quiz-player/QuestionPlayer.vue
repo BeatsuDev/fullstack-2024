@@ -28,11 +28,11 @@ watch(questionType, (newVal) => {
             <h2>Question: {{ question.question }}</h2>
             <div class="media-container">
                 <img
-                    v-if="question.mediaUrl"
-                    :src="question.mediaUrl"
+                    v-if="question.image"
+                    :src="question.image.path"
                     alt="Question media"
                 />
-                <div class="placeholder-media"></div>
+                <div class="placeholder-media" v-else></div>
             </div>
             <div class="answers-container">
                 <MultipleChoiceOptions
