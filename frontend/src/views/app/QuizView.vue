@@ -39,6 +39,7 @@
                     <ButtonComponent
                         arge
                         filled
+                        large
                         @click="questionModal = true"
                     >Add question
                     </ButtonComponent>

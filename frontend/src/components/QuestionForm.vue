@@ -113,8 +113,8 @@ function submit() {
     if (questionType.value == QuestionTypes.MULTIPLE) {
         editable.value.answer = editable.value.options[selectedOption.value];
     } else if (questionType.value == QuestionTypes.BOOLEAN) {
-        editable.value.answer = booleanAnswer.value;
-        editable.value.options = ["True", "False"];
+        editable.value.answer = booleanAnswer.value.toString();
+        editable.value.options = ["true", "false"];
     }
 
     emit("submit", removeFieldsNotInType(editable.value, questionType.value));

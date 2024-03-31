@@ -5,7 +5,7 @@ import { computed } from "vue";
 export default function useQuestionType(
     question: Ref<QuestionCreate | Question>
 ) {
-    const questionType = computed(() => {
+    const questionType = computed<keyof typeof QuestionTypes>(() => {
         if (isText(question.value)) {
             return QuestionTypes.TEXT;
         }
@@ -15,15 +15,21 @@ export default function useQuestionType(
         return QuestionTypes.MULTIPLE;
     });
 
+    const readableQuestionType = computed(() => {
+        return getReadableQuestionType(questionType.value);
+    })
+
     return {
         questionType,
+        readableQuestionType,
+
     };
 }
 
 export const QuestionTypes = {
-    MULTIPLE: "multiple",
-    TEXT: "text",
-    BOOLEAN: "boolean",
+    MULTIPLE: "MULTIPLE",
+    TEXT: "TEXT",
+    BOOLEAN: "BOOLEAN",
 };
 
 export function getReadableQuestionType(type: keyof typeof QuestionTypes) {
@@ -50,8 +56,8 @@ export function isBoolean(question: Question | QuestionCreate) {
         return false;
     }
     return (
-        question.options[0] === "True" &&
-        question.options[1] === "False"
+        question.options[0] === "true" &&
+        question.options[1] === "false"
     );
 }
 
@@ -62,7 +68,7 @@ export function removeFieldsNotInType(
     if (questionType === QuestionTypes.TEXT) {
         question.options = [];
     } else if (questionType === QuestionTypes.BOOLEAN) {
-        question.options = ["True", "False"];
+        question.options = ["true", "false"];
     }
 
     return question;
