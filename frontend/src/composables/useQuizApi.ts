@@ -15,8 +15,6 @@ export default function useQuizApi(quizId: Ref<string>, revisionId: Ref<string |
 
     const { data, loading, error, execute } = useExecutablePromise(fetchQuiz);
 
-    watchEffect(() => console.log(data?.value?.data?.questions))
-
     watch(
         [quizId, revisionId],
         () => {
@@ -26,11 +24,11 @@ export default function useQuizApi(quizId: Ref<string>, revisionId: Ref<string |
     );
 
     const errorMessage = computed(() => {
-        console.log(error.value);
         if (!error.value) {
             return "";
         }
-        if (error.value.status == "404") {
+        console.log(error.value)
+        if (error.value.response.status == "404" || error.value.response.status == "422") {
             return "Quiz not found.";
         }
         if (error.value) {

@@ -11,10 +11,16 @@
 
 import { useRoute } from "vue-router";
 import { computed } from "vue";
+import useQuizApi from "@/composables/useQuizApi";
+import useQuizAttempt from "@/composables/useQuizAttempt";
 
 const route = useRoute();
 
 const quizId = computed(() => route.params.id.toString());
+
+const {data, attempts} = useQuizAttempt(quizId)
+
+
 
 </script>
 <style scoped>
