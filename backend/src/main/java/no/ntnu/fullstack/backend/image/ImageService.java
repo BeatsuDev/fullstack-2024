@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.image.exception.ImageNotFound;
 import no.ntnu.fullstack.backend.image.exception.MalformedImageException;
 import no.ntnu.fullstack.backend.image.model.Image;
 import no.ntnu.fullstack.backend.user.model.User;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class ImageService {
   private final ImageRepository imageRepository;
+
   @Value("${application.image.upload.dir}")
   private String UPLOAD_DIR;
 
@@ -43,5 +45,9 @@ public class ImageService {
     Path imagePath = Paths.get(UPLOAD_DIR + newImage.getId() + "." + extension);
     image.transferTo(imagePath.toFile());
     return imageRepository.saveAndFlush(newImage);
+  }
+
+  public Image getImage(UUID id) throws ImageNotFound {
+    return imageRepository.findById(id).orElseThrow(ImageNotFound::new);
   }
 }
