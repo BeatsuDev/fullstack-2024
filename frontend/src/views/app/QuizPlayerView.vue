@@ -10,7 +10,6 @@ import QuestionPlayer from "@/components/quiz-player/QuestionPlayer.vue";
 const notificationStore = useNotificationStore();
 const attemptApi = new AttemptApi();
 const {
-    promise,
     data: response,
     loading,
     error,
@@ -19,10 +18,6 @@ const {
         (router.currentRoute.value.params.id as unknown as string) ?? ""
     )
 );
-
-promise.then((response) => {
-    console.log(response.data);
-});
 
 const questionNumber = ref(0);
 const currentQuestion = computed(
@@ -39,7 +34,6 @@ const { execute: executeSubmitAnswer, error: submitError } =
     );
 
 async function submitAnswer(answer: string) {
-    console.log(answer);
     if (currentQuiz.value == null) return;
     if (currentQuestion.value == null) return;
     if (currentAttemptId.value == null) return;
