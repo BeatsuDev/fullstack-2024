@@ -139,6 +139,9 @@
 							<version>1.4.2.Final</version>
 						</path>
 					</annotationProcessorPaths>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 		</plugins>
