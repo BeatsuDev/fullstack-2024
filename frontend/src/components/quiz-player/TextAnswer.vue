@@ -12,7 +12,7 @@ const emit = defineEmits<{
 <template>
     <div class="text-answer-container">
         <input
-            ref="freeTextInput"
+            v-model="freeTextInput"
             type="text"
             @keyup.enter="emit('answerSelected', freeTextInput)"
         />

@@ -12,7 +12,6 @@ import no.ntnu.fullstack.backend.attempt.model.QuestionAttempt;
 import no.ntnu.fullstack.backend.attempt.model.QuizAttempt;
 import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
 import no.ntnu.fullstack.backend.question.model.Question;
-import no.ntnu.fullstack.backend.question.repository.QuestionRepository;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AttemptController {
   private final AttemptService attemptService;
-  private final QuestionRepository questionRepository;
   private final AttemptMapper attemptMapper = Mappers.getMapper(AttemptMapper.class);
 
   @PostMapping
