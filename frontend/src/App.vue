@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { RouterLink, RouterView } from "vue-router";
+import { RouterView } from "vue-router";
 import NotificationsContainer from "@/components/NotificationsContainer.vue";
 import { useAuthenticationStore } from "./stores/authentication";
 import { useNotificationStore } from "./stores/notification";
+
+import router from "./router";
 
 const authenticationStore = useAuthenticationStore();
 const notificationStore = useNotificationStore();
@@ -26,18 +28,16 @@ function logout(): void {
 <template>
     <header>
         <nav id="navigation-bar">
-            <RouterLink to="/" id="company-name">
+            <a @click="router.push({ name: 'home' })" id="company-name">
                 {{ $t("company.name") }}
-            </RouterLink>
+            </a>
             <div id="routes">
-                <RouterLink id="contact-router-link" to="">{{
-                    $t("navbar.contact")
-                }}</RouterLink>
-                <RouterLink
+                <a id="contact-router-link" to="">{{ $t("navbar.contact") }}</a>
+                <a
                     v-if="!authenticated"
                     id="login-router-link"
-                    to="login"
-                    >{{ $t("navbar.login") }}</RouterLink
+                    @click="router.push({ name: 'login' })"
+                    >{{ $t("navbar.login") }}</a
                 >
                 <a v-else @click="logout()">Log out</a>
                 <select id="locale-selector" v-model="$i18n.locale">
