@@ -3,14 +3,29 @@
         <div class="header">
             <h1>{{ props.quiz.title }}</h1>
             <div class="action-bar">
-                <ButtonComponent filled large v-if="props.playable">Play</ButtonComponent>
+                <ButtonComponent
+                    filled
+                    large
+                    v-if="props.playable"
+                    @click="
+                        $router.push({
+                            name: 'quiz-player',
+                            params: { id: quiz.id },
+                        })
+                    "
+                    >Play</ButtonComponent
+                >
             </div>
         </div>
         <div class="description">
             <h3>Description</h3>
             <p>{{ props.quiz.description }}</p>
         </div>
-        <div class="edit-button" v-if="props.editable" @click="emit('edit', props.quiz)">
+        <div
+            class="edit-button"
+            v-if="props.editable"
+            @click="emit('edit', props.quiz)"
+        >
             <ButtonComponent>Edit</ButtonComponent>
         </div>
     </div>

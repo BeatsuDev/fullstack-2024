@@ -81,6 +81,11 @@ const router = createRouter({
                     },
                 },
                 {
+                    path: "/quiz-player/:id",
+                    name: "quiz-player",
+                    component: () => import("@/views/app/QuizPlayerView.vue"),
+                },
+                {
                     path: "/profile",
                     name: "profile",
                     component: () => import("@/views/ProfilePageView.vue"),

@@ -17,13 +17,22 @@ export default function useQuestionType(
 
     const readableQuestionType = computed(() => {
         return getReadableQuestionType(questionType.value);
-    })
+    });
 
     return {
         questionType,
         readableQuestionType,
-
     };
+}
+
+export function getQuestionType(question: QuestionCreate | Question) {
+    if (isText(question)) {
+        return QuestionTypes.TEXT;
+    }
+    if (isBoolean(question)) {
+        return QuestionTypes.BOOLEAN;
+    }
+    return QuestionTypes.MULTIPLE;
 }
 
 export const QuestionTypes = {
@@ -55,10 +64,7 @@ export function isBoolean(question: Question | QuestionCreate) {
     if (question.options?.length !== 2) {
         return false;
     }
-    return (
-        question.options[0] === "true" &&
-        question.options[1] === "false"
-    );
+    return question.options[0] === "true" && question.options[1] === "false";
 }
 
 export function removeFieldsNotInType(

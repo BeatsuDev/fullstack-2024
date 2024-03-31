@@ -8,23 +8,36 @@
                 <div v-if="loading">Loading...</div>
             </div>
             <div v-else-if="quiz">
-                <AlertComponent
-                    v-if="revisionId"
-                    type="warning">
-                    <div style="display:flex; justify-content: space-between; align-items: center;">
-                    You are viewing a revision of this quiz. You can't edit it.
+                <AlertComponent v-if="revisionId" type="warning">
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                        "
+                    >
+                        You are viewing a revision of this quiz. You can't edit
+                        it.
                         <div>
                             <ButtonComponent @click="cancelRevert">
                                 Go back to the latest version
                             </ButtonComponent>
-                            <ButtonComponent @click="revert" style="margin-left: 1rem;">
+                            <ButtonComponent
+                                @click="revert"
+                                style="margin-left: 1rem"
+                            >
                                 Revert to this version
                             </ButtonComponent>
                         </div>
                     </div>
                 </AlertComponent>
 
-                <QuizHero :quiz="quiz" :editable="isOwnerOrCollaborator && !revisionId" @edit="editQuiz"  playable/>
+                <QuizHero
+                    :quiz="quiz"
+                    :editable="isOwnerOrCollaborator && !revisionId"
+                    @edit="editQuiz"
+                    playable
+                />
                 <div v-if="isOwnerOrCollaborator">
                     <h3>Questions</h3>
                     <QuestionCard
@@ -41,23 +54,20 @@
                             filled
                             large
                             @click="questionModal = true"
-                        >Add question
+                            >Add question
                         </ButtonComponent>
                     </div>
                 </div>
             </div>
-            <div v-if="feedbackIsLoading">
-                loading...
-
-            </div>
+            <div v-if="feedbackIsLoading">loading...</div>
             <div v-else-if="feedbacks">
                 <h3 v-if="feedbacks.length > 0">Feedbacks</h3>
                 <FeedbackCard
                     v-for="feedback in feedbacks"
                     :key="feedback.id"
-                    :feedback="feedback"></FeedbackCard>
+                    :feedback="feedback"
+                ></FeedbackCard>
                 <FeedbackForm @submit="submitFeedback" v-if="!revisionId" />
-
             </div>
         </div>
     </main>
@@ -71,7 +81,14 @@
     </GenericModal>
 </template>
 <script lang="ts" setup>
-import { type Question, QuestionApi, type QuestionCreate, type Quiz, QuizApi, FeedbackApi, type Feedback, type FeedbackCreate, RevisionApi } from "@/api";
+import type {
+    Question,
+    QuestionCreate,
+    Quiz,
+    Feedback,
+    FeedbackCreate,
+} from "@/api";
+import { QuestionApi, QuizApi, RevisionApi, FeedbackApi } from "@/api";
 import { useExecutablePromise, usePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
@@ -87,7 +104,6 @@ import QuizHero from "@/components/QuizHero.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 import useDebounceLoading from "@/composables/useDebounceLoading";
-import { watchEffect } from "vue";
 
 const route = useRoute();
 
@@ -107,15 +123,14 @@ const router = useRouter();
 
 const loadingDebounced = useDebounceLoading(loading);
 
-
 watch(
     route,
     () => {
-        console.log("mo")
+        console.log("mo");
         execute();
     },
     { immediate: true }
-)
+);
 
 const errorMessage = computed(() => {
     console.log(error.value);
@@ -130,7 +145,6 @@ const errorMessage = computed(() => {
     }
     return "";
 });
-
 
 async function fetchQuiz() {
     if (revisionId.value) {
@@ -159,11 +173,9 @@ const quiz = computed<Quiz>(() => data.value?.data as Quiz);
 
 const { isOwnerOrCollaborator } = useQuizPermissions(quiz);
 
-
 function editQuiz() {
     router.push("/quizzes/" + quizId + "/edit");
 }
-
 
 /**
  * Questions
@@ -196,7 +208,7 @@ async function createQuestion(value: QuestionCreate) {
     try {
         const question = await questionApi.createQuestion(value);
         // @ts-ignore
-            data.value.data.questions.push(question.data);
+        data.value.data.questions.push(question.data);
         notificationStore.addNotification({
             message: "Question created successfully.",
             type: "success",
@@ -226,7 +238,6 @@ async function updateQuestion(value: Question) {
             type: "error",
         });
     }
-
 }
 
 function editQuestion(value: Question) {
@@ -244,7 +255,6 @@ onReveal((value: Question) => {
 });
 
 onConfirm(() => {
-
     deleteQuestion(question.value);
 });
 
@@ -253,7 +263,9 @@ const question = ref<QuestionCreate | Question>(blankQuestion());
 async function deleteQuestion(question: Question) {
     try {
         await questionApi.deleteQuestion(question.id);
-        quiz.value.questions = quiz.value.questions.filter((q) => q.id != question.id);
+        quiz.value.questions = quiz.value.questions.filter(
+            (q) => q.id != question.id
+        );
         notificationStore.addNotification({
             message: "Question deleted successfully.",
             type: "success",
@@ -264,17 +276,17 @@ async function deleteQuestion(question: Question) {
             type: "error",
         });
     }
-} 
-
+}
 
 /*
-* Feedback
-*/
-
+ * Feedback
+ */
 
 const feedbackApi = new FeedbackApi();
 
-const {data: feedbackData, loading: feedbacksLoading} = usePromise(feedbackApi.getFeedback(quizId));
+const { data: feedbackData, loading: feedbacksLoading } = usePromise(
+    feedbackApi.getFeedback(quizId)
+);
 
 const feedbackIsLoading = useDebounceLoading(feedbacksLoading);
 
@@ -284,7 +296,6 @@ async function submitFeedback(value: FeedbackCreate) {
     try {
         const newFeedback = await feedbackApi.giveFeedback(quizId, value);
         feedbackData.value?.data.push(newFeedback.data);
-        
     } catch (e) {
         notificationStore.addNotification({
             message: "An unexpected error occurred. Please try again later.",
@@ -292,8 +303,6 @@ async function submitFeedback(value: FeedbackCreate) {
         });
     }
 }
-
-
 </script>
 <style scoped>
 /* Fucking hacky as fuck. I wish I didn't have to do this. Change if can! */
@@ -306,5 +315,4 @@ main {
     display: flex;
     justify-content: center;
 }
-
 </style>
