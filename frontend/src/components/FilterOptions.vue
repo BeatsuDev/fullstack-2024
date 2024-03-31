@@ -11,8 +11,8 @@ const filterOptions = defineModel<{
 
 const inputValues = reactive({
     selectedCategories: [] as Category[],
-    minDifficulty: "1",
-    maxDifficulty: "10",
+    minDifficulty: filterOptions.value.minDifficulty.toString(),
+    maxDifficulty: filterOptions.value.maxDifficulty.toString(),
 });
 
 watch(inputValues, (newValues) => {
