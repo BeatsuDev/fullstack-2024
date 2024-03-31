@@ -38,7 +38,7 @@
                     @edit="editQuiz"
                     playable
                 />
-                <AlertComponent v-if="attempts?.data.length > 0" type="info">
+                <AlertComponent v-if="attempts > 0" type="info">
                     <div
                         style="
                             display: flex;
@@ -47,7 +47,7 @@
                         "
                     >
                         You have tried this quiz before.
-                        <ButtonComponent @click="router.push(route.fullPath + '/results')" filled>
+                        <ButtonComponent @click="router.push('/quizzes/' + quizId + '/results')" filled>
                                 See previous results
                         </ButtonComponent>
                     </div>
@@ -119,6 +119,7 @@ import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 import useDebounceLoading from "@/composables/useDebounceLoading";
 import useQuizApi from "@/composables/useQuizApi";
+import useQuizAttempt from "@/composables/useQuizAttempt";
 
 const route = useRoute();
 
@@ -150,9 +151,7 @@ function editQuiz() {
  * Results
  */
 
-const attemptApi = new AttemptApi();
-
-const {data: attempts} = usePromise(attemptApi.getAttempts(quizId.value));
+const {attempts} = useQuizAttempt(quizId)
 
 
 /**
