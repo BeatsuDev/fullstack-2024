@@ -53,4 +53,10 @@ function randomSubTitle() {
 .hero-title {
     font-size: 6rem;
 }
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 4rem;
+    }
+}
 </style>
