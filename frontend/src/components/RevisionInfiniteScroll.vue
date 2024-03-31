@@ -1,5 +1,5 @@
 <template>
-    <div v-bind="containerProps" style="height: 500px">
+    <div v-bind="containerProps" style="max-height: 500px">
         <div v-bind="wrapperProps">
             <RevisionCard
                 v-for="revision in list"

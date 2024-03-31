@@ -71,7 +71,7 @@
 </template>
 <script lang="ts" setup>
 import { useRoute, useRouter } from "vue-router";
-import type { Collaborator, Quiz, Revision } from "@/api";
+import type { Collaborator, Quiz, QuizCreate, Revision } from "@/api";
 import { CollaboratorApi, QuizApi, RevisionApi } from "@/api";
 import { usePromise } from "@/composables/promise";
 import useDebounceLoading from "@/composables/useDebounceLoading";
@@ -107,7 +107,7 @@ const router = useRouter();
 
 const quizApi = new QuizApi();
 
-function updateQuiz(value: Quiz) {
+function updateQuiz(value: QuizCreate) {
     try {
         quizApi.updateQuiz(quizId.value, value);
         notificationStore.addNotification({
@@ -121,7 +121,6 @@ function updateQuiz(value: Quiz) {
             type: "error",
         });
     }
-    throw "Hello, please fix swagger codegen.";
 }
 
 const collaboratorApi = new CollaboratorApi();
