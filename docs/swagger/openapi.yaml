@@ -338,6 +338,33 @@ paths:
                 items:
                   $ref: "#/components/schemas/QuizAttempt"
   /quiz/{id}/attempt/{quizAttempt}:
+    get:
+      tags:
+        - Attempt
+      parameters:
+        - name: id
+          description: The ID of a quiz
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: quizAttempt
+          description: The ID of a quiz attempt
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      description: Get a specific quiz attempt
+      operationId: getQuizAttempt
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizAttempt"
     post:
       tags:
         - Attempt

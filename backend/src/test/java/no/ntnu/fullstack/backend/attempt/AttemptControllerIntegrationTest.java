@@ -168,5 +168,9 @@ public class AttemptControllerIntegrationTest {
                 throw new AssertionError("There should be 1 quiz attempts");
               }
             });
+
+    mockMvc
+        .perform(get("/quiz/" + quizId + "/attempt/" + attemptId.get()))
+        .andExpect(status().isOk());
   }
 }
