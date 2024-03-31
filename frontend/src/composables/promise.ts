@@ -62,6 +62,9 @@ export function useExecutablePromise<Params extends any[], ReturnType>(
     const error = ref<unknown>(null);
 
     const execute = (...args: Params) => {
+        error.value = null;
+        data.value = null;
+        finished.value = false;
         loading.value = true;
 
         const promise = callable(...args);
