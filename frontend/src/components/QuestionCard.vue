@@ -65,8 +65,7 @@ const { questionType, readableQuestionType} = useQuestionType(computed(() => pro
 
 .options {
     list-style-type: none;
-    padding: 1rem;
-    background-color: var(--primary-100);
+    padding: 0;
 }
 
 .answer {
@@ -77,6 +76,8 @@ const { questionType, readableQuestionType} = useQuestionType(computed(() => pro
 
 .option {
     margin-bottom: 0.5em;
+    padding: 1rem;
+    background-color: var(--primary-100);
 }
 
 .action-bar {

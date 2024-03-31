@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="true">
-        <select v-model="questionType">
+        <select v-model="questionType" v-if="!props.edit">
             <option v-for="type in QuestionTypes" :key="type" :value="type">
                 {{ getReadableQuestionType(type) }}
             </option>
@@ -73,6 +73,7 @@ import {
 
 const props = defineProps<{
     value?: QuestionCreate | Question;
+    edit?: boolean;
 }>();
 
 const emit = defineEmits<{

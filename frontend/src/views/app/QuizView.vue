@@ -34,15 +34,15 @@
                         @edit="editQuestion"
                         @delete="reveal"
                     />
-                </div>
-                <div class="centered">
-                    <ButtonComponent
-                        arge
-                        filled
-                        large
-                        @click="questionModal = true"
-                    >Add question
-                    </ButtonComponent>
+                    <div class="centered">
+                        <ButtonComponent
+                            arge
+                            filled
+                            large
+                            @click="questionModal = true"
+                        >Add question
+                        </ButtonComponent>
+                    </div>
                 </div>
             </div>
             <div v-if="feedbackIsLoading">
