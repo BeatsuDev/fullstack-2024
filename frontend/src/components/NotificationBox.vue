@@ -35,7 +35,7 @@ const icon = computed(() => {
         </div>
         <p>{{ message }}</p>
         <button id="close-notification" @click="emit('close', props.id)">
-            {{ $t("notification.close") }}
+            Close
         </button>
     </div>
 </template>

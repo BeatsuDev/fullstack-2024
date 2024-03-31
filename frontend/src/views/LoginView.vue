@@ -68,7 +68,7 @@ async function login() {
     <main>
         <LoadingCircle :loading="loading" />
         <div id="login-container">
-            <h1>{{ $t("login.title") }}</h1>
+            <h1>Log in</h1>
             <form ref="formElement" id="login-form" @submit.prevent="login">
                 <div id="inputs-container">
                     <ValidatedInput
@@ -76,14 +76,14 @@ async function login() {
                         type="text"
                         v-model="loginData.email"
                         :validator="v$.email"
-                        :label="$t('login.email')"
+                        label="Email"
                     />
                     <ValidatedInput
                         id="password"
                         type="password"
                         v-model="loginData.password"
                         :validator="v$.password"
-                        :label="$t('login.password')"
+                        label="Password"
                     />
                 </div>
                 <div id="login-buttons-container">
@@ -94,10 +94,10 @@ async function login() {
                         large
                         filled
                     >
-                        {{ $t("login.login") }}
+                        Log in
                     </ButtonComponent>
                     <RouterLink to="register" id="not-registered-message">
-                        {{ $t("login.notRegistered") }}
+                        Not registered yet? Register here.
                     </RouterLink>
                 </div>
             </form>

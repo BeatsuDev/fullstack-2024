@@ -80,7 +80,7 @@ async function register() {
     <main>
         <LoadingCircle :loading="loading" />
         <div id="register-container">
-            <h1>{{ $t("login.register") }}</h1>
+            <h1>Register</h1>
             <form
                 ref="formElement"
                 id="register-form"
@@ -92,28 +92,28 @@ async function register() {
                         type="text"
                         v-model="formData.name"
                         :validator="v$.name"
-                        :label="$t('login.name')"
+                        label="Name"
                     />
                     <ValidatedInput
                         id="email"
                         type="text"
                         v-model="formData.email"
                         :validator="v$.email"
-                        :label="$t('login.email')"
+                        label="Email"
                     />
                     <ValidatedInput
                         id="password"
                         type="password"
                         v-model="formData.password"
                         :validator="v$.password"
-                        :label="$t('login.password')"
+                        label="Password"
                     />
                     <ValidatedInput
                         id="repeat-password"
                         type="password"
                         v-model="formData.repeatPassword"
                         :validator="v$.repeatPassword"
-                        :label="$t('login.repeatPassword')"
+                        label="Repeat password"
                     />
                 </div>
                 <div id="register-buttons-container">
@@ -124,10 +124,10 @@ async function register() {
                         large
                         filled
                     >
-                        {{ $t("login.register") }}
+                        Register
                     </ButtonComponent>
                     <RouterLink to="login" id="registered-message">
-                        {{ $t("login.alreadyRegistered") }}
+                        Already registered? Log in here.
                     </RouterLink>
                 </div>
             </form>

@@ -31,8 +31,12 @@ onMounted(() => {
 
 <template>
     <main class="profile-page-container">
-        <h1>{{ $t("profile.title") }}</h1>
-        <p>{{ $t("profile.information") }}</p>
+        <h1>
+            Edit your profile
+        </h1>
+        <p>
+            Change your user information here.
+        </p>
 
         <form id="change-values-container" @submit.prevent="">
             <ValidatedInput
@@ -40,14 +44,14 @@ onMounted(() => {
                 type="text"
                 v-model="formData.name"
                 :validator="v$.name"
-                :label="$t('login.name')"
+                label="Name"
             />
             <ValidatedInput
                 id="email"
                 type="text"
                 v-model="formData.email"
                 :validator="v$.email"
-                :label="$t('login.email')"
+                label="Email"
             />
             <ButtonComponent
                 id="change-values-button"
@@ -56,7 +60,7 @@ onMounted(() => {
                 large
                 filled
             >
-                {{ $t("profile.changeValues") }}
+                Edit profile
             </ButtonComponent>
         </form>
     </main>

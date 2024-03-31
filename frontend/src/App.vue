@@ -32,26 +32,18 @@ function logout(): void {
     <header>
         <nav id="navigation-bar">
             <a @click="router.push({ name: 'home' })" id="company-name">
-                {{ $t("company.name") }}
+                Kazoot
             </a>
             <div id="routes">
-                <a id="contact-router-link" to="">{{ $t("navbar.contact") }}</a>
                 <a
                     v-if="!authenticated"
                     id="login-router-link"
                     @click="router.push({ name: 'login' })"
-                    >{{ $t("navbar.login") }}</a
+                    >
+                    Log in
+                </a
                 >
                 <a v-else @click="logout()">Log out</a>
-                <select id="locale-selector" v-model="$i18n.locale">
-                    <option
-                        v-for="locale in $i18n.availableLocales"
-                        :key="`locale-${locale}`"
-                        :value="locale"
-                    >
-                        {{ locale }}
-                    </option>
-                </select>
             </div>
         </nav>
     </header>

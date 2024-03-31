@@ -117,11 +117,12 @@ function onQuizCardClick(quiz: QuizOverview) {
                 @keydown.enter="searchQuizzes"
             />
             <ButtonComponent @click="searchQuizzes" rounded large filled>
-                {{ $t("explore.search") }}
+                Search
             </ButtonComponent>
 
             <!-- This one is not affected by the transition animation and hides all overflow -->
             <div class="outer-filters-container">
+                Search
                 <Transition>
                     <div v-if="filtersWindowOpen" class="filters-container">
                         <fieldset style="border: none">
