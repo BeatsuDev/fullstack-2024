@@ -1,55 +1,20 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
+import FilterOptions from "@/components/FilterOptions.vue";
 
-import type { Category, QuizOverview } from "@/api";
-import { CategoryApi, QuizApi } from "@/api";
+import type { QuizOverview } from "@/api";
+import { QuizApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
 import router from "@/router";
 
-// Categories
-const categoryApi = new CategoryApi();
-
-const categories = ref<Category[]>();
-const selectedCategories = ref<Category[]>([]);
-
-categoryApi.getCategories().then((response) => {
-    categories.value = response.data;
-    console.log(categories.value);
+//
+const filterOptions = reactive({
+    selectedCategories: [],
+    minDifficulty: 1,
+    maxDifficulty: 10,
 });
-
-function isCategorySelected(category: Category): boolean {
-    return selectedCategories.value.map((c) => c.name).includes(category.name);
-}
-
-function toggleCategory(category: Category) {
-    if (isCategorySelected(category)) {
-        selectedCategories.value = selectedCategories.value.filter(
-            (c) => c.name !== category.name
-        );
-    } else {
-        selectedCategories.value = [...selectedCategories.value, category];
-    }
-}
-
-function getCategoryStyle(category: Category) {
-    if (category.name == "string")
-        return {
-            border: `2px solid red`,
-        };
-    if (isCategorySelected(category)) {
-        return {
-            border: `2px solid ${category.color}`,
-            backgroundColor: category.color,
-            color: "white",
-            "box-shadow": "1px 1px 2px rgb(0 0 0 / 50%)",
-        };
-    }
-    return {
-        border: `2px solid ${category.color}`,
-    };
-}
 
 // Search
 const quizApi = new QuizApi();
@@ -65,17 +30,13 @@ function searchQuizzes() {
     executeSearch(
         50,
         searchQuery.value,
-        minDifficulty.value,
-        maxDifficulty.value,
-        selectedCategories.value
+        filterOptions.minDifficulty,
+        filterOptions.maxDifficulty,
+        filterOptions.selectedCategories
     ).then((response) => {
         foundQuizzes.value = [...response.data];
     });
 }
-
-// Difficulty range
-const minDifficulty = ref(1);
-const maxDifficulty = ref(10);
 
 // Quizzes
 const foundQuizzes = ref<QuizOverview[]>([]);
@@ -83,9 +44,9 @@ const foundQuizzes = ref<QuizOverview[]>([]);
 executeSearch(
     50,
     searchQuery.value,
-    minDifficulty.value,
-    maxDifficulty.value,
-    selectedCategories.value
+    filterOptions.minDifficulty,
+    filterOptions.maxDifficulty,
+    filterOptions.selectedCategories
 ).then((response) => {
     foundQuizzes.value = [...response.data];
 });
@@ -123,49 +84,10 @@ function onQuizCardClick(quiz: QuizOverview) {
             <!-- This one is not affected by the transition animation and hides all overflow -->
             <div class="outer-filters-container">
                 <Transition>
-                    <div v-if="filtersWindowOpen" class="filters-container">
-                        <fieldset style="border: none">
-                            <legend>Categories</legend>
-                            <div class="category-filter-labels">
-                                <label
-                                    v-for="(category, i) in categories"
-                                    :key="i"
-                                    :style="getCategoryStyle(category)"
-                                    ><input
-                                        type="checkbox"
-                                        @change="toggleCategory(category)"
-                                    />{{ category.name }}</label
-                                >
-                            </div>
-                        </fieldset>
-                        <fieldset style="border: none">
-                            <legend>Difficulty</legend>
-                            <div>
-                                <label>
-                                    Min ({{ minDifficulty }})
-                                    <input
-                                        v-model="minDifficulty"
-                                        type="range"
-                                        step="1"
-                                        min="1"
-                                        max="10"
-                                        value="1"
-                                /></label>
-                                <br />
-                                <label>
-                                    Max ({{ maxDifficulty }})
-                                    <input
-                                        v-model="maxDifficulty"
-                                        type="range"
-                                        step="1"
-                                        min="1"
-                                        max="10"
-                                        value="10"
-                                    />
-                                </label>
-                            </div>
-                        </fieldset>
-                    </div>
+                    <FilterOptions
+                        v-if="filtersWindowOpen"
+                        v-model="filterOptions"
+                    />
                 </Transition>
             </div>
         </div>
@@ -240,44 +162,6 @@ main {
     top: 100%;
     left: 0;
     width: 100%;
-}
-
-.filters-container {
-    display: flex;
-    flex-direction: column;
-    padding: 1em 0.5em;
-    background-color: var(--primary-400);
-
-    width: 100%;
-    height: 100%;
-}
-
-.category-filter-labels {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.category-filter-labels label {
-    display: flex;
-    align-items: center;
-    margin: 0.25em;
-    padding: 0.5em 1em;
-    border: 2px solid;
-    border-radius: 2em;
-    cursor: pointer;
-    user-select: none;
-    text-transform: uppercase;
-}
-
-.category-filter-labels input {
-    display: none;
-}
-
-fieldset > legend {
-    font-size: 1.2em;
-    margin: 0.5em;
-    font-weight: bold;
 }
 
 .v-enter-active,
