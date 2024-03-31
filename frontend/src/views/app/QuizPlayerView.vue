@@ -48,7 +48,7 @@ async function submitAnswer(answer: string) {
             questionId: currentQuestion.value.id,
             answer,
         } as AnswerDTO,
-        currentQuiz.value.id,
+        router.currentRoute.value.params.id as string,
         currentAttemptId.value
     );
 
