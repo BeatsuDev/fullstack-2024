@@ -35,14 +35,14 @@ function randomSubTitle() {
 }
 </script>
 <style scoped>
-.hero {
-    background-image: url("src/assets/stacked-peaks-haikei.svg");
-    background-size: cover;
-    background-position: center;
-    height: calc(100svh - 66px);
-    display: flex;
-    color: white;
-}
+    .hero {
+        background-image: url("@/assets/stacked-peaks-haikei.svg");
+        background-size: cover;
+        background-position: center;
+        height: calc(100svh - 66px);
+        display: flex;
+        color: white;
+    }
 
 .hero-text {
     margin-top: 10rem;
