@@ -27,7 +27,6 @@ public class ImageController {
       Authentication authentication, @RequestParam("image") MultipartFile image)
       throws MalformedImageException, IOException {
     User loggedInUser = (User) authentication.getPrincipal();
-    return ResponseEntity.status(HttpStatus.CREATED)
-        .body(imageMapper.fromImage(imageService.uploadImage(image, loggedInUser)));
+    return ResponseEntity.status(HttpStatus.CREATED).body(imageMapper.fromImage(imageService.uploadImage(image, loggedInUser)));
   }
 }

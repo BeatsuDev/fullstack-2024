@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 @Mapper
 public abstract class ImageMapper {
-  @Value("${application.image.upload.dir}")
-  private String UPLOAD_DIR;
+  private String UPLOAD_DIR = "uploads/images/";
 
   public ImageDTO fromImage(Image image) {
     if (image == null) {
@@ -17,7 +16,7 @@ public abstract class ImageMapper {
 
     String uploadDir = null;
     if (image.getId() != null && image.getExtension() != null) {
-      uploadDir = UPLOAD_DIR + image.getId() + "." + image.getExtension();
+      uploadDir = UPLOAD_DIR + image.getId() + image.getExtension();
     }
 
     return new ImageDTO(image.getId(), uploadDir);

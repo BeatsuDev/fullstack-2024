@@ -42,8 +42,8 @@ public class ImageService {
     newImage.setUploadedBy(uploader);
     newImage.setExtension(extension);
 
-    Path imagePath = Paths.get(UPLOAD_DIR + newImage.getId() + "." + extension);
-    image.transferTo(imagePath.toFile());
+    Path imagePath = Paths.get(UPLOAD_DIR + newImage.getId()  + extension);
+    image.transferTo(imagePath);
     return imageRepository.saveAndFlush(newImage);
   }
 

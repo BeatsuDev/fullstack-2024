@@ -4,6 +4,7 @@ import java.nio.file.Paths;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,6 +16,6 @@ public class ImageConfiguration implements WebMvcConfigurer {
   @Override
   public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
     String uploadPath = Paths.get(uploadDir).toFile().getAbsolutePath();
-    registry.addResourceHandler("/" + uploadPath).addResourceLocations("file:" + uploadPath + "/");
+    registry.addResourceHandler("/" + uploadPath + "/").addResourceLocations("file:" + uploadPath + "/");
   }
 }

@@ -72,6 +72,7 @@ public class WebSecurityConfiguration {
               .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
               .requestMatchers(HttpMethod.POST, "/user/session").permitAll()
               .requestMatchers(HttpMethod.POST, "/user").permitAll()
+                .requestMatchers(HttpMethod.GET, "/uploads/images/**").permitAll()
               .anyRequest().authenticated();
         })
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
