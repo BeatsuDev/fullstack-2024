@@ -60,6 +60,24 @@ function toggleFiltersWindow() {
 function onQuizCardClick(quiz: QuizOverview) {
     router.push({ name: "quiz", params: { id: quiz.id } });
 }
+
+function getCategoryStyle(category: Category) {
+    if (category.name == "string")
+        return {
+            border: `2px solid red`,
+        };
+    if (isCategorySelected(category)) {
+        return {
+            border: `2px solid ${category.color}`,
+            backgroundColor: category.color,
+            color: "white",
+            "box-shadow": "1px 1px 2px rgb(0 0 0 / 50%)",
+        };
+    }
+    return {
+        border: `2px solid ${category.color}`,
+    };
+}
 </script>
 
 <template>

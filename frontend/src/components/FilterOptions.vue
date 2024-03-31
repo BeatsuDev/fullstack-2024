@@ -66,11 +66,10 @@ function getCategoryStyle(category: Category) {
                     v-for="(category, i) in categories"
                     :key="i"
                     :style="getCategoryStyle(category)"
-                    ><input
-                        type="checkbox"
-                        @change="toggleCategory(category)"
-                    />{{ category.name }}</label
                 >
+                    <input type="checkbox" @change="toggleCategory(category)" />
+                    {{ category.name }}
+                </label>
             </div>
         </fieldset>
         <fieldset style="border: none">
