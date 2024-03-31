@@ -107,15 +107,6 @@ router.beforeEach(async (to, from) => {
         });
     }
 
-    // Set meta transition name for page transitions
-    const toDepth = to.path.split("/").filter((i) => i).length;
-    const fromDepth = from.path.split("/").filter((i) => i).length;
-
-    if (!(toDepth === fromDepth)) {
-        to.meta.transitionName =
-            toDepth < fromDepth ? "slide-left" : "slide-right";
-    }
-
     // Redirect to login if not authenticated and attempting to go to authenticated route
     if (to.meta.requiresAuth && !authenticationStore.authenticated) {
         return { name: "login" };

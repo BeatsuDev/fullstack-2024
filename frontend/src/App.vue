@@ -39,10 +39,9 @@ function logout(): void {
                     v-if="!authenticated"
                     id="login-router-link"
                     @click="router.push({ name: 'login' })"
-                    >
-                    Log in
-                </a
                 >
+                    Log in
+                </a>
                 <a v-else @click="logout()">Log out</a>
             </div>
         </nav>
@@ -145,33 +144,11 @@ function logout(): void {
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: all 60ms cubic-bezier(0, 0.2, 0.75, 0.75);
+    transition: all 150ms linear;
 }
 
 .fade-enter-from,
 .fade-leave-to {
-    opacity: 0;
-}
-
-.slide-left-enter-active,
-.slide-left-leave-active {
-    transition: all 130ms cubic-bezier(0, 0.2, 0.75, 0.75);
-}
-
-.slide-right-enter-from,
-.slide-left-leave-to {
-    transform: translateX(-20px);
-    opacity: 0;
-}
-
-.slide-right-enter-active,
-.slide-right-leave-active {
-    transition: all 130ms cubic-bezier(0, 0.2, 0.75, 0.75);
-}
-
-.slide-left-enter-from,
-.slide-right-leave-to {
-    transform: translateX(20px);
     opacity: 0;
 }
 </style>
