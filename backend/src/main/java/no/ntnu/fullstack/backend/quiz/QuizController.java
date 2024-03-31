@@ -10,6 +10,7 @@ import no.ntnu.fullstack.backend.quiz.dto.QuizCreateDTO;
 import no.ntnu.fullstack.backend.quiz.dto.QuizDTO;
 import no.ntnu.fullstack.backend.quiz.dto.QuizFilters;
 import no.ntnu.fullstack.backend.quiz.dto.QuizOverviewDTO;
+import no.ntnu.fullstack.backend.quiz.exception.NoQuizzesFoundException;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.mapper.QuizMapper;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
@@ -60,7 +61,8 @@ public class QuizController {
       @RequestParam(required = false) String textSearch,
       @RequestParam(required = false) Integer minDifficulty,
       @RequestParam(required = false) Integer maxDifficulty,
-      @RequestParam(required = false) List<UUID> category) {
+      @RequestParam(required = false) List<UUID> category)
+      throws NoQuizzesFoundException {
     QuizFilters filters =
         new QuizFilters(page, pageSize, textSearch, minDifficulty, maxDifficulty, category);
     List<QuizWithRevision> quizzes = quizService.retrieveQuizzes(filters);

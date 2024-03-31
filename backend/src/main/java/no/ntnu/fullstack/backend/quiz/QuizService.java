@@ -9,6 +9,7 @@ import no.ntnu.fullstack.backend.category.model.Category;
 import no.ntnu.fullstack.backend.collaborator.CollaboratorService;
 import no.ntnu.fullstack.backend.collaborator.exceptions.NotCollaboratorException;
 import no.ntnu.fullstack.backend.quiz.dto.QuizFilters;
+import no.ntnu.fullstack.backend.quiz.exception.NoQuizzesFoundException;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.Quiz;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
@@ -52,7 +53,8 @@ public class QuizService {
     return quizRepository.findWithFirstRevision();
   }
 
-  public List<QuizWithRevision> retrieveQuizzes(QuizFilters filters) {
+  public List<QuizWithRevision> retrieveQuizzes(QuizFilters filters)
+      throws NoQuizzesFoundException {
     List<QuizWithRevision> quizzes = retrieveQuizzes();
     if (filters.getCategory() != null && !filters.getCategory().isEmpty()) {
       quizzes.removeIf(
@@ -84,7 +86,11 @@ public class QuizService {
 
     int start = filters.getPage() * filters.getPageSize();
     int end = Math.min(start + filters.getPageSize(), quizzes.size());
-    return quizzes.subList(start, end);
+    try {
+      return quizzes.subList(start, end);
+    } catch (IndexOutOfBoundsException e) {
+      throw new NoQuizzesFoundException();
+    }
   }
 
   public QuizWithRevision getLatestQuiz(UUID quizId) throws QuizNotFoundException {
