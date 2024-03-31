@@ -20,6 +20,9 @@
         <div class="description">
             <h3>Description</h3>
             <p>{{ props.quiz.description }}</p>
+            <p style="font-style: italic">
+                Made by: {{ props.quiz.creator.name }}
+            </p>
         </div>
         <div
             class="edit-button"

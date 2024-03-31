@@ -13,7 +13,7 @@
         <div v-else-if="data">
             <QuizHero :quiz="data.data" />
             <h3>Edit quiz</h3>
-            <QuizForm :value="data.data" @submit="updateQuiz" />
+                <QuizForm :value="data.data" @submit="updateQuiz" style="margin:auto" />
         </div>
         <div v-if="revisions">
             <RevisionInfiniteScroll
@@ -107,7 +107,7 @@ const router = useRouter();
 
 function updateQuiz(value: Quiz) {
     try {
-        // quizApi.updateQuiz(quizId, value);
+        quizApi.quizIdPut(quizId, value);
         notificationStore.addNotification({
             message: "Quiz updated successfully.",
             type: "success",

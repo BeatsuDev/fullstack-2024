@@ -2,24 +2,24 @@
     <form @submit.prevent ref="form">
         <label for="title">Title</label>
         <ValidatedInput id="title" :validator="v$.title" v-model="editable.title" />
-        <label for="Description"></label>
+        <label for="Description">Description</label>
         <ValidatedInput
             id="description"
             :validator="v$.description"
             v-model="editable.description"
         />
+        <label for="difficulty">Difficulty: {{ editable.difficulty }} </label>
         <input type="range" min="1" max="10" v-model="editable.difficulty" />
         <ButtonComponent @click="submit" :loading="props.loading"
-        >Create
-        </ButtonComponent
-        >
+        >Submit
+        </ButtonComponent>
     </form>
 
 </template>
 <script setup lang="ts">
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import ValidatedInput from "@/components/ValidatedInput.vue";
-import type { Quiz, QuizCreate } from "@/api";
+import { type Quiz, type QuizCreate } from "@/api";
 import { reactive, ref, watchEffect } from "vue";
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
@@ -34,6 +34,7 @@ const emit = defineEmits<{
 }>();
 
 const editable = reactive(props.value || {
+
     title: "",
     description: "",
     difficulty: 1,
@@ -63,5 +64,12 @@ async function submit() {
     emit("submit", editable);
 }
 
-
 </script>
+<style scoped>
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 20rem;
+}
+</style>

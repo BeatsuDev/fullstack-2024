@@ -6,6 +6,7 @@ defineProps<{
     rounded?: boolean;
     roundedLg?: boolean;
     filled?: boolean;
+    block?: boolean;
 }>();
 </script>
 
@@ -18,6 +19,7 @@ defineProps<{
             rounded,
             'rounded-lg': roundedLg,
             filled,
+            'w-full': block,
         }"
     >
         <slot></slot>
@@ -74,5 +76,9 @@ button.filled {
 
 button.filled:hover {
     background-color: var(--color-button-hover);
+}
+
+.w-full {
+    width: 100%;
 }
 </style>

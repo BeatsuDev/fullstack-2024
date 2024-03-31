@@ -60,7 +60,7 @@
             </div>
             <div v-if="feedbackIsLoading">loading...</div>
             <div v-else-if="feedbacks">
-                <h3 v-if="feedbacks.length > 0">Feedbacks</h3>
+                <h3>Feedbacks</h3>
                 <FeedbackCard
                     v-for="feedback in feedbacks"
                     :key="feedback.id"
@@ -222,7 +222,7 @@ async function createQuestion(value: QuestionCreate) {
 
 async function updateQuestion(value: Question) {
     try {
-        await questionApi.updateQuestion(value as QuestionCreate, value.id);
+        await questionApi.updateQuestion({...value, quizId: quizId} as QuestionCreate , value.id);
         const index = quiz.value.questions.findIndex((q) => q.id == value.id);
         if (index != -1) {
             quiz.value.questions[index] = value as Question;

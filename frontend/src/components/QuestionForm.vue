@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="true">
-        <select v-model="questionType" v-if="!props.edit">
+        <select v-model="questionType">
             <option v-for="type in QuestionTypes" :key="type" :value="type">
                 {{ getReadableQuestionType(type) }}
             </option>
@@ -13,12 +13,11 @@
             placeholder="Enter your question here"
         >
         </ValidatedInput>
-        <div v-if="questionType == QuestionTypes.BOOLEAN">
-            <label>True</label>
+        <div v-if="questionType == QuestionTypes.BOOLEAN" class="boolean-options">
             <input type="radio" v-model="booleanAnswer" :value="true" />
-
-            <label>False</label>
+            <label>True</label>
             <input type="radio" v-model="booleanAnswer" :value="false" />
+            <label>False</label>
         </div>
         <div v-else-if="questionType == QuestionTypes.MULTIPLE">
             <h4>Options</h4>
@@ -30,17 +29,18 @@
                 <ValidatedInput
                     v-model="editable.options[index]"
                     :id="`option-${index}`"
+                    style="margin-bottom: 0.5rem;"
                     :validator="v$.question"
                     placeholder="Enter the option here"
                 />
                 <input type="radio" v-model="selectedOption" :value="index" />
             </div>
             <ButtonComponent
-                filled
                 @click="addAnswer"
                 v-if="editable?.options?.length < 4"
                 style="margin-top: 20px"
-                >Add option
+                block
+            >Add option
             </ButtonComponent>
         </div>
         <div v-else-if="questionType == QuestionTypes.TEXT">
@@ -52,8 +52,9 @@
                 placeholder="Enter your answer here"
             />
         </div>
-        <ButtonComponent filled style="margin-top: 20px" @click="submit"
-            >Submit</ButtonComponent
+        <ButtonComponent filled block style="margin-top: 3rem" @click="submit"
+        >Submit
+        </ButtonComponent
         >
     </form>
 </template>
@@ -64,16 +65,11 @@ import useVuelidate from "@vuelidate/core";
 import ValidatedInput from "./ValidatedInput.vue";
 import ButtonComponent from "./ButtonComponent.vue";
 import { required } from "@vuelidate/validators";
-import type { QuestionCreate } from "@/api";
-import {
-    getReadableQuestionType,
-    QuestionTypes,
-    removeFieldsNotInType,
-} from "@/composables/useQuestionType";
+import { QuestionApi, type QuestionCreate, type QuizCreate } from "@/api";
+import { getReadableQuestionType, QuestionTypes, removeFieldsNotInType } from "@/composables/useQuestionType";
 
 const props = defineProps<{
     value?: QuestionCreate | Question;
-    edit?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -81,7 +77,7 @@ const emit = defineEmits<{
 }>();
 
 const questionType = ref<QuestionTypes>(QuestionTypes.MULTIPLE);
-const editable = ref(props.value|| {
+const editable = ref(props.value || {
     question: "",
     options: [""],
     answer: "",
@@ -126,8 +122,50 @@ function addAnswer() {
 }
 </script>
 <style scoped>
+/* Make radio buttons square */
+.multiple-question-container input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 36px; /* Set the width and height */
+    height: 36px;
+    border: 1px solid #999; /* Add a border */
+    border-radius: 4px; /* Optional: Add rounded corners */
+    outline: none; /* Remove outline */
+}
+
+/* Customize the appearance of checked state */
+input[type="radio"]:checked {
+    background-color: var(--primary-500); /* Change the background color */
+}
+
+/* Adjust height of ValidatedInput component */
+.ValidatedInput input {
+    height: 40px; /* Adjust this value according to your preference */
+}
+
+/* Additional styling for form layout */
 .multiple-question-container {
     display: flex;
     flex-direction: row;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+select {
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.boolean-options {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+
+}
 </style>
+
