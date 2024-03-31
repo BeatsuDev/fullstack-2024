@@ -33,7 +33,10 @@ function getCategoryStyle(category: Category) {
                     {{ category.name }}
                 </div>
             </div>
-            <h4 style="margin-top: 0">{{ quiz.title }}</h4>
+            <h4 style="margin-top: 1em">{{ quiz.title }}</h4>
+            <p style="margin-top: 0; font-size: 0.8em">
+                Created by {{ quiz.creator.name }}
+            </p>
             <p>{{ quiz.description }}</p>
         </div>
     </div>
