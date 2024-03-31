@@ -4,9 +4,6 @@
         <div class="card-content">
             <p><strong>Revision ID:</strong> {{ props.value.revisionId }}</p>
             <p><strong>Title:</strong> {{ props.value.quiz?.title }}</p>
-            <p>
-                <strong>Creator:</strong> {{ props.value.quiz?.creator.name }}
-            </p>
             <p><strong>Created At:</strong> {{ formatCreatedAt }}</p>
         </div>
     </div>
@@ -27,11 +24,13 @@ const formatCreatedAt = computed(() => {
 </script>
 
 <style scoped>
+h3 {
+    margin: 0;
+
+}
 .revision-card {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-background-mute);
+    border: 2px solid var(--color-border);
     padding: 20px;
     margin: 0 auto;
 }

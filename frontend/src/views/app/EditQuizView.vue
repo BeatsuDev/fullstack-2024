@@ -13,24 +13,27 @@
         <div v-else-if="data">
             <QuizHero :quiz="data.data" />
             <h3>Edit quiz</h3>
-                <QuizForm :value="data.data" @submit="updateQuiz" style="margin:auto" />
+            <QuizForm :value="data.data" @submit="updateQuiz" style="margin:auto" />
         </div>
         <div v-if="revisions">
+            <h3>Revisions</h3>
             <RevisionInfiniteScroll
                 :value="revisions.data"
-                @view="viewRevision" />
+                @view="viewRevision"
+            />
         </div>
-        <div>
-            <h3>Collaborators</h3>
-            <div
-                v-for="collaborator in collaborators?.data"
-                :key="collaborator.id"
-            >
-                <UserCard :value="collaborator" editable @delete="reveal" />
-            </div>
-            <ButtonComponent @click="collaboratorModal = true">
-                Add collaborator</ButtonComponent
-            >
+        <h3>Collaborators</h3>
+        <div
+            v-for="collaborator in collaborators?.data"
+            :key="collaborator.id"
+        >
+            <UserCard :value="collaborator" editable @delete="reveal" />
+        </div>
+        <div style="display: flex; justify-content: center">
+            <ButtonComponent filled large @click="collaboratorModal = true" style="margin-top: 10px;">
+                Add collaborator
+            </ButtonComponent>
+
         </div>
         <GenericModal v-model="collaboratorModal" title="Add collaborator">
             <form @submit.prevent>
@@ -85,7 +88,7 @@ const quizApi = new QuizApi();
 const { data, loading, error } = usePromise(quizApi.quizIdGet(quizId));
 
 const { isOwnerOrCollaborator } = useQuizPermissions(
-    computed(() => data.value?.data)
+    computed(() => data.value?.data),
 );
 
 const loadingDebounced = useDebounceLoading(loading);
@@ -125,7 +128,7 @@ function updateQuiz(value: Quiz) {
 const collaboratorApi = new CollaboratorApi();
 
 const { data: collaborators } = usePromise(
-    collaboratorApi.getCollaborators(quizId)
+    collaboratorApi.getCollaborators(quizId),
 );
 
 const collaborator = reactive({
@@ -148,7 +151,7 @@ async function addCollaborator() {
     try {
         const data = await collaboratorApi.addCollaborator(
             quizId,
-            collaborator
+            collaborator,
         );
         collaborators.value?.data.push(data.data as Collaborator);
         notificationStore.addNotification({
@@ -195,7 +198,7 @@ function deleteCollaborator(collaborator: Collaborator) {
         });
         if (collaborators.value) {
             collaborators.value.data = collaborators.value.data.filter(
-                (c) => c.id !== collaborator.id
+                (c) => c.id !== collaborator.id,
             );
         }
     } catch (e) {
@@ -208,7 +211,7 @@ function deleteCollaborator(collaborator: Collaborator) {
 
 const revisionApi = new RevisionApi();
 
-const {data: revisions } = usePromise(revisionApi.getRevisions(quizId));
+const { data: revisions } = usePromise(revisionApi.getRevisions(quizId));
 
 
 function viewRevision(revision: Revision) {
@@ -216,7 +219,6 @@ function viewRevision(revision: Revision) {
 
 
 }
-
 
 
 </script>

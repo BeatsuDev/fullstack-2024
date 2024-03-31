@@ -6,6 +6,7 @@
                 :key="revision.data.revisionId"
                 :value="revision.data"
                 @click="viewRevision(revision.data)"
+                style="margin-bottom: 10px;"
             />
         </div>
     </div>
@@ -30,7 +31,7 @@ const emit = defineEmits<{
 const { list, containerProps, wrapperProps } = useVirtualList(
   props.value,
   {
-    itemHeight: 254
+    itemHeight: 180
   },
 )
 
