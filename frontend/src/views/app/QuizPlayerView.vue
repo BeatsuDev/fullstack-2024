@@ -2,10 +2,12 @@
 import { ref, computed } from "vue";
 import { AttemptApi, type AnswerDTO } from "@/api";
 import { usePromise, useExecutablePromise } from "@/composables/promise";
+import { useNotificationStore } from "@/stores/notification";
 import router from "@/router";
 
 import QuestionPlayer from "@/components/quiz-player/QuestionPlayer.vue";
 
+const notificationStore = useNotificationStore();
 const attemptApi = new AttemptApi();
 const {
     promise,
@@ -29,13 +31,14 @@ const currentQuestion = computed(
 const currentQuiz = computed(() => response.value?.data ?? null);
 const currentAttemptId = computed(() => response.value?.data.id ?? null);
 
-const { execute: executeSubmitAnswer } = useExecutablePromise(
-    async (
-        ...args: Parameters<typeof attemptApi.quizIdAttemptQuizAttemptPost>
-    ) => {
-        return await attemptApi.quizIdAttemptQuizAttemptPost(...args);
-    }
-);
+const { execute: executeSubmitAnswer, error: submitError } =
+    useExecutablePromise(
+        async (
+            ...args: Parameters<typeof attemptApi.quizIdAttemptQuizAttemptPost>
+        ) => {
+            return await attemptApi.quizIdAttemptQuizAttemptPost(...args);
+        }
+    );
 
 async function submitAnswer(answer: string) {
     if (currentQuiz.value == null) return;
@@ -43,7 +46,7 @@ async function submitAnswer(answer: string) {
     if (currentAttemptId.value == null) return;
 
     // Send the answer to the server
-    const response = await executeSubmitAnswer(
+    const submitPromise = executeSubmitAnswer(
         {
             questionId: currentQuestion.value.id,
             answer,
@@ -52,22 +55,43 @@ async function submitAnswer(answer: string) {
         currentAttemptId.value
     );
 
-    const solutionData = response.data;
+    submitPromise
+        .then((response) => {
+            const solutionData = response.data;
 
-    alert(
-        `Your answer was ${
-            solutionData.correct
-                ? "correct!"
-                : "incorrect! The correct answer was:" + solutionData.answer
-        }`
-    );
+            notificationStore.addNotification({
+                message: `Your answer was ${
+                    solutionData.correct
+                        ? "correct!"
+                        : "incorrect! The correct answer was:" +
+                          solutionData.answer
+                }`,
+                type: solutionData.correct ? "success" : "warning",
+            });
+            questionNumber.value++;
 
-    // Check if the quiz is finished
-    if (questionNumber.value >= currentQuiz.value.quiz!.questions.length - 1) {
-        console.log("Quiz finished!");
-        return;
-    }
-    questionNumber.value++;
+            // Check if the quiz is finished
+            if (
+                questionNumber.value >=
+                currentQuiz.value!.quiz!.questions.length
+            ) {
+                finishQuiz();
+                return;
+            }
+        })
+        .catch((error) => {
+            if (submitError.value != null) {
+                notificationStore.addNotification({
+                    message: "Failed to submit answer. " + submitError.value,
+                    type: "error",
+                });
+                return;
+            }
+        });
+}
+
+function finishQuiz() {
+    console.log("Quiz finished!");
 }
 </script>
 
