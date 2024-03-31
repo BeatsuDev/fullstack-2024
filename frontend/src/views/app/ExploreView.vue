@@ -122,7 +122,6 @@ function onQuizCardClick(quiz: QuizOverview) {
 
             <!-- This one is not affected by the transition animation and hides all overflow -->
             <div class="outer-filters-container">
-                Search
                 <Transition>
                     <div v-if="filtersWindowOpen" class="filters-container">
                         <fieldset style="border: none">
