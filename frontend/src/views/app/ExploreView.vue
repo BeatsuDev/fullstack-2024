@@ -4,14 +4,14 @@ import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import FilterOptions from "@/components/FilterOptions.vue";
 
-import type { QuizOverview } from "@/api";
+import type { QuizOverview, Category } from "@/api";
 import { QuizApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
 import router from "@/router";
 
 //
 const filterOptions = reactive({
-    selectedCategories: [],
+    selectedCategories: [] as Category[],
     minDifficulty: 1,
     maxDifficulty: 10,
 });
@@ -59,6 +59,13 @@ function toggleFiltersWindow() {
 
 function onQuizCardClick(quiz: QuizOverview) {
     router.push({ name: "quiz", params: { id: quiz.id } });
+}
+
+function isCategorySelected(category: Category): boolean {
+    if (!filterOptions) return false;
+    return filterOptions.selectedCategories
+        .map((c) => c.name)
+        .includes(category.name);
 }
 
 function getCategoryStyle(category: Category) {

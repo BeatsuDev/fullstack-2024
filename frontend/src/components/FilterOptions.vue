@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, reactive, watch } from "vue";
 import type { Category } from "@/api";
 import { CategoryApi } from "@/api";
 
@@ -7,7 +7,19 @@ const filterOptions = defineModel<{
     selectedCategories: Category[];
     minDifficulty: number;
     maxDifficulty: number;
-}>();
+}>({ required: true });
+
+const inputValues = reactive({
+    selectedCategories: [] as Category[],
+    minDifficulty: "1",
+    maxDifficulty: "10",
+});
+
+watch(inputValues, (newValues) => {
+    filterOptions.value.selectedCategories = newValues.selectedCategories;
+    filterOptions.value.minDifficulty = parseInt(newValues.minDifficulty);
+    filterOptions.value.maxDifficulty = parseInt(newValues.maxDifficulty);
+});
 
 // Categories
 const categoryApi = new CategoryApi();
@@ -19,12 +31,15 @@ categoryApi.getCategories().then((response) => {
 });
 
 function isCategorySelected(category: Category): boolean {
+    if (!filterOptions.value) return false;
     return filterOptions.value.selectedCategories
         .map((c) => c.name)
         .includes(category.name);
 }
 
 function toggleCategory(category: Category) {
+    if (!filterOptions.value) return;
+
     if (isCategorySelected(category)) {
         filterOptions.value.selectedCategories =
             filterOptions.value.selectedCategories.filter(
@@ -39,6 +54,7 @@ function toggleCategory(category: Category) {
 }
 
 function getCategoryStyle(category: Category) {
+    if (!filterOptions.value) return "";
     if (category.name == "string")
         return {
             border: `2px solid red`,
@@ -78,18 +94,18 @@ function getCategoryStyle(category: Category) {
                 <label>
                     Min ({{ filterOptions.minDifficulty }})
                     <input
-                        v-model="filterOptions.minDifficulty"
                         @input="
                             () => {
                                 if (
-                                    parseInt(filterOptions.minDifficulty, 10) >
-                                    parseInt(filterOptions.maxDifficulty, 10)
+                                    parseInt(inputValues.minDifficulty) >
+                                    parseInt(inputValues.maxDifficulty)
                                 ) {
-                                    filterOptions.minDifficulty =
-                                        filterOptions.maxDifficulty;
+                                    inputValues.minDifficulty =
+                                        inputValues.maxDifficulty;
                                 }
                             }
                         "
+                        v-model="inputValues.minDifficulty"
                         type="range"
                         step="1"
                         min="1"
@@ -100,18 +116,18 @@ function getCategoryStyle(category: Category) {
                 <label>
                     Max ({{ filterOptions.maxDifficulty }})
                     <input
-                        v-model="filterOptions.maxDifficulty"
                         @input="
                             () => {
                                 if (
-                                    parseInt(filterOptions.maxDifficulty, 10) <
-                                    parseInt(filterOptions.minDifficulty, 10)
+                                    parseInt(inputValues.minDifficulty) >
+                                    parseInt(inputValues.maxDifficulty)
                                 ) {
-                                    filterOptions.maxDifficulty =
-                                        filterOptions.minDifficulty;
+                                    inputValues.maxDifficulty =
+                                        inputValues.minDifficulty;
                                 }
                             }
                         "
+                        v-model="inputValues.maxDifficulty"
                         type="range"
                         step="1"
                         min="1"
