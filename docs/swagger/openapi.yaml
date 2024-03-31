@@ -342,14 +342,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/QuizAttempt"
-      description: Get quiz attempt
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/QuizAttempt"
+  /quiz/{id}/attempt/{quizAttempt}:
     post:
       tags:
         - Attempt
