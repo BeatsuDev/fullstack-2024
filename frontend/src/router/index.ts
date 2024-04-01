@@ -92,16 +92,25 @@ const router = createRouter({
                     name: "quiz-player",
                     path: "/quiz-player/:id",
                     component: () => import("@/views/app/QuizPlayerView.vue"),
+                    meta: {
+                        requiresAuth: true,
+                    },
                 },
                 {
                     name: "quiz-lobby",
                     path: "/lobby/:lobbyCode",
                     component: () => import("@/views/app/QuizLobbyView.vue"),
+                    meta: {
+                        requiresAuth: true,
+                    },
                 },
                 {
                     name: "lobby-chooser",
                     path: "/join",
                     component: () => import("@/views/app/LobbyChooserView.vue"),
+                    meta: {
+                        requiresAuth: true,
+                    },
                 },
                 {
                     path: "/profile",
@@ -110,6 +119,11 @@ const router = createRouter({
                     meta: {
                         requiresAuth: true,
                     },
+                },
+                {
+                    name: "quiz-complete",
+                    path: "/completed",
+                    component: () => import("@/views/app/QuizCompleteView.vue"),
                 },
             ],
         },
