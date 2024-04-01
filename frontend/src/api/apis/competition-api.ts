@@ -21,10 +21,10 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 import { Competition } from '../models';
 import { PrecompetitionInfo } from '../models';
 /**
- * DefaultApi - axios parameter creator
+ * CompetitionApi - axios parameter creator
  * @export
  */
-export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
+export const CompetitionApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * Create a new competition
@@ -186,10 +186,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 };
 
 /**
- * DefaultApi - functional programming interface
+ * CompetitionApi - functional programming interface
  * @export
  */
-export const DefaultApiFp = function(configuration?: Configuration) {
+export const CompetitionApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Create a new competition
@@ -198,7 +198,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async createCompetition(quizId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Competition>>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).createCompetition(quizId, options);
+            const localVarAxiosArgs = await CompetitionApiAxiosParamCreator(configuration).createCompetition(quizId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -211,7 +211,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async getCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Competition>>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getCompetition(joinCode, options);
+            const localVarAxiosArgs = await CompetitionApiAxiosParamCreator(configuration).getCompetition(joinCode, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -224,7 +224,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async joinCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<PrecompetitionInfo>>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).joinCompetition(joinCode, options);
+            const localVarAxiosArgs = await CompetitionApiAxiosParamCreator(configuration).joinCompetition(joinCode, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -237,7 +237,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async startCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).startCompetition(joinCode, options);
+            const localVarAxiosArgs = await CompetitionApiAxiosParamCreator(configuration).startCompetition(joinCode, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -247,10 +247,10 @@ export const DefaultApiFp = function(configuration?: Configuration) {
 };
 
 /**
- * DefaultApi - factory interface
+ * CompetitionApi - factory interface
  * @export
  */
-export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const CompetitionApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * Create a new competition
@@ -259,7 +259,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         async createCompetition(quizId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Competition>> {
-            return DefaultApiFp(configuration).createCompetition(quizId, options).then((request) => request(axios, basePath));
+            return CompetitionApiFp(configuration).createCompetition(quizId, options).then((request) => request(axios, basePath));
         },
         /**
          * Get a competition
@@ -268,7 +268,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         async getCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<AxiosResponse<Competition>> {
-            return DefaultApiFp(configuration).getCompetition(joinCode, options).then((request) => request(axios, basePath));
+            return CompetitionApiFp(configuration).getCompetition(joinCode, options).then((request) => request(axios, basePath));
         },
         /**
          * Join a competition
@@ -277,7 +277,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         async joinCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<AxiosResponse<PrecompetitionInfo>> {
-            return DefaultApiFp(configuration).joinCompetition(joinCode, options).then((request) => request(axios, basePath));
+            return CompetitionApiFp(configuration).joinCompetition(joinCode, options).then((request) => request(axios, basePath));
         },
         /**
          * Start a competition
@@ -286,56 +286,56 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         async startCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-            return DefaultApiFp(configuration).startCompetition(joinCode, options).then((request) => request(axios, basePath));
+            return CompetitionApiFp(configuration).startCompetition(joinCode, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * DefaultApi - object-oriented interface
+ * CompetitionApi - object-oriented interface
  * @export
- * @class DefaultApi
+ * @class CompetitionApi
  * @extends {BaseAPI}
  */
-export class DefaultApi extends BaseAPI {
+export class CompetitionApi extends BaseAPI {
     /**
      * Create a new competition
      * @param {string} quizId The ID of the quiz
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof CompetitionApi
      */
     public async createCompetition(quizId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Competition>> {
-        return DefaultApiFp(this.configuration).createCompetition(quizId, options).then((request) => request(this.axios, this.basePath));
+        return CompetitionApiFp(this.configuration).createCompetition(quizId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Get a competition
      * @param {number} joinCode The join code
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof CompetitionApi
      */
     public async getCompetition(joinCode: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<Competition>> {
-        return DefaultApiFp(this.configuration).getCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
+        return CompetitionApiFp(this.configuration).getCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Join a competition
      * @param {number} joinCode The join code
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof CompetitionApi
      */
     public async joinCompetition(joinCode: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<PrecompetitionInfo>> {
-        return DefaultApiFp(this.configuration).joinCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
+        return CompetitionApiFp(this.configuration).joinCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Start a competition
      * @param {number} joinCode The join code
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof CompetitionApi
      */
     public async startCompetition(joinCode: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
-        return DefaultApiFp(this.configuration).startCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
+        return CompetitionApiFp(this.configuration).startCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
     }
 }
