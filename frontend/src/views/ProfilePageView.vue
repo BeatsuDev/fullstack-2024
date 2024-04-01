@@ -31,38 +31,41 @@ onMounted(() => {
 
 <template>
     <main class="profile-page-container">
-        <h1>
-            Edit your profile
-        </h1>
-        <p>
-            Change your user information here.
-        </p>
+        <div class="card" style="margin-top: 5rem">
+            <h1>
+                Edit your profile
+            </h1>
+            <p>
+                Change your user information here.
+            </p>
 
-        <form id="change-values-container" @submit.prevent="">
-            <ValidatedInput
-                id="name"
-                type="text"
-                v-model="formData.name"
-                :validator="v$.name"
-                label="Name"
-            />
-            <ValidatedInput
-                id="email"
-                type="text"
-                v-model="formData.email"
-                :validator="v$.email"
-                label="Email"
-            />
-            <ButtonComponent
-                id="change-values-button"
-                type="submit"
-                rounded
-                large
-                filled
-            >
-                Edit profile
-            </ButtonComponent>
-        </form>
+            <form id="change-values-container" @submit.prevent="">
+                <ValidatedInput
+                    id="name"
+                    type="text"
+                    v-model="formData.name"
+                    :validator="v$.name"
+                    label="Name"
+                />
+                <ValidatedInput
+                    id="email"
+                    type="text"
+                    v-model="formData.email"
+                    :validator="v$.email"
+                    label="Email"
+                />
+                <ButtonComponent
+                    id="change-values-button"
+                    type="submit"
+                    rounded
+                    large
+                    filled
+                >
+                    Edit profile
+                </ButtonComponent>
+            </form>
+
+        </div>
     </main>
 </template>
 

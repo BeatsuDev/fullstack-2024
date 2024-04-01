@@ -1,5 +1,5 @@
 <template>
-    <main class="app-container">
+    <main class="app-container card" style="margin-top: 1rem;">
         <div v-if="errorMessage">
             {{ errorMessage }}
         </div>

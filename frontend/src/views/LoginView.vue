@@ -3,9 +3,9 @@ import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import LoadingCircle from "@/components/LoadingCircle.vue";
 
-import { ref, reactive, toRaw } from "vue";
+import { reactive, ref, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength } from "@vuelidate/validators";
+import { email, minLength, required } from "@vuelidate/validators";
 
 import { useAuthenticationStore } from "@/stores/authentication";
 import { useNotificationStore } from "@/stores/notification";
@@ -31,7 +31,7 @@ const v$ = useVuelidate(formRules, loginData);
 const authenticationStore = useAuthenticationStore();
 
 const { loading, execute: executeLoginRequest } = useExecutablePromise(
-    authenticationStore.authenticate
+    authenticationStore.authenticate,
 );
 
 async function login() {
@@ -68,45 +68,49 @@ async function login() {
     <main>
         <LoadingCircle :loading="loading" />
         <div id="login-container">
-            <h1>Log in</h1>
-            <form ref="formElement" id="login-form" @submit.prevent="login">
-                <div id="inputs-container">
-                    <ValidatedInput
-                        id="email"
-                        type="text"
-                        v-model="loginData.email"
-                        :validator="v$.email"
-                        label="Email"
-                    />
-                    <ValidatedInput
-                        id="password"
-                        type="password"
-                        v-model="loginData.password"
-                        :validator="v$.password"
-                        label="Password"
-                    />
-                </div>
-                <div id="login-buttons-container">
-                    <ButtonComponent
-                        id="login-button"
-                        type="submit"
-                        rounded
-                        large
-                        filled
-                    >
-                        Log in
-                    </ButtonComponent>
-                    <RouterLink to="register" id="not-registered-message">
-                        Not registered yet? Register here.
-                    </RouterLink>
-                </div>
-            </form>
+            <div class="card">
+                <h3 >Log in</h3>
+                <form ref="formElement" id="login-form" @submit.prevent="login">
+                    <div id="inputs-container">
+                        <ValidatedInput
+                            id="email"
+                            type="text"
+                            v-model="loginData.email"
+                            :validator="v$.email"
+                            label="Email"
+                        />
+                        <ValidatedInput
+                            id="password"
+                            type="password"
+                            v-model="loginData.password"
+                            :validator="v$.password"
+                            label="Password"
+                        />
+                    </div>
+                    <div id="login-buttons-container">
+                        <ButtonComponent
+                            id="login-button"
+                            type="submit"
+                            rounded
+                            large
+                            filled
+                        >
+                            Log in
+                        </ButtonComponent>
+                        <RouterLink to="register" id="not-registered-message">
+                            Not registered yet? Register here.
+                        </RouterLink>
+                    </div>
+                </form>
+
+            </div>
         </div>
     </main>
 </template>
 
 <style scoped>
 #login-container {
+    margin-top: 5rem;
     display: flex;
     flex-direction: column;
     align-items: center;

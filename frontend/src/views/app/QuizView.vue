@@ -5,7 +5,9 @@
                 <p>{{ errorMessage }}</p>
             </div>
             <div v-else-if="loadingDebounced">
-                <div>Loading...</div>
+                <AlertComponent type="warning">
+                    Loading...
+                </AlertComponent>
             </div>
             <div v-else-if="quizReadOnly">
                 <AlertComponent v-if="revisionId" type="warning">
@@ -73,7 +75,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="feedbackIsLoading">Loading...</div>
+            <AlertComponent v-if="feedbackIsLoading" type="warning">Loading feedbacks...</AlertComponent>
             <div v-else-if="feedbacks">
                 <h3>Feedbacks</h3>
                 <FeedbackCard
@@ -81,7 +83,9 @@
                     :key="feedback.id"
                     :feedback="feedback"
                 ></FeedbackCard>
-                <FeedbackForm @submit="submitFeedback" v-if="!revisionId" />
+                <div class="card">
+                    <FeedbackForm @submit="submitFeedback" v-if="!revisionId" />
+                </div>
             </div>
         </div>
     </main>

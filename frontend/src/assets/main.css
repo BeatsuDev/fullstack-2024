@@ -9,6 +9,12 @@ body {
     height: 100vh;
 }
 
+.card {
+    border: 2px solid var(--color-border);
+    background-color: var(--color-background-soft);
+    padding: 1rem;
+}
+
 #app {
     padding: 0;
     min-height: 100vh;
