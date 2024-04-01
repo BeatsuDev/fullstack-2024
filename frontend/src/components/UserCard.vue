@@ -9,11 +9,8 @@
                 v-if="props.editable"
                 filled
                 @click="emit('delete', value)"
-
-
-            >Delete
+                >Delete
             </ButtonComponent>
-
         </div>
     </div>
 </template>
@@ -32,21 +29,21 @@ const emit = defineEmits<{
 </script>
 <style scoped>
 .user-card {
-  border: 2px solid var(--color-border);
-  padding: 16px;
+    border: 2px solid var(--color-border);
+    padding: 16px;
 }
 
 .user-info {
-  text-align: center;
+    text-align: center;
 }
 
 .user-name {
-  font-size: 1.2em;
-  font-weight: bold;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 .user-email {
-  color: #666;
-  margin-top: 8px;
+    color: #666;
+    margin-top: 8px;
 }
 </style>

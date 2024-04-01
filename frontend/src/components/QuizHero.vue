@@ -23,8 +23,12 @@
             <p style="font-style: italic">
                 Made by: {{ props.quiz.creator.name }}
             </p>
-            <p style="font-style: italic" v-if="props.quiz?.categories?.length > 0">
-                Categories: {{ props.quiz.categories.map((c) => c.name).join(", ") }}
+            <p
+                style="font-style: italic"
+                v-if="props.quiz?.categories?.length > 0"
+            >
+                Categories:
+                {{ props.quiz.categories.map((c) => c.name).join(", ") }}
             </p>
         </div>
         <div

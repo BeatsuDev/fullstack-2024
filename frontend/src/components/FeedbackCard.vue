@@ -15,7 +15,6 @@ import type { Feedback } from "../api/models/feedback";
 const props = defineProps<{
     feedback: Feedback;
 }>();
-
 </script>
 <style scoped>
 .feedback-item {

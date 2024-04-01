@@ -15,19 +15,31 @@
         </ValidatedInput>
         <div v-if="!editable.image">
             <h4>Image</h4>
-            <input  type="file" @change="uploadImage"
-                   accept=".jpeg , .png , .jpg"
+            <input
+                type="file"
+                @change="uploadImage"
+                accept=".jpeg , .png , .jpg"
             />
         </div>
-        <div v-else style="width: 100%;">
-            <img :src="BASE_PATH + '/'  + editable.image.path" v-if="editable.image"
-                 style="max-width: 100%; margin-top: 10px"
-                 alt="image" />
-            <ButtonComponent @click="editable.image = null" filled block style="margin-top: 10px">Remove image
+        <div v-else style="width: 100%">
+            <img
+                :src="BASE_PATH + '/' + editable.image.path"
+                v-if="editable.image"
+                style="max-width: 100%; margin-top: 10px"
+                alt="image"
+            />
+            <ButtonComponent
+                @click="editable.image = null"
+                filled
+                block
+                style="margin-top: 10px"
+                >Remove image
             </ButtonComponent>
-
         </div>
-        <div v-if="questionType == QuestionTypes.BOOLEAN" class="boolean-options">
+        <div
+            v-if="questionType == QuestionTypes.BOOLEAN"
+            class="boolean-options"
+        >
             <input type="radio" v-model="booleanAnswer" :value="true" />
             <label>True</label>
             <input type="radio" v-model="booleanAnswer" :value="false" />
@@ -43,7 +55,7 @@
                 <ValidatedInput
                     v-model="editable.options[index]"
                     :id="`option-${index}`"
-                    style="margin-bottom: 0.5rem;"
+                    style="margin-bottom: 0.5rem"
                     :validator="v$.question"
                     placeholder="Enter the option here"
                 />
@@ -54,7 +66,7 @@
                 v-if="editable?.options?.length < 4"
                 style="margin-top: 20px"
                 block
-            >Add option
+                >Add option
             </ButtonComponent>
         </div>
         <div v-else-if="questionType == QuestionTypes.TEXT">
@@ -67,9 +79,8 @@
             />
         </div>
         <ButtonComponent filled block style="margin-top: 3rem" @click="submit"
-        >Submit
-        </ButtonComponent
-        >
+            >Submit
+        </ButtonComponent>
     </form>
 </template>
 <script lang="ts" setup>
@@ -80,7 +91,11 @@ import ValidatedInput from "./ValidatedInput.vue";
 import ButtonComponent from "./ButtonComponent.vue";
 import { required } from "@vuelidate/validators";
 import { type Image, type QuestionCreate } from "@/api";
-import { getReadableQuestionType, QuestionTypes, removeFieldsNotInType } from "@/composables/useQuestionType";
+import {
+    getReadableQuestionType,
+    QuestionTypes,
+    removeFieldsNotInType,
+} from "@/composables/useQuestionType";
 import SelectComponent from "@/components/SelectComponent.vue";
 import { useNotificationStore } from "@/stores/notification";
 import axios from "axios";
@@ -96,19 +111,22 @@ const emit = defineEmits<{
 
 const questionType = ref<QuestionTypes>(QuestionTypes.MULTIPLE);
 // @ts-ignore
-const editable = ref<Question | QuestionCreate>(props.value || {
-    question: "",
-    options: [""],
-    answer: "",
-
-});
-
-watchEffect(() => {
-    editable.value = props.value || {
+const editable = ref<Question | QuestionCreate>(
+    props.value || {
         question: "",
         options: [""],
         answer: "",
-    } as QuestionCreate;
+    }
+);
+
+watchEffect(() => {
+    editable.value =
+        props.value ||
+        ({
+            question: "",
+            options: [""],
+            answer: "",
+        } as QuestionCreate);
 });
 
 const selectedOption = ref(0);
@@ -150,22 +168,23 @@ function uploadImage() {
         return;
     }
 
-
     const formData = new FormData();
     formData.append("image", file);
-    const data = api.post<Image>("/image", formData).then((response) => {
-        editable.value.image = response.data;
-        notificationStore.addNotification({
-            message: "Image uploaded successfully.",
-            type: "success",
+    const data = api
+        .post<Image>("/image", formData)
+        .then((response) => {
+            editable.value.image = response.data;
+            notificationStore.addNotification({
+                message: "Image uploaded successfully.",
+                type: "success",
+            });
+        })
+        .catch(() => {
+            notificationStore.addNotification({
+                message: "An unexpected error occurred.",
+                type: "error",
+            });
         });
-    }).catch(() => {
-        notificationStore.addNotification({
-            message: "An unexpected error occurred.",
-            type: "error",
-        });
-    });
-
 }
 </script>
 <style scoped>
@@ -207,7 +226,5 @@ form {
     flex-direction: row;
     gap: 10px;
     margin-top: 20px;
-
 }
 </style>
-

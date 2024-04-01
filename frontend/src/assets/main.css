@@ -28,13 +28,11 @@ main {
     overflow: auto;
 }
 
-
 .app-container {
     width: 80%;
     margin: 0 auto;
     padding: 1rem;
 }
-
 
 @media (max-width: 768px) {
     .app-container {

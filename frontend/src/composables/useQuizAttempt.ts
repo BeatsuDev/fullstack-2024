@@ -6,34 +6,45 @@ import type { QuizAttempt } from "@/api/models/quiz-attempt";
 
 export default function useQuizAttempt(revisionId: Ref<string>) {
     const attemptApi = new AttemptApi();
-    const { data, loading, execute, error } = useExecutablePromise(() => attemptApi.getAttempts(revisionId.value));
+    const { data, loading, execute, error } = useExecutablePromise(() =>
+        attemptApi.getAttempts(revisionId.value)
+    );
 
-    watch(revisionId, () => {
-        execute();
-
-    }, {
-        immediate: true,
-    });
+    watch(
+        revisionId,
+        () => {
+            execute();
+        },
+        {
+            immediate: true,
+        }
+    );
 
     const attempts = computed(() => data.value?.data?.length || 0);
 
     const chartDataBasedOnAttempts = computed(() => {
         const chartData = {
             labels: [],
-            datasets: [{ data: [],
-                label: "Correct Answers",
-                backgroundColor: "lightgreen",
-            }],
+            datasets: [
+                {
+                    data: [],
+                    label: "Correct Answers",
+                    backgroundColor: "lightgreen",
+                },
+            ],
         };
 
         data.value?.data?.forEach((attempt: QuizAttempt) => {
-            const formattedDate = new Date(attempt.attemptedAt).toLocaleString();
+            const formattedDate = new Date(
+                attempt.attemptedAt
+            ).toLocaleString();
             chartData.labels.push(formattedDate);
 
-            const totalCorrectOnAttempt = attempt.questionAttempts.map((questionAttempt) => {
-                return questionAttempt.correct ? 1 : 0;
-
-            }).reduce((acc, val) => acc + val, 0);
+            const totalCorrectOnAttempt = attempt.questionAttempts
+                .map((questionAttempt) => {
+                    return questionAttempt.correct ? 1 : 0;
+                })
+                .reduce((acc, val) => acc + val, 0);
             chartData.datasets[0].data.push(totalCorrectOnAttempt);
         });
 
@@ -41,7 +52,6 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
     });
 
     const chartDataBasedOnIncorrectAnswerOnQuestion = computed(() => {
-
         const incorrect = {} as { [key: string]: number };
 
         data.value?.data?.forEach((attempt: QuizAttempt) => {
@@ -53,13 +63,19 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
             });
         });
 
-        const sortedKeys = Object.keys(incorrect).sort((a, b) => incorrect[a] - incorrect[b]);
-        return  {
+        const sortedKeys = Object.keys(incorrect).sort(
+            (a, b) => incorrect[a] - incorrect[b]
+        );
+        return {
             labels: sortedKeys,
-            datasets: [{ data: sortedKeys.map((key) => incorrect[key]), label: "Incorrect Answers",
-                backgroundColor: "lightblue",
-            }],
-        }
+            datasets: [
+                {
+                    data: sortedKeys.map((key) => incorrect[key]),
+                    label: "Incorrect Answers",
+                    backgroundColor: "lightblue",
+                },
+            ],
+        };
     });
 
     const bestAttempt = computed<QuizAttempt | null>(() => {
@@ -71,9 +87,11 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
         let bestScore = 0;
 
         data.value.data?.forEach((attempt: QuizAttempt) => {
-            const totalCorrectOnAttempt = attempt.questionAttempts.map((questionAttempt) => {
-                return questionAttempt.correct ? 1 : 0;
-            }).reduce((acc, val) => acc + val, 0);
+            const totalCorrectOnAttempt = attempt.questionAttempts
+                .map((questionAttempt) => {
+                    return questionAttempt.correct ? 1 : 0;
+                })
+                .reduce((acc, val) => acc + val, 0);
 
             if (totalCorrectOnAttempt > bestScore) {
                 bestScore = totalCorrectOnAttempt;
@@ -82,7 +100,6 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
         });
 
         return bestAttempt as QuizAttempt;
-
     });
 
     const bestAttemptScore = computed(() => {
@@ -90,20 +107,27 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
             return 0;
         }
 
-        return bestAttempt.value.questionAttempts?.map((questionAttempt) => {
-            return questionAttempt.correct ? 1 : 0;
-        }).reduce((acc, val) => acc + val, 0);
+        return bestAttempt.value.questionAttempts
+            ?.map((questionAttempt) => {
+                return questionAttempt.correct ? 1 : 0;
+            })
+            .reduce((acc, val) => acc + val, 0);
     });
 
     const numOfUncompletedAttempts = computed(() => {
-        return data.value?.data?.filter((attempt: QuizAttempt) => !attempt.complete).length;
+        return data.value?.data?.filter(
+            (attempt: QuizAttempt) => !attempt.complete
+        ).length;
     });
 
     const errorMessage = computed(() => {
         if (!error.value) {
             return "";
         }
-        if (error.value.response.status == "404" || error.value.response.status == "422") {
+        if (
+            error.value.response.status == "404" ||
+            error.value.response.status == "422"
+        ) {
             return "Quiz not found.";
         }
         if (error.value) {
@@ -121,7 +145,6 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
         bestAttemptScore,
         numOfUncompletedAttempts,
         chartDataBasedOnIncorrectAnswerOnQuestion,
-        errorMessage
+        errorMessage,
     };
-
 }

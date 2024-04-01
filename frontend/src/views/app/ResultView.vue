@@ -1,5 +1,5 @@
 <template>
-    <main class="app-container card" style="margin-top: 1rem;">
+    <main class="app-container card" style="margin-top: 1rem">
         <AlertComponent v-if="errorMessage" type="info">
             {{ errorMessage }}
         </AlertComponent>
@@ -16,11 +16,16 @@
                     <div v-if="bestAttempt">
                         <h3>History</h3>
                         <p>
-                            You had your highest score on {{ new Date(bestAttempt.attemptedAt).toLocaleString() }},
-                            with a score of {{ bestAttemptScore }}.
+                            You had your highest score on
+                            {{
+                                new Date(
+                                    bestAttempt.attemptedAt
+                                ).toLocaleString()
+                            }}, with a score of {{ bestAttemptScore }}.
                         </p>
                         <p v-if="numOfUncompletedAttempts">
-                            You also have {{ numOfUncompletedAttempts }} uncompleted attempts.
+                            You also have
+                            {{ numOfUncompletedAttempts }} uncompleted attempts.
                         </p>
                     </div>
                 </div>
@@ -36,22 +41,34 @@
                 <div class="big">
                     <Bar :data="chartDataBasedOnIncorrectAnswerOnQuestion" />
                 </div>
-
             </div>
         </div>
     </main>
-
 </template>
 <script lang="ts" setup>
-
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 import useQuizAttempt from "@/composables/useQuizAttempt";
 import { Bar } from "vue-chartjs";
-import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js";
+import {
+    BarElement,
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    Title,
+    Tooltip,
+} from "chart.js";
 import AlertComponent from "@/components/AlertComponent.vue";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+ChartJS.register(
+    Title,
+    Tooltip,
+    Legend,
+    BarElement,
+    CategoryScale,
+    LinearScale
+);
 
 const route = useRoute();
 

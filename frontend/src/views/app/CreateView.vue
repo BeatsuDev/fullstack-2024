@@ -5,10 +5,9 @@
             <QuizForm :value="quiz" @submit="createQuiz" :loading="loading" />
             <div style="margin-top: 10px">
                 <a @click="inspirationModal = true" style="cursor: pointer"
-                >Need some inspiration? Or import quiz.</a
+                    >Need some inspiration? Or import quiz.</a
                 >
             </div>
-
         </div>
         <GenericModal title="Templates" v-model="inspirationModal">
             <div style="display: flex; flex-direction: column">

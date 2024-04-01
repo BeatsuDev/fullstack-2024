@@ -4,7 +4,6 @@
     </select>
 </template>
 <script setup lang="ts">
-
 const value = defineModel({
     required: true,
 });

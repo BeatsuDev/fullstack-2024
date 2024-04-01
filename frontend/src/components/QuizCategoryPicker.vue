@@ -4,15 +4,13 @@
             v-for="(category, i) in categories"
             :key="i"
             :style="getCategoryStyle(category)"
-        ><input
-            type="checkbox"
-            @change="toggleCategory(category)"
-        />{{ category.name }}</label
+            ><input type="checkbox" @change="toggleCategory(category)" />{{
+                category.name
+            }}</label
         >
     </div>
 </template>
 <script setup lang="ts">
-
 import type { Category } from "@/api";
 
 function toggleCategory(category: Category) {
@@ -24,5 +22,4 @@ function toggleCategory(category: Category) {
         selectedCategories.value = [...selectedCategories.value, category];
     }
 }
-
 </script>

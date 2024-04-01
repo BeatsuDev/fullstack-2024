@@ -1,13 +1,21 @@
 export const templates: {
     difficulty: number;
-    questions: ({ question: string; answer: string; quizId: number; options: string[] } | {
-        question: string;
-        answer: string;
-        quizId: number;
-        options: string[]
-    })[];
+    questions: (
+        | {
+              question: string;
+              answer: string;
+              quizId: number;
+              options: string[];
+          }
+        | {
+              question: string;
+              answer: string;
+              quizId: number;
+              options: string[];
+          }
+    )[];
     description: string;
-    title: string
+    title: string;
 }[] = [
     {
         title: "Math",
@@ -26,6 +34,6 @@ export const templates: {
                 options: ["1", "2", "3", "4"],
                 answer: "4",
             },
-        ]
-    }
+        ],
+    },
 ];

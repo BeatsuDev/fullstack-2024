@@ -9,15 +9,14 @@
                 collaborators can edit the quiz.
             </p>
         </div>
-        <AlertComponent v-else-if="loadingDebounced" type="info">loading...</AlertComponent>
+        <AlertComponent v-else-if="loadingDebounced" type="info"
+            >loading...</AlertComponent
+        >
         <div v-else-if="data">
             <QuizHero :quiz="quizReadOnly" />
             <div class="card" style="margin: 1rem auto; width: max-content">
                 <h3>Edit quiz</h3>
-                <QuizForm
-                    :value="data?.data"
-                    @submit="updateQuiz"
-                />
+                <QuizForm :value="data?.data" @submit="updateQuiz" />
             </div>
         </div>
         <div v-if="revisions">
@@ -100,7 +99,7 @@ const quizId = computed(() => route.params.id.toString());
 const { data, loading, errorMessage, quizReadOnly } = useQuizApi(quizId);
 
 const { isOwnerOrCollaborator } = useQuizPermissions(
-    computed(() => data.value?.data),
+    computed(() => data.value?.data)
 );
 
 const loadingDebounced = useDebounceLoading(loading);
@@ -128,7 +127,7 @@ async function updateQuiz(value: QuizCreate) {
 const collaboratorApi = new CollaboratorApi();
 
 const { data: collaborators } = usePromise(
-    collaboratorApi.getCollaborators(quizId.value),
+    collaboratorApi.getCollaborators(quizId.value)
 );
 
 const collaborator = reactive({
@@ -151,7 +150,7 @@ async function addCollaborator() {
     try {
         const data = await collaboratorApi.addCollaborator(
             quizId.value,
-            collaborator,
+            collaborator
         );
         collaborators.value?.data.push(data.data as Collaborator);
         notificationStore.addNotification({
@@ -198,7 +197,7 @@ function deleteCollaborator(collaborator: Collaborator) {
         });
         if (collaborators.value) {
             collaborators.value.data = collaborators.value.data.filter(
-                (c) => c.id !== collaborator.id,
+                (c) => c.id !== collaborator.id
             );
         }
     } catch (e) {

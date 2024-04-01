@@ -61,7 +61,9 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         );
     }
 
-    async function refresh(): Promise<ReturnType<typeof userSessionApi.loggedInUser>> {
+    async function refresh(): Promise<
+        ReturnType<typeof userSessionApi.loggedInUser>
+    > {
         const promise = userSessionApi.loggedInUser();
 
         await promise
@@ -85,17 +87,16 @@ export const useAuthenticationStore = defineStore("authentication", () => {
             authenticationData.authenticated = false;
             authenticationData.timer = undefined;
             if (authenticationData.user) {
-
                 if (router.currentRoute.value.meta?.requiresAuth) {
                     router.push({ name: "login" });
                 }
-                location.reload()
+                location.reload();
             }
-            delete authenticationData.user ;
+            delete authenticationData.user;
         }
 
         promise.then(clearAuthenticationData).catch((error) => {
-                clearAuthenticationData();
+            clearAuthenticationData();
         });
 
         return promise;

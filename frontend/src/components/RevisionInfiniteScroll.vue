@@ -6,7 +6,7 @@
                 :key="revision.data.revisionId"
                 :value="revision.data"
                 @click="viewRevision(revision.data)"
-                style="margin-bottom: 10px;"
+                style="margin-bottom: 10px"
             />
         </div>
     </div>
@@ -28,12 +28,9 @@ const emit = defineEmits<{
     (event: "view", value: Revision): void;
 }>();
 
-const { list, containerProps, wrapperProps } = useVirtualList(
-  props.value,
-  {
-    itemHeight: 180
-  },
-)
+const { list, containerProps, wrapperProps } = useVirtualList(props.value, {
+    itemHeight: 180,
+});
 
 function viewRevision(revision: Revision) {
     emit("view", revision);

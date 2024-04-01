@@ -1,10 +1,17 @@
-
 <template>
     <form @submit.prevent ref="form">
-        <label for="title"><h4 style="margin-top: 3rem">Submit new Feedback</h4></label>
-        <ValidatedInput id="feedback" :validator="v$.feedback" v-model="editable.feedback" />
-        <div style="display:flex; justify-content: end; margin-top: 10px;">
-            <ButtonComponent @click="submit" :loading="props.loading">Submit</ButtonComponent>
+        <label for="title"
+            ><h4 style="margin-top: 3rem">Submit new Feedback</h4></label
+        >
+        <ValidatedInput
+            id="feedback"
+            :validator="v$.feedback"
+            v-model="editable.feedback"
+        />
+        <div style="display: flex; justify-content: end; margin-top: 10px">
+            <ButtonComponent @click="submit" :loading="props.loading"
+                >Submit</ButtonComponent
+            >
         </div>
     </form>
 </template>
@@ -25,9 +32,11 @@ const emit = defineEmits<{
     (e: "submit", quiz: FeedbackCreate): void;
 }>();
 
-const editable = reactive(props.value || {
-    feedback: "",
-}) as FeedbackCreate;
+const editable = reactive(
+    props.value || {
+        feedback: "",
+    }
+) as FeedbackCreate;
 
 watchEffect(() => {
     if (props.value) Object.assign(editable, props.value);
@@ -51,6 +60,4 @@ async function submit() {
     editable.feedback = " ";
     v$.value.$reset();
 }
-
-
 </script>

@@ -5,9 +5,7 @@
                 {{ errorMessage }}
             </AlertComponent>
             <div v-else-if="loadingDebounced">
-                <AlertComponent type="warning">
-                    Loading...
-                </AlertComponent>
+                <AlertComponent type="warning"> Loading... </AlertComponent>
             </div>
             <div v-else-if="quizReadOnly">
                 <AlertComponent v-if="revisionId" type="warning">
@@ -49,11 +47,15 @@
                         "
                     >
                         You have tried this quiz before.
-                        <ButtonComponent @click="router.push('/quizzes/' + quizId + '/results')" filled>
+                        <ButtonComponent
+                            @click="
+                                router.push('/quizzes/' + quizId + '/results')
+                            "
+                            filled
+                        >
                             See previous results
                         </ButtonComponent>
                     </div>
-
                 </AlertComponent>
                 <div v-if="isOwnerOrCollaborator">
                     <h3>Questions</h3>
@@ -70,12 +72,14 @@
                             filled
                             large
                             @click="questionModal = true"
-                        >Add question
+                            >Add question
                         </ButtonComponent>
                     </div>
                 </div>
             </div>
-            <AlertComponent v-if="feedbackIsLoading" type="warning">Loading feedbacks...</AlertComponent>
+            <AlertComponent v-if="feedbackIsLoading" type="warning"
+                >Loading feedbacks...</AlertComponent
+            >
             <div v-else-if="feedbacks">
                 <h3>Feedbacks</h3>
                 <FeedbackCard
@@ -137,7 +141,10 @@ const revisionId = computed(() => route.query.revision?.toString());
 
 const router = useRouter();
 
-const { data, loading, revert, quizReadOnly, errorMessage } = useQuizApi(quizId, revisionId);
+const { data, loading, revert, quizReadOnly, errorMessage } = useQuizApi(
+    quizId,
+    revisionId
+);
 
 const loadingDebounced = useDebounceLoading(loading);
 
@@ -151,13 +158,11 @@ function editQuiz() {
     router.push("/quizzes/" + quizId.value + "/edit");
 }
 
-
 /**
  * Results
  */
 
 const { attempts } = useQuizAttempt(quizId);
-
 
 /**
  * Questions
@@ -205,8 +210,13 @@ async function createQuestion(value: QuestionCreate) {
 
 async function updateQuestion(value: Question) {
     try {
-        await questionApi.updateQuestion({ ...value, quizId: quizId.value } as QuestionCreate, value.id);
-        const index = data.value.data.questions.findIndex((q) => q.id == value.id);
+        await questionApi.updateQuestion(
+            { ...value, quizId: quizId.value } as QuestionCreate,
+            value.id
+        );
+        const index = data.value.data.questions.findIndex(
+            (q) => q.id == value.id
+        );
         if (index != -1) {
             data.value.data.questions[index] = value as Question;
         }
@@ -246,7 +256,7 @@ async function deleteQuestion(question: Question) {
     try {
         await questionApi.deleteQuestion(question.id);
         data.value.data.questions = data.value.data.questions.filter(
-            (q) => q.id != question.id,
+            (q) => q.id != question.id
         );
         notificationStore.addNotification({
             message: "Question deleted successfully.",
@@ -267,7 +277,7 @@ async function deleteQuestion(question: Question) {
 const feedbackApi = new FeedbackApi();
 
 const { data: feedbackData, loading: feedbacksLoading } = usePromise(
-    feedbackApi.getFeedback(quizId.value),
+    feedbackApi.getFeedback(quizId.value)
 );
 
 const feedbackIsLoading = useDebounceLoading(feedbacksLoading);

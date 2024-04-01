@@ -1,26 +1,39 @@
 <template>
     <div class="card">
         <div class="header">
-            <h3 class="question">{{ props.value.question }} </h3> ({{ readableQuestionType }})
-
+            <h3 class="question">{{ props.value.question }}</h3>
+            ({{ readableQuestionType }})
         </div>
         <div v-if="questionType == QuestionTypes.MULTIPLE">
             <div class="option-header">Options</div>
-            <ul class="options" >
-                <li v-for="option in props.value.options" :key="option" class="option">
+            <ul class="options">
+                <li
+                    v-for="option in props.value.options"
+                    :key="option"
+                    class="option"
+                >
                     {{ option }}
                 </li>
             </ul>
         </div>
-        <div class="option-header">
-            Correct Answer
-        </div>
+        <div class="option-header">Correct Answer</div>
         <div class="answer">
             {{ props.value.answer }}
-            </div>
+        </div>
         <div class="action-bar">
-            <ButtonComponent v-if="props.editable" @click="emit('delete', value)" class="delete-button">Delete</ButtonComponent>
-            <ButtonComponent v-if="props.editable" @click="emit('edit', value)" class="edit-button" filled>Edit</ButtonComponent>
+            <ButtonComponent
+                v-if="props.editable"
+                @click="emit('delete', value)"
+                class="delete-button"
+                >Delete</ButtonComponent
+            >
+            <ButtonComponent
+                v-if="props.editable"
+                @click="emit('edit', value)"
+                class="edit-button"
+                filled
+                >Edit</ButtonComponent
+            >
         </div>
     </div>
 </template>
@@ -41,7 +54,9 @@ const emit = defineEmits<{
     (event: "delete", value: Question): void;
 }>();
 
-const { questionType, readableQuestionType} = useQuestionType(computed(() => props.value));
+const { questionType, readableQuestionType } = useQuestionType(
+    computed(() => props.value)
+);
 </script>
 
 <style scoped>
@@ -55,7 +70,6 @@ const { questionType, readableQuestionType} = useQuestionType(computed(() => pro
 .option-header {
     font-weight: bold;
     margin-bottom: 0.5em;
-
 }
 
 .question {

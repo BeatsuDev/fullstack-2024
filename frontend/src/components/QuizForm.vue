@@ -1,7 +1,11 @@
 <template>
     <form @submit.prevent ref="form">
         <label for="title">Title</label>
-        <ValidatedInput id="title" :validator="v$.title" v-model="editable.title" />
+        <ValidatedInput
+            id="title"
+            :validator="v$.title"
+            v-model="editable.title"
+        />
         <label for="Description">Description</label>
         <ValidatedInput
             id="description"
@@ -10,9 +14,7 @@
         />
         <label for="difficulty">Difficulty: {{ editable.difficulty }} </label>
         <input type="range" min="1" max="10" v-model="editable.difficulty" />
-        <div>
-            Categories:
-        </div>
+        <div>Categories:</div>
 
         <div class="category-filter-labels">
             <label
@@ -25,10 +27,9 @@
             </label>
         </div>
         <ButtonComponent @click="submit" :loading="props.loading"
-        >Submit
+            >Submit
         </ButtonComponent>
     </form>
-
 </template>
 <script setup lang="ts">
 import ButtonComponent from "@/components/ButtonComponent.vue";
@@ -48,14 +49,13 @@ const emit = defineEmits<{
     (e: "submit", quiz: QuizCreate | Quiz): void;
 }>();
 
-const editable = reactive(props.value || {
-
-    title: "",
-    description: "",
-    difficulty: 1,
-
-}) as QuizCreate;
-
+const editable = reactive(
+    props.value || {
+        title: "",
+        description: "",
+        difficulty: 1,
+    }
+) as QuizCreate;
 
 const formRules = {
     title: { required },
@@ -82,12 +82,9 @@ const categoryApi = new CategoryApi();
 const selectedCategories = ref<Category[]>([]);
 const { data: categories } = usePromise(categoryApi.getCategories());
 
-
 function isCategorySelected(category: Category): boolean {
     if (!selectedCategories.value) return false;
-    return selectedCategories.value
-        .map((c) => c.name)
-        .includes(category.name);
+    return selectedCategories.value.map((c) => c.name).includes(category.name);
 }
 
 function getCategoryStyle(category: Category) {
@@ -112,15 +109,11 @@ function toggleCategory(category: Category) {
     if (!selectedCategories.value) return;
 
     if (isCategorySelected(category)) {
-        selectedCategories.value =
-            selectedCategories.value.filter(
-                (c) => c.name !== category.name,
-            );
+        selectedCategories.value = selectedCategories.value.filter(
+            (c) => c.name !== category.name
+        );
     } else {
-        selectedCategories.value = [
-            ...selectedCategories.value,
-            category,
-        ];
+        selectedCategories.value = [...selectedCategories.value, category];
     }
 }
 watchEffect(() => {

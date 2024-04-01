@@ -1,3 +1,1 @@
-
-export default function useCategories() {
-}
+export default function useCategories() {}
