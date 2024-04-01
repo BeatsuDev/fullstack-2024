@@ -10,7 +10,8 @@ import { email, minLength, required } from "@vuelidate/validators";
 import { useAuthenticationStore } from "@/stores/authentication";
 import { useNotificationStore } from "@/stores/notification";
 import { useExecutablePromise } from "@/composables/promise";
-import { AxiosError } from "axios";
+import type { AxiosError } from "axios";
+import { isAxiosError } from "axios";
 
 import router from "@/router";
 
@@ -31,7 +32,7 @@ const v$ = useVuelidate(formRules, loginData);
 const authenticationStore = useAuthenticationStore();
 
 const { loading, execute: executeLoginRequest } = useExecutablePromise(
-    authenticationStore.authenticate,
+    authenticationStore.authenticate
 );
 
 async function login() {
@@ -48,8 +49,8 @@ async function login() {
         })
         .catch((err: Error | AxiosError) => {
             let message = "Unkown error.";
-            if (err instanceof AxiosError) {
-                switch (err.status) {
+            if (isAxiosError(err)) {
+                switch (err.response?.status) {
                     case 401:
                         message = "Could not log in. Bad credentials.";
                         break;
@@ -69,7 +70,7 @@ async function login() {
         <LoadingCircle :loading="loading" />
         <div id="login-container">
             <div class="card">
-                <h3 >Log in</h3>
+                <h3>Log in</h3>
                 <form ref="formElement" id="login-form" @submit.prevent="login">
                     <div id="inputs-container">
                         <ValidatedInput
@@ -102,7 +103,6 @@ async function login() {
                         </RouterLink>
                     </div>
                 </form>
-
             </div>
         </div>
     </main>
