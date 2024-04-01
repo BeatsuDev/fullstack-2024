@@ -1089,19 +1089,29 @@ components:
     Competition:
       type: object
       required:
-        - attempts
+        - competitors
         - joinCode
       properties:
-        attempts:
+        competitors:
           type: array
           items:
-            $ref: "#/components/schemas/QuizAttempt"
+            $ref: "#/components/schemas/Competitor"
         joinCode:
           type: number
+    Competitor:
+      type: object
+      required:
+        - user
+        - attempt
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        attempt:
+          $ref: "#/components/schemas/QuizAttempt"
     PrecompetitionInfo:
       type: object
       required:
-        - webSocketUrl
+        - competitionId
         - competition
       properties:
         comeptitionId:
