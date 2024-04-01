@@ -143,6 +143,12 @@ async function startGame() {
     justify-content: space-between;
 }
 
+@media (max-width: 900px) {
+    .inner-lobby-container {
+        justify-content: unset;
+    }
+}
+
 .start-button {
     font-size: 2em;
     width: 100%;
@@ -173,7 +179,7 @@ async function startGame() {
     margin-right: 1rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 900px) {
     .lobby-container {
         padding: 2em;
     }
