@@ -89,14 +89,19 @@ const router = createRouter({
                     },
                 },
                 {
-                    path: "/quiz-player/:id",
                     name: "quiz-player",
+                    path: "/quiz-player/:id",
                     component: () => import("@/views/app/QuizPlayerView.vue"),
                 },
                 {
                     name: "quiz-lobby",
                     path: "/lobby/:lobbyCode",
                     component: () => import("@/views/app/QuizLobbyView.vue"),
+                },
+                {
+                    name: "lobby-chooser",
+                    path: "/join",
+                    component: () => import("@/views/app/LobbyChooserView.vue"),
                 },
                 {
                     path: "/profile",
