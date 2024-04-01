@@ -172,7 +172,7 @@ public class QuizControllerIntegrationTest {
   }
 
   @Test
-  public void fetchQuiz_ValidRequest_ReturnsQuiz() throws Exception {
+  public void fetchQuiz_NoQuizzes_ReturnsNotFound() throws Exception {
     mockMvc.perform(get("/quiz")).andExpect(status().isOk());
   }
 }
