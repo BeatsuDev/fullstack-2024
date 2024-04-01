@@ -1121,7 +1121,7 @@ components:
         - competitionId
         - competition
       properties:
-        comeptitionId:
+        competitionId:
           type: string
           format: uuid
         competition:
