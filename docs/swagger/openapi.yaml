@@ -696,6 +696,8 @@ paths:
                 $ref: "#/components/schemas/Image"
   /quiz/{quizId}/competition:
     post:
+      tags:
+        - Competition
       parameters:
         - name: quizId
           description: The ID of the quiz
@@ -715,6 +717,8 @@ paths:
                 $ref: "#/components/schemas/Competition"
   /competition/{joinCode}:
     post:
+      tags:
+        - Competition
       parameters:
         - name: joinCode
           description: The join code
@@ -733,6 +737,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/PrecompetitionInfo"
     get:
+      tags:
+        - Competition
       parameters:
         - name: joinCode
           description: The join code
@@ -751,6 +757,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Competition"
     put:
+      tags:
+        - Competition
       parameters:
         - name: joinCode
           description: The join code
