@@ -1,8 +1,8 @@
 <template>
     <main class="app-container card" style="margin-top: 1rem;">
-        <div v-if="errorMessage">
+        <AlertComponent v-if="errorMessage" type="info">
             {{ errorMessage }}
-        </div>
+        </AlertComponent>
         <div v-else>
             <h3>Results</h3>
             <p>
@@ -49,6 +49,7 @@ import { computed } from "vue";
 import useQuizAttempt from "@/composables/useQuizAttempt";
 import { Bar } from "vue-chartjs";
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js";
+import AlertComponent from "@/components/AlertComponent.vue";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 

@@ -110,7 +110,6 @@ router.beforeEach(async (to, from) => {
     const authenticationStore = useAuthenticationStore();
 
     if (!authenticationStore.authenticated) {
-        console.log("daøfljk")
         await authenticationStore.refresh().catch((err) => {
             console.error("No cookie / user session:", err);
         });

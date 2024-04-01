@@ -1,9 +1,9 @@
 <template>
     <main>
         <div class="app-container">
-            <div v-if="errorMessage">
-                <p>{{ errorMessage }}</p>
-            </div>
+            <AlertComponent v-if="errorMessage" type="error">
+                {{ errorMessage }}
+            </AlertComponent>
             <div v-else-if="loadingDebounced">
                 <AlertComponent type="warning">
                     Loading...

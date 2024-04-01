@@ -3,7 +3,7 @@
         <slot></slot>
     </select>
 </template>
-<script setup>
+<script setup lang="ts">
 
 const value = defineModel({
     required: true,

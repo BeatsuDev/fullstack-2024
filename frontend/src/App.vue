@@ -29,23 +29,23 @@ function logout(): void {
 </script>
 
 <template>
-        <header>
-            <nav id="navigation-bar">
-                <a @click="router.push({ name: 'home' })" id="company-name">
-                    Kazoot
+    <header>
+        <nav id="navigation-bar">
+            <a @click="router.push({ name: 'home' })" id="company-name">
+                Kazoot
+            </a>
+            <div id="routes">
+                <a
+                    v-if="!authenticated"
+                    id="login-router-link"
+                    @click="router.push({ name: 'login' })"
+                >
+                    log in
                 </a>
-                <div id="routes">
-                    <a
-                        v-if="!authenticated"
-                        id="login-router-link"
-                        @click="router.push({ name: 'login' })"
-                    >
-                        log in
-                    </a>
-                    <a v-else @click="logout()">log out</a>
-                </div>
-            </nav>
-        </header>
+                <a v-else @click="logout()">log out</a>
+            </div>
+        </nav>
+    </header>
     <div id="app-container">
         <RouterView v-slot="{ Component: viewComponent, route }">
             <Transition

@@ -107,9 +107,9 @@ const router = useRouter();
 
 const quizApi = new QuizApi();
 
-function updateQuiz(value: QuizCreate) {
+async function updateQuiz(value: QuizCreate) {
     try {
-        quizApi.updateQuiz(quizId.value, value);
+        await quizApi.updateQuiz(quizId.value, value);
         notificationStore.addNotification({
             message: "Quiz updated successfully.",
             type: "success",

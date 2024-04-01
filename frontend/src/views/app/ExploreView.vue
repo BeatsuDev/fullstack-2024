@@ -8,6 +8,7 @@ import QuizGrid from "@/components/QuizGrid.vue";
 import type { QuizOverview, Category } from "@/api";
 import { QuizApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
+import AlertComponent from "@/components/AlertComponent.vue";
 
 //
 const filterOptions = reactive({
@@ -94,8 +95,8 @@ function toggleFiltersWindow() {
         </div>
         <main class="found-quizzes-container">
             <div v-if="quizFetchLoading">Loading...</div>
-            <div v-else-if="error">{{ error }}</div>
-            <div v-else-if="foundQuizzes.length === 0">No quizzes found.</div>
+            <AlertComponent v-else-if="error" type="error">{{ error }}</AlertComponent>
+            <AlertComponent v-else-if="foundQuizzes.length === 0" type="warning">No quizzes found.</AlertComponent>
             <QuizGrid v-else :quizzes="foundQuizzes" />
         </main>
     </div>
