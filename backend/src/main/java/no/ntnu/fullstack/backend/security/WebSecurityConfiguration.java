@@ -85,6 +85,8 @@ public class WebSecurityConfiguration {
                   .permitAll()
                   .requestMatchers(HttpMethod.GET, "/uploads/images/**")
                   .permitAll()
+                  .requestMatchers(HttpMethod.GET, "/competition-ws")
+                  .permitAll()
                   .anyRequest()
                   .authenticated();
             })
