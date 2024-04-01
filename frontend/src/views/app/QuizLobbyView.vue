@@ -10,36 +10,22 @@ import { useExecutablePromise } from "@/composables/promise";
 import { useMultiplayerStore } from "@/stores/multiplayer";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
+import { Client } from "@stomp/stompjs";
+
 const multiplayerStore = useMultiplayerStore();
 const authenticationStore = useAuthenticationStore();
 const lobbyCode = computed(() => router.currentRoute.value.params.lobbyCode);
 const currentUser = authenticationStore.loggedInUser as User;
 
-const lobbyUsers = [
-    { ...currentUser, avatar: new AvatarGenerator().generateRandomAvatar() },
-    {
-        name: "John Doe",
-        id: "1",
-        avatar: new AvatarGenerator().generateRandomAvatar(),
-    },
-    {
-        name: "Jane Doe",
-        id: "2",
-        avatar: new AvatarGenerator().generateRandomAvatar(),
-    },
-    {
-        name: "Alice",
-        id: "3",
-        avatar: new AvatarGenerator().generateRandomAvatar(),
-    },
-] as {
-    name: string;
-    id: string;
-    avatar: string;
-}[];
-
-// Set name
-// TODO: and notify the server about the new user
+const lobbyUsers = computed(() => {
+    return multiplayerStore.players.map((player) => {
+        return {
+            id: player.user.id,
+            name: player.user.name,
+            avatar: new AvatarGenerator().generateRandomAvatar(),
+        };
+    });
+});
 
 onMounted(async () => {
     if (!currentUser) {
@@ -58,11 +44,25 @@ onMounted(async () => {
         : Number(lobbyCodeParams);
 
     // Setup websocket
+    const client = new Client({
+        brokerURL: "ws://localhost:8080/competition-ws",
+        onConnect: () => {
+            client.subscribe("/competition", (message) =>
+                console.log(`Received: ${message.body}`)
+            );
+        },
+    });
+
+    const response = await multiplayerApi.joinCompetition(
+        multiplayerStore.lobbyCode
+    );
+    multiplayerStore.players = response.data.competition.competitors;
+
+    client.activate();
 });
 
 // Backend call stuffz
 const multiplayerApi = new CompetitionApi();
-
 const { execute: executeStartGame } = useExecutablePromise(
     (...args: Parameters<typeof multiplayerApi.startCompetition>) =>
         multiplayerApi.startCompetition(...args)
@@ -71,6 +71,10 @@ const { execute: executeStartGame } = useExecutablePromise(
 async function startGame() {
     const lobbyCode = multiplayerStore.lobbyCode;
     if (!lobbyCode) {
+        useNotificationStore().addNotification({
+            message: "Could not start the game. The lobby code was missing.",
+            type: "error",
+        });
         router.push({ name: "lobby-chooser" });
         return;
     }
@@ -89,6 +93,8 @@ async function startGame() {
         message: "Game started!",
         type: "success",
     });
+
+    router.push({ name: "quiz-game", params: { lobbyCode } });
 }
 </script>
 
