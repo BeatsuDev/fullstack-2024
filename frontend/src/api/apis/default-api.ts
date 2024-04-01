@@ -18,35 +18,34 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { User } from '../models';
-import { UserCreate } from '../models';
-import { UserUpdate } from '../models';
+import { Competition } from '../models';
+import { PrecompetitionInfo } from '../models';
 /**
- * UserApi - axios parameter creator
+ * DefaultApi - axios parameter creator
  * @export
  */
-export const UserApiAxiosParamCreator = function (configuration?: Configuration) {
+export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Create a new competition
+         * @param {string} quizId The ID of the quiz
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteUser: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling deleteUser.');
+        createCompetition: async (quizId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'quizId' is not null or undefined
+            if (quizId === null || quizId === undefined) {
+                throw new RequiredError('quizId','Required parameter quizId was null or undefined when calling createCompetition.');
             }
-            const localVarPath = `/user/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/quiz/{quizId}/competition`
+                .replace(`{${"quizId"}}`, encodeURIComponent(String(quizId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -67,18 +66,18 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Get a specific user
-         * @param {string} id The ID of the user
+         * Get a competition
+         * @param {number} joinCode The join code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        fetchUser: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling fetchUser.');
+        getCompetition: async (joinCode: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'joinCode' is not null or undefined
+            if (joinCode === null || joinCode === undefined) {
+                throw new RequiredError('joinCode','Required parameter joinCode was null or undefined when calling getCompetition.');
             }
-            const localVarPath = `/user/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/competition/{joinCode}`
+                .replace(`{${"joinCode"}}`, encodeURIComponent(String(joinCode)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -106,13 +105,18 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body] 
+         * Join a competition
+         * @param {number} joinCode The join code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerUser: async (body?: UserCreate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/user`;
+        joinCompetition: async (joinCode: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'joinCode' is not null or undefined
+            if (joinCode === null || joinCode === undefined) {
+                throw new RequiredError('joinCode','Required parameter joinCode was null or undefined when calling joinCompetition.');
+            }
+            const localVarPath = `/competition/{joinCode}`
+                .replace(`{${"joinCode"}}`, encodeURIComponent(String(joinCode)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -123,8 +127,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
                 query.set(key, localVarQueryParameter[key]);
@@ -135,8 +137,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -144,13 +144,18 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Update the information of a user
-         * @param {UserUpdate} [body] 
+         * Start a competition
+         * @param {number} joinCode The join code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUser: async (body?: UserUpdate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/user`;
+        startCompetition: async (joinCode: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'joinCode' is not null or undefined
+            if (joinCode === null || joinCode === undefined) {
+                throw new RequiredError('joinCode','Required parameter joinCode was null or undefined when calling startCompetition.');
+            }
+            const localVarPath = `/competition/{joinCode}`
+                .replace(`{${"joinCode"}}`, encodeURIComponent(String(joinCode)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -161,8 +166,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
                 query.set(key, localVarQueryParameter[key]);
@@ -173,8 +176,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -185,58 +186,58 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
 };
 
 /**
- * UserApi - functional programming interface
+ * DefaultApi - functional programming interface
  * @export
  */
-export const UserApiFp = function(configuration?: Configuration) {
+export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Create a new competition
+         * @param {string} quizId The ID of the quiz
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteUser(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).deleteUser(id, options);
+        async createCompetition(quizId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Competition>>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).createCompetition(quizId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
         /**
-         * Get a specific user
-         * @param {string} id The ID of the user
+         * Get a competition
+         * @param {number} joinCode The join code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async fetchUser(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<User>>> {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).fetchUser(id, options);
+        async getCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Competition>>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).getCompetition(joinCode, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
         /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body] 
+         * Join a competition
+         * @param {number} joinCode The join code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerUser(body?: UserCreate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<User>>> {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).registerUser(body, options);
+        async joinCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<PrecompetitionInfo>>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).joinCompetition(joinCode, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
         /**
-         * Update the information of a user
-         * @param {UserUpdate} [body] 
+         * Start a competition
+         * @param {number} joinCode The join code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateUser(body?: UserUpdate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<User>>> {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateUser(body, options);
+        async startCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).startCompetition(joinCode, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -246,95 +247,95 @@ export const UserApiFp = function(configuration?: Configuration) {
 };
 
 /**
- * UserApi - factory interface
+ * DefaultApi - factory interface
  * @export
  */
-export const UserApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
-         * Delete a specific User
-         * @param {string} id The ID of the user
+         * Create a new competition
+         * @param {string} quizId The ID of the quiz
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteUser(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-            return UserApiFp(configuration).deleteUser(id, options).then((request) => request(axios, basePath));
+        async createCompetition(quizId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Competition>> {
+            return DefaultApiFp(configuration).createCompetition(quizId, options).then((request) => request(axios, basePath));
         },
         /**
-         * Get a specific user
-         * @param {string} id The ID of the user
+         * Get a competition
+         * @param {number} joinCode The join code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async fetchUser(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration).fetchUser(id, options).then((request) => request(axios, basePath));
+        async getCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<AxiosResponse<Competition>> {
+            return DefaultApiFp(configuration).getCompetition(joinCode, options).then((request) => request(axios, basePath));
         },
         /**
-         * Register a user (create a user)
-         * @param {UserCreate} [body] 
+         * Join a competition
+         * @param {number} joinCode The join code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerUser(body?: UserCreate, options?: AxiosRequestConfig): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration).registerUser(body, options).then((request) => request(axios, basePath));
+        async joinCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<AxiosResponse<PrecompetitionInfo>> {
+            return DefaultApiFp(configuration).joinCompetition(joinCode, options).then((request) => request(axios, basePath));
         },
         /**
-         * Update the information of a user
-         * @param {UserUpdate} [body] 
+         * Start a competition
+         * @param {number} joinCode The join code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateUser(body?: UserUpdate, options?: AxiosRequestConfig): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration).updateUser(body, options).then((request) => request(axios, basePath));
+        async startCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+            return DefaultApiFp(configuration).startCompetition(joinCode, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * UserApi - object-oriented interface
+ * DefaultApi - object-oriented interface
  * @export
- * @class UserApi
+ * @class DefaultApi
  * @extends {BaseAPI}
  */
-export class UserApi extends BaseAPI {
+export class DefaultApi extends BaseAPI {
     /**
-     * Delete a specific User
-     * @param {string} id The ID of the user
+     * Create a new competition
+     * @param {string} quizId The ID of the quiz
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof DefaultApi
      */
-    public async deleteUser(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
-        return UserApiFp(this.configuration).deleteUser(id, options).then((request) => request(this.axios, this.basePath));
+    public async createCompetition(quizId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Competition>> {
+        return DefaultApiFp(this.configuration).createCompetition(quizId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
-     * Get a specific user
-     * @param {string} id The ID of the user
+     * Get a competition
+     * @param {number} joinCode The join code
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof DefaultApi
      */
-    public async fetchUser(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration).fetchUser(id, options).then((request) => request(this.axios, this.basePath));
+    public async getCompetition(joinCode: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<Competition>> {
+        return DefaultApiFp(this.configuration).getCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
     }
     /**
-     * Register a user (create a user)
-     * @param {UserCreate} [body] 
+     * Join a competition
+     * @param {number} joinCode The join code
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof DefaultApi
      */
-    public async registerUser(body?: UserCreate, options?: AxiosRequestConfig) : Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration).registerUser(body, options).then((request) => request(this.axios, this.basePath));
+    public async joinCompetition(joinCode: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<PrecompetitionInfo>> {
+        return DefaultApiFp(this.configuration).joinCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
     }
     /**
-     * Update the information of a user
-     * @param {UserUpdate} [body] 
+     * Start a competition
+     * @param {number} joinCode The join code
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UserApi
+     * @memberof DefaultApi
      */
-    public async updateUser(body?: UserUpdate, options?: AxiosRequestConfig) : Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration).updateUser(body, options).then((request) => request(this.axios, this.basePath));
+    public async startCompetition(joinCode: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+        return DefaultApiFp(this.configuration).startCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
     }
 }

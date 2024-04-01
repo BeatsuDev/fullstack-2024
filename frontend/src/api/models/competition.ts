@@ -13,23 +13,24 @@
  * Do not edit the class manually.
  */
 
+import { QuizAttempt } from './quiz-attempt';
  /**
  * 
  *
  * @export
- * @interface UserLogin
+ * @interface Competition
  */
-export interface UserLogin {
+export interface Competition {
 
     /**
-     * @type {string}
-     * @memberof UserLogin
+     * @type {Array<QuizAttempt>}
+     * @memberof Competition
      */
-    email: string;
+    attempts: Array<QuizAttempt>;
 
     /**
-     * @type {string}
-     * @memberof UserLogin
+     * @type {number}
+     * @memberof Competition
      */
-    password: string;
+    joinCode: number;
 }

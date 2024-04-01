@@ -13,23 +13,24 @@
  * Do not edit the class manually.
  */
 
+import { Competition } from './competition';
  /**
  * 
  *
  * @export
- * @interface UserLogin
+ * @interface PrecompetitionInfo
  */
-export interface UserLogin {
+export interface PrecompetitionInfo {
 
     /**
      * @type {string}
-     * @memberof UserLogin
+     * @memberof PrecompetitionInfo
      */
-    email: string;
+    comeptitionId?: string;
 
     /**
-     * @type {string}
-     * @memberof UserLogin
+     * @type {Competition}
+     * @memberof PrecompetitionInfo
      */
-    password: string;
+    competition: Competition;
 }
