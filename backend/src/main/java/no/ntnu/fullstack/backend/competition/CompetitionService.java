@@ -55,10 +55,6 @@ public class CompetitionService {
         competitionRepository
             .findByJoinCode(joinCode)
             .orElseThrow(CompetitionNotFoundException::new);
-    if (competition.getQuizAttempts().stream()
-        .anyMatch(attempt -> attempt.getAttemptedBy().getId().equals(user.getId())))
-      throw new CompetitionNotFoundException();
-
     if (competition.getStarted()) throw new CompetitionAlreadyStartedException();
 
     sendMessage(competition, Event.JOIN, 1000);
