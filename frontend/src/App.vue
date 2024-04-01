@@ -57,8 +57,8 @@ function logout(): void {
                 <Component :is="viewComponent" />
             </Transition>
         </RouterView>
+        <NotificationsContainer />
     </div>
-    <NotificationsContainer />
 </template>
 
 <style scoped>

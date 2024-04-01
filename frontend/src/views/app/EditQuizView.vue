@@ -1,23 +1,24 @@
 <template>
     <main class="app-container">
-        <div v-if="errorMessage">
-            <p>{{ errorMessage }}</p>
-        </div>
+        <AlertComponent v-if="errorMessage" type="error">
+            {{ errorMessage }}
+        </AlertComponent>
         <div v-if="!isOwnerOrCollaborator">
             <p>
                 You are not allowed to edit this quiz. Only the owner and
                 collaborators can edit the quiz.
             </p>
         </div>
-        <div v-else-if="loadingDebounced">loading...</div>
+        <AlertComponent v-else-if="loadingDebounced" type="info">loading...</AlertComponent>
         <div v-else-if="data">
             <QuizHero :quiz="quizReadOnly" />
-            <h3>Edit quiz</h3>
-            <QuizForm
-                :value="data?.data"
-                @submit="updateQuiz"
-                style="margin: auto"
-            />
+            <div class="card" style="margin: 1rem auto; width: max-content">
+                <h3>Edit quiz</h3>
+                <QuizForm
+                    :value="data?.data"
+                    @submit="updateQuiz"
+                />
+            </div>
         </div>
         <div v-if="revisions">
             <h3>Revisions</h3>
@@ -71,7 +72,7 @@
 </template>
 <script lang="ts" setup>
 import { useRoute, useRouter } from "vue-router";
-import type { Collaborator, Quiz, QuizCreate, Revision } from "@/api";
+import type { Collaborator, QuizCreate, Revision } from "@/api";
 import { CollaboratorApi, QuizApi, RevisionApi } from "@/api";
 import { usePromise } from "@/composables/promise";
 import useDebounceLoading from "@/composables/useDebounceLoading";
@@ -90,6 +91,7 @@ import RevisionInfiniteScroll from "@/components/RevisionInfiniteScroll.vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useConfirmDialog } from "@vueuse/core";
 import useQuizApi from "@/composables/useQuizApi";
+import AlertComponent from "@/components/AlertComponent.vue";
 
 const route = useRoute();
 
@@ -98,7 +100,7 @@ const quizId = computed(() => route.params.id.toString());
 const { data, loading, errorMessage, quizReadOnly } = useQuizApi(quizId);
 
 const { isOwnerOrCollaborator } = useQuizPermissions(
-    computed(() => data.value?.data)
+    computed(() => data.value?.data),
 );
 
 const loadingDebounced = useDebounceLoading(loading);
@@ -126,7 +128,7 @@ async function updateQuiz(value: QuizCreate) {
 const collaboratorApi = new CollaboratorApi();
 
 const { data: collaborators } = usePromise(
-    collaboratorApi.getCollaborators(quizId.value)
+    collaboratorApi.getCollaborators(quizId.value),
 );
 
 const collaborator = reactive({
@@ -149,7 +151,7 @@ async function addCollaborator() {
     try {
         const data = await collaboratorApi.addCollaborator(
             quizId.value,
-            collaborator
+            collaborator,
         );
         collaborators.value?.data.push(data.data as Collaborator);
         notificationStore.addNotification({
@@ -196,7 +198,7 @@ function deleteCollaborator(collaborator: Collaborator) {
         });
         if (collaborators.value) {
             collaborators.value.data = collaborators.value.data.filter(
-                (c) => c.id !== collaborator.id
+                (c) => c.id !== collaborator.id,
             );
         }
     } catch (e) {
@@ -228,10 +230,3 @@ function exportQuiz() {
     document.body.removeChild(element);
 }
 </script>
-<style scoped>
-/* Fucking hacky as fuck. I wish I didn't have to do this. Change if can! */
-/* 100vh - (nav height + nav y-padding) - (bottom nav height + bottom nav y-padding)*/
-main {
-    height: calc(100vh - 66px - 86px);
-}
-</style>

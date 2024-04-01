@@ -84,7 +84,8 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
     box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
-    height: 100svh;
+    height: calc(100svh - 4rem);
+    margin-top: 4rem;
     background-color: var(--color-background-mute);
 }
     .app-app-container {

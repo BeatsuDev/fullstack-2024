@@ -33,6 +33,7 @@ h3 {
     border: 2px solid var(--color-border);
     padding: 20px;
     margin: 0 auto;
+    cursor: pointer;
 }
 
 .card-content {

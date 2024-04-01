@@ -50,7 +50,7 @@
                     >
                         You have tried this quiz before.
                         <ButtonComponent @click="router.push('/quizzes/' + quizId + '/results')" filled>
-                                See previous results
+                            See previous results
                         </ButtonComponent>
                     </div>
 
@@ -70,7 +70,7 @@
                             filled
                             large
                             @click="questionModal = true"
-                            >Add question
+                        >Add question
                         </ButtonComponent>
                     </div>
                 </div>
@@ -100,17 +100,17 @@
 </template>
 <script lang="ts" setup>
 import {
-    type Question,
-    type QuestionCreate,
-    type Quiz,
     type Feedback,
-    type FeedbackCreate, AttemptApi,
+    FeedbackApi,
+    type FeedbackCreate,
+    type Question,
+    QuestionApi,
+    type QuestionCreate,
 } from "@/api";
-import { QuestionApi, QuizApi, RevisionApi, FeedbackApi } from "@/api";
-import { useExecutablePromise, usePromise } from "@/composables/promise";
+import { usePromise } from "@/composables/promise";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import useQuizPermissions from "@/composables/useQuizPermissions";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import QuestionCard from "@/components/QuestionCard.vue";
 import GenericModal from "@/components/GenericModal.vue";
@@ -146,6 +146,7 @@ const { isOwnerOrCollaborator } = useQuizPermissions(quizReadOnly);
 function cancelRevert() {
     router.push("/quizzes/" + quizId.value);
 }
+
 function editQuiz() {
     router.push("/quizzes/" + quizId.value + "/edit");
 }
@@ -155,7 +156,7 @@ function editQuiz() {
  * Results
  */
 
-const {attempts} = useQuizAttempt(quizId)
+const { attempts } = useQuizAttempt(quizId);
 
 
 /**
@@ -204,7 +205,7 @@ async function createQuestion(value: QuestionCreate) {
 
 async function updateQuestion(value: Question) {
     try {
-        await questionApi.updateQuestion({...value, quizId: quizId.value} as QuestionCreate , value.id);
+        await questionApi.updateQuestion({ ...value, quizId: quizId.value } as QuestionCreate, value.id);
         const index = data.value.data.questions.findIndex((q) => q.id == value.id);
         if (index != -1) {
             data.value.data.questions[index] = value as Question;
@@ -245,7 +246,7 @@ async function deleteQuestion(question: Question) {
     try {
         await questionApi.deleteQuestion(question.id);
         data.value.data.questions = data.value.data.questions.filter(
-            (q) => q.id != question.id
+            (q) => q.id != question.id,
         );
         notificationStore.addNotification({
             message: "Question deleted successfully.",
@@ -266,7 +267,7 @@ async function deleteQuestion(question: Question) {
 const feedbackApi = new FeedbackApi();
 
 const { data: feedbackData, loading: feedbacksLoading } = usePromise(
-    feedbackApi.getFeedback(quizId.value)
+    feedbackApi.getFeedback(quizId.value),
 );
 
 const feedbackIsLoading = useDebounceLoading(feedbacksLoading);
