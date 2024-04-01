@@ -81,7 +81,7 @@ async function submitAnswer(answer: string) {
 }
 
 function finishQuiz() {
-    console.log("Quiz finished!");
+    router.push({ name: "quiz-complete" });
 }
 </script>
 
