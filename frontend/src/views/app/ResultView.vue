@@ -68,11 +68,6 @@ const {
 } = useQuizAttempt(quizId);
 </script>
 <style scoped>
-
-main {
-    height: calc(100vh - 66px - 86px);
-}
-
 .row {
     display: flex;
     margin-bottom: 1rem;

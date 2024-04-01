@@ -8,7 +8,7 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
 </script>
 
 <template>
-    <div style="padding-bottom: 5rem;">
+    <div class="app-app-container">
         <RouterView  />
     </div>
     <nav class="app-navbar">
@@ -56,19 +56,7 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
 </template>
 
 <style scoped>
-.app-navbar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    background-color: var(--primary-800);
-    padding: 0.5rem;
-    box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
-    position: fixed;
-    bottom: 0;
-    width: 100%;
 
-}
 
 .icon-navigation {
     display: flex;
@@ -76,31 +64,68 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    color: white;
+    color: black;
 }
 
 .icon-navigation svg {
     width: 2rem;
     height: 2rem;
     padding: 0.25rem;
-    color: white;
+    color: black;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 900px) {
+.app-navbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem;
+    box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    height: 100svh;
+    background-color: var(--color-background-mute);
+}
+    .app-app-container {
+        padding-left: 7rem;
+
+    }
+}
+
+@media (max-width: 900px) {
+    .app-app-container {
+        padding-bottom: 5rem;
+
+    }
     .icon-navigation {
         font-size: 0.9rem;
+        color: white;
     }
 
     .icon-navigation svg {
         width: 1.5rem;
         height: 1.5rem;
+        color: white;
     }
 
-}
+    .app-navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        background-color: var(--primary-800);
+        padding: 0.5rem;
+        box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
+        position: fixed;
+        bottom: 0;
+        width: 100%;
 
+    }
+    .active-route {
+        color: var(--primary-300) !important;
+    }
 
-.active-route {
-    color: var(--primary-300) !important;
 }
 
 a {
