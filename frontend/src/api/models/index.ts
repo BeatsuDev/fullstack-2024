@@ -1,6 +1,7 @@
 export * from './answer-dto';
 export * from './category';
 export * from './competition';
+export * from './competitor';
 export * from './feedback';
 export * from './feedback-create';
 export * from './image';

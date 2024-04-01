@@ -13,24 +13,25 @@
  * Do not edit the class manually.
  */
 
-import { Competitor } from './competitor';
+import { QuizAttempt } from './quiz-attempt';
+import { User } from './user';
  /**
  * 
  *
  * @export
- * @interface Competition
+ * @interface Competitor
  */
-export interface Competition {
+export interface Competitor {
 
     /**
-     * @type {Array<Competitor>}
-     * @memberof Competition
+     * @type {User}
+     * @memberof Competitor
      */
-    competitors: Array<Competitor>;
+    user: User;
 
     /**
-     * @type {number}
-     * @memberof Competition
+     * @type {QuizAttempt}
+     * @memberof Competitor
      */
-    joinCode: number;
+    attempt: QuizAttempt;
 }
