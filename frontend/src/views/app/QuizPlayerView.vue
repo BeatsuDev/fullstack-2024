@@ -3,10 +3,13 @@ import { ref, computed } from "vue";
 import { AttemptApi, type AnswerDTO } from "@/api";
 import { usePromise, useExecutablePromise } from "@/composables/promise";
 import { useNotificationStore } from "@/stores/notification";
+import { useMultiplayerStore } from "@/stores/multiplayer";
 import router from "@/router";
+import { Client } from "@stomp/stompjs";
 
 import QuestionPlayer from "@/components/quiz-player/QuestionPlayer.vue";
 
+const multiplayerStore = useMultiplayerStore();
 const notificationStore = useNotificationStore();
 const attemptApi = new AttemptApi();
 const {
@@ -25,6 +28,7 @@ const currentQuestion = computed(
 );
 const currentQuiz = computed(() => response.value?.data ?? null);
 const currentAttemptId = computed(() => response.value?.data.id ?? null);
+const isMultiplayer = computed(() => multiplayerStore.multiplayerData != null);
 
 const { execute: executeSubmitAnswer, error: submitError } =
     useExecutablePromise(
@@ -55,18 +59,12 @@ async function submitAnswer(answer: string) {
             notificationStore.addNotification({
                 message: `Your answer was ${
                     solutionData.correct ? "correct!" : "incorrect!"
-                }`,
+                } ${isMultiplayer.value ? "Waiting for other players to finish..." : ""}`,
                 type: solutionData.correct ? "success" : "warning",
             });
-            questionNumber.value++;
 
-            // Check if the quiz is finished
-            if (
-                questionNumber.value >=
-                currentQuiz.value!.quiz!.questions.length
-            ) {
-                finishQuiz();
-                return;
+            if (!isMultiplayer.value) {
+                goToNextQuestion();
             }
         })
         .catch(() => {
@@ -80,7 +78,45 @@ async function submitAnswer(answer: string) {
         });
 }
 
+const stompClient = new Client({
+    brokerURL: "ws://localhost:8080/competition-ws",
+    onConnect: () => {
+        stompClient.subscribe("/competition", (message: any) => {
+            const data = multiplayerStore.processMessage(message);
+            if (data == "PROCEED") {
+                goToNextQuestion();
+            }
+        });
+    },
+});
+
+if (isMultiplayer.value) {
+    stompClient.activate();
+}
+
+function goToNextQuestion() {
+    questionNumber.value++;
+    if (questionNumber.value >= currentQuiz.value!.quiz!.questions.length) {
+        finishQuiz();
+        return;
+    }
+}
+
 function finishQuiz() {
+    stompClient.deactivate();
+    // Ensure a deep copy just in case
+    const lobbyCode = multiplayerStore.lobbyCode
+        ? parseInt(multiplayerStore.lobbyCode.toString())
+        : null;
+
+    if (lobbyCode) {
+        multiplayerStore.$reset();
+        router.push({
+            name: "quiz-complete",
+            query: { lobby: lobbyCode },
+        });
+        return;
+    }
     router.push({ name: "quiz-complete" });
 }
 </script>

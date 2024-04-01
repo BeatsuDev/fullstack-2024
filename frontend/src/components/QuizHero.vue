@@ -75,7 +75,7 @@ const emit = defineEmits<{
 const multiplayerApi = new CompetitionApi();
 const { execute: executeMultiplayerGameCreation, data: gameCreationResponse } =
     useExecutablePromise(
-        (...args: Parameters<typeof multiplayerApi.createCompetition>) =>
+        async (...args: Parameters<typeof multiplayerApi.createCompetition>) =>
             multiplayerApi.createCompetition(...args)
     );
 

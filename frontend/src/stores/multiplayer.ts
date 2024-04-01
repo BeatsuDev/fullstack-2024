@@ -1,14 +1,33 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import type { Competitor } from "@/api";
+import type { PrecompetitionInfo } from "@/api";
 
 export const useMultiplayerStore = defineStore("multiplayer", () => {
-    const players = ref<Competitor[]>([]);
+    const multiplayerData = ref<PrecompetitionInfo | null>(null);
+
+    const multiplayerId = computed(() => multiplayerData.value?.competitionId);
+    const players = computed(
+        () => multiplayerData.value?.competition.competitors ?? []
+    );
     const lobbyCode = ref<number | null>(null);
-    const isInMultiplayerGame = ref(false);
+
+    function processMessage(message: any): "JOIN" | "PROCEED" | null {
+        const data: string = message.body;
+        console.log(multiplayerId.value);
+        if (!data.startsWith(multiplayerId.value!)) return null;
+
+        const event = data.slice(multiplayerId.value!.toString().length + 1);
+        if (["JOIN", "PROCEED"].includes(event)) {
+            return event as "JOIN" | "PROCEED";
+        } else {
+            return null;
+        }
+    }
 
     return {
-        isInMultiplayerGame,
+        processMessage,
+        multiplayerData,
+        multiplayerId,
         lobbyCode,
         players,
     };

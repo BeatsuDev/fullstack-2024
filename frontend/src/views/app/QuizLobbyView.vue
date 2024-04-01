@@ -4,7 +4,7 @@ import { AvatarGenerator } from "random-avatar-generator";
 import { useAuthenticationStore } from "@/stores/authentication";
 import router from "@/router";
 import { useNotificationStore } from "@/stores/notification";
-import { onMounted, computed } from "vue";
+import { onMounted, computed, watch } from "vue";
 import { CompetitionApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
 import { useMultiplayerStore } from "@/stores/multiplayer";
@@ -27,6 +27,26 @@ const lobbyUsers = computed(() => {
     });
 });
 
+// Setup websocket
+const stompClient = new Client({
+    brokerURL: "ws://localhost:8080/competition-ws",
+    onConnect: () => {
+        stompClient.subscribe("/competition", (message: any) => {
+            const data = multiplayerStore.processMessage(message);
+
+            switch (data) {
+                case "JOIN":
+                    updateLobby();
+                    break;
+                case "PROCEED":
+                    break;
+                case null:
+                    break;
+            }
+        });
+    },
+});
+
 onMounted(async () => {
     if (!currentUser) {
         router.push({ name: "login" });
@@ -43,30 +63,41 @@ onMounted(async () => {
         ? Number(lobbyCodeParams[0])
         : Number(lobbyCodeParams);
 
-    // Setup websocket
-    const client = new Client({
-        brokerURL: "ws://localhost:8080/competition-ws",
-        onConnect: () => {
-            client.subscribe("/competition", (message) =>
-                console.log(`Received: ${message.body}`)
-            );
-        },
-    });
-
     const response = await multiplayerApi.joinCompetition(
         multiplayerStore.lobbyCode
     );
-    multiplayerStore.players = response.data.competition.competitors;
-
-    client.activate();
+    multiplayerStore.multiplayerData = response.data;
+    stompClient.activate();
 });
 
 // Backend call stuffz
 const multiplayerApi = new CompetitionApi();
 const { execute: executeStartGame } = useExecutablePromise(
-    (...args: Parameters<typeof multiplayerApi.startCompetition>) =>
+    async (...args: Parameters<typeof multiplayerApi.startCompetition>) =>
         multiplayerApi.startCompetition(...args)
 );
+
+const { execute: executeUpdateLobby } = useExecutablePromise(
+    async (...args: Parameters<typeof multiplayerApi.getCompetition>) => {
+        const response = await multiplayerApi.getCompetition(...args);
+        multiplayerStore.multiplayerData = {
+            competitionId: multiplayerStore.multiplayerId,
+            competition: response.data,
+        };
+    }
+);
+
+function updateLobby() {
+    if (!multiplayerStore.lobbyCode) {
+        useNotificationStore().addNotification({
+            message: "Could not update the lobby. The lobby code was missing.",
+            type: "error",
+        });
+        router.push({ name: "lobby-chooser" });
+    } else {
+        executeUpdateLobby(multiplayerStore.lobbyCode);
+    }
+}
 
 async function startGame() {
     const lobbyCode = multiplayerStore.lobbyCode;
@@ -94,7 +125,9 @@ async function startGame() {
         type: "success",
     });
 
-    router.push({ name: "quiz-game", params: { lobbyCode } });
+    stompClient.deactivate();
+
+    router.push({ name: "quiz-player", params: {} });
 }
 </script>
 

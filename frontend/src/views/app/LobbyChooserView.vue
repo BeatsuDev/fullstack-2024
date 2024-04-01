@@ -56,7 +56,7 @@ async function joinLobby() {
         });
     }
 
-    useMultiplayerStore().players = response.data.competition.competitors;
+    useMultiplayerStore().multiplayerData = response.data;
     router.push({
         name: "quiz-lobby",
         params: { lobbyCode: lobbyCode.value },
