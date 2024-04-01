@@ -45,7 +45,7 @@ async function login() {
     executeLoginRequest(formData)
         .then(() => {
             formElement.value?.reset();
-            router.push({ name: "home" });
+            router.push({ name: "explore" });
         })
         .catch((err: Error | AxiosError) => {
             let message = "Unkown error.";
