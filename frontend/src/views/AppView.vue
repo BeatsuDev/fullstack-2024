@@ -9,15 +9,15 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
 
 <template>
     <div class="app-app-container">
-        <RouterView  />
+        <RouterView />
     </div>
     <nav class="app-navbar">
         <a
             @click="() => $router.push({ name: 'explore' })"
             class="icon-navigation"
             :class="{
-                    'active-route': $route.name === 'explore',
-                }"
+                'active-route': $route.name === 'explore',
+            }"
         >
             <SearchIcon />
             Find a Quiz</a
@@ -26,8 +26,8 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
             @click="() => $router.push({ name: 'create' })"
             class="icon-navigation"
             :class="{
-                    'active-route': $route.name === 'create',
-                }"
+                'active-route': $route.name === 'create',
+            }"
         >
             <AddIcon />
             Create Quiz</a
@@ -36,8 +36,8 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
             @click="() => $router.push({ name: 'quizzes' })"
             class="icon-navigation"
             :class="{
-                    'active-route': $route.name === 'quizzes',
-                }"
+                'active-route': $route.name === 'quizzes',
+            }"
         >
             <FolderIcon />
             My Quizzes</a
@@ -46,8 +46,8 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
             @click="() => $router.push({ name: 'profile' })"
             class="icon-navigation"
             :class="{
-                    'active-route': $route.name === 'profile',
-                }"
+                'active-route': $route.name === 'profile',
+            }"
         >
             <ProfileIcon />
             My Profile</a
@@ -56,8 +56,6 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
 </template>
 
 <style scoped>
-
-
 .icon-navigation {
     display: flex;
     flex-direction: column;
@@ -75,30 +73,31 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
 }
 
 @media (min-width: 900px) {
-.app-navbar {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0.5rem;
-    box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 0;
-    height: calc(100svh - 4rem);
-    margin-top: 4rem;
-    background-color: var(--color-background-mute);
-}
-    .app-app-container {
-        padding-left: 7rem;
+    .app-navbar {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0.5rem;
+        box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        height: calc(100svh - 4rem);
+        width: 5rem;
+        margin-top: 4rem;
+        background-color: var(--color-background-mute);
+    }
 
+    .app-app-container {
+        padding-left: 6rem;
     }
 }
 
 @media (max-width: 900px) {
     .app-app-container {
         padding-bottom: 5rem;
-
     }
+
     .icon-navigation {
         font-size: 0.9rem;
         color: white;
@@ -121,12 +120,11 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
         position: fixed;
         bottom: 0;
         width: calc(100% - 1rem);
-
     }
+
     .active-route {
         color: var(--primary-300) !important;
     }
-
 }
 
 a {

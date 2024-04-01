@@ -75,7 +75,9 @@ function logout(): void {
     display: flex;
     align-items: center;
     padding: 1rem 1.5rem;
-    width: calc(100% - 3rem);
+    box-sizing: border-box;
+    width: 100%;
+    height: 4rem;
     color: white;
     background-color: var(--primary-800);
     font-size: 1.25em;

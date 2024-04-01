@@ -39,7 +39,7 @@ function randomSubTitle() {
     background-image: url("@/assets/stacked-peaks-haikei.svg");
     background-size: cover;
     background-position: center;
-    height: calc(100svh - 66px);
+    height: calc(100svh - 4rem);
     overflow: hidden;
     display: flex;
     color: white;
