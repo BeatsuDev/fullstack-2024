@@ -11,6 +11,8 @@ import no.ntnu.fullstack.backend.attempt.exception.AttemptNotFoundException;
 import no.ntnu.fullstack.backend.attempt.exception.QuestionAlreadyAnswered;
 import no.ntnu.fullstack.backend.attempt.model.QuestionAttempt;
 import no.ntnu.fullstack.backend.attempt.model.QuizAttempt;
+import no.ntnu.fullstack.backend.competition.CompetitionService;
+import no.ntnu.fullstack.backend.competition.exception.CompetitionNotFoundException;
 import no.ntnu.fullstack.backend.question.exception.QuestionNotFoundException;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.user.model.User;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class AttemptController {
   private final AttemptService attemptService;
   private final AttemptMapper attemptMapper = Mappers.getMapper(AttemptMapper.class);
+  private final CompetitionService competitionService;
 
   @PostMapping
   public ResponseEntity<QuizAttemptDTO> createAttempt(
@@ -65,17 +68,23 @@ public class AttemptController {
       Authentication auth,
       @PathVariable("quizId") UUID quizId,
       @PathVariable("attemptId") UUID attemptId,
+      @RequestParam(value = "competition", required = false) UUID competitionId,
       @Valid @RequestBody AnswerDTO answerDTO)
       throws AttemptNotFoundException,
           QuizNotFoundException,
           QuestionNotFoundException,
-          QuestionAlreadyAnswered {
+          QuestionAlreadyAnswered,
+          CompetitionNotFoundException {
     User loggedInUser = (User) auth.getPrincipal();
     QuestionAttempt questionAttempt = attemptMapper.toQuestionAttempt(answerDTO);
 
     questionAttempt =
         attemptService.submitAttempt(
             quizId, attemptId, answerDTO.getQuestionId(), questionAttempt, loggedInUser);
+
+    if (competitionId != null)
+      competitionService.submitQuestion(competitionId, answerDTO.getQuestionId(), loggedInUser);
+
     return ResponseEntity.ok(attemptMapper.toQuestionAttemptDTO(questionAttempt));
   }
 }
