@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { reactive, computed, onMounted } from "vue";
+import { reactive, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { email, sameAs } from "@vuelidate/validators";
+import { email } from "@vuelidate/validators";
 import { useAuthenticationStore } from "@/stores/authentication";
 
 import ValidatedInput from "@/components/ValidatedInput.vue";

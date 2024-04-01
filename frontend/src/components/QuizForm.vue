@@ -35,7 +35,7 @@
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import { type Category, CategoryApi, type Quiz, type QuizCreate } from "@/api";
-import { reactive, ref, watch, watchEffect } from "vue";
+import { reactive, ref, watchEffect } from "vue";
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { usePromise } from "@/composables/promise";

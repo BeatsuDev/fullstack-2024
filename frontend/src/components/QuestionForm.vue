@@ -170,8 +170,7 @@ function uploadImage() {
 
     const formData = new FormData();
     formData.append("image", file);
-    const data = api
-        .post<Image>("/image", formData)
+    api.post<Image>("/image", formData)
         .then((response) => {
             editable.value.image = response.data;
             notificationStore.addNotification({

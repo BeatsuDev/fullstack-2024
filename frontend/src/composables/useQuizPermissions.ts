@@ -15,6 +15,8 @@ export default function useQuizPermissions(quiz: Ref<Quiz | null>) {
                 (collaborator) => collaborator.id === auth.loggedInUser?.id
             );
         }
+
+        return false;
     });
 
     return {

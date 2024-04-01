@@ -140,8 +140,6 @@ const formRules = {
 
 const collaboratorModal = ref(false);
 
-const form = ref<HTMLFormElement | null>(null);
-
 const v$ = useVuelidate(formRules, collaborator);
 
 const notificationStore = useNotificationStore();

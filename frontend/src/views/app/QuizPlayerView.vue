@@ -69,7 +69,7 @@ async function submitAnswer(answer: string) {
                 return;
             }
         })
-        .catch((error) => {
+        .catch(() => {
             if (submitError.value != null) {
                 notificationStore.addNotification({
                     message: "Failed to submit answer. " + submitError.value,
