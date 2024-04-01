@@ -11,6 +11,7 @@ import no.ntnu.fullstack.backend.quiz.QuizService;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
 import no.ntnu.fullstack.backend.user.model.User;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +20,25 @@ public class CompetitionService {
   private final CompetitionRepository competitionRepository;
   private final AttemptService attemptService;
   private final QuizService quizService;
+  private final SimpMessagingTemplate messagingTemplate;
+
+  private void sendMessage(Competition competition, Event event) {
+    String message = competition.getId() + ":" + event;
+    messagingTemplate.convertAndSend("/competition", message);
+  }
+
+  private void sendMessage(Competition competition, Event event, int msDelay) {
+    Thread thread =
+        new Thread(
+            () -> {
+              try {
+                Thread.sleep(msDelay);
+                sendMessage(competition, event);
+              } catch (InterruptedException ignored) {
+              }
+            });
+    thread.start();
+  }
 
   public Competition createCompetition(UUID quizId) throws QuizNotFoundException {
     QuizWithRevision quizWithRevision = quizService.getLatestQuiz(quizId);
@@ -41,6 +61,7 @@ public class CompetitionService {
 
     if (competition.getStarted()) throw new CompetitionAlreadyStartedException();
 
+    sendMessage(competition, Event.JOIN, 1000);
     if (competition.getQuizAttempts().stream()
         .anyMatch(qa -> qa.getAttemptedBy().getId().equals(user.getId()))) {
       return competition;
@@ -55,5 +76,22 @@ public class CompetitionService {
     return competitionRepository
         .findByJoinCode(joinCode)
         .orElseThrow(CompetitionNotFoundException::new);
+  }
+
+  public Competition startCompetition(Integer joinCode, User loggedInUser)
+      throws CompetitionNotFoundException, CompetitionAlreadyStartedException {
+    Competition competition =
+        competitionRepository
+            .findByJoinCode(joinCode)
+            .orElseThrow(CompetitionNotFoundException::new);
+    if (competition.getQuizAttempts().stream()
+        .noneMatch(qa -> qa.getAttemptedBy().getId().equals(loggedInUser.getId())))
+      throw new CompetitionNotFoundException();
+
+    if (competition.getStarted()) throw new CompetitionAlreadyStartedException();
+
+    sendMessage(competition, Event.PROCEED, 1000);
+    competition.setStarted(true);
+    return competitionRepository.saveAndFlush(competition);
   }
 }

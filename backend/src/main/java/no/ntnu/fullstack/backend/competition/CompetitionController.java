@@ -10,6 +10,7 @@ import no.ntnu.fullstack.backend.competition.model.Competition;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +42,14 @@ public class CompetitionController {
       throws CompetitionNotFoundException {
     Competition competition = competitionService.getCompetition(joinCode);
     return ResponseEntity.ok(competitionMapper.toDTO(competition));
+  }
+
+  @PutMapping("/competition/{joinCode}")
+  public ResponseEntity<?> startCompetition(
+      Authentication authentication, @PathVariable Integer joinCode)
+      throws CompetitionNotFoundException, CompetitionAlreadyStartedException {
+    User loggedInUser = (User) authentication.getPrincipal();
+    competitionService.startCompetition(joinCode, loggedInUser);
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 }
