@@ -66,7 +66,7 @@ function logout(): void {
     padding-top: 4rem;
     height: 100%;
     width: 100%;
-    overflow: scroll;
+    overflow-y: auto;
 }
 
 #navigation-bar {
