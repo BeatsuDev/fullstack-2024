@@ -81,6 +81,8 @@ public class WebSecurityConfiguration {
                   .permitAll()
                   .requestMatchers(HttpMethod.POST, "/user")
                   .permitAll()
+                  .requestMatchers(HttpMethod.GET, "/quiz**")
+                  .permitAll()
                   .requestMatchers(HttpMethod.GET, "/uploads/images/**")
                   .permitAll()
                   .anyRequest()
