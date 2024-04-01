@@ -4,7 +4,7 @@ import { AvatarGenerator } from "random-avatar-generator";
 import { useAuthenticationStore } from "@/stores/authentication";
 import router from "@/router";
 import { useNotificationStore } from "@/stores/notification";
-import { onMounted, computed, watch } from "vue";
+import { onMounted, computed } from "vue";
 import { CompetitionApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
 import { useMultiplayerStore } from "@/stores/multiplayer";
@@ -38,8 +38,27 @@ const stompClient = new Client({
                 case "JOIN":
                     updateLobby();
                     break;
-                case "PROCEED":
+                case "PROCEED": {
+                    stompClient.deactivate();
+
+                    const attemptId =
+                        multiplayerStore.multiplayerData?.competition.competitors
+                            .filter(
+                                (competitor) =>
+                                    competitor.user.id === currentUser.id
+                            )
+                            .map((competitor) => competitor.attempt.id)[0];
+                    const quizId =
+                        multiplayerStore.multiplayerData?.competition
+                            .competitors[0].attempt.quiz?.id;
+
+                    router.push({
+                        name: "quiz-player",
+                        params: { id: quizId },
+                        query: { attemptId },
+                    });
                     break;
+                }
                 case null:
                     break;
             }
@@ -124,10 +143,6 @@ async function startGame() {
         message: "Game started!",
         type: "success",
     });
-
-    stompClient.deactivate();
-
-    router.push({ name: "quiz-player", params: {} });
 }
 </script>
 
