@@ -3,10 +3,12 @@ package no.ntnu.fullstack.backend.competition;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.attempt.AttemptService;
+import no.ntnu.fullstack.backend.attempt.model.QuestionAttempt;
 import no.ntnu.fullstack.backend.attempt.model.QuizAttempt;
 import no.ntnu.fullstack.backend.competition.exception.CompetitionAlreadyStartedException;
 import no.ntnu.fullstack.backend.competition.exception.CompetitionNotFoundException;
 import no.ntnu.fullstack.backend.competition.model.Competition;
+import no.ntnu.fullstack.backend.question.model.Question;
 import no.ntnu.fullstack.backend.quiz.QuizService;
 import no.ntnu.fullstack.backend.quiz.exception.QuizNotFoundException;
 import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
@@ -89,5 +91,28 @@ public class CompetitionService {
     sendMessage(competition, Event.PROCEED, 1000);
     competition.setStarted(true);
     return competitionRepository.saveAndFlush(competition);
+  }
+
+  private boolean quizAttemptContainsQuestion(QuizAttempt quizAttempt, UUID questionId) {
+    return quizAttempt.getQuestionAttempts().stream()
+        .map(QuestionAttempt::getQuestion)
+        .map(Question::getQuestionId)
+        .anyMatch(questionId::equals);
+  }
+
+  public void submitQuestion(UUID competitionId, UUID questionId, User loggedInUser)
+      throws CompetitionNotFoundException {
+    Competition competition =
+        competitionRepository
+            .findById(competitionId)
+            .orElseThrow(CompetitionNotFoundException::new);
+    if (competition.getQuizAttempts().stream()
+        .noneMatch(qa -> qa.getAttemptedBy().getId().equals(loggedInUser.getId())))
+      throw new CompetitionNotFoundException();
+
+    if (competition.getQuizAttempts().stream()
+        .allMatch(qa -> quizAttemptContainsQuestion(qa, questionId))) {
+      sendMessage(competition, Event.PROCEED, 1000);
+    }
   }
 }

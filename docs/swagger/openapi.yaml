@@ -387,6 +387,13 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: competitionId
+          description: The ID of a competition (if any)
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
         - name: quizAttempt
           description: The ID of a quiz attempt
           in: path
