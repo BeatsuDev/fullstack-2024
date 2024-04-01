@@ -31,8 +31,8 @@ public class WebSecurityConfiguration {
   }
 
   @Bean
-  public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
-      throws Exception {
+  public AuthenticationManager authenticationManager(
+      final AuthenticationConfiguration authenticationConfiguration) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
 
@@ -41,7 +41,8 @@ public class WebSecurityConfiguration {
     return new WebMvcConfigurer() {
       @Override
       public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
+        registry
+            .addMapping("/**")
             .allowedOrigins(
                 "http://127.0.0.1:5173/",
                 "http://localhost:5173/",
@@ -57,24 +58,34 @@ public class WebSecurityConfiguration {
   @Bean
   public SecurityFilterChain filterChain(final HttpSecurity http, JWTAuthFilter jwtAuthFilter)
       throws Exception {
-    http
-        .csrf(AbstractHttpConfigurer::disable)
-        .exceptionHandling((exception) -> {
-          exception.authenticationEntryPoint((request, response, e) -> {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-          });
-        })
-        .sessionManagement(session -> {
-          session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        })
-        .authorizeHttpRequests(authorize -> {
-          authorize
-              .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-              .requestMatchers(HttpMethod.POST, "/user/session").permitAll()
-              .requestMatchers(HttpMethod.POST, "/user").permitAll()
-                .requestMatchers(HttpMethod.GET, "/uploads/images/**").permitAll()
-              .anyRequest().authenticated();
-        })
+    http.csrf(AbstractHttpConfigurer::disable)
+        .exceptionHandling(
+            (exception) -> {
+              exception.authenticationEntryPoint(
+                  (request, response, e) -> {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                  });
+            })
+        .sessionManagement(
+            session -> {
+              session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            })
+        .authorizeHttpRequests(
+            authorize -> {
+              authorize
+                  .dispatcherTypeMatchers(DispatcherType.ERROR)
+                  .permitAll()
+                  .requestMatchers(HttpMethod.POST, "/user/session")
+                  .permitAll()
+                  .requestMatchers(HttpMethod.DELETE, "/user/session")
+                  .permitAll()
+                  .requestMatchers(HttpMethod.POST, "/user")
+                  .permitAll()
+                  .requestMatchers(HttpMethod.GET, "/uploads/images/**")
+                  .permitAll()
+                  .anyRequest()
+                  .authenticated();
+            })
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

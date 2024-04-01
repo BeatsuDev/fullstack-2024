@@ -1,19 +1,5 @@
 package no.ntnu.fullstack.backend.security;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.Optional;
-
-import javax.crypto.SecretKey;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.web.util.WebUtils;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -23,22 +9,31 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.Optional;
+import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.user.model.User;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 
 @Service
 @RequiredArgsConstructor
 public class JWTService {
 
-  private Duration tokenAge = Duration.ofMinutes(5);
-  private String cookieName = "Authentication";
-
+  private final UserDetailsService userDetailsService;
+  private final Duration tokenAge = Duration.ofMinutes(5);
+  private final String cookieName = "Authentication";
   @Value("${application.jwtsecret}")
   private String jwtSecret;
   private Optional<SecretKey> key = Optional.empty();
   private Optional<JwtParser> jwtParser = Optional.empty();
-
-  private final UserDetailsService userDetailsService;
 
   private SecretKey getKey() {
     return key.orElseGet(this::createKey);
@@ -97,6 +92,7 @@ public class JWTService {
 
   public Cookie getCleanCookie() {
     Cookie cookie = new Cookie(cookieName, null);
+    cookie.setMaxAge(0);
     cookie.setPath("/");
     cookie.setHttpOnly(true);
     return cookie;
