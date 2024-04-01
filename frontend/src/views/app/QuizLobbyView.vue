@@ -4,9 +4,13 @@ import { AvatarGenerator } from "random-avatar-generator";
 import { useAuthenticationStore } from "@/stores/authentication";
 import router from "@/router";
 import { useNotificationStore } from "@/stores/notification";
-import { onMounted, computed, ref } from "vue";
+import { onMounted, computed } from "vue";
+import { CompetitionApi } from "@/api";
+import { useExecutablePromise } from "@/composables/promise";
+import { useMultiplayerStore } from "@/stores/multiplayer";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
+const multiplayerStore = useMultiplayerStore();
 const authenticationStore = useAuthenticationStore();
 const lobbyCode = computed(() => router.currentRoute.value.params.lobbyCode);
 const currentUser = authenticationStore.loggedInUser as User;
@@ -47,7 +51,45 @@ onMounted(async () => {
         message: `${currentUser.name} joined lobby ${lobbyCode.value}!`,
         type: "info",
     });
+
+    const lobbyCodeParams = router.currentRoute.value.params.lobbyCode;
+    multiplayerStore.lobbyCode = Array.isArray(lobbyCodeParams)
+        ? Number(lobbyCodeParams[0])
+        : Number(lobbyCodeParams);
+
+    // Setup websocket
 });
+
+// Backend call stuffz
+const multiplayerApi = new CompetitionApi();
+
+const { execute: executeStartGame } = useExecutablePromise(
+    (...args: Parameters<typeof multiplayerApi.startCompetition>) =>
+        multiplayerApi.startCompetition(...args)
+);
+
+async function startGame() {
+    const lobbyCode = multiplayerStore.lobbyCode;
+    if (!lobbyCode) {
+        router.push({ name: "lobby-chooser" });
+        return;
+    }
+
+    try {
+        await executeStartGame(lobbyCode);
+    } catch (e) {
+        useNotificationStore().addNotification({
+            message: "Could not start the game. Please try again later. " + e,
+            type: "error",
+        });
+        return;
+    }
+
+    useNotificationStore().addNotification({
+        message: "Game started!",
+        type: "success",
+    });
+}
 </script>
 
 <template>
@@ -55,15 +97,7 @@ onMounted(async () => {
         <div class="inner-lobby-container">
             <div class="info">
                 <h1>Quiz Lobby: {{ lobbyCode }}</h1>
-                <ButtonComponent
-                    class="start-button"
-                    @click="
-                        router.push({
-                            name: 'quiz-player',
-                            params: { id: '1' },
-                        })
-                    "
-                >
+                <ButtonComponent class="start-button" @click="startGame">
                     Start Game
                 </ButtonComponent>
             </div>
