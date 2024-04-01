@@ -112,14 +112,14 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
     .app-navbar {
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         background-color: var(--primary-800);
         padding: 0.5rem;
         box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
         position: fixed;
         bottom: 0;
-        width: 100%;
+        width: calc(100% - 1rem);
 
     }
     .active-route {
