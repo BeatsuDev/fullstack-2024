@@ -8,15 +8,7 @@
                     filled
                     large
                     v-if="props.playable"
-                    @click="
-                        $router.push({
-                            name: 'quiz-lobby',
-                            params: {
-                                lobbyCode:
-                                    100000 + Math.floor(Math.random() * 900000),
-                            },
-                        })
-                    "
+                    @click="createMultiplayerGame"
                 >
                     Multiplayer
                 </ButtonComponent>
@@ -62,6 +54,11 @@
 <script lang="ts" setup>
 import ButtonComponent from "./ButtonComponent.vue";
 import type { Quiz } from "@/api";
+import { useExecutablePromise } from "@/composables/promise";
+import { CompetitionApi } from "@/api";
+import { useNotificationStore } from "@/stores/notification";
+
+import router from "@/router";
 
 const props = defineProps<{
     quiz: Quiz;
@@ -72,6 +69,38 @@ const props = defineProps<{
 const emit = defineEmits<{
     (event: "edit", quiz: Quiz): void;
 }>();
+
+// TODO: Orker ikke emitte også implementere dette i filen over... Er allerede mye kode der, og dette funker
+// Multiplayer
+const multiplayerApi = new CompetitionApi();
+const { execute: executeMultiplayerGameCreation, data: gameCreationResponse } =
+    useExecutablePromise(
+        (...args: Parameters<typeof multiplayerApi.createCompetition>) =>
+            multiplayerApi.createCompetition(...args)
+    );
+
+async function createMultiplayerGame() {
+    try {
+        await executeMultiplayerGameCreation(props.quiz.id);
+    } catch (e) {
+        useNotificationStore().addNotification({
+            message: "Could not create a lobby. Please try again later. " + e,
+            type: "error",
+        });
+        return;
+    }
+
+    useNotificationStore().addNotification({
+        message: "Lobby created successfully!",
+        type: "success",
+    });
+
+    const lobbyData = gameCreationResponse.value!.data;
+    router.push({
+        name: "quiz-lobby",
+        params: { lobbyCode: lobbyData.joinCode },
+    });
+}
 </script>
 
 <style scoped>
