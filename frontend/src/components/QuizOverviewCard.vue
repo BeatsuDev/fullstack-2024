@@ -44,9 +44,9 @@ function getCategoryStyle(category: Category) {
 
 <style scoped>
 .quiz-overview-card {
-    border: 1px solid black;
-    border-radius: 1em;
+    border: 2px solid var(--color-border);
     transition-duration: 150ms;
+    background-color: var(--color-background);
 }
 
 .quiz-overview-card:hover {
@@ -56,8 +56,6 @@ function getCategoryStyle(category: Category) {
 }
 
 .quiz-overview-card .quiz-card-banner {
-    border-top-left-radius: 1em;
-    border-top-right-radius: 1em;
     height: 5em;
 }
 

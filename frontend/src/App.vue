@@ -29,23 +29,23 @@ function logout(): void {
 </script>
 
 <template>
-    <header>
-        <nav id="navigation-bar">
-            <a @click="router.push({ name: 'home' })" id="company-name">
-                Kazoot
-            </a>
-            <div id="routes">
-                <a
-                    v-if="!authenticated"
-                    id="login-router-link"
-                    @click="router.push({ name: 'login' })"
-                >
-                    Log in
+        <header>
+            <nav id="navigation-bar">
+                <a @click="router.push({ name: 'home' })" id="company-name">
+                    Kazoot
                 </a>
-                <a v-else @click="logout()">Log out</a>
-            </div>
-        </nav>
-    </header>
+                <div id="routes">
+                    <a
+                        v-if="!authenticated"
+                        id="login-router-link"
+                        @click="router.push({ name: 'login' })"
+                    >
+                        log in
+                    </a>
+                    <a v-else @click="logout()">log out</a>
+                </div>
+            </nav>
+        </header>
     <div id="app-container">
         <RouterView v-slot="{ Component: viewComponent, route }">
             <Transition
@@ -54,31 +54,28 @@ function logout(): void {
                 "
                 mode="out-in"
             >
-                <Component :is="viewComponent" class="view-container" />
+                <Component :is="viewComponent" />
             </Transition>
         </RouterView>
-        <NotificationsContainer />
     </div>
+    <NotificationsContainer />
 </template>
 
 <style scoped>
 #app-container {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    overflow: hidden;
-}
-
-.view-container {
+    padding-top: 4rem;
+    height: 100%;
     width: 100%;
+    overflow: scroll;
 }
 
 #navigation-bar {
+    z-index: 1;
+    position: absolute;
     display: flex;
     align-items: center;
-    flex-direction: row;
     padding: 1rem 1.5rem;
+    width: calc(100% - 3rem);
     color: white;
     background-color: var(--primary-800);
     font-size: 1.25em;
@@ -126,29 +123,5 @@ function logout(): void {
     display: flex;
     justify-content: end;
     gap: 1.5rem;
-}
-
-#locale-selector {
-    padding: 0.25em;
-    font-size: 0.75em;
-    border-radius: 0.25rem;
-    background-color: var(--primary-700);
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-#locale-selector:focus {
-    outline: none;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: all 150ms linear;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
 }
 </style>

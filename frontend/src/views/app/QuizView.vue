@@ -282,12 +282,6 @@ async function submitFeedback(value: FeedbackCreate) {
 }
 </script>
 <style scoped>
-/* Fucking hacky as fuck. I wish I didn't have to do this. Change if can! */
-/* 100vh - (nav height + nav y-padding) - (bottom nav height + bottom nav y-padding)*/
-main {
-    height: calc(100vh - 66px - 86px);
-}
-
 .centered {
     display: flex;
     justify-content: center;

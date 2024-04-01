@@ -8,70 +8,66 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
 </script>
 
 <template>
-    <div class="app-view-container">
-        <div class="app-route">
-            <RouterView />
-        </div>
-        <nav class="app-navbar">
-            <a
-                @click="() => $router.push({ name: 'explore' })"
-                class="icon-navigation"
-                :class="{
+    <div style="padding-bottom: 5rem;">
+        <RouterView  />
+    </div>
+    <nav class="app-navbar">
+        <a
+            @click="() => $router.push({ name: 'explore' })"
+            class="icon-navigation"
+            :class="{
                     'active-route': $route.name === 'explore',
                 }"
-                ><SearchIcon />Find a Quiz</a
-            >
-            <a
-                @click="() => $router.push({ name: 'create' })"
-                class="icon-navigation"
-                :class="{
+        >
+            <SearchIcon />
+            Find a Quiz</a
+        >
+        <a
+            @click="() => $router.push({ name: 'create' })"
+            class="icon-navigation"
+            :class="{
                     'active-route': $route.name === 'create',
                 }"
-                ><AddIcon />Create Quiz</a
-            >
-            <a
-                @click="() => $router.push({ name: 'quizzes' })"
-                class="icon-navigation"
-                :class="{
+        >
+            <AddIcon />
+            Create Quiz</a
+        >
+        <a
+            @click="() => $router.push({ name: 'quizzes' })"
+            class="icon-navigation"
+            :class="{
                     'active-route': $route.name === 'quizzes',
                 }"
-                ><FolderIcon />My Quizzes</a
-            >
-            <a
-                @click="() => $router.push({ name: 'profile' })"
-                class="icon-navigation"
-                :class="{
+        >
+            <FolderIcon />
+            My Quizzes</a
+        >
+        <a
+            @click="() => $router.push({ name: 'profile' })"
+            class="icon-navigation"
+            :class="{
                     'active-route': $route.name === 'profile',
                 }"
-                ><ProfileIcon />My Profile</a
-            >
-        </nav>
-    </div>
+        >
+            <ProfileIcon />
+            My Profile</a
+        >
+    </nav>
 </template>
 
 <style scoped>
-.app-view-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.app-route {
-    display: block;
-    position: relative;
-    width: 100%;
-    flex: 1;
-}
-
 .app-navbar {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    background-color: var(--gray-100);
+    background-color: var(--primary-800);
     padding: 0.5rem;
-
     box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+
 }
 
 .icon-navigation {
@@ -80,16 +76,31 @@ import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    color: white;
 }
 
 .icon-navigation svg {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2rem;
+    height: 2rem;
     padding: 0.25rem;
+    color: white;
 }
 
+@media (max-width: 768px) {
+    .icon-navigation {
+        font-size: 0.9rem;
+    }
+
+    .icon-navigation svg {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+}
+
+
 .active-route {
-    color: var(--primary-600) !important;
+    color: var(--primary-300) !important;
 }
 
 a {
