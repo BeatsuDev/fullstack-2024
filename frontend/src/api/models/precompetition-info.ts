@@ -26,7 +26,7 @@ export interface PrecompetitionInfo {
      * @type {string}
      * @memberof PrecompetitionInfo
      */
-    comeptitionId?: string;
+    competitionId: string;
 
     /**
      * @type {Competition}
