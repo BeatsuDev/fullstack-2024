@@ -16,11 +16,18 @@ const {
     data: response,
     loading,
     error,
-} = usePromise(
-    attemptApi.attemptQuiz(
-        (router.currentRoute.value.params.id as unknown as string) ?? ""
-    )
-);
+} = router.currentRoute.value.query?.attemptId
+    ? usePromise(
+          attemptApi.getQuizAttempt(
+              router.currentRoute.value.params.id as string,
+              router.currentRoute.value.query.attemptId as string
+          )
+      )
+    : usePromise(
+          attemptApi.attemptQuiz(
+              (router.currentRoute.value.params.id as unknown as string) ?? ""
+          )
+      );
 
 const questionNumber = ref(0);
 const currentQuestion = computed(
@@ -83,7 +90,7 @@ const stompClient = new Client({
     onConnect: () => {
         stompClient.subscribe("/competition", (message: any) => {
             const data = multiplayerStore.processMessage(message);
-            if (data == "PROCEED") {
+            if (data === "PROCEED") {
                 goToNextQuestion();
             }
         });
