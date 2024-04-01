@@ -28,6 +28,12 @@ watch(active, (value) => {
     }
 });
 
+window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+        active.value = false;
+    }
+});
+
 function close() {
     active.value = false;
 }

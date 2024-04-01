@@ -28,6 +28,9 @@ export const useAuthenticationStore = defineStore("authentication", () => {
     globalAxios.defaults.withCredentials = true;
     globalAxios.interceptors.request.use((response) => {
         setDeauthenticationTimer();
+        if (response.status == 401) {
+            deauthenticate();
+        }
         return response;
     });
 
@@ -58,10 +61,10 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         );
     }
 
-    function refresh(): ReturnType<typeof userSessionApi.loggedInUser> {
+    async function refresh(): Promise<ReturnType<typeof userSessionApi.loggedInUser>> {
         const promise = userSessionApi.loggedInUser();
 
-        promise
+        await promise
             .then((user) => {
                 authenticationData.authenticated = true;
                 authenticationData.user = user.data;
@@ -81,16 +84,18 @@ export const useAuthenticationStore = defineStore("authentication", () => {
             }
             authenticationData.authenticated = false;
             authenticationData.timer = undefined;
+            if (authenticationData.user) {
 
-            if (router.currentRoute.value.meta.requiresAuth) {
-                router.push({ name: "login" });
+                if (router.currentRoute.value.meta?.requiresAuth) {
+                    router.push({ name: "login" });
+                }
+                location.reload()
             }
+            delete authenticationData.user ;
         }
 
         promise.then(clearAuthenticationData).catch((error) => {
-            if (error.response.status === 401) {
                 clearAuthenticationData();
-            }
         });
 
         return promise;
