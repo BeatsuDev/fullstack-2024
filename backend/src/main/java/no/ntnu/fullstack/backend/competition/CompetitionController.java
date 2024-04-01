@@ -38,9 +38,11 @@ public class CompetitionController {
   }
 
   @GetMapping("/competition/{joinCode}")
-  public ResponseEntity<CompetitionDTO> getCompetition(@PathVariable Integer joinCode)
+  public ResponseEntity<CompetitionDTO> getCompetition(
+      Authentication authentication, @PathVariable Integer joinCode)
       throws CompetitionNotFoundException {
-    Competition competition = competitionService.getCompetition(joinCode);
+    User loggedInUser = (User) authentication.getPrincipal();
+    Competition competition = competitionService.getCompetition(joinCode, loggedInUser);
     return ResponseEntity.ok(competitionMapper.toDTO(competition));
   }
 
