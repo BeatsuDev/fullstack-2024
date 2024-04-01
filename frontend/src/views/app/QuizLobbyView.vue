@@ -22,7 +22,7 @@ const lobbyUsers = computed(() => {
         return {
             id: player.user.id,
             name: player.user.name,
-            avatar: new AvatarGenerator().generateRandomAvatar(),
+            avatar: new AvatarGenerator().generateRandomAvatar(player.user.id),
         };
     });
 });
