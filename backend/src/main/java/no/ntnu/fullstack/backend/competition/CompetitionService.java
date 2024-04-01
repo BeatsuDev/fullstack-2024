@@ -42,6 +42,16 @@ public class CompetitionService {
     thread.start();
   }
 
+  private boolean userIsInCompetition(Competition competition, User user) {
+    return competition.getQuizAttempts().stream()
+        .anyMatch(qa -> qa.getAttemptedBy().getId().equals(user.getId()));
+  }
+
+  private void checkUserIsInCompetition(Competition competition, User user)
+      throws CompetitionNotFoundException {
+    if (!userIsInCompetition(competition, user)) throw new CompetitionNotFoundException();
+  }
+
   public Competition createCompetition(UUID quizId) throws QuizNotFoundException {
     QuizWithRevision quizWithRevision = quizService.getLatestQuiz(quizId);
     Competition competition = new Competition(quizWithRevision.getLatestRevision());
@@ -60,20 +70,21 @@ public class CompetitionService {
     if (competition.getStarted()) throw new CompetitionAlreadyStartedException();
 
     sendMessage(competition, Event.JOIN, 1000);
-    if (competition.getQuizAttempts().stream()
-        .anyMatch(qa -> qa.getAttemptedBy().getId().equals(user.getId()))) {
-      return competition;
-    }
+    if (userIsInCompetition(competition, user)) return competition;
 
     QuizAttempt attempt = attemptService.createAttempt(competition.getRevision(), user);
     competition.getQuizAttempts().add(attempt);
     return competitionRepository.saveAndFlush(competition);
   }
 
-  public Competition getCompetition(Integer joinCode) throws CompetitionNotFoundException {
-    return competitionRepository
-        .findByJoinCode(joinCode)
-        .orElseThrow(CompetitionNotFoundException::new);
+  public Competition getCompetition(Integer joinCode, User user)
+      throws CompetitionNotFoundException {
+    Competition competition =
+        competitionRepository
+            .findByJoinCode(joinCode)
+            .orElseThrow(CompetitionNotFoundException::new);
+    checkUserIsInCompetition(competition, user);
+    return competition;
   }
 
   public Competition startCompetition(Integer joinCode, User loggedInUser)
@@ -82,9 +93,7 @@ public class CompetitionService {
         competitionRepository
             .findByJoinCode(joinCode)
             .orElseThrow(CompetitionNotFoundException::new);
-    if (competition.getQuizAttempts().stream()
-        .noneMatch(qa -> qa.getAttemptedBy().getId().equals(loggedInUser.getId())))
-      throw new CompetitionNotFoundException();
+    checkUserIsInCompetition(competition, loggedInUser);
 
     if (competition.getStarted()) throw new CompetitionAlreadyStartedException();
 
@@ -106,9 +115,7 @@ public class CompetitionService {
         competitionRepository
             .findById(competitionId)
             .orElseThrow(CompetitionNotFoundException::new);
-    if (competition.getQuizAttempts().stream()
-        .noneMatch(qa -> qa.getAttemptedBy().getId().equals(loggedInUser.getId())))
-      throw new CompetitionNotFoundException();
+    checkUserIsInCompetition(competition, loggedInUser);
 
     if (competition.getQuizAttempts().stream()
         .allMatch(qa -> quizAttemptContainsQuestion(qa, questionId))) {
