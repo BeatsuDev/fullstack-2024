@@ -93,7 +93,7 @@ function uploadJson(file) {
 
 const questionsApi = new QuestionApi();
 
-function createQuiz(quiz?: QuizCreate) {
+async function createQuiz(quiz?: QuizCreate) {
     let questions = [];
 
     if (!quiz) {
@@ -111,7 +111,7 @@ function createQuiz(quiz?: QuizCreate) {
         // @ts-ignore
         delete quiz.id;
     }
-    quizApi
+    await quizApi
         .createQuiz(quiz)
         .then((data) => {
             if (questions.length > 0) {
