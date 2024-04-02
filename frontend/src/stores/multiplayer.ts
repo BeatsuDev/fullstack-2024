@@ -4,6 +4,8 @@ import type { Competition } from "@/api";
 import { CompetitionApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
 import { AvatarGenerator } from "random-avatar-generator";
+import { useRoute, useRouter } from "vue-router";
+import { useNotificationStore } from "./notification";
 
 export type Event =
     | { type: "FINISH" }
@@ -57,9 +59,27 @@ export const useMultiplayerStore = defineStore("multiplayer", () => {
         }
     }
 
+    const router = useRouter();
+    const notificationStore = useNotificationStore();
+
     async function joinCompetition(code: number) {
         lobbyCode.value = code;
-        const response = await competitionApi.joinCompetition(code);
+        const response = await competitionApi
+            .joinCompetition(code)
+            .catch((e) => {
+                router.push({ name: "lobby-chooser" });
+                if (e.response.status === 404) {
+                    notificationStore.addNotification({
+                        message: "Lobby not found",
+                        type: "error",
+                    });
+                } else {
+                    notificationStore.addNotification({
+                        message: "Error joining lobby",
+                        type: "error",
+                    });
+                }
+            });
         lobby.value = response.data.competition;
         multiplayerId.value = response.data.competitionId;
     }

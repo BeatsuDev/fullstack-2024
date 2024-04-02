@@ -159,6 +159,7 @@ const countdown = ref(undefined as number | undefined);
 
 function setQuestionNumber(questionId: string) {
     showResultsView();
+    console.log("id " + questionId)
     router.currentRoute.value.query.questionId = questionId;
     questionNumber.value =
         currentQuiz.value?.quiz?.questions
