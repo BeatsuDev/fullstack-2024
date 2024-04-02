@@ -9,6 +9,7 @@ defineProps<{
 const emit = defineEmits<{
     answerSelected: [option: string];
 }>();
+
 </script>
 
 <template>
@@ -32,6 +33,12 @@ const emit = defineEmits<{
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.1em;
+}
+
+@media (max-width: 900px) {
+    .multiple-choice-container {
+        grid-template-columns: 1fr;
+    }
 }
 
 .option {

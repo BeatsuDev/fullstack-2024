@@ -7,6 +7,7 @@ import MultipleChoiceOptions from "./MultipleChoiceOptions.vue";
 import TextAnswer from "./TextAnswer.vue";
 import BooleanAnswer from "./BooleanAnswer.vue";
 import { BASE_PATH } from "@/api/base";
+import { useWindowSize } from "@vueuse/core";
 
 const props = defineProps<{
     question: Question;
@@ -22,6 +23,8 @@ const questionType = computed(() => getQuestionType(props.question));
 watch(questionType, (newVal) => {
     console.log("Question type changed to", newVal);
 });
+
+const {width} = useWindowSize();
 </script>
 
 <template>
@@ -38,7 +41,7 @@ watch(questionType, (newVal) => {
                 {{ countdown.toString().padStart(2, "0") }}
             </h2>
             <h2>Question: {{ question.question }}</h2>
-            <div class="media-container">
+            <div class="media-container" v-if="width > 600">
                 <img
                     v-if="question.image"
                     :src="BASE_PATH + '/' + question.image.path"

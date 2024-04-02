@@ -47,13 +47,14 @@ const currentQuiz = computed(() => response.value?.data ?? null);
 const currentAttemptId = computed(() => response.value?.data.id ?? null);
 const isMultiplayer = computed(() => multiplayerStore.multiplayerData != null);
 
-const { execute: executeSubmitAnswer, error: submitError } = useExecutablePromise(
+const { execute: executeSubmitAnswer, error: submitError } =
+    useExecutablePromise(
         async (...args: Parameters<typeof attemptApi.submitAnswer>) => {
             return await attemptApi.submitAnswer(...args);
         }
     );
 
-const showResults = ref(false)
+const showResults = ref(false);
 async function submitAnswer(answer: string) {
     if (currentQuiz.value == null) return;
     if (currentQuestion.value == null) return;
@@ -100,8 +101,7 @@ function showResultsView() {
     showResults.value = true;
     setTimeout(() => {
         showResults.value = false;
-
-    },3000)
+    }, 3000);
 }
 
 const stompClient = new Client({
@@ -187,35 +187,22 @@ function finishQuiz() {
 </script>
 
 <template>
-    <main>
-        <LobbyResult v-if="showResults "/>
-        <div class="player-container" v-else-if="loading">Loading...</div>
-        <div class="player-container" v-else-if="error">{{ error }}</div>
-        <div class="player-container" v-else-if="response">
-            <h1>{{ response.data.quiz!.title }}</h1>
-            <QuestionPlayer
-                v-if="currentQuestion"
-                :countdown="countdown"
-                :question="currentQuestion"
-                @answerSelected="submitAnswer"
-            />
-            <div v-else>No question selected...</div>
-        </div>
-    </main>
+    <LobbyResult v-if="showResults" />
+    <div class="player-container" v-else-if="loading">Loading...</div>
+    <div class="player-container" v-else-if="error">{{ error }}</div>
+    <div class="player-container" v-else-if="response">
+        <h1 style="margin-top: 1rem">{{ response.data.quiz!.title }}</h1>
+        <QuestionPlayer
+            v-if="currentQuestion"
+            :countdown="countdown"
+            :question="currentQuestion"
+            @answerSelected="submitAnswer"
+        />
+        <div v-else>No question selected...</div>
+    </div>
 </template>
-
 <style scoped>
 .player-container {
-    height: calc(100vh - 66px - 4em);
-    padding: 2em;
-
-    display: flex;
-    flex-direction: column;
-}
-
-.player-container > h1 {
-    margin-top: 1em;
-    width: 100%;
-    text-align: center;
+    margin: 0 2rem;
 }
 </style>
