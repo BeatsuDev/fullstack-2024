@@ -18,7 +18,7 @@ function getCategoryStyle(category: Category) {
 </script>
 
 <template>
-    <div class="quiz-overview-card" @click="onQuizCardClick(quiz)">
+    <a class="quiz-overview-card" @click="onQuizCardClick(quiz)">
         <div
             class="quiz-card-banner"
             :style="`background-color: hsl(${Math.random() * 360}deg ${60 + Math.random() * 40}% 50%);`"
@@ -39,7 +39,7 @@ function getCategoryStyle(category: Category) {
             </p>
             <p>{{ quiz.description }}</p>
         </div>
-    </div>
+    </a>
 </template>
 
 <style scoped>
