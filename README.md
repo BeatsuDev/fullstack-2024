@@ -37,3 +37,21 @@ docker-compose up
 The application will then be made available on `http://localhost:5173`. You may
 test the application by registering an account, or using the existing dev user.
 The email and password for this user is `test@example.org` and `password`.
+
+To run the tests for the back-end, you can run the following command.
+
+```bash
+docker-compose up test
+```
+
+To run the tests for the front-end, you can run the following command.
+
+```bash
+cd frontend
+
+npm install
+
+npm run test:e2e
+
+npm run test:unit
+```
