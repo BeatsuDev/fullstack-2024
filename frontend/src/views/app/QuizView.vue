@@ -53,7 +53,7 @@
                             "
                             filled
                         >
-                            See previous results
+                            View previous results
                         </ButtonComponent>
                     </div>
                 </AlertComponent>

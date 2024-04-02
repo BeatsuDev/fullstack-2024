@@ -123,7 +123,6 @@ function finishQuiz() {
         : null;
 
     if (lobbyCode) {
-        multiplayerStore.$reset();
         router.push({
             name: "quiz-complete",
             query: { lobby: lobbyCode },
