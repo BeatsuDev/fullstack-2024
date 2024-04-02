@@ -180,7 +180,7 @@ public class CompetitionService {
             throw new RuntimeException(e);
           }
         },
-        15000);
+        20000);
   }
 
   private boolean quizAttemptContainsQuestion(QuizAttempt quizAttempt, UUID questionId) {

@@ -151,7 +151,7 @@ function setQuestionNumber(questionId: string) {
             .indexOf(questionId) || 0;
 
     if (countdownInterval) clearInterval(countdownInterval);
-    countdown.value = 15;
+    countdown.value = 20;
     countdownInterval = setInterval( 
         () => countdown.value && --countdown.value,
         1000
