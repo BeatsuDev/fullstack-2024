@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { AttemptApi, type AnswerDTO } from "@/api";
+import { AttemptApi, type AnswerDTO, CompetitionApi } from "@/api";
 import { usePromise, useExecutablePromise } from "@/composables/promise";
 import { useNotificationStore } from "@/stores/notification";
 import { useMultiplayerStore } from "@/stores/multiplayer";
@@ -8,6 +8,7 @@ import router from "@/router";
 import { Client } from "@stomp/stompjs";
 
 import QuestionPlayer from "@/components/quiz-player/QuestionPlayer.vue";
+import LobbyResult from "@/components/LobbyResult.vue";
 
 const multiplayerStore = useMultiplayerStore();
 const notificationStore = useNotificationStore();
@@ -46,13 +47,13 @@ const currentQuiz = computed(() => response.value?.data ?? null);
 const currentAttemptId = computed(() => response.value?.data.id ?? null);
 const isMultiplayer = computed(() => multiplayerStore.multiplayerData != null);
 
-const { execute: executeSubmitAnswer, error: submitError } =
-    useExecutablePromise(
+const { execute: executeSubmitAnswer, error: submitError } = useExecutablePromise(
         async (...args: Parameters<typeof attemptApi.submitAnswer>) => {
             return await attemptApi.submitAnswer(...args);
         }
     );
 
+const showResults = ref(false)
 async function submitAnswer(answer: string) {
     if (currentQuiz.value == null) return;
     if (currentQuestion.value == null) return;
@@ -93,6 +94,14 @@ async function submitAnswer(answer: string) {
                 return;
             }
         });
+}
+
+function showResultsView() {
+    showResults.value = true;
+    setTimeout(() => {
+        showResults.value = false;
+
+    },3000)
 }
 
 const stompClient = new Client({
@@ -136,6 +145,7 @@ let countdownInterval = null as NodeJS.Timeout | null;
 const countdown = ref(undefined as number | undefined);
 
 function setQuestionNumber(questionId: string) {
+    showResultsView();
     router.currentRoute.value.query.questionId = questionId;
     questionNumber.value =
         currentQuiz.value?.quiz?.questions
@@ -178,7 +188,8 @@ function finishQuiz() {
 
 <template>
     <main>
-        <div class="player-container" v-if="loading">Loading...</div>
+        <LobbyResult v-if="showResults "/>
+        <div class="player-container" v-else-if="loading">Loading...</div>
         <div class="player-container" v-else-if="error">{{ error }}</div>
         <div class="player-container" v-else-if="response">
             <h1>{{ response.data.quiz!.title }}</h1>

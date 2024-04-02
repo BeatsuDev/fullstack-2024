@@ -1,6 +1,9 @@
-import { ref, computed } from "vue";
+import { computed, ref, watch, watchEffect } from "vue";
 import { defineStore } from "pinia";
-import type { PrecompetitionInfo } from "@/api";
+import type { Competition, PrecompetitionInfo } from "@/api";
+import { CompetitionApi } from "@/api";
+import { useExecutablePromise } from "@/composables/promise";
+import { AvatarGenerator } from "random-avatar-generator";
 
 export type Event =
     | { type: "FINISH" }
@@ -12,7 +15,7 @@ export const useMultiplayerStore = defineStore("multiplayer", () => {
 
     const multiplayerId = computed(() => multiplayerData.value?.competitionId);
     const players = computed(
-        () => multiplayerData.value?.competition.competitors ?? []
+        () => multiplayerData.value?.competition.competitors ?? [],
     );
     const lobbyCode = ref<number | null>(null);
 
@@ -28,6 +31,11 @@ export const useMultiplayerStore = defineStore("multiplayer", () => {
             case "JOIN":
                 return { type: "JOIN" };
             case "PROCEED":
+                console.log("FAREN DIN")
+                execute(
+                    lobbyCode.value,
+                    undefined
+                );
                 return { type: "PROCEED", questionId: eventData };
             default:
                 return null;
@@ -39,6 +47,28 @@ export const useMultiplayerStore = defineStore("multiplayer", () => {
         lobbyCode.value = null;
     }
 
+    const competitionApi = new CompetitionApi();
+    const { data: lobby, execute } = useExecutablePromise(async () => {
+        return await competitionApi.getCompetition(lobbyCode.value);
+    });
+
+    const lobbyUsers = computed(() => {
+        return players.value.map((player) => {
+            return {
+                id: player.user.id,
+                name: player.user.name,
+                avatar: new AvatarGenerator().generateRandomAvatar(player.user.id),
+                score: lobby.value?.data ? calculateScore(lobby.value.data, player.user.id) : 0
+            };
+        });
+    });
+    function calculateScore(lobby: Competition, userId: string): number {
+        const result = lobby.competitors.filter((player) => player.user.id === userId).map((player) => {
+            return player.attempt.questionAttempts.map((questionAttempt) => { return questionAttempt.correct ? 1 : 0; }).reduce((a, b) => a + b, 0);
+        }).reduce((a, b) => a + b, 0);
+        return result;
+    }
+
     return {
         reset,
         processMessage,
@@ -46,5 +76,7 @@ export const useMultiplayerStore = defineStore("multiplayer", () => {
         multiplayerId,
         lobbyCode,
         players,
+        lobby,
+        lobbyUsers,
     };
 });

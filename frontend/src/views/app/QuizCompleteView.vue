@@ -2,6 +2,7 @@
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import { useMultiplayerStore } from "@/stores/multiplayer";
 import router from "@/router";
+import LobbyResult from "@/components/LobbyResult.vue";
 
 const quizId = router.currentRoute.value.params.id as string;
 

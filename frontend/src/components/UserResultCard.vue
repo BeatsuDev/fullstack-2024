@@ -1,0 +1,41 @@
+<template>
+    <div
+        :key="value.id"
+        class="user"
+        :style="{
+                        backgroundColor:
+                            value.id === value.id
+                                ? 'lightblue'
+                                : 'var(--primary-200)',
+                    }"
+    >
+        <img height="100" :src="value.avatar" alt="Avatar" />
+        <p>{{ value.name }} Score {{value.score}}</p>
+    </div>
+
+</template>
+<script lang="ts" setup>
+
+const props = defineProps<{
+    value:  {
+        id: string,
+        name: string,
+        avatar: string;
+        score: number;
+    }
+}>();
+
+</script>
+<style scoped>
+.user {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    font-size: 1.5em;
+    margin-bottom: 0.75rem;
+}
+
+.user > img {
+    margin-right: 1rem;
+}
+</style>

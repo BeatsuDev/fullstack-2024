@@ -11,21 +11,13 @@ import { useMultiplayerStore } from "@/stores/multiplayer";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
 import { Client } from "@stomp/stompjs";
+import UserResultCard from "@/components/UserResultCard.vue";
+import LobbyResult from "@/components/LobbyResult.vue";
 
 const multiplayerStore = useMultiplayerStore();
 const authenticationStore = useAuthenticationStore();
 const lobbyCode = computed(() => router.currentRoute.value.params.lobbyCode);
 const currentUser = authenticationStore.loggedInUser as User;
-
-const lobbyUsers = computed(() => {
-    return multiplayerStore.players.map((player) => {
-        return {
-            id: player.user.id,
-            name: player.user.name,
-            avatar: new AvatarGenerator().generateRandomAvatar(player.user.id),
-        };
-    });
-});
 
 // Setup websocket
 const stompClient = new Client({
@@ -157,23 +149,7 @@ async function startGame() {
                     Start Game
                 </ButtonComponent>
             </div>
-            <div class="user-list">
-                <div
-                    v-for="user in lobbyUsers"
-                    :key="user.id"
-                    class="user"
-                    :style="{
-                        backgroundColor:
-                            user.id === currentUser.id
-                                ? 'lightblue'
-                                : 'var(--primary-200)',
-                    }"
-                >
-                    <img height="100" :src="user.avatar" alt="Avatar" />
-                    <p>{{ user.name }}</p>
-                </div>
-                <div class="user">More friends will show up here!</div>
-            </div>
+            <LobbyResult />
         </div>
     </div>
 </template>

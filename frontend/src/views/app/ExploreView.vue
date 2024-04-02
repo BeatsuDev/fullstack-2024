@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { computed, reactive, ref } from "vue";
 import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import FilterOptions from "@/components/FilterOptions.vue";
 import QuizGrid from "@/components/QuizGrid.vue";
 
-import type { QuizOverview, Category } from "@/api";
+import type { Category, QuizOverview } from "@/api";
 import { QuizApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
 import AlertComponent from "@/components/AlertComponent.vue";
@@ -25,10 +25,7 @@ const {
     execute: executeSearch,
     error,
     loading: quizFetchLoading,
-} = useExecutablePromise(
-    async (...args: Parameters<typeof quizApi.getQuizzes>) =>
-        await quizApi.getQuizzes(...args)
-);
+} = useExecutablePromise(async (...args: Parameters<typeof quizApi.getQuizzes>) => await quizApi.getQuizzes(...args));
 
 const quizFetchLoadingDebounced = useDebounceLoading(quizFetchLoading, 200);
 
@@ -47,7 +44,7 @@ function searchQuizzes() {
         searchQuery.value,
         filterOptions.minDifficulty,
         filterOptions.maxDifficulty,
-        filterOptions.selectedCategories.map((c) => c.id).join(",")
+        filterOptions.selectedCategories.map((c) => c.id).join(","),
     ).then((response) => {
         foundQuizzes.value = [...response.data];
     });
@@ -62,7 +59,7 @@ executeSearch(
     searchQuery.value,
     filterOptions.minDifficulty,
     filterOptions.maxDifficulty,
-    filterOptions.selectedCategories.map((c) => c.id).join(",")
+    filterOptions.selectedCategories.map((c) => c.id).join(","),
 ).then((response) => {
     foundQuizzes.value = [...response.data];
 });
@@ -81,8 +78,10 @@ function toggleFiltersWindow() {
                 rounded-lg
                 class="toggle-filters"
                 @click="toggleFiltersWindow"
-                ><FilterIcon
-            /></ButtonComponent>
+            >
+                <FilterIcon
+                />
+            </ButtonComponent>
             <input
                 type="text"
                 v-model="searchQuery"
@@ -105,14 +104,17 @@ function toggleFiltersWindow() {
         </div>
         <main class="found-quizzes-container">
             <AlertComponent v-if="quizFetchLoadingDebounced" type="info"
-                >Loading...</AlertComponent
+            >Loading...
+            </AlertComponent
             >
             <AlertComponent v-else-if="error" type="danger">{{
-                errorMessage
-            }}</AlertComponent>
+                    errorMessage
+                }}
+            </AlertComponent>
             <div v-else-if="foundQuizzes == undefined"></div>
             <AlertComponent v-else-if="foundQuizzes.length === 0" type="warning"
-                >No quizzes found.</AlertComponent
+            >No quizzes found.
+            </AlertComponent
             >
             <QuizGrid v-else :quizzes="foundQuizzes" />
         </main>
