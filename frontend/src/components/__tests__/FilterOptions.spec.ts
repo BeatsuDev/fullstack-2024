@@ -1,27 +1,10 @@
 import { describe, it, expect, vi } from "vitest";
-import { flushPromises, mount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 
-import type { AxiosResponse } from "axios";
 import type { Category } from "@/api";
 import FilterOptions from "../FilterOptions.vue";
 
 vi.mock("axios");
-
-// Mock axios
-const mockCategories = {
-    data: [
-        {
-            id: "1",
-            name: "Test",
-            color: "#000000",
-        },
-        {
-            id: "2",
-            name: "Test2",
-            color: "#FFFFFF",
-        },
-    ],
-} as AxiosResponse<Category[]>;
 
 describe("Filter Options", () => {
     const primaryWrapper: ReturnType<typeof mount> = mount(FilterOptions, {
