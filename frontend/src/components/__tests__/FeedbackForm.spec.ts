@@ -11,7 +11,6 @@ describe("Feedback Form", () => {
                 feedback: "test feedback",
             } as FeedbackCreate,
         },
-        shallow: false,
     });
 
     it("Feedback renders submit new feedback text", () => {
@@ -23,9 +22,28 @@ describe("Feedback Form", () => {
     });
 
     it("Submitting form emits submit event", async () => {
-        await primaryWrapper.find("form").trigger("submit");
+        await primaryWrapper.find("#submit-feedback-button").trigger("click");
         await flushPromises();
-        console.log(primaryWrapper);
         expect(primaryWrapper.emitted("submit")).toBeTruthy();
+    });
+
+    it("Submitting a form without feedback content does not emit submit event", async () => {
+        // Mount with no value prop
+        const primaryWrapper = mount(FeedbackForm);
+        await primaryWrapper.find("#submit-feedback-button").trigger("click");
+        await flushPromises();
+        expect(primaryWrapper.emitted("submit")).toBeFalsy();
+    });
+
+    it("Changing value prop updates feedback content", async () => {
+        const newFeedback = "new feedback";
+        await primaryWrapper.setProps({
+            value: {
+                feedback: newFeedback,
+            } as FeedbackCreate,
+        });
+        expect(primaryWrapper.element.querySelector("input")!.value).toBe(
+            newFeedback
+        );
     });
 });

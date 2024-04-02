@@ -9,7 +9,11 @@
             v-model="editable.feedback"
         />
         <div style="display: flex; justify-content: end; margin-top: 10px">
-            <ButtonComponent @click="submit" type="submit">
+            <ButtonComponent
+                id="submit-feedback-button"
+                @click="submit"
+                type="submit"
+            >
                 Submit
             </ButtonComponent>
         </div>
@@ -51,7 +55,6 @@ const v$ = useVuelidate(formRules, editable);
 const form = ref<HTMLFormElement | null>(null);
 
 async function submit() {
-    if (!form.value) return;
     if (!(await v$.value.$validate())) {
         return;
     }
