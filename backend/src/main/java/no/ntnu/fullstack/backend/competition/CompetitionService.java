@@ -1,5 +1,7 @@
 package no.ntnu.fullstack.backend.competition;
 
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.attempt.AttemptService;
@@ -23,6 +25,7 @@ public class CompetitionService {
   private final AttemptService attemptService;
   private final QuizService quizService;
   private final SimpMessagingTemplate messagingTemplate;
+  private final EntityManager entityManager;
 
   private void sendMessage(Competition competition, Event event) {
     String message = competition.getId() + ":" + event;
@@ -109,8 +112,10 @@ public class CompetitionService {
         .anyMatch(questionId::equals);
   }
 
+  @Transactional
   public void submitQuestion(UUID competitionId, UUID questionId, User loggedInUser)
       throws CompetitionNotFoundException {
+    entityManager.clear();
     Competition competition =
         competitionRepository
             .findById(competitionId)
