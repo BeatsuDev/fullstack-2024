@@ -15,7 +15,6 @@ describe("Primary Button", () => {
             },
         });
 
-        console.log(wrapper.html());
         expect(wrapper.html()).contains("Title");
         expect(wrapper.html()).contains("Message");
         expect(wrapper.html()).contains("Confirm");

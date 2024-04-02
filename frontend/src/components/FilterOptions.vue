@@ -27,7 +27,6 @@ const categories = ref<Category[]>();
 
 categoryApi.getCategories().then((response) => {
     categories.value = response.data;
-    console.log(categories.value);
 });
 
 function isCategorySelected(category: Category): boolean {
