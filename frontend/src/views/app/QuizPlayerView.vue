@@ -132,7 +132,7 @@ function goToNextQuestion() {
     }
 }
 
-let countdownInterval = null as number | null;
+let countdownInterval = null as NodeJS.Timeout | null;
 const countdown = ref(undefined as number | undefined);
 
 function setQuestionNumber(questionId: string) {
