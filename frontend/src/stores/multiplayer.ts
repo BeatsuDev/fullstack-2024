@@ -89,6 +89,7 @@ export const useMultiplayerStore = defineStore("multiplayer", () => {
         reset,
         processMessage,
         joinCompetition,
+        calculateScore,
         multiplayerId,
         lobbyCode,
         players,
