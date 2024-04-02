@@ -1,6 +1,6 @@
 <template>
     <main class="app-container">
-        <AlertComponent v-if="errorMessage" type="error">
+        <AlertComponent v-if="errorMessage" type="danger">
             {{ errorMessage }}
         </AlertComponent>
         <div v-if="!isOwnerOrCollaborator">
