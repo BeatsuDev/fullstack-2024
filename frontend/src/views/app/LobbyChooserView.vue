@@ -76,8 +76,10 @@ async function joinLobby() {
 <template>
     <div class="lobby-chooser-container">
         <h3>Join lobby</h3>
-        <input v-model="lobbyCode" placeholder="123456" type="text" />
-        <ButtonComponent large @click="joinLobby"> Join Lobby</ButtonComponent>
+        <div class="join-wrapper">
+            <input v-model="lobbyCode" placeholder="123456" type="text" />
+            <ButtonComponent large @click="joinLobby"> Join Lobby</ButtonComponent>
+        </div>
     </div>
 </template>
 
@@ -95,5 +97,11 @@ input {
     max-width: 150px;
     text-align: right;
     margin-right: 0.2rem;
+}
+
+.join-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

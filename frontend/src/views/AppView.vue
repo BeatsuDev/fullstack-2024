@@ -143,6 +143,10 @@ console.log(width.value);
     }
 }
 
+.app-app-container {
+    min-height: 100%;
+}
+
 a {
     text-decoration: none;
     color: var(--color-text);
