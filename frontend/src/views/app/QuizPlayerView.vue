@@ -201,11 +201,12 @@ function finishQuiz() {
         query: { id: currentQuiz.value.id },
     });
 }
+
 </script>
 
 <template>
-    <LobbyResult v-if="showResults" results />
-    <AlertComponent v-else-if="loading" class="player-container" type="info">Loading...</AlertComponent>
+    <AlertComponent v-if="loading" class="player-container" type="info">Loading...</AlertComponent>
+    <LobbyResult v-else-if="showResults && multiplayerStore.lobbyUsers.length > 0" results />
     <AlertComponent v-else-if="error" class="player-container" type="danger">{{ error }}</AlertComponent>
     <AlertComponent type="info" v-else-if="hasAnswered">Waiting for other players...</AlertComponent>
     <div v-else-if="response" class="player-container">
