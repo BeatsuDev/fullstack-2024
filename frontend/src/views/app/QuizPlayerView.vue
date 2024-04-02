@@ -9,6 +9,7 @@ import { Client } from "@stomp/stompjs";
 
 import QuestionPlayer from "@/components/quiz-player/QuestionPlayer.vue";
 import LobbyResult from "@/components/LobbyResult.vue";
+import AlertComponent from "@/components/AlertComponent.vue";
 
 const multiplayerStore = useMultiplayerStore();
 const notificationStore = useNotificationStore();
@@ -54,6 +55,8 @@ const { execute: executeSubmitAnswer, error: submitError } =
         }
     );
 
+const hasAnswered = ref(false);
+
 const showResults = ref(false);
 
 async function submitAnswer(answer: string) {
@@ -85,9 +88,19 @@ async function submitAnswer(answer: string) {
 
             if (!isMultiplayer.value) {
                 goToNextQuestion();
+            } else {
+                hasAnswered.value = true;
             }
         })
-        .catch(() => {
+        .catch((e) => {
+            if (e.response?.status == 409) {
+                hasAnswered.value = true;
+                notificationStore.addNotification({
+                    message: "You have already answered this question.",
+                    type: "warning",
+                });
+                return;
+            }
             if (submitError.value != null) {
                 notificationStore.addNotification({
                     message: "Failed to submit answer. " + submitError.value,
@@ -119,6 +132,7 @@ const stompClient = new Client({
                 case "JOIN":
                     break;
                 case "PROCEED":
+                    hasAnswered.value = false;
                     setQuestionNumber(data.questionId);
                     break;
                 default:
@@ -191,8 +205,9 @@ function finishQuiz() {
 
 <template>
     <LobbyResult v-if="showResults" results />
-    <div v-else-if="loading" class="player-container">Loading...</div>
-    <div v-else-if="error" class="player-container">{{ error }}</div>
+    <AlertComponent v-else-if="loading" class="player-container" type="info">Loading...</AlertComponent>
+    <AlertComponent v-else-if="error" class="player-container" type="danger">{{ error }}</AlertComponent>
+    <AlertComponent type="info" v-else-if="hasAnswered">Waiting for other players...</AlertComponent>
     <div v-else-if="response" class="player-container">
         <h1 style="margin-top: 1rem">{{ response.data.quiz!.title }}</h1>
         <QuestionPlayer

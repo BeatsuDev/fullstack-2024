@@ -19,6 +19,15 @@ async function joinLobby() {
             parseInt(lobbyCode.value)
         );
     } catch (e: any) {
+
+        if (e.response?.status == 404) {
+            useNotificationStore().addNotification({
+                message: "The lobby was not found. ",
+                type: "error",
+            });
+            return;
+
+        }
         if (!(e instanceof Error) && !isAxiosError(e)) {
             return useNotificationStore().addNotification({
                 message:
