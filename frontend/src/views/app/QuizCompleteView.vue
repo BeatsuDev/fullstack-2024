@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import { useMultiplayerStore } from "@/stores/multiplayer";
 import router from "@/router";
@@ -21,16 +21,14 @@ multiplayerStore.reset();
             <ButtonComponent
                 v-if="quizId"
                 large
-                @click="
-                    router.push('quizzes/' + quizId + '/results')
-                "
+                @click="router.push('quizzes/' + quizId + '/results')"
             >
                 See results
             </ButtonComponent>
             <ButtonComponent
                 v-if="quizId"
-                large
                 filled
+                large
                 @click="
                     router.push({
                         name: 'quiz',
@@ -42,8 +40,8 @@ multiplayerStore.reset();
             </ButtonComponent>
             <ButtonComponent
                 v-else
-                large
                 filled
+                large
                 @click="
                     router.push({
                         name: 'explore',

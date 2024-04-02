@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { ref, reactive, watch } from "vue";
+<script lang="ts" setup>
+import { reactive, ref, watch } from "vue";
 import type { Category } from "@/api";
 import { CategoryApi } from "@/api";
 
@@ -93,6 +93,12 @@ function getCategoryStyle(category: Category) {
                 <label>
                     Min ({{ filterOptions.minDifficulty }})
                     <input
+                        v-model="inputValues.minDifficulty"
+                        max="10"
+                        min="1"
+                        step="1"
+                        type="range"
+                        value="1"
                         @input="
                             () => {
                                 if (
@@ -104,17 +110,17 @@ function getCategoryStyle(category: Category) {
                                 }
                             }
                         "
-                        v-model="inputValues.minDifficulty"
-                        type="range"
-                        step="1"
-                        min="1"
-                        max="10"
-                        value="1"
                 /></label>
                 <br />
                 <label>
                     Max ({{ filterOptions.maxDifficulty }})
                     <input
+                        v-model="inputValues.maxDifficulty"
+                        max="10"
+                        min="1"
+                        step="1"
+                        type="range"
+                        value="10"
                         @input="
                             () => {
                                 if (
@@ -126,12 +132,6 @@ function getCategoryStyle(category: Category) {
                                 }
                             }
                         "
-                        v-model="inputValues.maxDifficulty"
-                        type="range"
-                        step="1"
-                        min="1"
-                        max="10"
-                        value="10"
                     />
                 </label>
             </div>

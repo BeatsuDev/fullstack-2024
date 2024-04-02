@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent style="max-width: 300px">
+    <form style="max-width: 300px" @submit.prevent>
         <SelectComponent v-model="questionType">
             <option v-for="type in QuestionTypes" :key="type" :value="type">
                 {{ getReadableQuestionType(type) }}
@@ -16,23 +16,23 @@
         <div v-if="!editable.image">
             <h4>Image</h4>
             <input
+                accept=".jpeg , .png , .jpg"
                 type="file"
                 @change="uploadImage"
-                accept=".jpeg , .png , .jpg"
             />
         </div>
         <div v-else style="width: 100%">
             <img
-                :src="BASE_PATH + '/' + editable.image.path"
                 v-if="editable.image"
-                style="max-width: 100%; margin-top: 10px"
+                :src="BASE_PATH + '/' + editable.image.path"
                 alt="image"
+                style="max-width: 100%; margin-top: 10px"
             />
             <ButtonComponent
-                @click="editable.image = null"
-                filled
                 block
+                filled
                 style="margin-top: 10px"
+                @click="editable.image = null"
                 >Remove image
             </ButtonComponent>
         </div>
@@ -40,31 +40,31 @@
             v-if="questionType == QuestionTypes.BOOLEAN"
             class="boolean-options"
         >
-            <input type="radio" v-model="booleanAnswer" :value="true" />
+            <input v-model="booleanAnswer" :value="true" type="radio" />
             <label>True</label>
-            <input type="radio" v-model="booleanAnswer" :value="false" />
+            <input v-model="booleanAnswer" :value="false" type="radio" />
             <label>False</label>
         </div>
         <div v-else-if="questionType == QuestionTypes.MULTIPLE">
             <h4>Options</h4>
             <div
                 v-for="(option, index) in editable.options"
-                class="multiple-question-container"
                 :key="index"
+                class="multiple-question-container"
             >
                 <ValidatedInput
-                    v-model="editable.options[index]"
                     :id="`option-${index}`"
-                    style="margin-bottom: 0.5rem"
+                    v-model="editable.options[index]"
                     placeholder="Enter the option here"
+                    style="margin-bottom: 0.5rem"
                 />
-                <input type="radio" v-model="selectedOption" :value="index" />
+                <input v-model="selectedOption" :value="index" type="radio" />
             </div>
             <ButtonComponent
-                @click="addAnswer"
                 v-if="editable?.options?.length < 4"
-                style="margin-top: 20px"
                 block
+                style="margin-top: 20px"
+                @click="addAnswer"
                 >Add option
             </ButtonComponent>
         </div>
@@ -77,10 +77,10 @@
                 placeholder="Enter your answer here"
             />
         </div>
-        <ButtonComponent filled block style="margin-top: 3rem" @click="submit"
+        <ButtonComponent block filled style="margin-top: 3rem" @click="submit"
             >Submit
         </ButtonComponent>
-        <div style="color: var(--error-500); margin-top: 1rem" v-if="error">
+        <div v-if="error" style="color: var(--error-500); margin-top: 1rem">
             {{ error }}
         </div>
     </form>
@@ -141,6 +141,7 @@ const formRules = {
 const v$ = useVuelidate(formRules, editable);
 
 const error = ref("");
+
 async function submit() {
     if (!(await v$.value.$validate())) {
         return;

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, reactive, ref } from "vue";
 import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
@@ -78,19 +78,19 @@ function toggleFiltersWindow() {
     <div class="explore-view-container">
         <div class="search-container">
             <ButtonComponent
-                rounded-lg
                 class="toggle-filters"
+                rounded-lg
                 @click="toggleFiltersWindow"
             >
                 <FilterIcon />
             </ButtonComponent>
             <input
-                type="text"
                 v-model="searchQuery"
                 placeholder="Search for quizzes..."
+                type="text"
                 @keydown.enter="searchQuizzes"
             />
-            <ButtonComponent @click="searchQuizzes" rounded large filled>
+            <ButtonComponent filled large rounded @click="searchQuizzes">
                 Search
             </ButtonComponent>
 

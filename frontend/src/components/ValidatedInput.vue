@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { ErrorObject } from "@vuelidate/core/index.js";
 
 type ParameterValidator = {
@@ -19,15 +19,15 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="input-container" :class="props.class">
+    <div :class="props.class" class="input-container">
         <label :for="id">{{ label }}</label>
         <input
-            :type="type"
             :id="id"
-            :class="{ 'border-red': validator?.$errors.length }"
-            @input="validator?.$reset()"
-            @focusout="validator?.$validate()"
             v-model="model"
+            :class="{ 'border-red': validator?.$errors.length }"
+            :type="type"
+            @focusout="validator?.$validate()"
+            @input="validator?.$reset()"
         />
         <span v-if="validator?.$errors?.length" class="error-message">{{
             validator.$errors[0].$message

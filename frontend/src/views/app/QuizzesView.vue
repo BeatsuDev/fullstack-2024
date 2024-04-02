@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { QuizOverview } from "@/api";
-import { ref, watch } from "vue";
 import { QuizApi } from "@/api";
+import { ref, watch } from "vue";
 import { useNotificationStore } from "@/stores/notification";
 import { useExecutablePromise } from "@/composables/promise";
 import QuizGrid from "@/components/QuizGrid.vue";

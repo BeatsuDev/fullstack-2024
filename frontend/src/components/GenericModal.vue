@@ -1,6 +1,6 @@
 <template>
-    <dialog ref="dialog" @close="close" @abort="close">
-        <div @click="close" class="close-button"></div>
+    <dialog ref="dialog" @abort="close" @close="close">
+        <div class="close-button" @click="close"></div>
         <h3>{{ props.title }}</h3>
         <slot></slot>
     </dialog>
@@ -55,6 +55,7 @@ dialog {
     border: none;
     cursor: pointer;
 }
+
 .close-button::before {
     content: "✕";
 }

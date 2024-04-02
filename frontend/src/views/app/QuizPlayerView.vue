@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, ref } from "vue";
 import { type AnswerDTO, AttemptApi } from "@/api";
 import { useExecutablePromise, usePromise } from "@/composables/promise";
@@ -19,21 +19,21 @@ const {
     error,
 } = router.currentRoute.value.query?.attemptId
     ? usePromise(
-        attemptApi
-            .getQuizAttempt(
-                router.currentRoute.value.params.id as string,
-                router.currentRoute.value.query.attemptId as string,
-            )
-            .then((r) => {
-                setQuestionNumberFromQuery();
-                return r;
-            }),
-    )
+          attemptApi
+              .getQuizAttempt(
+                  router.currentRoute.value.params.id as string,
+                  router.currentRoute.value.query.attemptId as string
+              )
+              .then((r) => {
+                  setQuestionNumberFromQuery();
+                  return r;
+              })
+      )
     : usePromise(
-        attemptApi.attemptQuiz(
-            (router.currentRoute.value.params.id as unknown as string) ?? "",
-        ),
-    );
+          attemptApi.attemptQuiz(
+              (router.currentRoute.value.params.id as unknown as string) ?? ""
+          )
+      );
 
 if (!router.currentRoute.value.query.attemptId) {
     multiplayerStore.reset();
@@ -41,7 +41,7 @@ if (!router.currentRoute.value.query.attemptId) {
 
 const questionNumber = ref(0);
 const currentQuestion = computed(
-    () => response.value?.data.quiz!.questions[questionNumber.value] ?? null,
+    () => response.value?.data.quiz!.questions[questionNumber.value] ?? null
 );
 const currentQuiz = computed(() => response.value?.data ?? null);
 const currentAttemptId = computed(() => response.value?.data.id ?? null);
@@ -51,7 +51,7 @@ const { execute: executeSubmitAnswer, error: submitError } =
     useExecutablePromise(
         async (...args: Parameters<typeof attemptApi.submitAnswer>) => {
             return await attemptApi.submitAnswer(...args);
-        },
+        }
     );
 
 const showResults = ref(false);
@@ -69,7 +69,7 @@ async function submitAnswer(answer: string) {
         } as AnswerDTO,
         router.currentRoute.value.params.id as string,
         currentAttemptId.value,
-        multiplayerStore.multiplayerId,
+        multiplayerStore.multiplayerId
     );
 
     submitPromise
@@ -155,7 +155,7 @@ function setQuestionNumber(questionId: string) {
     countdown.value = 20;
     countdownInterval = setInterval(
         () => countdown.value && --countdown.value,
-        1000,
+        1000
     );
 }
 
@@ -191,9 +191,9 @@ function finishQuiz() {
 
 <template>
     <LobbyResult v-if="showResults" results />
-    <div class="player-container" v-else-if="loading">Loading...</div>
-    <div class="player-container" v-else-if="error">{{ error }}</div>
-    <div class="player-container" v-else-if="response">
+    <div v-else-if="loading" class="player-container">Loading...</div>
+    <div v-else-if="error" class="player-container">{{ error }}</div>
+    <div v-else-if="response" class="player-container">
         <h1 style="margin-top: 1rem">{{ response.data.quiz!.title }}</h1>
         <QuestionPlayer
             v-if="currentQuestion"

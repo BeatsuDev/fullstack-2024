@@ -13,18 +13,18 @@
  * Do not edit the class manually.
  */
 
-import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Configuration } from '../configuration';
+import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { Quiz } from '../models';
-import { Revision } from '../models';
+import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
+import { Quiz, Revision } from "../models";
+
 /**
  * RevisionApi - axios parameter creator
  * @export
  */
-export const RevisionApiAxiosParamCreator = function (configuration?: Configuration) {
+export const RevisionApiAxiosParamCreator = function(configuration?: Configuration) {
     return {
         /**
          * Get a specific revision
@@ -36,22 +36,22 @@ export const RevisionApiAxiosParamCreator = function (configuration?: Configurat
         getRevision: async (quizId: string, revisionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'quizId' is not null or undefined
             if (quizId === null || quizId === undefined) {
-                throw new RequiredError('quizId','Required parameter quizId was null or undefined when calling getRevision.');
+                throw new RequiredError("quizId", "Required parameter quizId was null or undefined when calling getRevision.");
             }
             // verify required parameter 'revisionId' is not null or undefined
             if (revisionId === null || revisionId === undefined) {
-                throw new RequiredError('revisionId','Required parameter revisionId was null or undefined when calling getRevision.');
+                throw new RequiredError("revisionId", "Required parameter revisionId was null or undefined when calling getRevision.");
             }
             const localVarPath = `/quiz/{quizId}/revision/{revisionId}`
                 .replace(`{${"quizId"}}`, encodeURIComponent(String(quizId)))
                 .replace(`{${"revisionId"}}`, encodeURIComponent(String(revisionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions: AxiosRequestConfig = { method: "GET", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -64,7 +64,7 @@ export const RevisionApiAxiosParamCreator = function (configuration?: Configurat
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -80,17 +80,17 @@ export const RevisionApiAxiosParamCreator = function (configuration?: Configurat
         getRevisions: async (quizId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'quizId' is not null or undefined
             if (quizId === null || quizId === undefined) {
-                throw new RequiredError('quizId','Required parameter quizId was null or undefined when calling getRevisions.');
+                throw new RequiredError("quizId", "Required parameter quizId was null or undefined when calling getRevisions.");
             }
             const localVarPath = `/quiz/{quizId}/revision`
                 .replace(`{${"quizId"}}`, encodeURIComponent(String(quizId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions: AxiosRequestConfig = { method: "GET", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -103,7 +103,7 @@ export const RevisionApiAxiosParamCreator = function (configuration?: Configurat
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -120,22 +120,22 @@ export const RevisionApiAxiosParamCreator = function (configuration?: Configurat
         revertToRevision: async (quizId: string, revisionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'quizId' is not null or undefined
             if (quizId === null || quizId === undefined) {
-                throw new RequiredError('quizId','Required parameter quizId was null or undefined when calling revertToRevision.');
+                throw new RequiredError("quizId", "Required parameter quizId was null or undefined when calling revertToRevision.");
             }
             // verify required parameter 'revisionId' is not null or undefined
             if (revisionId === null || revisionId === undefined) {
-                throw new RequiredError('revisionId','Required parameter revisionId was null or undefined when calling revertToRevision.');
+                throw new RequiredError("revisionId", "Required parameter revisionId was null or undefined when calling revertToRevision.");
             }
             const localVarPath = `/quiz/{quizId}/revision/{revisionId}`
                 .replace(`{${"quizId"}}`, encodeURIComponent(String(quizId)))
                 .replace(`{${"revisionId"}}`, encodeURIComponent(String(revisionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'PUT', ...baseOptions, ...options};
+            const localVarRequestOptions: AxiosRequestConfig = { method: "PUT", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -148,14 +148,14 @@ export const RevisionApiAxiosParamCreator = function (configuration?: Configurat
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
                 options: localVarRequestOptions,
             };
         },
-    }
+    };
 };
 
 /**
@@ -174,7 +174,10 @@ export const RevisionApiFp = function(configuration?: Configuration) {
         async getRevision(quizId: string, revisionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Quiz>>> {
             const localVarAxiosArgs = await RevisionApiAxiosParamCreator(configuration).getRevision(quizId, revisionId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -187,7 +190,10 @@ export const RevisionApiFp = function(configuration?: Configuration) {
         async getRevisions(quizId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Revision>>>> {
             const localVarAxiosArgs = await RevisionApiAxiosParamCreator(configuration).getRevisions(quizId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -201,18 +207,21 @@ export const RevisionApiFp = function(configuration?: Configuration) {
         async revertToRevision(quizId: string, revisionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Quiz>>> {
             const localVarAxiosArgs = await RevisionApiAxiosParamCreator(configuration).revertToRevision(quizId, revisionId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
                 return axios.request(axiosRequestArgs);
             };
         },
-    }
+    };
 };
 
 /**
  * RevisionApi - factory interface
  * @export
  */
-export const RevisionApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const RevisionApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * Get a specific revision
@@ -261,9 +270,10 @@ export class RevisionApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof RevisionApi
      */
-    public async getRevision(quizId: string, revisionId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Quiz>> {
+    public async getRevision(quizId: string, revisionId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Quiz>> {
         return RevisionApiFp(this.configuration).getRevision(quizId, revisionId, options).then((request) => request(this.axios, this.basePath));
     }
+
     /**
      * Get revisions of a quiz
      * @param {string} quizId The ID of the question
@@ -271,9 +281,10 @@ export class RevisionApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof RevisionApi
      */
-    public async getRevisions(quizId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Revision>>> {
+    public async getRevisions(quizId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Revision>>> {
         return RevisionApiFp(this.configuration).getRevisions(quizId, options).then((request) => request(this.axios, this.basePath));
     }
+
     /**
      * Revert to a specific revision
      * @param {string} quizId The ID of the quiz
@@ -282,7 +293,7 @@ export class RevisionApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof RevisionApi
      */
-    public async revertToRevision(quizId: string, revisionId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Quiz>> {
+    public async revertToRevision(quizId: string, revisionId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Quiz>> {
         return RevisionApiFp(this.configuration).revertToRevision(quizId, revisionId, options).then((request) => request(this.axios, this.basePath));
     }
 }

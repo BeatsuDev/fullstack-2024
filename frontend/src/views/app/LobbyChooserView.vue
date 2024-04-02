@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from "vue";
 import { type AxiosError, isAxiosError } from "axios";
 import { useNotificationStore } from "@/stores/notification";
@@ -67,8 +67,8 @@ async function joinLobby() {
 <template>
     <div class="lobby-chooser-container">
         <h3>Join lobby</h3>
-        <input v-model="lobbyCode" type="text" placeholder="123456" />
-        <ButtonComponent large @click="joinLobby"> Join Lobby </ButtonComponent>
+        <input v-model="lobbyCode" placeholder="123456" type="text" />
+        <ButtonComponent large @click="joinLobby"> Join Lobby</ButtonComponent>
     </div>
 </template>
 

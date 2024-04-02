@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import LoadingCircle from "@/components/LoadingCircle.vue";
@@ -71,34 +71,34 @@ async function login() {
         <div id="login-container">
             <div class="card">
                 <h3>Log in</h3>
-                <form ref="formElement" id="login-form" @submit.prevent="login">
+                <form id="login-form" ref="formElement" @submit.prevent="login">
                     <div id="inputs-container">
                         <ValidatedInput
                             id="email"
-                            type="text"
                             v-model="loginData.email"
                             :validator="v$.email"
                             label="Email"
+                            type="text"
                         />
                         <ValidatedInput
                             id="password"
-                            type="password"
                             v-model="loginData.password"
                             :validator="v$.password"
                             label="Password"
+                            type="password"
                         />
                     </div>
                     <div id="login-buttons-container">
                         <ButtonComponent
                             id="login-button"
-                            type="submit"
-                            rounded
-                            large
                             filled
+                            large
+                            rounded
+                            type="submit"
                         >
                             Log in
                         </ButtonComponent>
-                        <RouterLink to="register" id="not-registered-message">
+                        <RouterLink id="not-registered-message" to="register">
                             Not registered yet? Register here.
                         </RouterLink>
                     </div>

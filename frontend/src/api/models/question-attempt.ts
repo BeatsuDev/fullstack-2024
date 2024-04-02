@@ -13,9 +13,10 @@
  * Do not edit the class manually.
  */
 
-import { Question } from './question';
- /**
- * 
+import { Question } from "./question";
+
+/**
+ *
  *
  * @export
  * @interface QuestionAttempt

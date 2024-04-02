@@ -1,6 +1,6 @@
 // Copy and paste the following code to the file to test the component
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { mount } from "@vue/test-utils";
 
 import AlertComponent from "../AlertComponent.vue";

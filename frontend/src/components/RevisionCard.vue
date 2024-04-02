@@ -27,6 +27,7 @@ const formatCreatedAt = computed(() => {
 h3 {
     margin: 0;
 }
+
 .revision-card {
     background-color: var(--color-background-mute);
     border: 2px solid var(--color-border);

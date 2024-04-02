@@ -1,12 +1,12 @@
 <template>
-    <div v-bind="containerProps" style="max-height: 500px">
+    <div style="max-height: 500px" v-bind="containerProps">
         <div v-bind="wrapperProps">
             <RevisionCard
                 v-for="revision in list"
                 :key="revision.data.revisionId"
                 :value="revision.data"
-                @click="viewRevision(revision.data)"
                 style="margin-bottom: 10px"
+                @click="viewRevision(revision.data)"
             />
         </div>
     </div>

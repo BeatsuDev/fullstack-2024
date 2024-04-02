@@ -6,18 +6,18 @@
                 <div>
                     <p>{{ randomSubTitle() }}</p>
                     <ButtonComponent
-                        @click="router.push({ name: 'login' })"
                         filled
                         rounded-lg
-                        >Log in</ButtonComponent
-                    >
+                        @click="router.push({ name: 'login' })"
+                        >Log in
+                    </ButtonComponent>
                 </div>
             </div>
         </div>
     </main>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import router from "@/router";
 

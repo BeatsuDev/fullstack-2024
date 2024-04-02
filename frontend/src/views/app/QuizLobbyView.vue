@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { User } from "@/api";
+import { CompetitionApi } from "@/api";
 import { useAuthenticationStore } from "@/stores/authentication";
 import router from "@/router";
 import { useNotificationStore } from "@/stores/notification";
-import { onMounted, computed } from "vue";
-import { CompetitionApi } from "@/api";
+import { computed, onMounted } from "vue";
 import { useExecutablePromise } from "@/composables/promise";
 import { useMultiplayerStore } from "@/stores/multiplayer";
 import ButtonComponent from "@/components/ButtonComponent.vue";

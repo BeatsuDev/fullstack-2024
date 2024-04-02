@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { RouterView } from "vue-router";
 import NotificationsContainer from "@/components/NotificationsContainer.vue";
@@ -33,7 +33,7 @@ function logout(): void {
 <template>
     <header>
         <nav id="navigation-bar">
-            <a @click="router.push({ name: 'home' })" id="company-name">
+            <a id="company-name" @click="router.push({ name: 'home' })">
                 <img :src="mascotImg" alt="Kazoot mascot" height="33" />
                 Kazoot
             </a>

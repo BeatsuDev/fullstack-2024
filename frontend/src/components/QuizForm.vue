@@ -1,19 +1,19 @@
 <template>
-    <form @submit.prevent ref="form">
+    <form ref="form" @submit.prevent>
         <label for="title">Title</label>
         <ValidatedInput
             id="title"
-            :validator="v$.title"
             v-model="editable.title"
+            :validator="v$.title"
         />
         <label for="Description">Description</label>
         <ValidatedInput
             id="description"
-            :validator="v$.description"
             v-model="editable.description"
+            :validator="v$.description"
         />
         <label for="difficulty">Difficulty: {{ editable.difficulty }} </label>
-        <input type="range" min="1" max="10" v-model="editable.difficulty" />
+        <input v-model="editable.difficulty" max="10" min="1" type="range" />
         <div>Categories:</div>
 
         <div class="category-filter-labels">
@@ -26,12 +26,12 @@
                 {{ category.name }}
             </label>
         </div>
-        <ButtonComponent @click="submit" :loading="props.loading"
+        <ButtonComponent :loading="props.loading" @click="submit"
             >Submit
         </ButtonComponent>
     </form>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import { type Category, CategoryApi, type Quiz, type QuizCreate } from "@/api";
@@ -116,6 +116,7 @@ function toggleCategory(category: Category) {
         selectedCategories.value = [...selectedCategories.value, category];
     }
 }
+
 watchEffect(() => {
     Object.assign(editable, props.value);
     selectedCategories.value = props.value?.categories || [];

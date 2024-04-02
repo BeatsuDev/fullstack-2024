@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeAll, beforeEach } from "vitest";
-import { mount, flushPromises, type VueWrapper } from "@vue/test-utils";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { flushPromises, mount, type VueWrapper } from "@vue/test-utils";
 
 import ValidatedInput from "../ValidatedInput.vue";
 import type { ErrorObject } from "@vuelidate/core";

@@ -8,7 +8,7 @@
             <p>
                 You have made {{ attempts }} attempts on this quiz. Keep it up!
             </p>
-            <div class="row" v-if="data">
+            <div v-if="data" class="row">
                 <div class="big">
                     <Bar :data="chartDataBasedOnAttempts" />
                 </div>

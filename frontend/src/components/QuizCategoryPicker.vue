@@ -10,7 +10,7 @@
         >
     </div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { Category } from "@/api";
 
 function toggleCategory(category: Category) {

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, watch } from "vue";
 
 import type { Question } from "@/api";
@@ -24,7 +24,7 @@ watch(questionType, (newVal) => {
     console.log("Question type changed to", newVal);
 });
 
-const {width} = useWindowSize();
+const { width } = useWindowSize();
 </script>
 
 <template>
@@ -41,13 +41,13 @@ const {width} = useWindowSize();
                 {{ countdown.toString().padStart(2, "0") }}
             </h2>
             <h2>Question: {{ question.question }}</h2>
-            <div class="media-container" v-if="width > 600">
+            <div v-if="width > 600" class="media-container">
                 <img
                     v-if="question.image"
                     :src="BASE_PATH + '/' + question.image.path"
                     alt="Question media"
                 />
-                <div class="placeholder-media" v-else></div>
+                <div v-else class="placeholder-media"></div>
             </div>
             <div class="answers-container">
                 <MultipleChoiceOptions

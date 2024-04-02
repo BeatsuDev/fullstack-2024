@@ -13,18 +13,18 @@
  * Do not edit the class manually.
  */
 
-import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Configuration } from '../configuration';
+import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { Competition } from '../models';
-import { PrecompetitionInfo } from '../models';
+import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
+import { Competition, PrecompetitionInfo } from "../models";
+
 /**
  * CompetitionApi - axios parameter creator
  * @export
  */
-export const CompetitionApiAxiosParamCreator = function (configuration?: Configuration) {
+export const CompetitionApiAxiosParamCreator = function(configuration?: Configuration) {
     return {
         /**
          * Create a new competition
@@ -35,17 +35,17 @@ export const CompetitionApiAxiosParamCreator = function (configuration?: Configu
         createCompetition: async (quizId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'quizId' is not null or undefined
             if (quizId === null || quizId === undefined) {
-                throw new RequiredError('quizId','Required parameter quizId was null or undefined when calling createCompetition.');
+                throw new RequiredError("quizId", "Required parameter quizId was null or undefined when calling createCompetition.");
             }
             const localVarPath = `/quiz/{quizId}/competition`
                 .replace(`{${"quizId"}}`, encodeURIComponent(String(quizId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions: AxiosRequestConfig = { method: "POST", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -58,7 +58,7 @@ export const CompetitionApiAxiosParamCreator = function (configuration?: Configu
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -74,17 +74,17 @@ export const CompetitionApiAxiosParamCreator = function (configuration?: Configu
         getCompetition: async (joinCode: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'joinCode' is not null or undefined
             if (joinCode === null || joinCode === undefined) {
-                throw new RequiredError('joinCode','Required parameter joinCode was null or undefined when calling getCompetition.');
+                throw new RequiredError("joinCode", "Required parameter joinCode was null or undefined when calling getCompetition.");
             }
             const localVarPath = `/competition/{joinCode}`
                 .replace(`{${"joinCode"}}`, encodeURIComponent(String(joinCode)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions: AxiosRequestConfig = { method: "GET", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -97,7 +97,7 @@ export const CompetitionApiAxiosParamCreator = function (configuration?: Configu
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -113,17 +113,17 @@ export const CompetitionApiAxiosParamCreator = function (configuration?: Configu
         joinCompetition: async (joinCode: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'joinCode' is not null or undefined
             if (joinCode === null || joinCode === undefined) {
-                throw new RequiredError('joinCode','Required parameter joinCode was null or undefined when calling joinCompetition.');
+                throw new RequiredError("joinCode", "Required parameter joinCode was null or undefined when calling joinCompetition.");
             }
             const localVarPath = `/competition/{joinCode}`
                 .replace(`{${"joinCode"}}`, encodeURIComponent(String(joinCode)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions: AxiosRequestConfig = { method: "POST", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -136,7 +136,7 @@ export const CompetitionApiAxiosParamCreator = function (configuration?: Configu
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -152,17 +152,17 @@ export const CompetitionApiAxiosParamCreator = function (configuration?: Configu
         startCompetition: async (joinCode: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'joinCode' is not null or undefined
             if (joinCode === null || joinCode === undefined) {
-                throw new RequiredError('joinCode','Required parameter joinCode was null or undefined when calling startCompetition.');
+                throw new RequiredError("joinCode", "Required parameter joinCode was null or undefined when calling startCompetition.");
             }
             const localVarPath = `/competition/{joinCode}`
                 .replace(`{${"joinCode"}}`, encodeURIComponent(String(joinCode)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'PUT', ...baseOptions, ...options};
+            const localVarRequestOptions: AxiosRequestConfig = { method: "PUT", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -175,14 +175,14 @@ export const CompetitionApiAxiosParamCreator = function (configuration?: Configu
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
                 options: localVarRequestOptions,
             };
         },
-    }
+    };
 };
 
 /**
@@ -200,7 +200,10 @@ export const CompetitionApiFp = function(configuration?: Configuration) {
         async createCompetition(quizId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Competition>>> {
             const localVarAxiosArgs = await CompetitionApiAxiosParamCreator(configuration).createCompetition(quizId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -213,7 +216,10 @@ export const CompetitionApiFp = function(configuration?: Configuration) {
         async getCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Competition>>> {
             const localVarAxiosArgs = await CompetitionApiAxiosParamCreator(configuration).getCompetition(joinCode, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -226,7 +232,10 @@ export const CompetitionApiFp = function(configuration?: Configuration) {
         async joinCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<PrecompetitionInfo>>> {
             const localVarAxiosArgs = await CompetitionApiAxiosParamCreator(configuration).joinCompetition(joinCode, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -239,18 +248,21 @@ export const CompetitionApiFp = function(configuration?: Configuration) {
         async startCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
             const localVarAxiosArgs = await CompetitionApiAxiosParamCreator(configuration).startCompetition(joinCode, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
                 return axios.request(axiosRequestArgs);
             };
         },
-    }
+    };
 };
 
 /**
  * CompetitionApi - factory interface
  * @export
  */
-export const CompetitionApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const CompetitionApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * Create a new competition
@@ -305,9 +317,10 @@ export class CompetitionApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CompetitionApi
      */
-    public async createCompetition(quizId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Competition>> {
+    public async createCompetition(quizId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Competition>> {
         return CompetitionApiFp(this.configuration).createCompetition(quizId, options).then((request) => request(this.axios, this.basePath));
     }
+
     /**
      * Get a competition
      * @param {number} joinCode The join code
@@ -315,9 +328,10 @@ export class CompetitionApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CompetitionApi
      */
-    public async getCompetition(joinCode: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<Competition>> {
+    public async getCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<AxiosResponse<Competition>> {
         return CompetitionApiFp(this.configuration).getCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
     }
+
     /**
      * Join a competition
      * @param {number} joinCode The join code
@@ -325,9 +339,10 @@ export class CompetitionApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CompetitionApi
      */
-    public async joinCompetition(joinCode: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<PrecompetitionInfo>> {
+    public async joinCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<AxiosResponse<PrecompetitionInfo>> {
         return CompetitionApiFp(this.configuration).joinCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
     }
+
     /**
      * Start a competition
      * @param {number} joinCode The join code
@@ -335,7 +350,7 @@ export class CompetitionApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CompetitionApi
      */
-    public async startCompetition(joinCode: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+    public async startCompetition(joinCode: number, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
         return CompetitionApiFp(this.configuration).startCompetition(joinCode, options).then((request) => request(this.axios, this.basePath));
     }
 }

@@ -4,18 +4,18 @@
             <h1>{{ props.quiz.title }}</h1>
             <div class="action-bar">
                 <ButtonComponent
-                    style="margin-right: 1em"
+                    v-if="props.playable"
                     filled
                     large
-                    v-if="props.playable"
+                    style="margin-right: 1em"
                     @click="createMultiplayerGame"
                 >
                     Multiplayer
                 </ButtonComponent>
                 <ButtonComponent
+                    v-if="props.playable"
                     filled
                     large
-                    v-if="props.playable"
                     @click="
                         $router.push({
                             name: 'quiz-player',
@@ -34,16 +34,16 @@
                 Made by: {{ props.quiz.creator.name }}
             </p>
             <p
-                style="font-style: italic"
                 v-if="props.quiz?.categories?.length > 0"
+                style="font-style: italic"
             >
                 Categories:
                 {{ props.quiz.categories.map((c) => c.name).join(", ") }}
             </p>
         </div>
         <div
-            class="edit-button"
             v-if="props.editable"
+            class="edit-button"
             @click="emit('edit', props.quiz)"
         >
             <ButtonComponent>Edit</ButtonComponent>
@@ -54,8 +54,8 @@
 <script lang="ts" setup>
 import ButtonComponent from "./ButtonComponent.vue";
 import type { Quiz } from "@/api";
-import { useExecutablePromise } from "@/composables/promise";
 import { CompetitionApi } from "@/api";
+import { useExecutablePromise } from "@/composables/promise";
 import { useNotificationStore } from "@/stores/notification";
 
 import router from "@/router";

@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { reactive, onMounted } from "vue";
+<script lang="ts" setup>
+import { onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { email } from "@vuelidate/validators";
 import { useAuthenticationStore } from "@/stores/authentication";
@@ -38,24 +38,24 @@ onMounted(() => {
             <form id="change-values-container" @submit.prevent="">
                 <ValidatedInput
                     id="name"
-                    type="text"
                     v-model="formData.name"
                     :validator="v$.name"
                     label="Name"
+                    type="text"
                 />
                 <ValidatedInput
                     id="email"
-                    type="text"
                     v-model="formData.email"
                     :validator="v$.email"
                     label="Email"
+                    type="text"
                 />
                 <ButtonComponent
                     id="change-values-button"
-                    type="submit"
-                    rounded
-                    large
                     filled
+                    large
+                    rounded
+                    type="submit"
                 >
                     Edit profile
                 </ButtonComponent>

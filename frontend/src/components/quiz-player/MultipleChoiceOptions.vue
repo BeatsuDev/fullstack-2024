@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { Question } from "@/api";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
@@ -9,7 +9,6 @@ defineProps<{
 const emit = defineEmits<{
     answerSelected: [option: string];
 }>();
-
 </script>
 
 <template>

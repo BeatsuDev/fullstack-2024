@@ -1,13 +1,13 @@
 <template>
     <div
         :key="value.id"
-        class="user"
         :style="{
             backgroundColor:
                 value.id === value.id ? 'lightblue' : 'var(--primary-200)',
         }"
+        class="user"
     >
-        <img height="100" :src="value.avatar" alt="Avatar" />
+        <img :src="value.avatar" alt="Avatar" height="100" />
         <p>
             {{ value.name }} <span v-if="results">Score {{ value.score }}</span>
         </p>

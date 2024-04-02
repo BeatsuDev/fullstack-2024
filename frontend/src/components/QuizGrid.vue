@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { QuizOverview } from "@/api";
 import QuizOverviewCard from "@/components/QuizOverviewCard.vue";
 

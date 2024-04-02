@@ -5,7 +5,7 @@
                 {{ errorMessage }}
             </AlertComponent>
             <div v-else-if="loadingDebounced">
-                <AlertComponent type="warning"> Loading... </AlertComponent>
+                <AlertComponent type="warning"> Loading...</AlertComponent>
             </div>
             <div v-else-if="quizReadOnly">
                 <AlertComponent v-if="revisionId" type="warning">
@@ -23,8 +23,8 @@
                                 Go back to the latest version
                             </ButtonComponent>
                             <ButtonComponent
-                                @click="revert"
                                 style="margin-left: 1rem"
+                                @click="revert"
                             >
                                 Revert to this version
                             </ButtonComponent>
@@ -33,10 +33,10 @@
                 </AlertComponent>
 
                 <QuizHero
-                    :quiz="quizReadOnly"
                     :editable="isOwnerOrCollaborator && !revisionId"
-                    @edit="editQuiz"
+                    :quiz="quizReadOnly"
                     playable
+                    @edit="editQuiz"
                 />
                 <AlertComponent v-if="attempts > 0" type="info">
                     <div
@@ -48,10 +48,10 @@
                     >
                         You have tried this quiz before.
                         <ButtonComponent
+                            filled
                             @click="
                                 router.push('/quizzes/' + quizId + '/results')
                             "
-                            filled
                         >
                             View previous results
                         </ButtonComponent>
@@ -62,10 +62,10 @@
                     <QuestionCard
                         v-for="question in quizReadOnly.questions"
                         :key="question.id"
-                        :value="question"
                         :editable="isOwnerOrCollaborator && !revisionId"
-                        @edit="editQuestion"
+                        :value="question"
                         @delete="reveal"
+                        @edit="editQuestion"
                     />
                     <div class="centered">
                         <ButtonComponent
@@ -78,8 +78,8 @@
                 </div>
             </div>
             <AlertComponent v-if="feedbackIsLoading" type="warning"
-                >Loading feedbacks...</AlertComponent
-            >
+                >Loading feedbacks...
+            </AlertComponent>
             <div v-else-if="feedbacks">
                 <h3>Feedbacks</h3>
                 <FeedbackCard
@@ -88,7 +88,7 @@
                     :feedback="feedback"
                 ></FeedbackCard>
                 <div class="card">
-                    <FeedbackForm @submit="submitFeedback" v-if="!revisionId" />
+                    <FeedbackForm v-if="!revisionId" @submit="submitFeedback" />
                 </div>
             </div>
         </div>

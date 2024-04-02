@@ -1,12 +1,12 @@
 <template>
     <div class="user-list">
         <UserResultCard
-            :key="user.id"
-            :value="user"
-            :results="props.results"
             v-for="user in multiplayerStore.lobbyUsers"
+            :key="user.id"
+            :results="props.results"
+            :value="user"
         ></UserResultCard>
-        <div class="user" v-if="!props.results">
+        <div v-if="!props.results" class="user">
             More friends will show up here!
         </div>
     </div>

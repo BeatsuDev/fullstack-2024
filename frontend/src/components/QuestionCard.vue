@@ -23,24 +23,24 @@
         <div class="action-bar">
             <ButtonComponent
                 v-if="props.editable"
-                @click="emit('delete', value)"
                 class="delete-button"
-                >Delete</ButtonComponent
-            >
+                @click="emit('delete', value)"
+                >Delete
+            </ButtonComponent>
             <ButtonComponent
                 v-if="props.editable"
-                @click="emit('edit', value)"
                 class="edit-button"
                 filled
-                >Edit</ButtonComponent
-            >
+                @click="emit('edit', value)"
+                >Edit
+            </ButtonComponent>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import type { Question } from "@/api";
-import { defineProps, defineEmits, computed } from "vue";
+import { computed, defineEmits, defineProps } from "vue";
 import ButtonComponent from "./ButtonComponent.vue";
 import useQuestionType, { QuestionTypes } from "@/composables/useQuestionType";
 

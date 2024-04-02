@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useNotificationStore } from "@/stores/notification";
 import NotificationBox from "./NotificationBox.vue";

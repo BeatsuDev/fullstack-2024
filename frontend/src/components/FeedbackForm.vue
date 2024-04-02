@@ -1,18 +1,18 @@
 <template>
-    <form @submit.prevent ref="form">
+    <form ref="form" @submit.prevent>
         <label for="title">
             <h4 style="margin-top: 3rem">Submit new Feedback</h4>
         </label>
         <ValidatedInput
             id="feedback"
-            :validator="v$.feedback"
             v-model="editable.feedback"
+            :validator="v$.feedback"
         />
         <div style="display: flex; justify-content: end; margin-top: 10px">
             <ButtonComponent
                 id="submit-feedback-button"
-                @click="submit"
                 type="submit"
+                @click="submit"
             >
                 Submit
             </ButtonComponent>
@@ -20,7 +20,7 @@
     </form>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import type { FeedbackCreate } from "@/api";

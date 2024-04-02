@@ -13,19 +13,18 @@
  * Do not edit the class manually.
  */
 
-import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Configuration } from '../configuration';
+import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { AnswerDTO } from '../models';
-import { QuestionAttempt } from '../models';
-import { QuizAttempt } from '../models';
+import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
+import { AnswerDTO, QuestionAttempt, QuizAttempt } from "../models";
+
 /**
  * AttemptApi - axios parameter creator
  * @export
  */
-export const AttemptApiAxiosParamCreator = function (configuration?: Configuration) {
+export const AttemptApiAxiosParamCreator = function(configuration?: Configuration) {
     return {
         /**
          * Attempt a quiz
@@ -36,17 +35,17 @@ export const AttemptApiAxiosParamCreator = function (configuration?: Configurati
         attemptQuiz: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling attemptQuiz.');
+                throw new RequiredError("id", "Required parameter id was null or undefined when calling attemptQuiz.");
             }
             const localVarPath = `/quiz/{id}/attempt`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions: AxiosRequestConfig = { method: "POST", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -59,7 +58,7 @@ export const AttemptApiAxiosParamCreator = function (configuration?: Configurati
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -75,17 +74,17 @@ export const AttemptApiAxiosParamCreator = function (configuration?: Configurati
         getAttempts: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling getAttempts.');
+                throw new RequiredError("id", "Required parameter id was null or undefined when calling getAttempts.");
             }
             const localVarPath = `/quiz/{id}/attempt`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions: AxiosRequestConfig = { method: "GET", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -98,7 +97,7 @@ export const AttemptApiAxiosParamCreator = function (configuration?: Configurati
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -115,22 +114,22 @@ export const AttemptApiAxiosParamCreator = function (configuration?: Configurati
         getQuizAttempt: async (id: string, quizAttempt: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling getQuizAttempt.');
+                throw new RequiredError("id", "Required parameter id was null or undefined when calling getQuizAttempt.");
             }
             // verify required parameter 'quizAttempt' is not null or undefined
             if (quizAttempt === null || quizAttempt === undefined) {
-                throw new RequiredError('quizAttempt','Required parameter quizAttempt was null or undefined when calling getQuizAttempt.');
+                throw new RequiredError("quizAttempt", "Required parameter quizAttempt was null or undefined when calling getQuizAttempt.");
             }
             const localVarPath = `/quiz/{id}/attempt/{quizAttempt}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
                 .replace(`{${"quizAttempt"}}`, encodeURIComponent(String(quizAttempt)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions: AxiosRequestConfig = { method: "GET", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -143,7 +142,7 @@ export const AttemptApiAxiosParamCreator = function (configuration?: Configurati
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -152,7 +151,7 @@ export const AttemptApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * Submit question attempt
-         * @param {AnswerDTO} body 
+         * @param {AnswerDTO} body
          * @param {string} id The ID of a quiz
          * @param {string} quizAttempt The ID of a quiz attempt
          * @param {string} [competition] The ID of a competition (if any)
@@ -162,34 +161,34 @@ export const AttemptApiAxiosParamCreator = function (configuration?: Configurati
         submitAnswer: async (body: AnswerDTO, id: string, quizAttempt: string, competition?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling submitAnswer.');
+                throw new RequiredError("body", "Required parameter body was null or undefined when calling submitAnswer.");
             }
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling submitAnswer.');
+                throw new RequiredError("id", "Required parameter id was null or undefined when calling submitAnswer.");
             }
             // verify required parameter 'quizAttempt' is not null or undefined
             if (quizAttempt === null || quizAttempt === undefined) {
-                throw new RequiredError('quizAttempt','Required parameter quizAttempt was null or undefined when calling submitAnswer.');
+                throw new RequiredError("quizAttempt", "Required parameter quizAttempt was null or undefined when calling submitAnswer.");
             }
             const localVarPath = `/quiz/{id}/attempt/{quizAttempt}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
                 .replace(`{${"quizAttempt"}}`, encodeURIComponent(String(quizAttempt)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            const localVarUrlObj = new URL(localVarPath, "https://example.com");
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions: AxiosRequestConfig = { method: "POST", ...baseOptions, ...options };
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             if (competition !== undefined) {
-                localVarQueryParameter['competition'] = competition;
+                localVarQueryParameter["competition"] = competition;
             }
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter["Content-Type"] = "application/json";
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -200,16 +199,16 @@ export const AttemptApiAxiosParamCreator = function (configuration?: Configurati
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers["Content-Type"] === "application/json";
+            localVarRequestOptions.data = needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
                 options: localVarRequestOptions,
             };
         },
-    }
+    };
 };
 
 /**
@@ -227,7 +226,10 @@ export const AttemptApiFp = function(configuration?: Configuration) {
         async attemptQuiz(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<QuizAttempt>>> {
             const localVarAxiosArgs = await AttemptApiAxiosParamCreator(configuration).attemptQuiz(id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -240,7 +242,10 @@ export const AttemptApiFp = function(configuration?: Configuration) {
         async getAttempts(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<QuizAttempt>>>> {
             const localVarAxiosArgs = await AttemptApiAxiosParamCreator(configuration).getAttempts(id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -254,13 +259,16 @@ export const AttemptApiFp = function(configuration?: Configuration) {
         async getQuizAttempt(id: string, quizAttempt: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<QuizAttempt>>> {
             const localVarAxiosArgs = await AttemptApiAxiosParamCreator(configuration).getQuizAttempt(id, quizAttempt, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
                 return axios.request(axiosRequestArgs);
             };
         },
         /**
          * Submit question attempt
-         * @param {AnswerDTO} body 
+         * @param {AnswerDTO} body
          * @param {string} id The ID of a quiz
          * @param {string} quizAttempt The ID of a quiz attempt
          * @param {string} [competition] The ID of a competition (if any)
@@ -270,18 +278,21 @@ export const AttemptApiFp = function(configuration?: Configuration) {
         async submitAnswer(body: AnswerDTO, id: string, quizAttempt: string, competition?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<QuestionAttempt>>> {
             const localVarAxiosArgs = await AttemptApiAxiosParamCreator(configuration).submitAnswer(body, id, quizAttempt, competition, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                const axiosRequestArgs: AxiosRequestConfig = {
+                    ...localVarAxiosArgs.options,
+                    url: basePath + localVarAxiosArgs.url,
+                };
                 return axios.request(axiosRequestArgs);
             };
         },
-    }
+    };
 };
 
 /**
  * AttemptApi - factory interface
  * @export
  */
-export const AttemptApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const AttemptApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * Attempt a quiz
@@ -313,7 +324,7 @@ export const AttemptApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * Submit question attempt
-         * @param {AnswerDTO} body 
+         * @param {AnswerDTO} body
          * @param {string} id The ID of a quiz
          * @param {string} quizAttempt The ID of a quiz attempt
          * @param {string} [competition] The ID of a competition (if any)
@@ -340,9 +351,10 @@ export class AttemptApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AttemptApi
      */
-    public async attemptQuiz(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<QuizAttempt>> {
+    public async attemptQuiz(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<QuizAttempt>> {
         return AttemptApiFp(this.configuration).attemptQuiz(id, options).then((request) => request(this.axios, this.basePath));
     }
+
     /**
      * Get all attempts (by the user) for a given quiz
      * @param {string} id The ID of a quiz
@@ -350,9 +362,10 @@ export class AttemptApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AttemptApi
      */
-    public async getAttempts(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<QuizAttempt>>> {
+    public async getAttempts(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<QuizAttempt>>> {
         return AttemptApiFp(this.configuration).getAttempts(id, options).then((request) => request(this.axios, this.basePath));
     }
+
     /**
      * Get a specific quiz attempt
      * @param {string} id The ID of a quiz
@@ -361,12 +374,13 @@ export class AttemptApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AttemptApi
      */
-    public async getQuizAttempt(id: string, quizAttempt: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<QuizAttempt>> {
+    public async getQuizAttempt(id: string, quizAttempt: string, options?: AxiosRequestConfig): Promise<AxiosResponse<QuizAttempt>> {
         return AttemptApiFp(this.configuration).getQuizAttempt(id, quizAttempt, options).then((request) => request(this.axios, this.basePath));
     }
+
     /**
      * Submit question attempt
-     * @param {AnswerDTO} body 
+     * @param {AnswerDTO} body
      * @param {string} id The ID of a quiz
      * @param {string} quizAttempt The ID of a quiz attempt
      * @param {string} [competition] The ID of a competition (if any)
@@ -374,7 +388,7 @@ export class AttemptApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AttemptApi
      */
-    public async submitAnswer(body: AnswerDTO, id: string, quizAttempt: string, competition?: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<QuestionAttempt>> {
+    public async submitAnswer(body: AnswerDTO, id: string, quizAttempt: string, competition?: string, options?: AxiosRequestConfig): Promise<AxiosResponse<QuestionAttempt>> {
         return AttemptApiFp(this.configuration).submitAnswer(body, id, quizAttempt, competition, options).then((request) => request(this.axios, this.basePath));
     }
 }

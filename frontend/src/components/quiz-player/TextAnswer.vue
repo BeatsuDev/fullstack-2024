@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from "vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
@@ -16,7 +16,7 @@ const emit = defineEmits<{
             type="text"
             @keyup.enter="emit('answerSelected', freeTextInput)"
         />
-        <ButtonComponent @click="emit('answerSelected', freeTextInput)" filled>
+        <ButtonComponent filled @click="emit('answerSelected', freeTextInput)">
             Submit Answer
         </ButtonComponent>
     </div>

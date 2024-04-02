@@ -10,8 +10,8 @@
             </p>
         </div>
         <AlertComponent v-else-if="loadingDebounced" type="info"
-            >loading...</AlertComponent
-        >
+            >loading...
+        </AlertComponent>
         <div v-else-if="data">
             <QuizHero :quiz="quizReadOnly" />
             <div class="card" style="margin: 1rem auto; width: max-content">
@@ -34,8 +34,8 @@
             <ButtonComponent
                 filled
                 large
-                @click="collaboratorModal = true"
                 style="margin-top: 10px"
+                @click="collaboratorModal = true"
             >
                 Add collaborator
             </ButtonComponent>

@@ -2,14 +2,14 @@
     <div class="centered-container">
         <div class="card" style="margin-top: 2rem">
             <h3>Create quiz</h3>
-            <QuizForm :value="quiz" @submit="createQuiz" :loading="loading" />
+            <QuizForm :loading="loading" :value="quiz" @submit="createQuiz" />
             <div style="margin-top: 10px">
-                <a @click="inspirationModal = true" style="cursor: pointer"
+                <a style="cursor: pointer" @click="inspirationModal = true"
                     >Need some inspiration? Or import quiz.</a
                 >
             </div>
         </div>
-        <GenericModal title="Templates" v-model="inspirationModal">
+        <GenericModal v-model="inspirationModal" title="Templates">
             <div style="display: flex; flex-direction: column">
                 <p>Choose a template to get started with your quiz</p>
                 <SelectComponent v-model="selectedTemplate">
@@ -23,18 +23,18 @@
                 </SelectComponent>
                 <p>or upload template</p>
                 <input
+                    accept=".json"
+                    style="margin-bottom: 1rem"
                     type="file"
                     @change="uploadJson"
-                    style="margin-bottom: 1rem"
-                    accept=".json"
                 />
                 <ButtonComponent @click="createQuiz()"
-                    >Use template</ButtonComponent
-                >
+                    >Use template
+                </ButtonComponent>
                 <div
+                    v-if="error"
                     class="error-message"
                     style="margin-top: 1rem"
-                    v-if="error"
                 >
                     {{ error }}
                 </div>
@@ -42,7 +42,7 @@
         </GenericModal>
     </div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { reactive, ref } from "vue";
 import { type QuizCreate } from "@/api/models/quiz-create";
 import { useExecutablePromise } from "@/composables/promise";
@@ -78,6 +78,7 @@ const inspirationModal = ref(false);
 const selectedTemplate = ref<QuizTemplate | null>();
 
 const error = ref<string | null>(null);
+
 function uploadJson(file) {
     const reader = new FileReader();
     reader.onload = async (e) => {

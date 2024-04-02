@@ -1,7 +1,7 @@
 import { computed, reactive } from "vue";
 import { defineStore } from "pinia";
 
-import type { User, UserLogin, UserCreate } from "@/api";
+import type { User, UserCreate, UserLogin } from "@/api";
 import { UserApi, UserSessionApi } from "@/api";
 import globalAxios from "axios";
 

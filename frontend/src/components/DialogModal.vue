@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import ButtonComponent from "./ButtonComponent.vue";
 
 const isVisible = defineModel<boolean>();
@@ -35,19 +35,19 @@ function onCancel() {
                 <div id="buttons">
                     <ButtonComponent
                         id="confirm-button"
-                        @click="onConfirm"
-                        rounded
-                        large
                         filled
-                        >{{ confirmText }}</ButtonComponent
-                    >
+                        large
+                        rounded
+                        @click="onConfirm"
+                        >{{ confirmText }}
+                    </ButtonComponent>
                     <ButtonComponent
                         id="cancel-button"
-                        @click="onCancel"
-                        rounded
                         large
-                        >{{ cancelText }}</ButtonComponent
-                    >
+                        rounded
+                        @click="onCancel"
+                        >{{ cancelText }}
+                    </ButtonComponent>
                 </div>
             </div>
         </div>

@@ -1,12 +1,12 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import LoadingCircle from "@/components/LoadingCircle.vue";
 
 import { RouterLink } from "vue-router";
-import { ref, reactive, computed, toRaw } from "vue";
+import { computed, reactive, ref, toRaw } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, sameAs } from "@vuelidate/validators";
+import { email, required, sameAs } from "@vuelidate/validators";
 import { useExecutablePromise } from "@/composables/promise";
 
 import { useNotificationStore } from "@/stores/notification";
@@ -82,51 +82,51 @@ async function register() {
         <div id="register-container">
             <h1>Register</h1>
             <form
-                ref="formElement"
                 id="register-form"
+                ref="formElement"
                 @submit.prevent="register"
             >
                 <div id="inputs-container">
                     <ValidatedInput
                         id="name"
-                        type="text"
                         v-model="formData.name"
                         :validator="v$.name"
                         label="Name"
+                        type="text"
                     />
                     <ValidatedInput
                         id="email"
-                        type="text"
                         v-model="formData.email"
                         :validator="v$.email"
                         label="Email"
+                        type="text"
                     />
                     <ValidatedInput
                         id="password"
-                        type="password"
                         v-model="formData.password"
                         :validator="v$.password"
                         label="Password"
+                        type="password"
                     />
                     <ValidatedInput
                         id="repeat-password"
-                        type="password"
                         v-model="formData.repeatPassword"
                         :validator="v$.repeatPassword"
                         label="Repeat password"
+                        type="password"
                     />
                 </div>
                 <div id="register-buttons-container">
                     <ButtonComponent
                         id="register-button"
-                        type="submit"
-                        rounded
-                        large
                         filled
+                        large
+                        rounded
+                        type="submit"
                     >
                         Register
                     </ButtonComponent>
-                    <RouterLink to="login" id="registered-message">
+                    <RouterLink id="registered-message" to="login">
                         Already registered? Log in here.
                     </RouterLink>
                 </div>

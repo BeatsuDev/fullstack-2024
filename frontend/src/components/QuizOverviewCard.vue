@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { Category, QuizOverview } from "@/api";
 import router from "@/router";
 import { computed } from "vue";
@@ -44,7 +44,7 @@ const stringToColour = (str: string) => {
 
 <template>
     <a class="quiz-overview-card" @click="onQuizCardClick(quiz)">
-        <div class="quiz-card-banner" :style="cardStyles"></div>
+        <div :style="cardStyles" class="quiz-card-banner"></div>
         <div class="quiz-card-content">
             <div class="quiz-card-categories">
                 <div

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { RouterView } from "vue-router";
 import { useWindowSize } from "@vueuse/core";
 
@@ -13,7 +13,6 @@ console.log(width.value);
 
 <template>
     <div
-        class="app-app-container"
         :style="{
             overflow: $route.name === 'quizzes' ? 'hidden' : 'auto',
             'padding-bottom':
@@ -24,46 +23,47 @@ console.log(width.value);
                       : '0.25rem',
             height: $route.name === 'quizzes' ? 'calc(100svh - 4rem)' : '',
         }"
+        class="app-app-container"
     >
         <RouterView />
     </div>
     <nav class="app-navbar">
         <a
-            @click="() => $router.push({ name: 'explore' })"
-            class="icon-navigation"
             :class="{
                 'active-route': $route.name === 'explore',
             }"
+            class="icon-navigation"
+            @click="() => $router.push({ name: 'explore' })"
         >
             <SearchIcon />
             Find a Quiz</a
         >
         <a
-            @click="() => $router.push({ name: 'create' })"
-            class="icon-navigation"
             :class="{
                 'active-route': $route.name === 'create',
             }"
+            class="icon-navigation"
+            @click="() => $router.push({ name: 'create' })"
         >
             <AddIcon />
             Create Quiz</a
         >
         <a
-            @click="() => $router.push({ name: 'lobby-chooser' })"
-            class="icon-navigation"
             :class="{
                 'active-route': $route.name === 'quizzes',
             }"
+            class="icon-navigation"
+            @click="() => $router.push({ name: 'lobby-chooser' })"
         >
             <FolderIcon />
             Join lobby</a
         >
         <a
-            @click="() => $router.push({ name: 'profile' })"
-            class="icon-navigation"
             :class="{
                 'active-route': $route.name === 'profile',
             }"
+            class="icon-navigation"
+            @click="() => $router.push({ name: 'profile' })"
         >
             <ProfileIcon />
             My Profile</a

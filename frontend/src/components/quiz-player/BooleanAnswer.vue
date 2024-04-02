@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
 const emit = defineEmits<{

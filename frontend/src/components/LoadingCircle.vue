@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 withDefaults(
     defineProps<{
         loading: boolean;
@@ -19,7 +19,7 @@ withDefaults(
             class="loading-container"
             style="transition-delay: 200ms"
         >
-            <div class="loader" :class="$attrs.class">
+            <div :class="$attrs.class" class="loader">
                 <div
                     :style="{
                         borderColor: outerColor,
