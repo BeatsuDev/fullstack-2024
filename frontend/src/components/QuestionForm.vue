@@ -111,9 +111,8 @@ const emit = defineEmits<{
     (event: "submit", value: QuestionCreate | Question): void;
 }>();
 
-const questionType = ref<QuestionTypes>(QuestionTypes.MULTIPLE);
-// @ts-ignore
-const editable = ref<Question | QuestionCreate>(
+const questionType = ref<keyof typeof QuestionTypes>(QuestionTypes.MULTIPLE);
+const editable = ref<Pick<Question, "question" | "answer" | "options"> & Partial<Question>>(
     props.value || {
         question: "",
         options: [""],

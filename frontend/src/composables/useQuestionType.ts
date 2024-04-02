@@ -39,7 +39,7 @@ export const QuestionTypes = {
     MULTIPLE: "MULTIPLE",
     TEXT: "TEXT",
     BOOLEAN: "BOOLEAN",
-};
+} as const;
 
 export function getReadableQuestionType(type: keyof typeof QuestionTypes) {
     switch (type) {
