@@ -1,20 +1,21 @@
 <template>
     <form @submit.prevent ref="form">
-        <label for="title"
-            ><h4 style="margin-top: 3rem">Submit new Feedback</h4></label
-        >
+        <label for="title">
+            <h4 style="margin-top: 3rem">Submit new Feedback</h4>
+        </label>
         <ValidatedInput
             id="feedback"
             :validator="v$.feedback"
             v-model="editable.feedback"
         />
         <div style="display: flex; justify-content: end; margin-top: 10px">
-            <ButtonComponent @click="submit" :loading="props.loading"
-                >Submit</ButtonComponent
-            >
+            <ButtonComponent @click="submit" type="submit">
+                Submit
+            </ButtonComponent>
         </div>
     </form>
 </template>
+
 <script setup lang="ts">
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import ValidatedInput from "@/components/ValidatedInput.vue";
@@ -25,11 +26,10 @@ import { useVuelidate } from "@vuelidate/core";
 
 const props = defineProps<{
     value?: FeedbackCreate;
-    loading?: boolean;
 }>();
 
 const emit = defineEmits<{
-    (e: "submit", quiz: FeedbackCreate): void;
+    submit: [quiz: FeedbackCreate];
 }>();
 
 const editable = reactive(
