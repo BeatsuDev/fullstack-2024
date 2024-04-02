@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { QuizOverview, Category } from "@/api";
+import type { Category, QuizOverview } from "@/api";
 import router from "@/router";
+import { computed } from "vue";
 
-defineProps<{
+const props = defineProps<{
     quiz: QuizOverview;
 }>();
 
@@ -15,13 +16,38 @@ function getCategoryStyle(category: Category) {
         border: `2px solid ${category.color}`,
     };
 }
+
+const cardStyles = computed(() => {
+    if (!props.quiz) return {};
+    if (!props.quiz.categories || props.quiz.categories.length === 0) {
+        return { backgroundColor: stringToColour(props.quiz.title) };
+    }
+    return {
+        backgroundColor: props.quiz.categories[0].color,
+    };
+});
+
+//take from https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
+const stringToColour = (str: string) => {
+    let hash = 0;
+    str.split("").forEach(char => {
+        hash = char.charCodeAt(0) + ((hash << 5) - hash);
+    });
+    let colour = "#";
+    for (let i = 0; i < 3; i++) {
+        const value = (hash >> (i * 8)) & 0xff;
+        colour += value.toString(16).padStart(2, "0");
+    }
+    return colour;
+};
+
 </script>
 
 <template>
     <a class="quiz-overview-card" @click="onQuizCardClick(quiz)">
         <div
             class="quiz-card-banner"
-            :style="`background-color: hsl(${Math.random() * 360}deg ${60 + Math.random() * 40}% 50%);`"
+            :style="cardStyles"
         ></div>
         <div class="quiz-card-content">
             <div class="quiz-card-categories">
