@@ -47,7 +47,7 @@ function searchQuizzes() {
         searchQuery.value,
         filterOptions.minDifficulty,
         filterOptions.maxDifficulty,
-        filterOptions.selectedCategories.map((c) => c.id).join(",")
+        filterOptions.selectedCategories.map((c) => c.id)
     ).then((response) => {
         foundQuizzes.value = [...response.data];
     });
@@ -62,7 +62,7 @@ executeSearch(
     searchQuery.value,
     filterOptions.minDifficulty,
     filterOptions.maxDifficulty,
-    filterOptions.selectedCategories.map((c) => c.id).join(",")
+    filterOptions.selectedCategories.map((c) => c.id)
 ).then((response) => {
     foundQuizzes.value = [...response.data];
 });

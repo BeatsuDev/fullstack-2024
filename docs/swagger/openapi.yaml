@@ -238,7 +238,8 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/components/schemas/Category"
+              type: string
+              format: uuid
         - in: query
           name: creator
           schema:
