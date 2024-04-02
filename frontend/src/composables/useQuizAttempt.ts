@@ -121,6 +121,10 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
     });
 
     const errorMessage = computed(() => {
+        if (attempts.value == 0) {
+            return "You have not any attempts on this quiz yet."
+        }
+
         if (!error.value) {
             return "";
         }

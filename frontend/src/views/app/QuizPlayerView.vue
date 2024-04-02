@@ -192,14 +192,14 @@ function finishQuiz() {
     if (lobbyCode) {
         router.push({
             name: "quiz-complete",
-            query: { lobby: lobbyCode, id: currentQuiz.value.id },
+            query: { lobby: lobbyCode, id: router.currentRoute.value.params.id },
         });
         return;
     }
     router.push({
         name: "quiz-complete",
 
-        query: { id: currentQuiz.value.id },
+        query: { id: router.currentRoute.value.params.id },
     });
 }
 
