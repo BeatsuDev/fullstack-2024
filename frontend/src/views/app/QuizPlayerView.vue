@@ -29,7 +29,7 @@ const {
           )
       );
 if (!router.currentRoute.value.query.attemptId) {
-    multiplayerStore.$reset();
+    multiplayerStore.reset();
 }
 
 const questionNumber = ref(0);
