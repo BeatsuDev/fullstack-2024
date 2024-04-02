@@ -10,9 +10,8 @@
                     }"
     >
         <img height="100" :src="value.avatar" alt="Avatar" />
-        <p>{{ value.name }} Score {{value.score}}</p>
+        <p>{{ value.name }} <span v-if="results">Score {{value.score}}</span></p>
     </div>
-
 </template>
 <script lang="ts" setup>
 
@@ -23,6 +22,7 @@ const props = defineProps<{
         avatar: string;
         score: number;
     }
+    results?: boolean;
 }>();
 
 </script>
