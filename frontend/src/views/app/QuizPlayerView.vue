@@ -18,16 +18,22 @@ const {
     error,
 } = router.currentRoute.value.query?.attemptId
     ? usePromise(
-          attemptApi.getQuizAttempt(
-              router.currentRoute.value.params.id as string,
-              router.currentRoute.value.query.attemptId as string
-          )
+          attemptApi
+              .getQuizAttempt(
+                  router.currentRoute.value.params.id as string,
+                  router.currentRoute.value.query.attemptId as string
+              )
+              .then((r) => {
+                  setQuestionNumberFromQuery();
+                  return r;
+              })
       )
     : usePromise(
           attemptApi.attemptQuiz(
               (router.currentRoute.value.params.id as unknown as string) ?? ""
           )
       );
+
 if (!router.currentRoute.value.query.attemptId) {
     multiplayerStore.reset();
 }
@@ -96,8 +102,19 @@ const stompClient = new Client({
             console.log(message);
             const data = multiplayerStore.processMessage(message);
             console.log(data);
-            if (data === "PROCEED") {
-                goToNextQuestion();
+            if (!data) return;
+
+            switch (data.type) {
+                case "FINISH":
+                    finishQuiz();
+                    break;
+                case "JOIN":
+                    break;
+                case "PROCEED":
+                    setQuestionNumber(data.questionId);
+                    break;
+                default:
+                    data satisfies never;
             }
         });
     },
@@ -112,6 +129,32 @@ function goToNextQuestion() {
     if (questionNumber.value >= currentQuiz.value!.quiz!.questions.length) {
         finishQuiz();
         return;
+    }
+}
+
+let countdownInterval = null as number | null;
+const countdown = ref(undefined as number | undefined);
+
+function setQuestionNumber(questionId: string) {
+    router.currentRoute.value.query.questionId = questionId;
+    questionNumber.value =
+        currentQuiz.value?.quiz?.questions
+            .map((q) => q.id)
+            .indexOf(questionId) || 0;
+
+    if (countdownInterval) clearInterval(countdownInterval);
+    countdown.value = 15;
+    countdownInterval = setInterval(
+        () => countdown.value && --countdown.value,
+        1000
+    );
+}
+
+function setQuestionNumberFromQuery() {
+    let questionId = router.currentRoute.value.query.questionId;
+    if (Array.isArray(questionId)) questionId = questionId[0];
+    if (questionId) {
+        setQuestionNumber(questionId);
     }
 }
 
@@ -141,6 +184,7 @@ function finishQuiz() {
             <h1>{{ response.data.quiz!.title }}</h1>
             <QuestionPlayer
                 v-if="currentQuestion"
+                :countdown="countdown"
                 :question="currentQuestion"
                 @answerSelected="submitAnswer"
             />

@@ -2,11 +2,17 @@ package no.ntnu.fullstack.backend.competition;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.attempt.AttemptService;
 import no.ntnu.fullstack.backend.attempt.model.QuestionAttempt;
 import no.ntnu.fullstack.backend.attempt.model.QuizAttempt;
+import no.ntnu.fullstack.backend.competition.event.Event;
+import no.ntnu.fullstack.backend.competition.event.Finish;
+import no.ntnu.fullstack.backend.competition.event.Join;
+import no.ntnu.fullstack.backend.competition.event.Proceed;
 import no.ntnu.fullstack.backend.competition.exception.CompetitionAlreadyStartedException;
 import no.ntnu.fullstack.backend.competition.exception.CompetitionNotFoundException;
 import no.ntnu.fullstack.backend.competition.model.Competition;
@@ -28,17 +34,17 @@ public class CompetitionService {
   private final EntityManager entityManager;
 
   private void sendMessage(Competition competition, Event event) {
-    String message = competition.getId() + ":" + event;
+    String message = competition.getId() + ":" + event.toMessage();
     messagingTemplate.convertAndSend("/competition", message);
   }
 
-  private void sendMessage(Competition competition, Event event, int msDelay) {
+  private void asyncExecution(Runnable runnable, int msDelay) {
     Thread thread =
         new Thread(
             () -> {
               try {
                 Thread.sleep(msDelay);
-                sendMessage(competition, event);
+                runnable.run();
               } catch (InterruptedException ignored) {
               }
             });
@@ -72,7 +78,7 @@ public class CompetitionService {
             .orElseThrow(CompetitionNotFoundException::new);
     if (competition.getStarted()) throw new CompetitionAlreadyStartedException();
 
-    sendMessage(competition, Event.JOIN, 1000);
+    asyncExecution(() -> sendMessage(competition, new Join()), 1000);
     if (userIsInCompetition(competition, user)) return competition;
 
     QuizAttempt attempt = attemptService.createAttempt(competition.getRevision(), user);
@@ -90,8 +96,15 @@ public class CompetitionService {
     return competition;
   }
 
-  public Competition startCompetition(Integer joinCode, User loggedInUser)
+  private Optional<Question> findFirstQuestion(Competition competition) {
+    return competition.getRevision().getQuestions().stream()
+        .min(Comparator.comparingInt(Question::getSequenceNumber));
+  }
+
+  @Transactional
+  public void startCompetition(Integer joinCode, User loggedInUser)
       throws CompetitionNotFoundException, CompetitionAlreadyStartedException {
+    entityManager.clear();
     Competition competition =
         competitionRepository
             .findByJoinCode(joinCode)
@@ -100,9 +113,74 @@ public class CompetitionService {
 
     if (competition.getStarted()) throw new CompetitionAlreadyStartedException();
 
-    sendMessage(competition, Event.PROCEED, 1000);
+    Optional<UUID> firstQuestion = findFirstQuestion(competition).map(Question::getQuestionId);
+    asyncProceedToQuestion(competition, firstQuestion, 1000);
+
     competition.setStarted(true);
-    return competitionRepository.saveAndFlush(competition);
+    competitionRepository.saveAndFlush(competition);
+  }
+
+  private Optional<Question> nextQuestion(Competition competition, UUID questionId) {
+    Question currentQuestion =
+        competition.getRevision().getQuestions().stream()
+            .filter(q -> q.getQuestionId().equals(questionId))
+            .findFirst()
+            .orElseThrow();
+    return competition.getRevision().getQuestions().stream()
+        .filter(q -> q.getSequenceNumber() > currentQuestion.getSequenceNumber())
+        .min(Comparator.comparingInt(Question::getSequenceNumber));
+  }
+
+  private void asyncProceedToNextQuestion(
+      Competition competition, UUID currentQuestion, int msDelay) {
+    asyncExecution(() -> proceedToNextQuestion(competition, currentQuestion), msDelay);
+  }
+
+  private void proceedToNextQuestion(Competition competition, UUID currentQuestion) {
+    Optional<Question> nextQuestion = nextQuestion(competition, currentQuestion);
+    proceedToQuestion(competition, nextQuestion.map(Question::getQuestionId));
+  }
+
+  private void asyncProceedToQuestion(
+      Competition competition, Optional<UUID> questionId, int msDelay) {
+    asyncExecution(() -> proceedToQuestion(competition, questionId), msDelay);
+  }
+
+  private void proceedToQuestion(Competition competition, Optional<UUID> questionId) {
+    Event event = questionId.map(Proceed::new).map(e -> (Event) e).orElseGet(Finish::new);
+    sendMessage(competition, event);
+
+    questionId.ifPresent(uuid -> timeoutContinue(competition.getId(), uuid));
+  }
+
+  private boolean allParticipantsAnswered(Competition competition, UUID questionId) {
+    return competition.getQuizAttempts().stream()
+        .allMatch(qa -> quizAttemptContainsQuestion(qa, questionId));
+  }
+
+  @Transactional
+  public void proceedToNextQuestionIfAnyUnanswered(UUID competitionId, UUID currentQuestion)
+      throws CompetitionNotFoundException {
+    entityManager.clear();
+    Competition competition =
+        competitionRepository
+            .findById(competitionId)
+            .orElseThrow(CompetitionNotFoundException::new);
+
+    if (!allParticipantsAnswered(competition, currentQuestion))
+      proceedToNextQuestion(competition, currentQuestion);
+  }
+
+  public void timeoutContinue(UUID competitionId, UUID questionId) {
+    asyncExecution(
+        () -> {
+          try {
+            proceedToNextQuestionIfAnyUnanswered(competitionId, questionId);
+          } catch (CompetitionNotFoundException e) {
+            throw new RuntimeException(e);
+          }
+        },
+        15000);
   }
 
   private boolean quizAttemptContainsQuestion(QuizAttempt quizAttempt, UUID questionId) {
@@ -122,9 +200,7 @@ public class CompetitionService {
             .orElseThrow(CompetitionNotFoundException::new);
     checkUserIsInCompetition(competition, loggedInUser);
 
-    if (competition.getQuizAttempts().stream()
-        .allMatch(qa -> quizAttemptContainsQuestion(qa, questionId))) {
-      sendMessage(competition, Event.PROCEED, 1000);
-    }
+    if (allParticipantsAnswered(competition, questionId))
+      asyncProceedToNextQuestion(competition, questionId, 1000);
   }
 }

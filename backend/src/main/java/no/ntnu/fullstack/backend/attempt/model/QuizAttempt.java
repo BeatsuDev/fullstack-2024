@@ -18,7 +18,7 @@ public class QuizAttempt {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @OneToMany(mappedBy = "quizAttempt")
+  @OneToMany(mappedBy = "quizAttempt", fetch = FetchType.EAGER)
   private List<QuestionAttempt> questionAttempts;
 
   @CreationTimestamp private Date createdAt;

@@ -2,6 +2,11 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import type { PrecompetitionInfo } from "@/api";
 
+export type Event =
+    | { type: "FINISH" }
+    | { type: "PROCEED"; questionId: string }
+    | { type: "JOIN" };
+
 export const useMultiplayerStore = defineStore("multiplayer", () => {
     const multiplayerData = ref<PrecompetitionInfo | null>(null);
 
@@ -11,16 +16,21 @@ export const useMultiplayerStore = defineStore("multiplayer", () => {
     );
     const lobbyCode = ref<number | null>(null);
 
-    function processMessage(message: any): "JOIN" | "PROCEED" | null {
+    function processMessage(message: any): Event | null {
         const data: string = message.body;
-        console.log(multiplayerId.value);
-        if (!data.startsWith(multiplayerId.value!)) return null;
+        const [competitionId, eventName, eventData] = data.split(":");
 
-        const event = data.slice(multiplayerId.value!.toString().length + 1);
-        if (["JOIN", "PROCEED"].includes(event)) {
-            return event as "JOIN" | "PROCEED";
-        } else {
-            return null;
+        if (competitionId !== multiplayerId.value) return null;
+
+        switch (eventName) {
+            case "FINISH":
+                return { type: "FINISH" };
+            case "JOIN":
+                return { type: "JOIN" };
+            case "PROCEED":
+                return { type: "PROCEED", questionId: eventData };
+            default:
+                return null;
         }
     }
 
