@@ -1,14 +1,30 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
+import { useWindowSize } from "@vueuse/core";
 
 import SearchIcon from "@/assets/icons/navbar/SearchIcon.vue";
 import AddIcon from "@/assets/icons/navbar/AddIcon.vue";
 import FolderIcon from "@/assets/icons/navbar/FolderIcon.vue";
 import ProfileIcon from "@/assets/icons/navbar/ProfileIcon.vue";
+
+const { width } = useWindowSize();
+console.log(width.value);
 </script>
 
 <template>
-    <div class="app-app-container">
+    <div
+        class="app-app-container"
+        :style="{
+            overflow: $route.name === 'quizzes' ? 'hidden' : 'auto',
+            'padding-bottom':
+                width < 900
+                    ? '5rem'
+                    : $route.name === 'quizzes'
+                      ? '0'
+                      : '0.25rem',
+            height: $route.name === 'quizzes' ? 'calc(100svh - 4rem)' : '',
+        }"
+    >
         <RouterView />
     </div>
     <nav class="app-navbar">

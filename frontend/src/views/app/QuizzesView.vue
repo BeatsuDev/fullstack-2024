@@ -62,7 +62,10 @@ watch(error, () => {
 
 <style scoped>
 .my-quizzes-container {
+    box-sizing: border-box;
+    height: 100%;
     padding: 1em;
+    overflow: auto;
 }
 
 .my-quizzes-container h1 {
