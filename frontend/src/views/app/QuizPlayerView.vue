@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { AttemptApi, type AnswerDTO } from "@/api";
-import { usePromise, useExecutablePromise } from "@/composables/promise";
+import { computed, ref } from "vue";
+import { type AnswerDTO, AttemptApi } from "@/api";
+import { useExecutablePromise, usePromise } from "@/composables/promise";
 import { useNotificationStore } from "@/stores/notification";
 import { useMultiplayerStore } from "@/stores/multiplayer";
 import router from "@/router";
@@ -19,21 +19,21 @@ const {
     error,
 } = router.currentRoute.value.query?.attemptId
     ? usePromise(
-          attemptApi
-              .getQuizAttempt(
-                  router.currentRoute.value.params.id as string,
-                  router.currentRoute.value.query.attemptId as string
-              )
-              .then((r) => {
-                  setQuestionNumberFromQuery();
-                  return r;
-              })
-      )
+        attemptApi
+            .getQuizAttempt(
+                router.currentRoute.value.params.id as string,
+                router.currentRoute.value.query.attemptId as string,
+            )
+            .then((r) => {
+                setQuestionNumberFromQuery();
+                return r;
+            }),
+    )
     : usePromise(
-          attemptApi.attemptQuiz(
-              (router.currentRoute.value.params.id as unknown as string) ?? ""
-          )
-      );
+        attemptApi.attemptQuiz(
+            (router.currentRoute.value.params.id as unknown as string) ?? "",
+        ),
+    );
 
 if (!router.currentRoute.value.query.attemptId) {
     multiplayerStore.reset();
@@ -41,7 +41,7 @@ if (!router.currentRoute.value.query.attemptId) {
 
 const questionNumber = ref(0);
 const currentQuestion = computed(
-    () => response.value?.data.quiz!.questions[questionNumber.value] ?? null
+    () => response.value?.data.quiz!.questions[questionNumber.value] ?? null,
 );
 const currentQuiz = computed(() => response.value?.data ?? null);
 const currentAttemptId = computed(() => response.value?.data.id ?? null);
@@ -51,10 +51,11 @@ const { execute: executeSubmitAnswer, error: submitError } =
     useExecutablePromise(
         async (...args: Parameters<typeof attemptApi.submitAnswer>) => {
             return await attemptApi.submitAnswer(...args);
-        }
+        },
     );
 
 const showResults = ref(false);
+
 async function submitAnswer(answer: string) {
     if (currentQuiz.value == null) return;
     if (currentQuestion.value == null) return;
@@ -68,7 +69,7 @@ async function submitAnswer(answer: string) {
         } as AnswerDTO,
         router.currentRoute.value.params.id as string,
         currentAttemptId.value,
-        multiplayerStore.multiplayerId
+        multiplayerStore.multiplayerId,
     );
 
     submitPromise
@@ -152,9 +153,9 @@ function setQuestionNumber(questionId: string) {
 
     if (countdownInterval) clearInterval(countdownInterval);
     countdown.value = 20;
-    countdownInterval = setInterval( 
+    countdownInterval = setInterval(
         () => countdown.value && --countdown.value,
-        1000
+        1000,
     );
 }
 
@@ -176,11 +177,15 @@ function finishQuiz() {
     if (lobbyCode) {
         router.push({
             name: "quiz-complete",
-            query: { lobby: lobbyCode },
+            query: { lobby: lobbyCode, id: currentQuiz.value.id },
         });
         return;
     }
-    router.push({ name: "quiz-complete" });
+    router.push({
+        name: "quiz-complete",
+
+        query: { id: currentQuiz.value.id },
+    });
 }
 </script>
 

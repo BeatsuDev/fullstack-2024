@@ -4,7 +4,7 @@ import { useMultiplayerStore } from "@/stores/multiplayer";
 import router from "@/router";
 import LobbyResult from "@/components/LobbyResult.vue";
 
-const quizId = router.currentRoute.value.params.id as string;
+const quizId = router.currentRoute.value.query.id as string | undefined;
 
 // Multiplayer
 const multiplayerStore = useMultiplayerStore();
@@ -22,13 +22,10 @@ multiplayerStore.reset();
                 v-if="quizId"
                 large
                 @click="
-                    router.push({
-                        name: 'quiz-attempts',
-                        params: { id: quizId },
-                    })
+                    router.push('quizzes/' + quizId + '/results')
                 "
             >
-                View your past attempts on this quiz
+                See results
             </ButtonComponent>
             <ButtonComponent
                 v-if="quizId"
