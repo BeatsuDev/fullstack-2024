@@ -49,14 +49,14 @@ console.log(width.value);
             Create Quiz</a
         >
         <a
-            @click="() => $router.push({ name: 'quizzes' })"
+            @click="() => $router.push({ name: 'lobby-chooser' })"
             class="icon-navigation"
             :class="{
                 'active-route': $route.name === 'quizzes',
             }"
         >
             <FolderIcon />
-            My Quizzes</a
+            Join lobby</a
         >
         <a
             @click="() => $router.push({ name: 'profile' })"

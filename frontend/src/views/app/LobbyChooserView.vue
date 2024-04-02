@@ -66,6 +66,7 @@ async function joinLobby() {
 
 <template>
     <div class="lobby-chooser-container">
+        <h3>Join lobby</h3>
         <input v-model="lobbyCode" type="text" placeholder="123456" />
         <ButtonComponent large @click="joinLobby"> Join Lobby </ButtonComponent>
     </div>
@@ -77,6 +78,7 @@ async function joinLobby() {
     justify-content: center;
     align-items: center;
     height: 100%;
+    flex-direction: column;
 }
 
 input {
