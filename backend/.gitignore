@@ -5,6 +5,7 @@ database
 **/src/main/**/target/
 **/src/test/**/target/
 uploads/images/**
+!uploads/images/.gitkeep
 
 ### STS ###
 .apt_generated
