@@ -9,6 +9,7 @@
         </div>
     </div>
 </template>
+
 <script lang="ts" setup>
 import type { Feedback } from "../api/models/feedback";
 
@@ -16,6 +17,7 @@ const props = defineProps<{
     feedback: Feedback;
 }>();
 </script>
+
 <style scoped>
 .feedback-item {
     background-color: var(--color-background-mute);
