@@ -387,7 +387,7 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: competitionId
+        - name: competition
           description: The ID of a competition (if any)
           in: query
           required: false
