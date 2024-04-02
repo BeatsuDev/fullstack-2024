@@ -30,7 +30,7 @@ const cardStyles = computed(() => {
 //take from https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
 const stringToColour = (str: string) => {
     let hash = 0;
-    str.split("").forEach(char => {
+    str.split("").forEach((char) => {
         hash = char.charCodeAt(0) + ((hash << 5) - hash);
     });
     let colour = "#";
@@ -40,15 +40,11 @@ const stringToColour = (str: string) => {
     }
     return colour;
 };
-
 </script>
 
 <template>
     <a class="quiz-overview-card" @click="onQuizCardClick(quiz)">
-        <div
-            class="quiz-card-banner"
-            :style="cardStyles"
-        ></div>
+        <div class="quiz-card-banner" :style="cardStyles"></div>
         <div class="quiz-card-content">
             <div class="quiz-card-categories">
                 <div

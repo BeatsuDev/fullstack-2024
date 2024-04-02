@@ -42,7 +42,7 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
 
             const totalCorrectOnAttempt = attempt.questionAttempts
                 .map((questionAttempt) => {
-                    return questionAttempt.correct ? 1 : 0;
+                    return (questionAttempt.correct ? 1 : 0) as number;
                 })
                 .reduce((acc, val) => acc + val, 0);
             chartData.datasets[0].data.push(totalCorrectOnAttempt);
@@ -89,7 +89,7 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
         data.value.data?.forEach((attempt: QuizAttempt) => {
             const totalCorrectOnAttempt = attempt.questionAttempts
                 .map((questionAttempt) => {
-                    return questionAttempt.correct ? 1 : 0;
+                    return (questionAttempt.correct ? 1 : 0) as number;
                 })
                 .reduce((acc, val) => acc + val, 0);
 
@@ -109,7 +109,7 @@ export default function useQuizAttempt(revisionId: Ref<string>) {
 
         return bestAttempt.value.questionAttempts
             ?.map((questionAttempt) => {
-                return questionAttempt.correct ? 1 : 0;
+                return (questionAttempt.correct ? 1 : 0) as number;
             })
             .reduce((acc, val) => acc + val, 0);
     });

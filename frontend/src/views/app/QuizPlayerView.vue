@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { AttemptApi, type AnswerDTO, CompetitionApi } from "@/api";
+import { AttemptApi, type AnswerDTO } from "@/api";
 import { usePromise, useExecutablePromise } from "@/composables/promise";
 import { useNotificationStore } from "@/stores/notification";
 import { useMultiplayerStore } from "@/stores/multiplayer";
@@ -45,7 +45,7 @@ const currentQuestion = computed(
 );
 const currentQuiz = computed(() => response.value?.data ?? null);
 const currentAttemptId = computed(() => response.value?.data.id ?? null);
-const isMultiplayer = computed(() => multiplayerStore.multiplayerData != null);
+const isMultiplayer = computed(() => multiplayerStore.lobby != null);
 
 const { execute: executeSubmitAnswer, error: submitError } =
     useExecutablePromise(
@@ -108,9 +108,7 @@ const stompClient = new Client({
     brokerURL: "ws://localhost:8080/competition-ws",
     onConnect: () => {
         stompClient.subscribe("/competition", (message: any) => {
-            console.log(message);
             const data = multiplayerStore.processMessage(message);
-            console.log(data);
             if (!data) return;
 
             switch (data.type) {
@@ -141,7 +139,7 @@ function goToNextQuestion() {
     }
 }
 
-let countdownInterval = null as NodeJS.Timeout | null;
+let countdownInterval = null as number | null;
 const countdown = ref(undefined as number | undefined);
 
 function setQuestionNumber(questionId: string) {
@@ -154,7 +152,7 @@ function setQuestionNumber(questionId: string) {
 
     if (countdownInterval) clearInterval(countdownInterval);
     countdown.value = 15;
-    countdownInterval = setInterval(
+    countdownInterval = setInterval( 
         () => countdown.value && --countdown.value,
         1000
     );

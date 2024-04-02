@@ -25,7 +25,10 @@ const {
     execute: executeSearch,
     error,
     loading: quizFetchLoading,
-} = useExecutablePromise(async (...args: Parameters<typeof quizApi.getQuizzes>) => await quizApi.getQuizzes(...args));
+} = useExecutablePromise(
+    async (...args: Parameters<typeof quizApi.getQuizzes>) =>
+        await quizApi.getQuizzes(...args)
+);
 
 const quizFetchLoadingDebounced = useDebounceLoading(quizFetchLoading, 200);
 
@@ -44,7 +47,7 @@ function searchQuizzes() {
         searchQuery.value,
         filterOptions.minDifficulty,
         filterOptions.maxDifficulty,
-        filterOptions.selectedCategories.map((c) => c.id).join(","),
+        filterOptions.selectedCategories.map((c) => c.id).join(",")
     ).then((response) => {
         foundQuizzes.value = [...response.data];
     });
@@ -59,7 +62,7 @@ executeSearch(
     searchQuery.value,
     filterOptions.minDifficulty,
     filterOptions.maxDifficulty,
-    filterOptions.selectedCategories.map((c) => c.id).join(","),
+    filterOptions.selectedCategories.map((c) => c.id).join(",")
 ).then((response) => {
     foundQuizzes.value = [...response.data];
 });
@@ -79,8 +82,7 @@ function toggleFiltersWindow() {
                 class="toggle-filters"
                 @click="toggleFiltersWindow"
             >
-                <FilterIcon
-                />
+                <FilterIcon />
             </ButtonComponent>
             <input
                 type="text"
@@ -104,18 +106,15 @@ function toggleFiltersWindow() {
         </div>
         <main class="found-quizzes-container">
             <AlertComponent v-if="quizFetchLoadingDebounced" type="info"
-            >Loading...
-            </AlertComponent
-            >
-            <AlertComponent v-else-if="error" type="danger">{{
-                    errorMessage
-                }}
+                >Loading...
+            </AlertComponent>
+            <AlertComponent v-else-if="error" type="danger"
+                >{{ errorMessage }}
             </AlertComponent>
             <div v-else-if="foundQuizzes == undefined"></div>
             <AlertComponent v-else-if="foundQuizzes.length === 0" type="warning"
-            >No quizzes found.
-            </AlertComponent
-            >
+                >No quizzes found.
+            </AlertComponent>
             <QuizGrid v-else :quizzes="foundQuizzes" />
         </main>
     </div>

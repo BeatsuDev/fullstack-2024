@@ -21,7 +21,10 @@ public abstract class AttemptMapper {
 
   public abstract QuestionAttemptDTO toQuestionAttemptDTO(QuestionAttempt question);
 
-  public abstract List<QuestionAttemptDTO> toQuestionAttemptDTOs(List<QuestionAttempt> questions);
+  public List<QuestionAttemptDTO> toQuestionAttemptDTOs(List<QuestionAttempt> questions) {
+    if (questions == null) return List.of();
+    return questions.stream().map(this::toQuestionAttemptDTO).toList();
+  }
 
   @Mappings({
     @Mapping(target = "id", source = "id"),
@@ -30,5 +33,8 @@ public abstract class AttemptMapper {
   })
   public abstract QuizAttemptDTO toQuizAttemptDTO(QuizAttempt attempt);
 
-  public abstract List<QuizAttemptDTO> toQuizAttemptDTOs(List<QuizAttempt> attempts);
+  public List<QuizAttemptDTO> toQuizAttemptDTOs(List<QuizAttempt> attempts) {
+    if (attempts == null) return List.of();
+    return attempts.stream().map(this::toQuizAttemptDTO).toList();
+  }
 }

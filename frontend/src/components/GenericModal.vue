@@ -1,6 +1,6 @@
 <template>
     <dialog ref="dialog" @close="close" @abort="close">
-        <div @click="close" class="close-button"> </div>
+        <div @click="close" class="close-button"></div>
         <h3>{{ props.title }}</h3>
         <slot></slot>
     </dialog>

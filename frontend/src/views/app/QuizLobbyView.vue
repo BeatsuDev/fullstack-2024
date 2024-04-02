@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { User } from "@/api";
-import { AvatarGenerator } from "random-avatar-generator";
 import { useAuthenticationStore } from "@/stores/authentication";
 import router from "@/router";
 import { useNotificationStore } from "@/stores/notification";
@@ -11,7 +10,6 @@ import { useMultiplayerStore } from "@/stores/multiplayer";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
 import { Client } from "@stomp/stompjs";
-import UserResultCard from "@/components/UserResultCard.vue";
 import LobbyResult from "@/components/LobbyResult.vue";
 
 const multiplayerStore = useMultiplayerStore();
@@ -26,22 +24,18 @@ const stompClient = new Client({
         stompClient.subscribe("/competition", (message: any) => {
             const data = multiplayerStore.processMessage(message);
             if (!data) return;
-
             switch (data.type) {
                 case "JOIN":
-                    updateLobby();
+                case "FINISH":
                     break;
                 case "PROCEED": {
-                    const attemptId =
-                        multiplayerStore.multiplayerData?.competition.competitors
-                            .filter(
-                                (competitor) =>
-                                    competitor.user.id === currentUser.id
-                            )
-                            .map((competitor) => competitor.attempt.id)[0];
+                    const attemptId = multiplayerStore.players
+                        .filter((player) => player.user.id === currentUser.id)
+                        .map((player) => player.attempt.id)[0];
                     const quizId =
-                        multiplayerStore.multiplayerData?.competition
-                            .competitors[0].attempt.quiz?.id;
+                        multiplayerStore.lobby?.competitors[0].attempt.quiz?.id;
+                    console.log("PROCEED");
+                    console.log(multiplayerStore.lobby);
                     const questionId = data.questionId;
 
                     router.push({
@@ -51,8 +45,6 @@ const stompClient = new Client({
                     });
                     break;
                 }
-                case "FINISH":
-                    break;
                 default:
                     return data satisfies never;
             }
@@ -66,51 +58,23 @@ onMounted(async () => {
         return;
     }
 
+    let lobbyCodeParam = router.currentRoute.value.params.lobbyCode;
+    if (Array.isArray(lobbyCodeParam)) lobbyCodeParam = lobbyCodeParam[0];
+    const lobbyCode = parseInt(lobbyCodeParam);
+    await multiplayerStore.joinCompetition(lobbyCode);
+
     useNotificationStore().addNotification({
-        message: `${currentUser.name} joined lobby ${lobbyCode.value}!`,
+        message: `${currentUser.name} joined lobby ${multiplayerStore.lobbyCode}!`,
         type: "info",
     });
-
-    const lobbyCodeParams = router.currentRoute.value.params.lobbyCode;
-    multiplayerStore.lobbyCode = Array.isArray(lobbyCodeParams)
-        ? Number(lobbyCodeParams[0])
-        : Number(lobbyCodeParams);
-
-    const response = await multiplayerApi.joinCompetition(
-        multiplayerStore.lobbyCode
-    );
-    multiplayerStore.multiplayerData = response.data;
     stompClient.activate();
 });
 
-// Backend call stuffz
 const multiplayerApi = new CompetitionApi();
 const { execute: executeStartGame } = useExecutablePromise(
     async (...args: Parameters<typeof multiplayerApi.startCompetition>) =>
         multiplayerApi.startCompetition(...args)
 );
-
-const { execute: executeUpdateLobby } = useExecutablePromise(
-    async (...args: Parameters<typeof multiplayerApi.getCompetition>) => {
-        const response = await multiplayerApi.getCompetition(...args);
-        multiplayerStore.multiplayerData = {
-            competitionId: multiplayerStore.multiplayerId!,
-            competition: response.data,
-        };
-    }
-);
-
-function updateLobby() {
-    if (!multiplayerStore.lobbyCode) {
-        useNotificationStore().addNotification({
-            message: "Could not update the lobby. The lobby code was missing.",
-            type: "error",
-        });
-        router.push({ name: "lobby-chooser" });
-    } else {
-        executeUpdateLobby(multiplayerStore.lobbyCode);
-    }
-}
 
 async function startGame() {
     const lobbyCode = multiplayerStore.lobbyCode;
