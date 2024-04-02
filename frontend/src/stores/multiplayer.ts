@@ -24,7 +24,13 @@ export const useMultiplayerStore = defineStore("multiplayer", () => {
         }
     }
 
+    function reset() {
+        multiplayerData.value = null;
+        lobbyCode.value = null;
+    }
+
     return {
+        reset,
         processMessage,
         multiplayerData,
         multiplayerId,

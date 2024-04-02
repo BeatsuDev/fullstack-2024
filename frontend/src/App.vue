@@ -5,6 +5,8 @@ import NotificationsContainer from "@/components/NotificationsContainer.vue";
 import { useAuthenticationStore } from "./stores/authentication";
 import { useNotificationStore } from "./stores/notification";
 
+import mascotImg from "./assets/mascot.png";
+
 import router from "./router";
 
 const authenticationStore = useAuthenticationStore();
@@ -32,6 +34,7 @@ function logout(): void {
     <header>
         <nav id="navigation-bar">
             <a @click="router.push({ name: 'home' })" id="company-name">
+                <img :src="mascotImg" alt="Kazoot mascot" height="33" />
                 Kazoot
             </a>
             <div id="routes">
@@ -89,6 +92,9 @@ function logout(): void {
     color: white;
     cursor: pointer;
     user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 #routes > a {
