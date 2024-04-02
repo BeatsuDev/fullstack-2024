@@ -1,5 +1,6 @@
 <template>
     <dialog ref="dialog" @close="close" @abort="close">
+        <div @click="close" class="close-button"> </div>
         <h3>{{ props.title }}</h3>
         <slot></slot>
     </dialog>
@@ -43,6 +44,19 @@ dialog {
     padding: 1rem;
     border-radius: 5px;
     border: 0;
+}
+
+.close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.close-button::before {
+    content: "✕";
 }
 
 dialog::backdrop {

@@ -32,7 +32,7 @@ onMounted(() => {
 <template>
     <main class="profile-page-container">
         <div class="card" style="margin-top: 5rem">
-            <h1>Edit your profile</h1>
+            <h3>Edit your profile</h3>
             <p>Change your user information here.</p>
 
             <form id="change-values-container" @submit.prevent="">
