@@ -1,6 +1,7 @@
 package no.ntnu.fullstack.backend.question;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.image.ImageMapper;
@@ -30,6 +31,13 @@ public abstract class QuestionMapper {
 
   @Mappings({@Mapping(source = "questionId", target = "id")})
   public abstract QuestionDTO toDTO(Question question);
+
+  public List<QuestionDTO> toDTO(List<Question> questions) {
+    return questions.stream()
+        .sorted(Comparator.comparingInt(Question::getSequenceNumber))
+        .map(this::toDTO)
+        .toList();
+  }
 
   public abstract Question fromDTO(QuestionCreateDTO questionCreateDTO);
 }

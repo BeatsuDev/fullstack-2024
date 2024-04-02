@@ -23,7 +23,9 @@ public class Competition {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID id;
 
-  @OneToMany private List<QuizAttempt> quizAttempts;
+  @OneToMany(fetch = FetchType.EAGER)
+  private List<QuizAttempt> quizAttempts;
+
   @CreationTimestamp private Date created;
   @ManyToOne private Revision revision;
   private Boolean started = false;

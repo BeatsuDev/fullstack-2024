@@ -10,6 +10,7 @@ import { BASE_PATH } from "@/api/base";
 
 const props = defineProps<{
     question: Question;
+    countdown: number | undefined;
 }>();
 
 const emit = defineEmits<{
@@ -26,6 +27,16 @@ watch(questionType, (newVal) => {
 <template>
     <div class="question-player-container">
         <div class="question-container">
+            <h2
+                v-if="countdown !== undefined"
+                :class="{
+                    countdown: true,
+                    countdownUrgent: countdown <= 10,
+                    countdownVital: countdown <= 5,
+                }"
+            >
+                {{ countdown.toString().padStart(2, "0") }}
+            </h2>
             <h2>Question: {{ question.question }}</h2>
             <div class="media-container">
                 <img
@@ -85,5 +96,27 @@ watch(questionType, (newVal) => {
 
 .media-container > .placeholder-media {
     background-color: red;
+}
+
+.countdown {
+    position: absolute;
+    top: 4rem;
+    right: 3.5rem;
+    font-size: 5rem;
+    border-radius: 10%;
+    padding: 1rem 1.5rem;
+    background-color: var(--primary-700);
+    color: var(--white-300);
+
+    text-align: right;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.countdownUrgent {
+    color: var(--warning-200);
+}
+
+.countdownVital {
+    background-color: var(--error-500) !important;
 }
 </style>

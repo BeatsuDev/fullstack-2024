@@ -33,14 +33,13 @@ const stompClient = new Client({
     onConnect: () => {
         stompClient.subscribe("/competition", (message: any) => {
             const data = multiplayerStore.processMessage(message);
+            if (!data) return;
 
-            switch (data) {
+            switch (data.type) {
                 case "JOIN":
                     updateLobby();
                     break;
                 case "PROCEED": {
-                    stompClient.deactivate();
-
                     const attemptId =
                         multiplayerStore.multiplayerData?.competition.competitors
                             .filter(
@@ -51,16 +50,19 @@ const stompClient = new Client({
                     const quizId =
                         multiplayerStore.multiplayerData?.competition
                             .competitors[0].attempt.quiz?.id;
+                    const questionId = data.questionId;
 
                     router.push({
                         name: "quiz-player",
                         params: { id: quizId },
-                        query: { attemptId },
+                        query: { attemptId, questionId },
                     });
                     break;
                 }
-                case null:
+                case "FINISH":
                     break;
+                default:
+                    return data satisfies never;
             }
         });
     },
