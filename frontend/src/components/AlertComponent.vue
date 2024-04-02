@@ -8,7 +8,7 @@
 import { computed } from "vue";
 
 const props = defineProps<{
-    type: string;
+    type: "info" | "warning" | "danger";
 }>();
 
 const alertType = computed(() => {

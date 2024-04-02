@@ -104,10 +104,16 @@ function toggleFiltersWindow() {
             </div>
         </div>
         <main class="found-quizzes-container">
-            <AlertComponent v-if="quizFetchLoadingDebounced" type="info">Loading...</AlertComponent>
-            <AlertComponent v-else-if="error" type="danger">{{ errorMessage }}</AlertComponent>
+            <AlertComponent v-if="quizFetchLoadingDebounced" type="info"
+                >Loading...</AlertComponent
+            >
+            <AlertComponent v-else-if="error" type="danger">{{
+                errorMessage
+            }}</AlertComponent>
             <div v-else-if="foundQuizzes == undefined"></div>
-            <AlertComponent v-else-if="foundQuizzes.length === 0" type="warning">No quizzes found.</AlertComponent>
+            <AlertComponent v-else-if="foundQuizzes.length === 0" type="warning"
+                >No quizzes found.</AlertComponent
+            >
             <QuizGrid v-else :quizzes="foundQuizzes" />
         </main>
     </div>
