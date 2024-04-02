@@ -28,6 +28,9 @@ const {
               (router.currentRoute.value.params.id as unknown as string) ?? ""
           )
       );
+if (!router.currentRoute.value.query.attemptId) {
+    multiplayerStore.$reset();
+}
 
 const questionNumber = ref(0);
 const currentQuestion = computed(
