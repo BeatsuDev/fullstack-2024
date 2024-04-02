@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import FilterOptions from "@/components/FilterOptions.vue";
@@ -9,6 +9,7 @@ import type { QuizOverview, Category } from "@/api";
 import { QuizApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
 import AlertComponent from "@/components/AlertComponent.vue";
+import useDebounceLoading from "@/composables/useDebounceLoading";
 
 //
 const filterOptions = reactive({
@@ -29,6 +30,15 @@ const {
         await quizApi.getQuizzes(...args)
 );
 
+const quizFetchLoadingDebounced = useDebounceLoading(quizFetchLoading, 200);
+
+const errorMessage = computed(() => {
+    if (!error.value) return "";
+    if (error.value.response?.status === 404) return "No quizzes found.";
+    if (error.value.response?.status === 400) return "Invalid search query.";
+    return "Failed to search for quizzes.";
+});
+
 function searchQuizzes() {
     filtersWindowOpen.value = false;
     executeSearch(
@@ -37,14 +47,14 @@ function searchQuizzes() {
         searchQuery.value,
         filterOptions.minDifficulty,
         filterOptions.maxDifficulty,
-        filterOptions.selectedCategories
+        filterOptions.selectedCategories.map((c) => c.id).join(",")
     ).then((response) => {
         foundQuizzes.value = [...response.data];
     });
 }
 
 // Quizzes
-const foundQuizzes = ref<QuizOverview[]>([]);
+const foundQuizzes = ref<QuizOverview[] | undefined>();
 
 executeSearch(
     50,
@@ -52,7 +62,7 @@ executeSearch(
     searchQuery.value,
     filterOptions.minDifficulty,
     filterOptions.maxDifficulty,
-    filterOptions.selectedCategories
+    filterOptions.selectedCategories.map((c) => c.id).join(",")
 ).then((response) => {
     foundQuizzes.value = [...response.data];
 });
@@ -94,13 +104,10 @@ function toggleFiltersWindow() {
             </div>
         </div>
         <main class="found-quizzes-container">
-            <div v-if="quizFetchLoading">Loading...</div>
-            <AlertComponent v-else-if="error" type="error">{{
-                error
-            }}</AlertComponent>
-            <AlertComponent v-else-if="foundQuizzes.length === 0" type="warning"
-                >No quizzes found.</AlertComponent
-            >
+            <AlertComponent v-if="quizFetchLoadingDebounced" type="info">Loading...</AlertComponent>
+            <AlertComponent v-else-if="error" type="danger">{{ errorMessage }}</AlertComponent>
+            <div v-else-if="foundQuizzes == undefined"></div>
+            <AlertComponent v-else-if="foundQuizzes.length === 0" type="warning">No quizzes found.</AlertComponent>
             <QuizGrid v-else :quizzes="foundQuizzes" />
         </main>
     </div>
@@ -142,15 +149,5 @@ function toggleFiltersWindow() {
 .found-quizzes-container {
     padding: 1em;
     max-height: 100%;
-}
-
-.v-enter-active,
-.v-leave-active {
-    transition: transform 150ms cubic-bezier(0.85, 0, 0.15, 1);
-}
-
-.v-enter-from,
-.v-leave-to {
-    transform: translateY(-100%);
 }
 </style>
