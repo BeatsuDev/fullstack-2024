@@ -16,6 +16,7 @@ multiplayerStore.reset();
     <div class="quiz-complete-container">
         Wow! You completed the quiz! Great job!
 
+        <LobbyResult results />
         <div class="buttons">
             <ButtonComponent
                 v-if="quizId"

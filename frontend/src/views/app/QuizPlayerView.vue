@@ -185,7 +185,7 @@ function finishQuiz() {
 </script>
 
 <template>
-    <LobbyResult v-if="showResults" />
+    <LobbyResult v-if="showResults" results />
     <div class="player-container" v-else-if="loading">Loading...</div>
     <div class="player-container" v-else-if="error">{{ error }}</div>
     <div class="player-container" v-else-if="response">
