@@ -155,11 +155,11 @@ export const AttemptApiAxiosParamCreator = function (configuration?: Configurati
          * @param {AnswerDTO} body 
          * @param {string} id The ID of a quiz
          * @param {string} quizAttempt The ID of a quiz attempt
-         * @param {string} [competitionId] The ID of a competition (if any)
+         * @param {string} [competition] The ID of a competition (if any)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        submitAnswer: async (body: AnswerDTO, id: string, quizAttempt: string, competitionId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        submitAnswer: async (body: AnswerDTO, id: string, quizAttempt: string, competition?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
                 throw new RequiredError('body','Required parameter body was null or undefined when calling submitAnswer.');
@@ -185,8 +185,8 @@ export const AttemptApiAxiosParamCreator = function (configuration?: Configurati
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (competitionId !== undefined) {
-                localVarQueryParameter['competitionId'] = competitionId;
+            if (competition !== undefined) {
+                localVarQueryParameter['competition'] = competition;
             }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -263,12 +263,12 @@ export const AttemptApiFp = function(configuration?: Configuration) {
          * @param {AnswerDTO} body 
          * @param {string} id The ID of a quiz
          * @param {string} quizAttempt The ID of a quiz attempt
-         * @param {string} [competitionId] The ID of a competition (if any)
+         * @param {string} [competition] The ID of a competition (if any)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async submitAnswer(body: AnswerDTO, id: string, quizAttempt: string, competitionId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<QuestionAttempt>>> {
-            const localVarAxiosArgs = await AttemptApiAxiosParamCreator(configuration).submitAnswer(body, id, quizAttempt, competitionId, options);
+        async submitAnswer(body: AnswerDTO, id: string, quizAttempt: string, competition?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<QuestionAttempt>>> {
+            const localVarAxiosArgs = await AttemptApiAxiosParamCreator(configuration).submitAnswer(body, id, quizAttempt, competition, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -316,12 +316,12 @@ export const AttemptApiFactory = function (configuration?: Configuration, basePa
          * @param {AnswerDTO} body 
          * @param {string} id The ID of a quiz
          * @param {string} quizAttempt The ID of a quiz attempt
-         * @param {string} [competitionId] The ID of a competition (if any)
+         * @param {string} [competition] The ID of a competition (if any)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async submitAnswer(body: AnswerDTO, id: string, quizAttempt: string, competitionId?: string, options?: AxiosRequestConfig): Promise<AxiosResponse<QuestionAttempt>> {
-            return AttemptApiFp(configuration).submitAnswer(body, id, quizAttempt, competitionId, options).then((request) => request(axios, basePath));
+        async submitAnswer(body: AnswerDTO, id: string, quizAttempt: string, competition?: string, options?: AxiosRequestConfig): Promise<AxiosResponse<QuestionAttempt>> {
+            return AttemptApiFp(configuration).submitAnswer(body, id, quizAttempt, competition, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -369,12 +369,12 @@ export class AttemptApi extends BaseAPI {
      * @param {AnswerDTO} body 
      * @param {string} id The ID of a quiz
      * @param {string} quizAttempt The ID of a quiz attempt
-     * @param {string} [competitionId] The ID of a competition (if any)
+     * @param {string} [competition] The ID of a competition (if any)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AttemptApi
      */
-    public async submitAnswer(body: AnswerDTO, id: string, quizAttempt: string, competitionId?: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<QuestionAttempt>> {
-        return AttemptApiFp(this.configuration).submitAnswer(body, id, quizAttempt, competitionId, options).then((request) => request(this.axios, this.basePath));
+    public async submitAnswer(body: AnswerDTO, id: string, quizAttempt: string, competition?: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<QuestionAttempt>> {
+        return AttemptApiFp(this.configuration).submitAnswer(body, id, quizAttempt, competition, options).then((request) => request(this.axios, this.basePath));
     }
 }
