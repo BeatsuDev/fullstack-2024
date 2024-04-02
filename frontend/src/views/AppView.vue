@@ -111,7 +111,7 @@ console.log(width.value);
 
 @media (max-width: 900px) {
     .app-app-container {
-        padding-bottom: 5rem;
+        margin-bottom: 4rem;
     }
 
     .icon-navigation {
