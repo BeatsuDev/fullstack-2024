@@ -33,7 +33,7 @@
                 filled
                 block
                 style="margin-top: 10px"
-                >Remove image
+            >Remove image
             </ButtonComponent>
         </div>
         <div
@@ -56,7 +56,6 @@
                     v-model="editable.options[index]"
                     :id="`option-${index}`"
                     style="margin-bottom: 0.5rem"
-                    :validator="v$.question"
                     placeholder="Enter the option here"
                 />
                 <input type="radio" v-model="selectedOption" :value="index" />
@@ -66,7 +65,7 @@
                 v-if="editable?.options?.length < 4"
                 style="margin-top: 20px"
                 block
-                >Add option
+            >Add option
             </ButtonComponent>
         </div>
         <div v-else-if="questionType == QuestionTypes.TEXT">
@@ -79,23 +78,20 @@
             />
         </div>
         <ButtonComponent filled block style="margin-top: 3rem" @click="submit"
-            >Submit
+        >Submit
         </ButtonComponent>
+        <div style="color: var(--error-500); margin-top: 1rem;" v-if="error"> {{error}}</div>
     </form>
 </template>
 <script lang="ts" setup>
-import { defineProps, ref, watchEffect } from "vue";
+import {  defineProps, ref, watchEffect } from "vue";
 import { type Question } from "../api/models/question";
 import useVuelidate from "@vuelidate/core";
 import ValidatedInput from "./ValidatedInput.vue";
 import ButtonComponent from "./ButtonComponent.vue";
 import { required } from "@vuelidate/validators";
 import { type Image, type QuestionCreate } from "@/api";
-import {
-    getReadableQuestionType,
-    QuestionTypes,
-    removeFieldsNotInType,
-} from "@/composables/useQuestionType";
+import { getReadableQuestionType, QuestionTypes, removeFieldsNotInType } from "@/composables/useQuestionType";
 import SelectComponent from "@/components/SelectComponent.vue";
 import { useNotificationStore } from "@/stores/notification";
 import axios from "axios";
@@ -116,7 +112,7 @@ const editable = ref<Question | QuestionCreate>(
         question: "",
         options: [""],
         answer: "",
-    }
+    },
 );
 
 watchEffect(() => {
@@ -137,8 +133,14 @@ const formRules = {
 };
 
 const v$ = useVuelidate(formRules, editable);
+
+const error = ref("");
 async function submit() {
     if (!(await v$.value.$validate())) {
+        return;
+    }
+    error.value = optionsValidator();
+    if (error.value) {
         return;
     }
     if (questionType.value == QuestionTypes.MULTIPLE) {
@@ -155,6 +157,20 @@ async function submit() {
 
 function addAnswer() {
     editable.value?.options.push("");
+}
+
+function optionsValidator()  {
+    if (questionType.value == QuestionTypes.MULTIPLE) {
+        const empty = editable.value.options.filter((option) => option.trim() == "");
+        if  (empty.length > 0) {
+            return "Some options are empty";
+        }
+    } else if (questionType.value == QuestionTypes.TEXT) {
+        if (!editable.value.answer) {
+            return "Answer is empty"
+        }
+    }
+    return "";
 }
 
 const notificationStore = useNotificationStore();

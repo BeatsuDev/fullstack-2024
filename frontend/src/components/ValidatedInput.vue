@@ -10,7 +10,7 @@ type ParameterValidator = {
 const model = defineModel<string>();
 const props = defineProps<{
     id: string;
-    validator: ParameterValidator;
+    validator?: ParameterValidator;
     type?: string;
     label?: string;
     class?: string;
@@ -24,12 +24,12 @@ const props = defineProps<{
         <input
             :type="type"
             :id="id"
-            :class="{ 'border-red': validator.$errors.length }"
-            @input="validator.$reset()"
-            @focusout="validator.$validate()"
+            :class="{ 'border-red': validator?.$errors.length }"
+            @input="validator?.$reset()"
+            @focusout="validator?.$validate()"
             v-model="model"
         />
-        <span v-if="validator.$errors.length" class="error-message">{{
+        <span v-if="validator?.$errors?.length" class="error-message">{{
             validator.$errors[0].$message
         }}</span>
     </div>
