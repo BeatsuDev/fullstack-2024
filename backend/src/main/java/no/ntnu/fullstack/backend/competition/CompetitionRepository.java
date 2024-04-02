@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface CompetitionRepository extends JpaRepository<Competition, UUID> {
-  @Query("SELECT c FROM Competition c WHERE c.joinCode = :joinCode AND c.started = false")
+  @Query("SELECT c FROM Competition c WHERE c.joinCode = :joinCode")
   Optional<Competition> findByJoinCode(@Param("joinCode") int joinCode);
 }
