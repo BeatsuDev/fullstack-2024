@@ -100,7 +100,7 @@ const { execute: executeUpdateLobby } = useExecutablePromise(
     async (...args: Parameters<typeof multiplayerApi.getCompetition>) => {
         const response = await multiplayerApi.getCompetition(...args);
         multiplayerStore.multiplayerData = {
-            competitionId: multiplayerStore.multiplayerId,
+            competitionId: multiplayerStore.multiplayerId!,
             competition: response.data,
         };
     }
