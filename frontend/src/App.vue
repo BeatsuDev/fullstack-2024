@@ -51,14 +51,7 @@ function logout(): void {
     </header>
     <div id="app-container">
         <RouterView v-slot="{ Component: viewComponent, route }">
-            <Transition
-                :name="
-                    (route.meta.transitionName as string | undefined) || 'fade'
-                "
-                mode="out-in"
-            >
-                <Component :is="viewComponent" />
-            </Transition>
+            <Component :is="viewComponent" />
         </RouterView>
         <NotificationsContainer />
     </div>

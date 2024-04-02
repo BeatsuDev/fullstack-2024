@@ -90,7 +90,6 @@ export const useAuthenticationStore = defineStore("authentication", () => {
                 if (router.currentRoute.value.meta?.requiresAuth) {
                     router.push({ name: "login" });
                 }
-                location.reload();
             }
             delete authenticationData.user;
         }
