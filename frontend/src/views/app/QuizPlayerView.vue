@@ -56,7 +56,8 @@ async function submitAnswer(answer: string) {
             answer,
         } as AnswerDTO,
         router.currentRoute.value.params.id as string,
-        currentAttemptId.value
+        currentAttemptId.value,
+        multiplayerStore.multiplayerId
     );
 
     submitPromise
@@ -89,7 +90,9 @@ const stompClient = new Client({
     brokerURL: "ws://localhost:8080/competition-ws",
     onConnect: () => {
         stompClient.subscribe("/competition", (message: any) => {
+            console.log(message);
             const data = multiplayerStore.processMessage(message);
+            console.log(data);
             if (data === "PROCEED") {
                 goToNextQuestion();
             }
