@@ -8,7 +8,6 @@ const quizId = router.currentRoute.value.query.id as string | undefined;
 
 // Multiplayer
 const multiplayerStore = useMultiplayerStore();
-const gameData = multiplayerStore.multiplayerData;
 multiplayerStore.reset();
 </script>
 
