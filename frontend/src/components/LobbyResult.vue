@@ -18,7 +18,11 @@ import { computed } from "vue";
 
 const users = computed(() => {
     const _users = multiplayerStore.lobbyUsers;
-    _users.sort((a, b) => multiplayerStore.calculateScore(b.id) - multiplayerStore.calculateScore(a.id) );
+    _users.sort(
+        (a, b) =>
+            multiplayerStore.calculateScore(b.id) -
+            multiplayerStore.calculateScore(a.id)
+    );
     return _users;
 });
 

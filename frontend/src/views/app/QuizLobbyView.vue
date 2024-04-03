@@ -41,7 +41,11 @@ const stompClient = new Client({
                     router.push({
                         name: "quiz-player",
                         params: { id: quizId },
-                        query: { attemptId, questionId },
+                        query: {
+                            attemptId,
+                            questionId,
+                            lobbyCode: multiplayerStore.lobbyCode,
+                        },
                     });
                     break;
                 }

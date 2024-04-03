@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import { type AnswerDTO, AttemptApi } from "@/api";
+import { type AnswerDTO, AttemptApi, type QuizAttempt } from "@/api";
 import { useExecutablePromise, usePromise } from "@/composables/promise";
 import { useNotificationStore } from "@/stores/notification";
 import { useMultiplayerStore } from "@/stores/multiplayer";
@@ -12,28 +12,59 @@ import LobbyResult from "@/components/LobbyResult.vue";
 import AlertComponent from "@/components/AlertComponent.vue";
 
 const multiplayerStore = useMultiplayerStore();
+const isMultiplayer = computed(() => multiplayerStore.lobby != null);
+const multiplayerInitialLoad = ref(true);
+
 const notificationStore = useNotificationStore();
 const attemptApi = new AttemptApi();
-const {
-    data: response,
-    loading,
-    error,
-} = router.currentRoute.value.query?.attemptId
+
+const quizAttempt = ref<QuizAttempt | undefined>(undefined);
+
+const stompClient = new Client({
+    brokerURL: "ws://localhost:8080/competition-ws",
+    onConnect: () => {
+        stompClient.subscribe("/competition", (message: any) => {
+            const data = multiplayerStore.processMessage(message);
+            if (!data) return;
+
+            switch (data.type) {
+                case "FINISH":
+                    finishQuiz();
+                    break;
+                case "JOIN":
+                    break;
+                case "PROCEED":
+                    hasAnswered.value = false;
+                    setQuestionNumber(data.questionId);
+                    break;
+                default:
+                    data satisfies never;
+            }
+        });
+    },
+});
+
+const { loading, error } = router.currentRoute.value.query?.attemptId
     ? usePromise(
-          attemptApi
-              .getQuizAttempt(
+          (async () => {
+              const response = await attemptApi.getQuizAttempt(
                   router.currentRoute.value.params.id as string,
                   router.currentRoute.value.query.attemptId as string
-              )
-              .then((r) => {
-                  setQuestionNumberFromQuery();
-                  return r;
-              })
+              );
+              quizAttempt.value = response.data;
+              const lobbyCode = router.currentRoute.value.query
+                  .lobbyCode as string;
+              if (!isMultiplayer.value) {
+                  await multiplayerStore.joinCompetition(parseInt(lobbyCode));
+              }
+              stompClient.activate();
+              setQuestionNumberFromQuery();
+          })()
       )
     : usePromise(
-          attemptApi.attemptQuiz(
-              (router.currentRoute.value.params.id as unknown as string) ?? ""
-          )
+          attemptApi
+              .attemptQuiz(router.currentRoute.value.params.id as string)
+              .then((r) => (quizAttempt.value = r.data))
       );
 
 if (!router.currentRoute.value.query.attemptId) {
@@ -42,11 +73,9 @@ if (!router.currentRoute.value.query.attemptId) {
 
 const questionNumber = ref(0);
 const currentQuestion = computed(
-    () => response.value?.data.quiz!.questions[questionNumber.value] ?? null
+    () => quizAttempt.value?.quiz?.questions[questionNumber.value] ?? null
 );
-const currentQuiz = computed(() => response.value?.data ?? null);
-const currentAttemptId = computed(() => response.value?.data.id ?? null);
-const isMultiplayer = computed(() => multiplayerStore.lobby != null);
+const currentAttemptId = computed(() => quizAttempt.value?.id ?? null);
 
 const { execute: executeSubmitAnswer, error: submitError } =
     useExecutablePromise(
@@ -60,7 +89,7 @@ const hasAnswered = ref(false);
 const showResults = ref(false);
 
 async function submitAnswer(answer: string) {
-    if (currentQuiz.value == null) return;
+    if (quizAttempt.value == null) return;
     if (currentQuestion.value == null) return;
     if (currentAttemptId.value == null) return;
 
@@ -112,43 +141,20 @@ async function submitAnswer(answer: string) {
 }
 
 function showResultsView() {
+    if (multiplayerInitialLoad.value) {
+        multiplayerInitialLoad.value = false;
+        return;
+    }
+
     showResults.value = true;
     setTimeout(() => {
         showResults.value = false;
     }, 3000);
 }
 
-const stompClient = new Client({
-    brokerURL: "ws://localhost:8080/competition-ws",
-    onConnect: () => {
-        stompClient.subscribe("/competition", (message: any) => {
-            const data = multiplayerStore.processMessage(message);
-            if (!data) return;
-
-            switch (data.type) {
-                case "FINISH":
-                    finishQuiz();
-                    break;
-                case "JOIN":
-                    break;
-                case "PROCEED":
-                    hasAnswered.value = false;
-                    setQuestionNumber(data.questionId);
-                    break;
-                default:
-                    data satisfies never;
-            }
-        });
-    },
-});
-
-if (isMultiplayer.value) {
-    stompClient.activate();
-}
-
 function goToNextQuestion() {
     questionNumber.value++;
-    if (questionNumber.value >= currentQuiz.value!.quiz!.questions.length) {
+    if (questionNumber.value >= quizAttempt.value!.quiz!.questions.length) {
         finishQuiz();
         return;
     }
@@ -159,10 +165,9 @@ const countdown = ref(undefined as number | undefined);
 
 function setQuestionNumber(questionId: string) {
     showResultsView();
-    console.log("id " + questionId)
     router.currentRoute.value.query.questionId = questionId;
     questionNumber.value =
-        currentQuiz.value?.quiz?.questions
+        quizAttempt.value?.quiz?.questions
             .map((q) => q.id)
             .indexOf(questionId) || 0;
 
@@ -192,26 +197,36 @@ function finishQuiz() {
     if (lobbyCode) {
         router.push({
             name: "quiz-complete",
-            query: { lobby: lobbyCode, id: router.currentRoute.value.params.id },
+            query: {
+                lobby: lobbyCode,
+                id: router.currentRoute.value.params.id,
+            },
         });
         return;
     }
     router.push({
         name: "quiz-complete",
-
         query: { id: router.currentRoute.value.params.id },
     });
 }
-
 </script>
 
 <template>
-    <AlertComponent v-if="loading" class="player-container" type="info">Loading...</AlertComponent>
-    <LobbyResult v-else-if="showResults && multiplayerStore.lobbyUsers.length > 0" results />
-    <AlertComponent v-else-if="error" class="player-container" type="danger">{{ error }}</AlertComponent>
-    <AlertComponent type="info" v-else-if="hasAnswered">Waiting for other players...</AlertComponent>
-    <div v-else-if="response" class="player-container">
-        <h1 class="header">{{ response.data.quiz!.title }}</h1>
+    <AlertComponent v-if="loading" class="player-container" type="info"
+        >Loading...</AlertComponent
+    >
+    <LobbyResult
+        v-else-if="showResults && multiplayerStore.lobbyUsers.length > 0"
+        results
+    />
+    <AlertComponent v-else-if="error" class="player-container" type="danger">{{
+        error
+    }}</AlertComponent>
+    <AlertComponent type="info" v-else-if="hasAnswered"
+        >Waiting for other players...</AlertComponent
+    >
+    <div v-else-if="quizAttempt" class="player-container">
+        <h1 class="header">{{ quizAttempt.quiz!.title }}</h1>
         <QuestionPlayer
             v-if="currentQuestion"
             :countdown="countdown"
@@ -230,7 +245,6 @@ function finishQuiz() {
     margin-top: 2rem;
 }
 
-
 @media (max-width: 600px) {
     .player-container {
         margin: 0 1rem;
@@ -240,5 +254,4 @@ function finishQuiz() {
         margin-top: 5rem;
     }
 }
-
 </style>

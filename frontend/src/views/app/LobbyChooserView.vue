@@ -19,7 +19,9 @@ async function joinLobby() {
         <h3>Join lobby</h3>
         <div class="join-wrapper">
             <input v-model="lobbyCode" placeholder="123456" type="text" />
-            <ButtonComponent large @click="joinLobby"> Join Lobby</ButtonComponent>
+            <ButtonComponent large @click="joinLobby">
+                Join Lobby</ButtonComponent
+            >
         </div>
     </div>
 </template>

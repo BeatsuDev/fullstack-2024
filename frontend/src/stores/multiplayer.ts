@@ -80,6 +80,8 @@ export const useMultiplayerStore = defineStore("multiplayer", () => {
                     });
                 }
             });
+        if (!response) return;
+
         lobby.value = response.data.competition;
         multiplayerId.value = response.data.competitionId;
     }
