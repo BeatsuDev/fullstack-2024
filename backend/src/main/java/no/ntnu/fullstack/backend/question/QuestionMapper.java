@@ -33,6 +33,7 @@ public abstract class QuestionMapper {
   public abstract QuestionDTO toDTO(Question question);
 
   public List<QuestionDTO> toDTO(List<Question> questions) {
+    if (questions == null) return List.of();
     return questions.stream()
         .sorted(Comparator.comparingInt(Question::getSequenceNumber))
         .map(this::toDTO)
