@@ -104,7 +104,8 @@ import axios from "axios";
 import { BASE_PATH } from "@/api/base";
 
 const props = defineProps<{
-    value?: QuestionCreate | Question;
+    value?: Pick<Question, "question" | "answer" | "options"> &
+        Partial<Question>;
 }>();
 
 const emit = defineEmits<{
@@ -112,7 +113,9 @@ const emit = defineEmits<{
 }>();
 
 const questionType = ref<keyof typeof QuestionTypes>(QuestionTypes.MULTIPLE);
-const editable = ref<Pick<Question, "question" | "answer" | "options"> & Partial<Question>>(
+const editable = ref<
+    Pick<Question, "question" | "answer" | "options"> & Partial<Question>
+>(
     props.value || {
         question: "",
         options: [""],

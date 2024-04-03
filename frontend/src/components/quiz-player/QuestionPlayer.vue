@@ -20,10 +20,6 @@ const emit = defineEmits<{
 
 const questionType = computed(() => getQuestionType(props.question));
 
-watch(questionType, (newVal) => {
-    console.log("Question type changed to", newVal);
-});
-
 const { width } = useWindowSize();
 </script>
 

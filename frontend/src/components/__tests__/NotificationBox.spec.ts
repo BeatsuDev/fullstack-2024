@@ -9,7 +9,7 @@ import InfoIcon from "../../assets/icons/InfoIcon.vue";
 import WarningIcon from "../../assets/icons/WarningIcon.vue";
 import ErrorIcon from "../../assets/icons/ErrorIcon.vue";
 
-describe("", () => {
+describe("Notification box", () => {
     const successWrapper = mount(NotificationBox, {
         props: {
             id: 1,

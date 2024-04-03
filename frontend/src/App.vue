@@ -50,7 +50,7 @@ function logout(): void {
         </nav>
     </header>
     <div id="app-container">
-        <RouterView v-slot="{ Component: viewComponent, route }">
+        <RouterView v-slot="{ Component: viewComponent }">
             <Component :is="viewComponent" />
         </RouterView>
         <NotificationsContainer />
