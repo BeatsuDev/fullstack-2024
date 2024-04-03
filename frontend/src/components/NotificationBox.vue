@@ -22,8 +22,9 @@ const icon = computed(() => {
             return WarningIcon;
         case "error":
             return ErrorIcon;
+        /* v8 ignore next 2 */
         default:
-            return InfoIcon;
+            return props.type;
     }
 });
 </script>
