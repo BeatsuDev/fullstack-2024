@@ -1,4 +1,3 @@
-
 import { mount } from "@vue/test-utils";
 import ErrorIcon from "../ErrorIcon.vue";
 import FilterIcon from "../FilterIcon.vue";

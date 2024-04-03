@@ -1,9 +1,9 @@
 <template>
-        <AlertComponent v-if="errorMessage" type="info">
-            {{ errorMessage }}
-        </AlertComponent>
+    <AlertComponent v-if="errorMessage" type="info">
+        {{ errorMessage }}
+    </AlertComponent>
     <main v-else class="app-container card" style="margin-top: 1rem">
-        <div >
+        <div>
             <h3>Results</h3>
             <p>
                 You have made {{ attempts }} attempts on this quiz. Keep it up!
