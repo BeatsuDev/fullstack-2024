@@ -6,6 +6,7 @@
         </div>
         <div style="display: flex; justify-content: end">
             <ButtonComponent
+                id="delete-button"
                 v-if="props.editable"
                 filled
                 @click="emit('delete', value)"

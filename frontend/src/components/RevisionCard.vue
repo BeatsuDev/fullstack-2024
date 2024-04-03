@@ -14,7 +14,6 @@ import { computed } from "vue";
 
 const props = defineProps<{
     value: Revision;
-    editable?: boolean;
 }>();
 
 const formatCreatedAt = computed(() => {

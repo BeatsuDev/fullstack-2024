@@ -13,6 +13,7 @@
         </p>
     </div>
 </template>
+
 <script lang="ts" setup>
 const props = defineProps<{
     value: {
@@ -24,6 +25,7 @@ const props = defineProps<{
     results?: boolean;
 }>();
 </script>
+
 <style scoped>
 .user {
     display: flex;
