@@ -5,6 +5,7 @@
         <slot></slot>
     </dialog>
 </template>
+
 <script lang="ts" setup>
 import { ref, watch } from "vue";
 
@@ -19,13 +20,10 @@ const active = defineModel({
 const dialog = ref<HTMLDialogElement | null>();
 
 watch(active, (value) => {
-    if (!dialog.value) {
-        return;
-    }
     if (value) {
-        dialog.value?.showModal();
+        dialog.value!.showModal();
     } else {
-        dialog.value?.close();
+        dialog.value!.close();
     }
 });
 
@@ -39,6 +37,7 @@ function close() {
     active.value = false;
 }
 </script>
+
 <style scoped>
 dialog {
     padding: 1rem;

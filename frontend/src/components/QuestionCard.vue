@@ -25,14 +25,16 @@
                 v-if="props.editable"
                 class="delete-button"
                 @click="emit('delete', value)"
-                >Delete
+            >
+                Delete
             </ButtonComponent>
             <ButtonComponent
                 v-if="props.editable"
                 class="edit-button"
                 filled
                 @click="emit('edit', value)"
-                >Edit
+            >
+                Edit
             </ButtonComponent>
         </div>
     </div>
