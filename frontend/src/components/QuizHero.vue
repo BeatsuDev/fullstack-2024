@@ -4,6 +4,7 @@
             <h1>{{ props.quiz.title }}</h1>
             <div class="action-bar">
                 <ButtonComponent
+                    id="multiplayer-button"
                     v-if="props.playable"
                     filled
                     large
@@ -13,6 +14,7 @@
                     Multiplayer
                 </ButtonComponent>
                 <ButtonComponent
+                    id="play-button"
                     v-if="props.playable"
                     filled
                     large
@@ -46,7 +48,7 @@
             class="edit-button"
             @click="emit('edit', props.quiz)"
         >
-            <ButtonComponent>Edit</ButtonComponent>
+            <ButtonComponent id="edit-button">Edit</ButtonComponent>
         </div>
     </div>
 </template>
