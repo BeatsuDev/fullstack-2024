@@ -8,10 +8,13 @@
 import { computed } from "vue";
 
 const props = defineProps<{
-    type: "info" | "warning" | "danger";
+    type?: "info" | "warning" | "danger";
 }>();
 
 const alertType = computed(() => {
+    if (!props.type) {
+        return "alert-info";
+    }
     return "alert-" + props.type;
 });
 </script>
