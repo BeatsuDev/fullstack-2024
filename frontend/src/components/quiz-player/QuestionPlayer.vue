@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, watch } from "vue";
+import { computed } from "vue";
 
 import type { Question } from "@/api";
 import { getQuestionType, QuestionTypes } from "@/composables/useQuestionType";

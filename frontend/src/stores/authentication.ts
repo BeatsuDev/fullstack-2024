@@ -94,7 +94,7 @@ export const useAuthenticationStore = defineStore("authentication", () => {
             delete authenticationData.user;
         }
 
-        promise.then(clearAuthenticationData).catch((error) => {
+        promise.then(clearAuthenticationData).catch(() => {
             clearAuthenticationData();
         });
 

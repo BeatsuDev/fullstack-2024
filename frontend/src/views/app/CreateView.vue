@@ -45,7 +45,6 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import { type QuizCreate } from "@/api/models/quiz-create";
-import { useExecutablePromise } from "@/composables/promise";
 import { QuestionApi, type QuestionCreate, QuizApi } from "@/api";
 import { useNotificationStore } from "@/stores/notification";
 import { useRouter } from "vue-router";
@@ -65,9 +64,6 @@ const notificationStore = useNotificationStore();
 const router = useRouter();
 
 const quizApi = new QuizApi();
-const { execute, loading } = useExecutablePromise(
-    async (quiz: QuizCreate) => {}
-);
 
 interface QuizTemplate extends QuizCreate {
     questions: QuestionCreate[];

@@ -4,7 +4,7 @@ import type { Competition } from "@/api";
 import { CompetitionApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
 import { AvatarGenerator } from "random-avatar-generator";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useNotificationStore } from "./notification";
 
 export type Event =
