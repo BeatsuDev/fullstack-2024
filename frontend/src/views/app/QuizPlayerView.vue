@@ -211,7 +211,7 @@ function finishQuiz() {
     <AlertComponent v-else-if="error" class="player-container" type="danger">{{ error }}</AlertComponent>
     <AlertComponent type="info" v-else-if="hasAnswered">Waiting for other players...</AlertComponent>
     <div v-else-if="response" class="player-container">
-        <h1 style="margin-top: 1rem">{{ response.data.quiz!.title }}</h1>
+        <h1 class="header">{{ response.data.quiz!.title }}</h1>
         <QuestionPlayer
             v-if="currentQuestion"
             :countdown="countdown"
@@ -225,4 +225,20 @@ function finishQuiz() {
 .player-container {
     margin: 0 2rem;
 }
+
+.header {
+    margin-top: 2rem;
+}
+
+
+@media (max-width: 600px) {
+    .player-container {
+        margin: 0 1rem;
+    }
+
+    .header {
+        margin-top: 5rem;
+    }
+}
+
 </style>

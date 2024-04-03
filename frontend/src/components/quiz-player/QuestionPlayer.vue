@@ -115,6 +115,14 @@ const { width } = useWindowSize();
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+@media (max-width: 750px) {
+    .countdown {
+        top: 4rem;
+        right: 1rem;
+        font-size: 1.5rem;
+    }
+}
+
 .countdownUrgent {
     color: var(--warning-200);
 }
