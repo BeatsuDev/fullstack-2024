@@ -76,7 +76,8 @@ public class CompetitionService {
         competitionRepository
             .findByJoinCode(joinCode)
             .orElseThrow(CompetitionNotFoundException::new);
-    if (competition.getStarted()) throw new CompetitionAlreadyStartedException();
+    if (competition.getStarted() && !userIsInCompetition(competition, user))
+      throw new CompetitionAlreadyStartedException();
 
     asyncExecution(() -> sendMessage(competition, new Join()), 1000);
     if (userIsInCompetition(competition, user)) return competition;
