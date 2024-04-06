@@ -45,12 +45,21 @@ public class UserService {
 
   public User updateUser(User user)
       throws UserNotFoundException, EmailAlreadyTakenException, InvalidPasswordException {
-    if (user.getPassword() == null) {
-      User existingUser =
-          userRepository.findById(user.getId()).orElseThrow(UserNotFoundException::new);
-      user.setPassword(existingUser.getPassword());
-    }
+    User existingUser =
+        userRepository.findById(user.getId()).orElseThrow(UserNotFoundException::new);
+    if (existingUser.getIsAnonymous()) throw new UserNotFoundException();
+
+    if (user.getPassword() == null) user.setPassword(existingUser.getPassword());
     return saveUser(user);
+  }
+
+  public User createAnnonymousUser(String name) {
+    User user = new User();
+    user.setEmail(UUID.randomUUID().toString());
+    user.setPassword(UUID.randomUUID().toString());
+    user.setName(name);
+    user.setIsAnonymous(true);
+    return userRepository.saveAndFlush(user);
   }
 
   public void deleteUser(UUID id) throws UserNotFoundException {

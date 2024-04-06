@@ -1,0 +1,11 @@
+package no.ntnu.fullstack.backend.user.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(code = HttpStatus.UNAUTHORIZED, reason = "Anonymous user not allowed")
+public class AnonymosUserNotAllowedException extends Exception {
+  public AnonymosUserNotAllowedException() {
+    super("Anonymous user not allowed");
+  }
+}

@@ -49,6 +49,13 @@ paths:
         - User
       description: Register a user (create a user)
       operationId: registerUser
+      parameters:
+        - name: anonymous
+          description: If the user should be anonymous
+          in: query
+          required: false
+          schema:
+            type: boolean
       requestBody:
         content:
           application/json:

@@ -18,6 +18,7 @@ import no.ntnu.fullstack.backend.quiz.model.QuizWithRevision;
 import no.ntnu.fullstack.backend.revision.RevisionMapper;
 import no.ntnu.fullstack.backend.revision.RevisionService;
 import no.ntnu.fullstack.backend.revision.model.Revision;
+import no.ntnu.fullstack.backend.user.exception.AnonymosUserNotAllowedException;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +45,11 @@ public class QuizController {
   @PostMapping
   @ResponseBody
   public ResponseEntity<QuizDTO> createQuiz(
-      Authentication authentication, @Valid @RequestBody QuizCreateDTO createQuiz) {
+      Authentication authentication, @Valid @RequestBody QuizCreateDTO createQuiz)
+      throws AnonymosUserNotAllowedException {
     User user = (User) authentication.getPrincipal();
+    if (user.getIsAnonymous()) throw new AnonymosUserNotAllowedException();
+
     Quiz quiz = quizMapper.fromCreateQuiz(user);
     Revision revision = revisionMapper.fromQuizCreate(createQuiz, user);
     QuizWithRevision createdQuiz = quizService.createQuiz(quiz, revision);

@@ -19,10 +19,11 @@ public class CollaboratorService {
     }
 
     User loggedInUser = (User) auth.getPrincipal();
-    return quiz.getCreator().getId().equals(loggedInUser.getId())
-        || quiz.getCollaborators().stream()
-            .map(User::getId)
-            .anyMatch(id -> id.equals(loggedInUser.getId()));
+    if (loggedInUser.getIsAnonymous()) return false;
+    if (quiz.getCreator().getId().equals(loggedInUser.getId())) return true;
+    return quiz.getCollaborators().stream()
+        .map(User::getId)
+        .anyMatch(id -> id.equals(loggedInUser.getId()));
   }
 
   public void loggedInUserIsCreatorOrThrow(Quiz quiz) throws NotCreatorException {
@@ -31,11 +32,10 @@ public class CollaboratorService {
 
   public boolean loggedInUserIsCreator(Quiz quiz) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    if (auth == null) {
-      return false;
-    }
+    if (auth == null) return false;
 
     User loggedInUser = (User) auth.getPrincipal();
+    if (loggedInUser.getIsAnonymous()) return false;
     return quiz.getCreator().getId().equals(loggedInUser.getId());
   }
 

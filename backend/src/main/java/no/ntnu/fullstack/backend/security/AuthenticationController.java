@@ -9,6 +9,7 @@ import no.ntnu.fullstack.backend.security.DTO.UserLogin;
 import no.ntnu.fullstack.backend.user.UserMapper;
 import no.ntnu.fullstack.backend.user.UserService;
 import no.ntnu.fullstack.backend.user.dto.UserDTO;
+import no.ntnu.fullstack.backend.user.exception.AnonymosUserNotAllowedException;
 import no.ntnu.fullstack.backend.user.exception.UserNotFoundException;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
@@ -36,8 +37,9 @@ public class AuthenticationController {
 
   @GetMapping
   @ResponseBody
-  public UserDTO getUser(Authentication authentication) {
+  public UserDTO getUser(Authentication authentication) throws AnonymosUserNotAllowedException {
     var user = (User) authentication.getPrincipal();
+    if (user.getIsAnonymous()) throw new AnonymosUserNotAllowedException();
     return userMapper.toUserDTO(user);
   }
 

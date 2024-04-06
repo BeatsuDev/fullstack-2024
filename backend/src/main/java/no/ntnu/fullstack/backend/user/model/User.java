@@ -1,12 +1,11 @@
 package no.ntnu.fullstack.backend.user.model;
 
-import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,4 +25,6 @@ public class User {
 
   @Column(nullable = false)
   private String password;
+
+  private Boolean isAnonymous = false;
 }
