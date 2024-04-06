@@ -13,18 +13,17 @@
  * Do not edit the class manually.
  */
 
-import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { Configuration } from "../configuration";
+import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
-import { Category } from "../models";
-
+import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { Category } from '../models';
 /**
  * CategoryApi - axios parameter creator
  * @export
  */
-export const CategoryApiAxiosParamCreator = function(configuration?: Configuration) {
+export const CategoryApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * Get all categories
@@ -34,12 +33,12 @@ export const CategoryApiAxiosParamCreator = function(configuration?: Configurati
         getCategories: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/category`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = { method: "GET", ...baseOptions, ...options };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -52,14 +51,14 @@ export const CategoryApiAxiosParamCreator = function(configuration?: Configurati
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
@@ -76,21 +75,18 @@ export const CategoryApiFp = function(configuration?: Configuration) {
         async getCategories(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Category>>>> {
             const localVarAxiosArgs = await CategoryApiAxiosParamCreator(configuration).getCategories(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
-    };
+    }
 };
 
 /**
  * CategoryApi - factory interface
  * @export
  */
-export const CategoryApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const CategoryApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * Get all categories
@@ -116,7 +112,7 @@ export class CategoryApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CategoryApi
      */
-    public async getCategories(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Category>>> {
+    public async getCategories(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Category>>> {
         return CategoryApiFp(this.configuration).getCategories(options).then((request) => request(this.axios, this.basePath));
     }
 }

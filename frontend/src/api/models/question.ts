@@ -13,10 +13,9 @@
  * Do not edit the class manually.
  */
 
-import { Image } from "./image";
-
-/**
- *
+import { Image } from './image';
+ /**
+ * 
  *
  * @export
  * @interface Question

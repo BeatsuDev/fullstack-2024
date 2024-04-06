@@ -1,7 +1,6 @@
 // @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * Kazoot
  * An application
@@ -14,8 +13,8 @@
  * Do not edit the class manually.
  */
 
-/**
- *
+ /**
+ * 
  *
  * @export
  * @interface AnswerDTO

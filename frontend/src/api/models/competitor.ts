@@ -13,11 +13,10 @@
  * Do not edit the class manually.
  */
 
-import { QuizAttempt } from "./quiz-attempt";
-import { User } from "./user";
-
-/**
- *
+import { QuizAttempt } from './quiz-attempt';
+import { User } from './user';
+ /**
+ * 
  *
  * @export
  * @interface Competitor

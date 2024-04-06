@@ -13,18 +13,17 @@
  * Do not edit the class manually.
  */
 
-import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { Configuration } from "../configuration";
+import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
-import { Image } from "../models";
-
+import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { Image } from '../models';
 /**
  * ImageApi - axios parameter creator
  * @export
  */
-export const ImageApiAxiosParamCreator = function(configuration?: Configuration) {
+export const ImageApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * Upload a new image
@@ -34,12 +33,12 @@ export const ImageApiAxiosParamCreator = function(configuration?: Configuration)
         uploadImage: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/image`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = { method: "POST", ...baseOptions, ...options };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -52,14 +51,14 @@ export const ImageApiAxiosParamCreator = function(configuration?: Configuration)
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
@@ -76,21 +75,18 @@ export const ImageApiFp = function(configuration?: Configuration) {
         async uploadImage(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Image>>> {
             const localVarAxiosArgs = await ImageApiAxiosParamCreator(configuration).uploadImage(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
-    };
+    }
 };
 
 /**
  * ImageApi - factory interface
  * @export
  */
-export const ImageApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const ImageApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * Upload a new image
@@ -116,7 +112,7 @@ export class ImageApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ImageApi
      */
-    public async uploadImage(options?: AxiosRequestConfig): Promise<AxiosResponse<Image>> {
+    public async uploadImage(options?: AxiosRequestConfig) : Promise<AxiosResponse<Image>> {
         return ImageApiFp(this.configuration).uploadImage(options).then((request) => request(this.axios, this.basePath));
     }
 }

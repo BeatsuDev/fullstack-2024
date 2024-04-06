@@ -13,10 +13,9 @@
  * Do not edit the class manually.
  */
 
-import { Competition } from "./competition";
-
-/**
- *
+import { Competition } from './competition';
+ /**
+ * 
  *
  * @export
  * @interface PrecompetitionInfo

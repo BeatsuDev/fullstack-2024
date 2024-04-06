@@ -13,18 +13,18 @@
  * Do not edit the class manually.
  */
 
-import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { Configuration } from "../configuration";
+import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
-import { Feedback, FeedbackCreate } from "../models";
-
+import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { Feedback } from '../models';
+import { FeedbackCreate } from '../models';
 /**
  * FeedbackApi - axios parameter creator
  * @export
  */
-export const FeedbackApiAxiosParamCreator = function(configuration?: Configuration) {
+export const FeedbackApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * Get all feedback on a quiz
@@ -35,17 +35,17 @@ export const FeedbackApiAxiosParamCreator = function(configuration?: Configurati
         getFeedback: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError("id", "Required parameter id was null or undefined when calling getFeedback.");
+                throw new RequiredError('id','Required parameter id was null or undefined when calling getFeedback.');
             }
             const localVarPath = `/quiz/{id}/feedback`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = { method: "GET", ...baseOptions, ...options };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -58,7 +58,7 @@ export const FeedbackApiAxiosParamCreator = function(configuration?: Configurati
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -75,21 +75,21 @@ export const FeedbackApiAxiosParamCreator = function(configuration?: Configurati
         giveFeedback: async (id: string, body?: FeedbackCreate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError("id", "Required parameter id was null or undefined when calling giveFeedback.");
+                throw new RequiredError('id','Required parameter id was null or undefined when calling giveFeedback.');
             }
             const localVarPath = `/quiz/{id}/feedback`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = { method: "POST", ...baseOptions, ...options };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter["Content-Type"] = "application/json";
+            localVarHeaderParameter['Content-Type'] = 'application/json';
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -100,16 +100,16 @@ export const FeedbackApiAxiosParamCreator = function(configuration?: Configurati
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers["Content-Type"] === "application/json";
-            localVarRequestOptions.data = needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
@@ -127,10 +127,7 @@ export const FeedbackApiFp = function(configuration?: Configuration) {
         async getFeedback(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Feedback>>>> {
             const localVarAxiosArgs = await FeedbackApiAxiosParamCreator(configuration).getFeedback(id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -144,21 +141,18 @@ export const FeedbackApiFp = function(configuration?: Configuration) {
         async giveFeedback(id: string, body?: FeedbackCreate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
             const localVarAxiosArgs = await FeedbackApiAxiosParamCreator(configuration).giveFeedback(id, body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
-    };
+    }
 };
 
 /**
  * FeedbackApi - factory interface
  * @export
  */
-export const FeedbackApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const FeedbackApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * Get all feedback on a quiz
@@ -196,10 +190,9 @@ export class FeedbackApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FeedbackApi
      */
-    public async getFeedback(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Feedback>>> {
+    public async getFeedback(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Feedback>>> {
         return FeedbackApiFp(this.configuration).getFeedback(id, options).then((request) => request(this.axios, this.basePath));
     }
-
     /**
      * Give feedback on a quiz
      * @param {string} id The ID of a quiz
@@ -208,7 +201,7 @@ export class FeedbackApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FeedbackApi
      */
-    public async giveFeedback(id: string, body?: FeedbackCreate, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+    public async giveFeedback(id: string, body?: FeedbackCreate, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
         return FeedbackApiFp(this.configuration).giveFeedback(id, body, options).then((request) => request(this.axios, this.basePath));
     }
 }

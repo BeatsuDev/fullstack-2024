@@ -13,10 +13,9 @@
  * Do not edit the class manually.
  */
 
-import { Quiz } from "./quiz";
-
-/**
- *
+import { Quiz } from './quiz';
+ /**
+ * 
  *
  * @export
  * @interface Revision

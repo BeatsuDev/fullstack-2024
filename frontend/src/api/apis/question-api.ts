@@ -13,18 +13,18 @@
  * Do not edit the class manually.
  */
 
-import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { Configuration } from "../configuration";
+import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
-import { Question, QuestionCreate } from "../models";
-
+import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { Question } from '../models';
+import { QuestionCreate } from '../models';
 /**
  * QuestionApi - axios parameter creator
  * @export
  */
-export const QuestionApiAxiosParamCreator = function(configuration?: Configuration) {
+export const QuestionApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * Create a new question
@@ -35,16 +35,16 @@ export const QuestionApiAxiosParamCreator = function(configuration?: Configurati
         createQuestion: async (body?: QuestionCreate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/question`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = { method: "POST", ...baseOptions, ...options };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter["Content-Type"] = "application/json";
+            localVarHeaderParameter['Content-Type'] = 'application/json';
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -55,9 +55,9 @@ export const QuestionApiAxiosParamCreator = function(configuration?: Configurati
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers["Content-Type"] === "application/json";
-            localVarRequestOptions.data = needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -73,17 +73,17 @@ export const QuestionApiAxiosParamCreator = function(configuration?: Configurati
         deleteQuestion: async (questionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'questionId' is not null or undefined
             if (questionId === null || questionId === undefined) {
-                throw new RequiredError("questionId", "Required parameter questionId was null or undefined when calling deleteQuestion.");
+                throw new RequiredError('questionId','Required parameter questionId was null or undefined when calling deleteQuestion.');
             }
             const localVarPath = `/question/{question_id}`
                 .replace(`{${"question_id"}}`, encodeURIComponent(String(questionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = { method: "DELETE", ...baseOptions, ...options };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -96,7 +96,7 @@ export const QuestionApiAxiosParamCreator = function(configuration?: Configurati
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -113,25 +113,25 @@ export const QuestionApiAxiosParamCreator = function(configuration?: Configurati
         updateQuestion: async (body: QuestionCreate, questionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError("body", "Required parameter body was null or undefined when calling updateQuestion.");
+                throw new RequiredError('body','Required parameter body was null or undefined when calling updateQuestion.');
             }
             // verify required parameter 'questionId' is not null or undefined
             if (questionId === null || questionId === undefined) {
-                throw new RequiredError("questionId", "Required parameter questionId was null or undefined when calling updateQuestion.");
+                throw new RequiredError('questionId','Required parameter questionId was null or undefined when calling updateQuestion.');
             }
             const localVarPath = `/question/{question_id}`
                 .replace(`{${"question_id"}}`, encodeURIComponent(String(questionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = { method: "PUT", ...baseOptions, ...options };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter["Content-Type"] = "application/json";
+            localVarHeaderParameter['Content-Type'] = 'application/json';
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -142,16 +142,16 @@ export const QuestionApiAxiosParamCreator = function(configuration?: Configurati
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers["Content-Type"] === "application/json";
-            localVarRequestOptions.data = needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
@@ -169,10 +169,7 @@ export const QuestionApiFp = function(configuration?: Configuration) {
         async createQuestion(body?: QuestionCreate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Question>>> {
             const localVarAxiosArgs = await QuestionApiAxiosParamCreator(configuration).createQuestion(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -185,10 +182,7 @@ export const QuestionApiFp = function(configuration?: Configuration) {
         async deleteQuestion(questionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
             const localVarAxiosArgs = await QuestionApiAxiosParamCreator(configuration).deleteQuestion(questionId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -202,21 +196,18 @@ export const QuestionApiFp = function(configuration?: Configuration) {
         async updateQuestion(body: QuestionCreate, questionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Question>>> {
             const localVarAxiosArgs = await QuestionApiAxiosParamCreator(configuration).updateQuestion(body, questionId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
-    };
+    }
 };
 
 /**
  * QuestionApi - factory interface
  * @export
  */
-export const QuestionApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const QuestionApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * Create a new question
@@ -263,10 +254,9 @@ export class QuestionApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof QuestionApi
      */
-    public async createQuestion(body?: QuestionCreate, options?: AxiosRequestConfig): Promise<AxiosResponse<Question>> {
+    public async createQuestion(body?: QuestionCreate, options?: AxiosRequestConfig) : Promise<AxiosResponse<Question>> {
         return QuestionApiFp(this.configuration).createQuestion(body, options).then((request) => request(this.axios, this.basePath));
     }
-
     /**
      * Delete a question
      * @param {string} questionId The ID of the question
@@ -274,10 +264,9 @@ export class QuestionApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof QuestionApi
      */
-    public async deleteQuestion(questionId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+    public async deleteQuestion(questionId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
         return QuestionApiFp(this.configuration).deleteQuestion(questionId, options).then((request) => request(this.axios, this.basePath));
     }
-
     /**
      * Update a question
      * @param {QuestionCreate} body Question update information
@@ -286,7 +275,7 @@ export class QuestionApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof QuestionApi
      */
-    public async updateQuestion(body: QuestionCreate, questionId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Question>> {
+    public async updateQuestion(body: QuestionCreate, questionId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Question>> {
         return QuestionApiFp(this.configuration).updateQuestion(body, questionId, options).then((request) => request(this.axios, this.basePath));
     }
 }

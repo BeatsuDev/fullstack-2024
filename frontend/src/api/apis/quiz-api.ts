@@ -13,18 +13,19 @@
  * Do not edit the class manually.
  */
 
-import globalAxios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { Configuration } from "../configuration";
+import globalAxios, { AxiosResponse, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "../base";
-import { Category, Quiz, QuizCreate, QuizOverview } from "../models";
-
+import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { Quiz } from '../models';
+import { QuizCreate } from '../models';
+import { QuizOverview } from '../models';
 /**
  * QuizApi - axios parameter creator
  * @export
  */
-export const QuizApiAxiosParamCreator = function(configuration?: Configuration) {
+export const QuizApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * Create a new quiz
@@ -35,16 +36,16 @@ export const QuizApiAxiosParamCreator = function(configuration?: Configuration) 
         createQuiz: async (body?: QuizCreate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/quiz`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = { method: "POST", ...baseOptions, ...options };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter["Content-Type"] = "application/json";
+            localVarHeaderParameter['Content-Type'] = 'application/json';
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -55,9 +56,9 @@ export const QuizApiAxiosParamCreator = function(configuration?: Configuration) 
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers["Content-Type"] === "application/json";
-            localVarRequestOptions.data = needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -73,17 +74,17 @@ export const QuizApiAxiosParamCreator = function(configuration?: Configuration) 
         getQuiz: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError("id", "Required parameter id was null or undefined when calling getQuiz.");
+                throw new RequiredError('id','Required parameter id was null or undefined when calling getQuiz.');
             }
             const localVarPath = `/quiz/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = { method: "GET", ...baseOptions, ...options };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -96,7 +97,7 @@ export const QuizApiAxiosParamCreator = function(configuration?: Configuration) 
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -105,59 +106,59 @@ export const QuizApiAxiosParamCreator = function(configuration?: Configuration) 
         },
         /**
          * Get first page of quizzes
-         * @param {number} [pageSize]
-         * @param {number} [page]
-         * @param {string} [textSearch]
-         * @param {number} [minDifficulty]
-         * @param {number} [maxDifficulty]
-         * @param {Array<Category>} [category]
-         * @param {string} [creator]
-         * @param {string} [collaborator]
+         * @param {number} [pageSize] 
+         * @param {number} [page] 
+         * @param {string} [textSearch] 
+         * @param {number} [minDifficulty] 
+         * @param {number} [maxDifficulty] 
+         * @param {Array<string>} [category] 
+         * @param {string} [creator] 
+         * @param {string} [collaborator] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getQuizzes: async (pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, creator?: string, collaborator?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getQuizzes: async (pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<string>, creator?: string, collaborator?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/quiz`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = { method: "GET", ...baseOptions, ...options };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             if (pageSize !== undefined) {
-                localVarQueryParameter["pageSize"] = pageSize;
+                localVarQueryParameter['pageSize'] = pageSize;
             }
 
             if (page !== undefined) {
-                localVarQueryParameter["page"] = page;
+                localVarQueryParameter['page'] = page;
             }
 
             if (textSearch !== undefined) {
-                localVarQueryParameter["textSearch"] = textSearch;
+                localVarQueryParameter['textSearch'] = textSearch;
             }
 
             if (minDifficulty !== undefined) {
-                localVarQueryParameter["minDifficulty"] = minDifficulty;
+                localVarQueryParameter['minDifficulty'] = minDifficulty;
             }
 
             if (maxDifficulty !== undefined) {
-                localVarQueryParameter["maxDifficulty"] = maxDifficulty;
+                localVarQueryParameter['maxDifficulty'] = maxDifficulty;
             }
 
             if (category) {
-                localVarQueryParameter["category"] = category;
+                localVarQueryParameter['category'] = category;
             }
 
             if (creator !== undefined) {
-                localVarQueryParameter["creator"] = creator;
+                localVarQueryParameter['creator'] = creator;
             }
 
             if (collaborator !== undefined) {
-                localVarQueryParameter["collaborator"] = collaborator;
+                localVarQueryParameter['collaborator'] = collaborator;
             }
 
             const query = new URLSearchParams(localVarUrlObj.search);
@@ -169,7 +170,7 @@ export const QuizApiAxiosParamCreator = function(configuration?: Configuration) 
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -186,21 +187,21 @@ export const QuizApiAxiosParamCreator = function(configuration?: Configuration) 
         updateQuiz: async (id: string, body?: QuizCreate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError("id", "Required parameter id was null or undefined when calling updateQuiz.");
+                throw new RequiredError('id','Required parameter id was null or undefined when calling updateQuiz.');
             }
             const localVarPath = `/quiz/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, "https://example.com");
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions: AxiosRequestConfig = { method: "PUT", ...baseOptions, ...options };
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter["Content-Type"] = "application/json";
+            localVarHeaderParameter['Content-Type'] = 'application/json';
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -211,16 +212,16 @@ export const QuizApiAxiosParamCreator = function(configuration?: Configuration) 
             }
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers["Content-Type"] === "application/json";
-            localVarRequestOptions.data = needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
@@ -238,10 +239,7 @@ export const QuizApiFp = function(configuration?: Configuration) {
         async createQuiz(body?: QuizCreate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
             const localVarAxiosArgs = await QuizApiAxiosParamCreator(configuration).createQuiz(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -254,33 +252,27 @@ export const QuizApiFp = function(configuration?: Configuration) {
         async getQuiz(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Quiz>>> {
             const localVarAxiosArgs = await QuizApiAxiosParamCreator(configuration).getQuiz(id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
         /**
          * Get first page of quizzes
-         * @param {number} [pageSize]
-         * @param {number} [page]
-         * @param {string} [textSearch]
-         * @param {number} [minDifficulty]
-         * @param {number} [maxDifficulty]
-         * @param {Array<Category>} [category]
-         * @param {string} [creator]
-         * @param {string} [collaborator]
+         * @param {number} [pageSize] 
+         * @param {number} [page] 
+         * @param {string} [textSearch] 
+         * @param {number} [minDifficulty] 
+         * @param {number} [maxDifficulty] 
+         * @param {Array<string>} [category] 
+         * @param {string} [creator] 
+         * @param {string} [collaborator] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, creator?: string, collaborator?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<QuizOverview>>>> {
+        async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<string>, creator?: string, collaborator?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<QuizOverview>>>> {
             const localVarAxiosArgs = await QuizApiAxiosParamCreator(configuration).getQuizzes(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, creator, collaborator, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
@@ -294,21 +286,18 @@ export const QuizApiFp = function(configuration?: Configuration) {
         async updateQuiz(id: string, body?: QuizCreate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Quiz>>> {
             const localVarAxiosArgs = await QuizApiAxiosParamCreator(configuration).updateQuiz(id, body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs: AxiosRequestConfig = {
-                    ...localVarAxiosArgs.options,
-                    url: basePath + localVarAxiosArgs.url,
-                };
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
-    };
+    }
 };
 
 /**
  * QuizApi - factory interface
  * @export
  */
-export const QuizApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const QuizApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * Create a new quiz
@@ -330,18 +319,18 @@ export const QuizApiFactory = function(configuration?: Configuration, basePath?:
         },
         /**
          * Get first page of quizzes
-         * @param {number} [pageSize]
-         * @param {number} [page]
-         * @param {string} [textSearch]
-         * @param {number} [minDifficulty]
-         * @param {number} [maxDifficulty]
-         * @param {Array<Category>} [category]
-         * @param {string} [creator]
-         * @param {string} [collaborator]
+         * @param {number} [pageSize] 
+         * @param {number} [page] 
+         * @param {string} [textSearch] 
+         * @param {number} [minDifficulty] 
+         * @param {number} [maxDifficulty] 
+         * @param {Array<string>} [category] 
+         * @param {string} [creator] 
+         * @param {string} [collaborator] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, creator?: string, collaborator?: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<QuizOverview>>> {
+        async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<string>, creator?: string, collaborator?: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<QuizOverview>>> {
             return QuizApiFp(configuration).getQuizzes(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, creator, collaborator, options).then((request) => request(axios, basePath));
         },
         /**
@@ -371,10 +360,9 @@ export class QuizApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof QuizApi
      */
-    public async createQuiz(body?: QuizCreate, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+    public async createQuiz(body?: QuizCreate, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
         return QuizApiFp(this.configuration).createQuiz(body, options).then((request) => request(this.axios, this.basePath));
     }
-
     /**
      * Get all information about a quiz
      * @param {string} id The ID of a quiz
@@ -382,28 +370,26 @@ export class QuizApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof QuizApi
      */
-    public async getQuiz(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Quiz>> {
+    public async getQuiz(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Quiz>> {
         return QuizApiFp(this.configuration).getQuiz(id, options).then((request) => request(this.axios, this.basePath));
     }
-
     /**
      * Get first page of quizzes
-     * @param {number} [pageSize]
-     * @param {number} [page]
-     * @param {string} [textSearch]
-     * @param {number} [minDifficulty]
-     * @param {number} [maxDifficulty]
-     * @param {Array<Category>} [category]
-     * @param {string} [creator]
-     * @param {string} [collaborator]
+     * @param {number} [pageSize] 
+     * @param {number} [page] 
+     * @param {string} [textSearch] 
+     * @param {number} [minDifficulty] 
+     * @param {number} [maxDifficulty] 
+     * @param {Array<string>} [category] 
+     * @param {string} [creator] 
+     * @param {string} [collaborator] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof QuizApi
      */
-    public async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<Category>, creator?: string, collaborator?: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<QuizOverview>>> {
+    public async getQuizzes(pageSize?: number, page?: number, textSearch?: string, minDifficulty?: number, maxDifficulty?: number, category?: Array<string>, creator?: string, collaborator?: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<QuizOverview>>> {
         return QuizApiFp(this.configuration).getQuizzes(pageSize, page, textSearch, minDifficulty, maxDifficulty, category, creator, collaborator, options).then((request) => request(this.axios, this.basePath));
     }
-
     /**
      * Update quiz info
      * @param {string} id The ID of a quiz
@@ -412,7 +398,7 @@ export class QuizApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof QuizApi
      */
-    public async updateQuiz(id: string, body?: QuizCreate, options?: AxiosRequestConfig): Promise<AxiosResponse<Quiz>> {
+    public async updateQuiz(id: string, body?: QuizCreate, options?: AxiosRequestConfig) : Promise<AxiosResponse<Quiz>> {
         return QuizApiFp(this.configuration).updateQuiz(id, body, options).then((request) => request(this.axios, this.basePath));
     }
 }
