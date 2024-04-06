@@ -34,19 +34,19 @@
 <script lang="ts" setup>
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import ValidatedInput from "@/components/ValidatedInput.vue";
-import { type Category, CategoryApi, type Quiz, type QuizCreate } from "@/api";
+import { type Category, CategoryApi, type QuizCreate } from "@/api";
 import { reactive, ref, watchEffect } from "vue";
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { usePromise } from "@/composables/promise";
 
 const props = defineProps<{
-    value?: QuizCreate | Quiz;
+    value?: QuizCreate | undefined;
     loading?: boolean;
 }>();
 
 const emit = defineEmits<{
-    (e: "submit", quiz: QuizCreate | Quiz): void;
+    (e: "submit", quiz: QuizCreate | undefined): void;
 }>();
 
 const editable = reactive(
@@ -84,7 +84,7 @@ const { data: categories } = usePromise(categoryApi.getCategories());
 
 function isCategorySelected(category: Category): boolean {
     if (!selectedCategories.value) return false;
-    return selectedCategories.value.map((c) => c.name).includes(category.name);
+    return selectedCategories.value.map((c) => c.id).includes(category.id);
 }
 
 function getCategoryStyle(category: Category) {
@@ -110,7 +110,7 @@ function toggleCategory(category: Category) {
 
     if (isCategorySelected(category)) {
         selectedCategories.value = selectedCategories.value.filter(
-            (c) => c.name !== category.name
+            (c) => c.id !== category.id
         );
     } else {
         selectedCategories.value = [...selectedCategories.value, category];
@@ -119,7 +119,7 @@ function toggleCategory(category: Category) {
 
 watchEffect(() => {
     Object.assign(editable, props.value);
-    selectedCategories.value = props.value?.categories || [];
+    selectedCategories.value = props.value?.categories.map(id => {return {id, name: "", color: ""}}) || [];
 });
 </script>
 <style scoped>

@@ -211,6 +211,10 @@ paths:
       responses:
         "201":
           description: Successfully created Quiz
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizOverview"
         "401":
           description: Not logged in
     get:

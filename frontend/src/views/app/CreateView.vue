@@ -2,7 +2,7 @@
     <div class="centered-container">
         <div class="card" style="margin-top: 2rem">
             <h3>Create quiz</h3>
-            <QuizForm :loading="loading" :value="quiz" @submit="createQuiz" />
+            <QuizForm :value="quiz" @submit="createQuiz" />
             <div style="margin-top: 10px">
                 <a style="cursor: pointer" @click="inspirationModal = true"
                     >Need some inspiration? Or import quiz.</a
@@ -45,7 +45,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import { type QuizCreate } from "@/api/models/quiz-create";
-import { QuestionApi, type QuestionCreate, QuizApi } from "@/api";
+import { QuestionApi, type QuestionCreate, QuizApi, type Question, type Quiz } from "@/api";
 import { useNotificationStore } from "@/stores/notification";
 import { useRouter } from "vue-router";
 import QuizForm from "@/components/QuizForm.vue";
@@ -58,7 +58,8 @@ const quiz = reactive({
     title: "",
     description: "",
     difficulty: 1,
-});
+    categories: []
+} as QuizCreate);
 
 const notificationStore = useNotificationStore();
 const router = useRouter();
@@ -75,11 +76,11 @@ const selectedTemplate = ref<QuizTemplate | null>();
 
 const error = ref<string | null>(null);
 
-function uploadJson(file) {
+function uploadJson(file: any) {
     const reader = new FileReader();
     reader.onload = async (e) => {
         try {
-            const json = JSON.parse(e.target.result as string);
+            const json = JSON.parse(e.target?.result as string);
             selectedTemplate.value = json;
         } catch (e) {
             error.value = "Invalid json file";
@@ -91,7 +92,7 @@ function uploadJson(file) {
 const questionsApi = new QuestionApi();
 
 async function createQuiz(quiz?: QuizCreate) {
-    let questions = [];
+    let questions: QuestionCreate[] = [];
 
     if (!quiz) {
         if (!selectedTemplate.value) {
@@ -101,6 +102,9 @@ async function createQuiz(quiz?: QuizCreate) {
         quiz = selectedTemplate.value;
         console.log(quiz);
         questions = selectedTemplate.value.questions;
+        // @ts-ignore
+        questions.forEach(q => delete q.id);
+        // @ts-ignore
         delete selectedTemplate.value.questions;
     }
     // @ts-ignore
