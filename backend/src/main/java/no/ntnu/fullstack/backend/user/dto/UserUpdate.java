@@ -14,16 +14,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserUpdate {
-  @NonNull
-  @NotNull
-  private UUID id;
-  @NonNull
-  @Email
-  private String email;
-  @NonNull
-  @NotBlank
-  private String name;
-  @NonNull
-  @NotBlank
+  @NotNull private UUID id;
+  @Email private String email;
+  @NotBlank private String name;
   private String password;
 }

@@ -11,13 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserCreate {
-  @NonNull
-  @NotBlank
-  private String name;
-  @NonNull
-  @Email
-  private String email;
-  @NonNull
-  @NotBlank
-  private String password;
+  @NotBlank private String name;
+  @Email private String email;
+  @NotBlank private String password;
 }

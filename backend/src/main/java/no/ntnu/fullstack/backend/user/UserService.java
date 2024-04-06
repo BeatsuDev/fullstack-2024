@@ -2,11 +2,13 @@ package no.ntnu.fullstack.backend.user;
 
 import java.util.Optional;
 import java.util.UUID;
-
-import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
+import no.ntnu.fullstack.backend.user.exception.EmailAlreadyTakenException;
+import no.ntnu.fullstack.backend.user.exception.InvalidPasswordException;
+import no.ntnu.fullstack.backend.user.exception.UserNotFoundException;
 import no.ntnu.fullstack.backend.user.model.User;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -29,18 +31,26 @@ public class UserService {
     return getUserByEmail(email).orElseThrow(UserNotFoundException::new);
   }
 
-  public Optional<User> createUser(User user) { // TODO: Validate email
-    if (user == null || user.getId() != null) {
-      return Optional.empty();
+  public User saveUser(User user) throws EmailAlreadyTakenException, InvalidPasswordException {
+    try {
+      return userRepository.saveAndFlush(user);
+    } catch (DataIntegrityViolationException e) {
+      throw new EmailAlreadyTakenException();
     }
-    return Optional.of(userRepository.saveAndFlush(user));
   }
 
-  public Optional<User> updateUser(User user) { // TODO: Validate email
-    if (user == null || user.getId() == null) {
-      return Optional.empty();
+  public User createUser(User user) throws EmailAlreadyTakenException, InvalidPasswordException {
+    return saveUser(user);
+  }
+
+  public User updateUser(User user)
+      throws UserNotFoundException, EmailAlreadyTakenException, InvalidPasswordException {
+    if (user.getPassword() == null) {
+      User existingUser =
+          userRepository.findById(user.getId()).orElseThrow(UserNotFoundException::new);
+      user.setPassword(existingUser.getPassword());
     }
-    return Optional.of(userRepository.saveAndFlush(user));
+    return saveUser(user);
   }
 
   public void deleteUser(UUID id) throws UserNotFoundException {

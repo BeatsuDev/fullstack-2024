@@ -1,18 +1,20 @@
 package no.ntnu.fullstack.backend.user;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import no.ntnu.fullstack.backend.security.JWTService;
 import no.ntnu.fullstack.backend.user.dto.UserCreate;
 import no.ntnu.fullstack.backend.user.dto.UserDTO;
 import no.ntnu.fullstack.backend.user.dto.UserUpdate;
+import no.ntnu.fullstack.backend.user.exception.EmailAlreadyTakenException;
+import no.ntnu.fullstack.backend.user.exception.InvalidPasswordException;
+import no.ntnu.fullstack.backend.user.exception.UserNotFoundException;
 import no.ntnu.fullstack.backend.user.model.User;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,29 +37,26 @@ public class UserController {
 
   @PostMapping
   @ResponseBody
-  public UserDTO registerUser(@Valid @RequestBody UserCreate userCreate, HttpServletResponse response) {
+  public ResponseEntity<UserDTO> registerUser(
+      @Valid @RequestBody UserCreate userCreate, HttpServletResponse response)
+      throws EmailAlreadyTakenException, InvalidPasswordException {
     User user = userMapper.fromUserCreate(userCreate);
-    User result = userService.createUser(user).orElseThrow();
+    user = userService.createUser(user);
 
-    response.addCookie(jwtService.generateTokenCookie(result));
-    return userMapper.toUserDTO(result);
+    response.addCookie(jwtService.generateTokenCookie(user));
+    return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.toUserDTO(user));
   }
 
   @PutMapping
   @ResponseBody
   @PreAuthorize("isAuthenticated() && #userUpdate.id == authentication.principal.id")
-  public UserDTO updateUser(HttpServletResponse response, @Valid @RequestBody UserUpdate userUpdate) {
+  public UserDTO updateUser(HttpServletResponse response, @Valid @RequestBody UserUpdate userUpdate)
+      throws UserNotFoundException, EmailAlreadyTakenException, InvalidPasswordException {
     User user = userMapper.fromUserUpdate(userUpdate);
-    Optional<User> result = userService.updateUser(user);
+    user = userService.updateUser(user);
 
-    result.ifPresent((_user) -> {
-      Cookie jwtCookie = jwtService.generateTokenCookie(_user);
-      response.reset();
-      response.addCookie(jwtCookie);
-    });
-
-    return userMapper.toUserDTO(
-        result.orElseThrow(() -> new RuntimeException("Could not update user.")));
+    response.addCookie(jwtService.generateTokenCookie(user));
+    return userMapper.toUserDTO(user);
   }
 
   @ResponseBody

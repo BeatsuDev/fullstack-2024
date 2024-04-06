@@ -13,13 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserDTO {
-	@NonNull
-	@NotBlank
-	private UUID id;
-	@NonNull
-	@Email
-	private String email;
-	@NonNull
-	@NotBlank
-	private String name;
+  @NonNull private UUID id;
+  @Email private String email;
+  @NotBlank private String name;
 }
