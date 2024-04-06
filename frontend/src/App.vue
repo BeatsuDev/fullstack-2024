@@ -15,7 +15,8 @@ const { authenticated } = storeToRefs(useAuthenticationStore());
 
 function logout(): void {
     authenticationStore
-        .deauthenticate()
+        .logout()
+        .then(authenticationStore.deauthenticate)
         .then(() => router.push({ name: "home" }))
         .catch((error: any) => {
             notificationStore.addNotification({

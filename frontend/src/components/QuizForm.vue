@@ -119,7 +119,10 @@ function toggleCategory(category: Category) {
 
 watchEffect(() => {
     Object.assign(editable, props.value);
-    selectedCategories.value = props.value?.categories.map(id => {return {id, name: "", color: ""}}) || [];
+    selectedCategories.value =
+        props.value?.categories.map((id) => {
+            return { id, name: "", color: "" };
+        }) || [];
 });
 </script>
 <style scoped>

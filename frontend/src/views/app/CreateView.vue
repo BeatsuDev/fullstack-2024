@@ -45,7 +45,13 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import { type QuizCreate } from "@/api/models/quiz-create";
-import { QuestionApi, type QuestionCreate, QuizApi, type Question, type Quiz } from "@/api";
+import {
+    QuestionApi,
+    type QuestionCreate,
+    QuizApi,
+    type Question,
+    type Quiz,
+} from "@/api";
 import { useNotificationStore } from "@/stores/notification";
 import { useRouter } from "vue-router";
 import QuizForm from "@/components/QuizForm.vue";
@@ -58,7 +64,7 @@ const quiz = reactive({
     title: "",
     description: "",
     difficulty: 1,
-    categories: []
+    categories: [],
 } as QuizCreate);
 
 const notificationStore = useNotificationStore();
@@ -103,7 +109,7 @@ async function createQuiz(quiz?: QuizCreate) {
         console.log(quiz);
         questions = selectedTemplate.value.questions;
         // @ts-ignore
-        questions.forEach(q => delete q.id);
+        questions.forEach((q) => delete q.id);
         // @ts-ignore
         delete selectedTemplate.value.questions;
     }

@@ -42,6 +42,7 @@ export const useMultiplayerStore = defineStore("multiplayer", () => {
 
     function processMessage(message: any): Event | null {
         const data: string = message.body;
+        console.log(data);
         const [competitionId, eventName, eventData] = data.split(":");
 
         if (competitionId !== multiplayerId.value) return null;

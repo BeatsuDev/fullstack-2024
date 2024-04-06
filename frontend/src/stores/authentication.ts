@@ -77,10 +77,12 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         return promise;
     }
 
-    function deauthenticate() {
-        const promise = userSessionApi.logout();
+    async function logout() {
+        await userSessionApi.logout();
+    }
 
-        function clearAuthenticationData() {
+    function deauthenticate() {
+        const promise = async function clearAuthenticationData() {
             if (authenticationData.timer) {
                 clearTimeout(authenticationData.timer);
             }
@@ -92,13 +94,9 @@ export const useAuthenticationStore = defineStore("authentication", () => {
                 }
             }
             delete authenticationData.user;
-        }
+        };
 
-        promise.then(clearAuthenticationData).catch(() => {
-            clearAuthenticationData();
-        });
-
-        return promise;
+        return promise();
     }
 
     function authenticate(
@@ -134,6 +132,7 @@ export const useAuthenticationStore = defineStore("authentication", () => {
     }
 
     return {
+        logout,
         refresh,
         deauthenticate,
         authenticate,

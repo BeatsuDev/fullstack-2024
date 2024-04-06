@@ -1,16 +1,17 @@
 <template>
     <dialog ref="dialog" @abort="close" @close="close">
-        <div class="close-button" @click="close"></div>
+        <div v-if="!props.unclosable" class="close-button" @click="close"></div>
         <h3>{{ props.title }}</h3>
         <slot></slot>
     </dialog>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const props = defineProps<{
     title: string;
+    unclosable?: boolean;
 }>();
 
 const active = defineModel({
@@ -21,6 +22,13 @@ const dialog = ref<HTMLDialogElement | null>();
 
 watch(active, (value) => {
     if (value) {
+        dialog.value!.showModal();
+    } else {
+        dialog.value!.close();
+    }
+});
+onMounted(() => {
+    if (active.value) {
         dialog.value!.showModal();
     } else {
         dialog.value!.close();

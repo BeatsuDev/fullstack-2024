@@ -4,18 +4,20 @@ import { CompetitionApi } from "@/api";
 import { useAuthenticationStore } from "@/stores/authentication";
 import router from "@/router";
 import { useNotificationStore } from "@/stores/notification";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useExecutablePromise } from "@/composables/promise";
 import { useMultiplayerStore } from "@/stores/multiplayer";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
 import { Client } from "@stomp/stompjs";
 import LobbyResult from "@/components/LobbyResult.vue";
+import AnonymousUserModal from "@/components/AnonymousUserModal.vue";
 
 const multiplayerStore = useMultiplayerStore();
 const authenticationStore = useAuthenticationStore();
 const lobbyCode = computed(() => router.currentRoute.value.params.lobbyCode);
-const currentUser = authenticationStore.loggedInUser as User;
+const currentUser = ref(authenticationStore.loggedInUser);
+const noUser = computed(() => !currentUser.value);
 
 // Setup websocket
 const stompClient = new Client({
@@ -30,7 +32,9 @@ const stompClient = new Client({
                     break;
                 case "PROCEED": {
                     const attemptId = multiplayerStore.players
-                        .filter((player) => player.user.id === currentUser.id)
+                        .filter(
+                            (player) => player.user.id === currentUser.value?.id
+                        )
                         .map((player) => player.attempt.id)[0];
                     const quizId =
                         multiplayerStore.lobby?.competitors[0].attempt.quiz?.id;
@@ -57,22 +61,31 @@ const stompClient = new Client({
 });
 
 onMounted(async () => {
-    if (!currentUser) {
-        router.push({ name: "login" });
+    if (noUser.value) {
         return;
     }
 
+    joinLobby();
+});
+
+async function joinLobby() {
     let lobbyCodeParam = router.currentRoute.value.params.lobbyCode;
     if (Array.isArray(lobbyCodeParam)) lobbyCodeParam = lobbyCodeParam[0];
     const lobbyCode = parseInt(lobbyCodeParam);
     await multiplayerStore.joinCompetition(lobbyCode);
 
     useNotificationStore().addNotification({
-        message: `${currentUser.name} joined lobby ${multiplayerStore.lobbyCode}!`,
+        message: `${currentUser.value?.name} joined lobby ${multiplayerStore.lobbyCode}!`,
         type: "info",
     });
     stompClient.activate();
-});
+}
+
+function setUser(user: User) {
+    currentUser.value = user;
+    console.log(noUser.value);
+    joinLobby();
+}
 
 const multiplayerApi = new CompetitionApi();
 const { execute: executeStartGame } = useExecutablePromise(
@@ -118,6 +131,7 @@ async function startGame() {
                 </ButtonComponent>
             </div>
             <LobbyResult />
+            <AnonymousUserModal v-model="noUser" @updateUser="setUser" />
         </div>
     </div>
 </template>
