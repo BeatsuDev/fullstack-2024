@@ -108,10 +108,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Register a user (create a user)
          * @param {UserCreate} [body] 
+         * @param {boolean} [anonymous] If the user should be anonymous
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerUser: async (body?: UserCreate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        registerUser: async (body?: UserCreate, anonymous?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -122,6 +123,10 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (anonymous !== undefined) {
+                localVarQueryParameter['anonymous'] = anonymous;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -219,11 +224,12 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * Register a user (create a user)
          * @param {UserCreate} [body] 
+         * @param {boolean} [anonymous] If the user should be anonymous
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerUser(body?: UserCreate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<User>>> {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).registerUser(body, options);
+        async registerUser(body?: UserCreate, anonymous?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<User>>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).registerUser(body, anonymous, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -272,11 +278,12 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Register a user (create a user)
          * @param {UserCreate} [body] 
+         * @param {boolean} [anonymous] If the user should be anonymous
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerUser(body?: UserCreate, options?: AxiosRequestConfig): Promise<AxiosResponse<User>> {
-            return UserApiFp(configuration).registerUser(body, options).then((request) => request(axios, basePath));
+        async registerUser(body?: UserCreate, anonymous?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<User>> {
+            return UserApiFp(configuration).registerUser(body, anonymous, options).then((request) => request(axios, basePath));
         },
         /**
          * Update the information of a user
@@ -320,12 +327,13 @@ export class UserApi extends BaseAPI {
     /**
      * Register a user (create a user)
      * @param {UserCreate} [body] 
+     * @param {boolean} [anonymous] If the user should be anonymous
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public async registerUser(body?: UserCreate, options?: AxiosRequestConfig) : Promise<AxiosResponse<User>> {
-        return UserApiFp(this.configuration).registerUser(body, options).then((request) => request(this.axios, this.basePath));
+    public async registerUser(body?: UserCreate, anonymous?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<User>> {
+        return UserApiFp(this.configuration).registerUser(body, anonymous, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Update the information of a user

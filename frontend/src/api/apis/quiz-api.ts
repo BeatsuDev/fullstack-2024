@@ -236,7 +236,7 @@ export const QuizApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createQuiz(body?: QuizCreate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+        async createQuiz(body?: QuizCreate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<QuizOverview>>> {
             const localVarAxiosArgs = await QuizApiAxiosParamCreator(configuration).createQuiz(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -305,7 +305,7 @@ export const QuizApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createQuiz(body?: QuizCreate, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+        async createQuiz(body?: QuizCreate, options?: AxiosRequestConfig): Promise<AxiosResponse<QuizOverview>> {
             return QuizApiFp(configuration).createQuiz(body, options).then((request) => request(axios, basePath));
         },
         /**
@@ -360,7 +360,7 @@ export class QuizApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof QuizApi
      */
-    public async createQuiz(body?: QuizCreate, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+    public async createQuiz(body?: QuizCreate, options?: AxiosRequestConfig) : Promise<AxiosResponse<QuizOverview>> {
         return QuizApiFp(this.configuration).createQuiz(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
