@@ -79,8 +79,8 @@ async function register() {
 <template>
     <main>
         <LoadingCircle :loading="loading" />
-        <div id="register-container">
-            <h1>Register</h1>
+        <div id="register-container" class="card">
+            <h3>Register</h3>
             <form
                 id="register-form"
                 ref="formElement"
@@ -136,11 +136,11 @@ async function register() {
 </template>
 
 <style scoped>
-#register-container {
+main {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    margin-top: 80px;
 }
 
 #register-form {
