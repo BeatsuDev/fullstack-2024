@@ -11,6 +11,7 @@ import { useExecutablePromise } from "@/composables/promise";
 import AlertComponent from "@/components/AlertComponent.vue";
 import useDebounceLoading from "@/composables/useDebounceLoading";
 import { useNotificationStore } from "@/stores/notification";
+import { isAxiosError } from "axios";
 
 //
 const filterOptions = reactive({
@@ -35,6 +36,7 @@ const quizFetchLoadingDebounced = useDebounceLoading(quizFetchLoading, 200);
 
 const errorMessage = computed(() => {
     if (!error.value) return "";
+    if (!isAxiosError(error.value)) return "An unknown error occurred.";
     if (error.value.response?.status === 404) return "No quizzes found.";
     if (error.value.response?.status === 400) return "Invalid search query.";
     return "Failed to search for quizzes.";
@@ -60,7 +62,6 @@ function loadMore(reset = false) {
         filterOptions.selectedCategories.map((c) => c.id)
     ).then((response) => {
         if (reset) {
-            console.log("resetting", reset);
             foundQuizzes.value = response.data;
         } else {
             foundQuizzes.value.push(...response.data);
