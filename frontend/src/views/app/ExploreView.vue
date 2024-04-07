@@ -45,12 +45,14 @@ const errorMessage = computed(() => {
 function searchQuizzes() {
     filtersWindowOpen.value = false;
     nextPage.value = 0;
+    moreQuizzesAvailable.value = true;
     loadMore(true);
 }
 
 // Quizzes
 const foundQuizzes = ref<QuizOverview[]>([]);
 const nextPage = ref(0);
+const moreQuizzesAvailable = ref(true);
 
 function loadMore(reset = false) {
     executeSearch(
@@ -60,13 +62,17 @@ function loadMore(reset = false) {
         filterOptions.minDifficulty,
         filterOptions.maxDifficulty,
         filterOptions.selectedCategories.map((c) => c.id)
-    ).then((response) => {
-        if (reset) {
-            foundQuizzes.value = response.data;
-        } else {
-            foundQuizzes.value.push(...response.data);
-        }
-    });
+    )
+        .then((response) => {
+            if (reset) {
+                foundQuizzes.value = response.data;
+            } else {
+                foundQuizzes.value.push(...response.data);
+            }
+        })
+        .catch(() => {
+            moreQuizzesAvailable.value = false;
+        });
 }
 loadMore();
 
@@ -129,6 +135,7 @@ function toggleFiltersWindow() {
             </AlertComponent>
             <QuizGrid v-else :quizzes="foundQuizzes" />
             <ButtonComponent
+                v-if="moreQuizzesAvailable"
                 class="load-more-button"
                 filled
                 large
