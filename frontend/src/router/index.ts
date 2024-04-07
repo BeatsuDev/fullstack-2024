@@ -125,7 +125,7 @@ router.beforeEach(async (to) => {
     const authenticationStore = useAuthenticationStore();
 
     if (!authenticationStore.authenticated) {
-        await authenticationStore.refresh().catch((err) => {
+        await authenticationStore.refresh().catch(() => {
             console.warn("No cookie / user session:");
         });
     }

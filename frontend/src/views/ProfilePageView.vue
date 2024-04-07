@@ -4,11 +4,9 @@ import { useVuelidate } from "@vuelidate/core";
 import { email } from "@vuelidate/validators";
 import { useAuthenticationStore } from "@/stores/authentication";
 import { useExecutablePromise } from "@/composables/promise";
-import { UserApi } from "@/api";
 
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
-import { exec } from "child_process";
 import router from "@/router";
 import { useNotificationStore } from "@/stores/notification";
 

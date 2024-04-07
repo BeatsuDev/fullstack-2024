@@ -45,13 +45,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import { type QuizCreate } from "@/api/models/quiz-create";
-import {
-    QuestionApi,
-    type QuestionCreate,
-    QuizApi,
-    type Question,
-    type Quiz,
-} from "@/api";
+import { QuestionApi, type QuestionCreate, QuizApi } from "@/api";
 import { useNotificationStore } from "@/stores/notification";
 import { useRouter } from "vue-router";
 import QuizForm from "@/components/QuizForm.vue";
