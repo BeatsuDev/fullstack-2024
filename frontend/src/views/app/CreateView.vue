@@ -106,41 +106,42 @@ async function createQuiz(quiz?: QuizCreate) {
             return;
         }
         quiz = selectedTemplate.value;
-        console.log(quiz);
         questions = selectedTemplate.value.questions;
-        // @ts-ignore
-        questions.forEach((q) => delete q.id);
-        // @ts-ignore
-        delete selectedTemplate.value.questions;
     }
-    // @ts-ignore
-    if (quiz.id) {
+
+    quiz = {
+        title: quiz.title,
+        description: quiz.description,
+        difficulty: quiz.difficulty,
         // @ts-ignore
-        delete quiz.id;
-    }
+        categories: quiz.categories.map((c) => c.id),
+    };
+
     await quizApi
         .createQuiz(quiz)
-        .then((data) => {
-            if (questions.length > 0) {
-                questions.forEach(async (question) => {
-                    await questionsApi.createQuestion({
-                        ...question,
-                        quizId: data.data.id,
-                    });
-                });
-            }
+        .then(success)
+        .catch((error) => {
             notificationStore.addNotification({
-                message: "Quiz created",
-                type: "success",
-            });
-            router.push("/quizzes/" + data.data.id);
-        })
-        .catch(() => {
-            notificationStore.addNotification({
-                message: "Could not create quiz",
+                message: "Could not create quiz. " + error.message,
                 type: "error",
             });
         });
+
+    async function success(
+        response: Awaited<ReturnType<typeof quizApi.createQuiz>>
+    ) {
+        for (const question of questions) {
+            await questionsApi.createQuestion({
+                ...question,
+                quizId: response.data.id,
+            });
+        }
+        notificationStore.addNotification({
+            message: "Quiz created",
+            type: "success",
+        });
+        router.push("/quizzes/" + response.data.id);
+    }
 }
 </script>
 <style scoped>
