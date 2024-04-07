@@ -1,0 +1,43 @@
+[
+    {
+        "id": "8f97efc6-2e79-4def-b7f5-a864bcac9b4b",
+        "title": "Test Quiz",
+        "description": "This is a test quiz",
+        "categories": [
+            {
+                "id": "8f3b6e01-0117-4505-ba51-c8cd83590c9c",
+                "name": "Sports",
+                "color": "#f44336"
+            },
+            {
+                "id": "6870fd00-aa0f-4eec-bf0c-e8fe658b2b84",
+                "name": "Entertainment",
+                "color": "#9c27b0"
+            }
+        ],
+        "creator": {
+            "id": "ef103c90-d8ec-40d5-8ba1-6c327ca19fee",
+            "name": "Cypress Test",
+            "email": "cypress@test.com"
+        },
+        "createdAt": "2021-06-02T14:00:00.000Z"
+    },
+    {
+        "id": "5f390772-d588-482d-8f03-0f77322454fc",
+        "title": "Test Quiz 2",
+        "description": "This is another test quiz",
+        "categories": [
+            {
+                "id": "8f3b6e01-0117-4505-ba51-c8cd83590c9c",
+                "name": "Sports",
+                "color": "#f44336"
+            }
+        ],
+        "creator": {
+            "id": "ef103c90-d8ec-40d5-8ba1-6c327ca19fee",
+            "name": "Cypress Test",
+            "email": "cypress@test.com"
+        },
+        "createdAt": "2021-06-02T14:00:00.000Z"
+    }
+]

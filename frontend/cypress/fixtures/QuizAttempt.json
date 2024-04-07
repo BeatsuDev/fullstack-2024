@@ -1,0 +1,79 @@
+{
+    "id": "c3424d5d-07c7-4a60-8bc1-719253c7d3d1",
+    "questionAttempts": [
+        {
+            "id": "23446e82-1000-46ee-9b25-b0f51b20d50f",
+            "question": {
+                "id": "8e058efc-f592-4eb9-91f7-ffd134a87593",
+                "question": "What is the capital of France?",
+                "answer": "Paris",
+                "image": {
+                    "id": "b6ff41b6-e74b-4401-94ae-7164c93b117b",
+                    "path": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/800px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg"
+                },
+                "options": ["London", "Paris", "Berlin", "Madrid"]
+            },
+            "answer": "Paris",
+            "correct": true
+        }
+    ],
+    "quiz": {
+        "id": "8f97efc6-2e79-4def-b7f5-a864bcac9b4b",
+        "title": "Test Quiz",
+        "description": "This is a test quiz",
+        "categories": [
+            {
+                "id": "8f3b6e01-0117-4505-ba51-c8cd83590c9c",
+                "name": "Sports",
+                "color": "#f44336"
+            },
+            {
+                "id": "6870fd00-aa0f-4eec-bf0c-e8fe658b2b84",
+                "name": "Entertainment",
+                "color": "#9c27b0"
+            }
+        ],
+        "feedbacks": [
+            {
+                "id": "6e3920a0-5486-4694-8416-74e66ef36fcb",
+                "quiz_id": "8f97efc6-2e79-4def-b7f5-a864bcac9b4b",
+                "username": "Cypress Test 2",
+                "create_at": "2021-06-02T14:00:00.000Z"
+            }
+        ],
+        "questions": [
+            {
+                "id": "8e058efc-f592-4eb9-91f7-ffd134a87593",
+                "question": "What is the capital of France?",
+                "answer": "Paris",
+                "image": {
+                    "id": "b6ff41b6-e74b-4401-94ae-7164c93b117b",
+                    "path": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/800px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg"
+                },
+                "options": ["London", "Paris", "Berlin", "Madrid"]
+            },
+            {
+                "id": "c37a6e98-af69-4f22-b365-699a4e32e477",
+                "question": "This is a test quiz",
+                "answer": "True",
+                "image": null,
+                "options": ["True", "False"]
+            },
+            {
+                "id": "1c81af74-11ac-44f8-b472-e17b7d2311b1",
+                "question": "Write all the letters of the alphabet",
+                "answer": "abcdefghijklmnopqrstuvwxyz",
+                "image": null,
+                "options": []
+            }
+        ],
+        "creator": {
+            "id": "ef103c90-d8ec-40d5-8ba1-6c327ca19fee",
+            "name": "Cypress Test",
+            "email": "cypress@test.com"
+        },
+        "createdAt": "2021-06-02T14:00:00.000Z"
+    },
+    "complete": true,
+    "attemptedAt": "2021-06-02T14:00:00.000Z"
+}
