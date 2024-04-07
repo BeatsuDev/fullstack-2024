@@ -20,7 +20,7 @@ public interface QuizRepository extends JpaRepository<Quiz, UUID> {
   List<QuizWithRevision> findWithFirstRevision();
 
   @Query(
-      " SELECT new no.ntnu.fullstack.backend.quiz.model.QuizWithRevision(q, r) FROM Quiz q JOIN Revision r ON q.id = r.quiz.id WHERE q.id = :quizId AND r.createdAt = ( SELECT MAX(r2.createdAt) FROM Revision r2 WHERE r2.quiz.id = q.id ) LIMIT 1")
+      " SELECT new no.ntnu.fullstack.backend.quiz.model.QuizWithRevision(q, r) FROM Quiz q JOIN Revision r ON q.id = r.quiz.id WHERE q.id = :quizId AND r.createdAt = ( SELECT MAX(r2.createdAt) FROM Revision r2 WHERE r2.quiz.id = q.id )")
   Optional<QuizWithRevision> findWithFirstRevision(@Param("quizId") UUID quizId);
 
   @Query(
