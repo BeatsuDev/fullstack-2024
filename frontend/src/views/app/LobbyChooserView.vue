@@ -3,10 +3,17 @@ import { ref } from "vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
 import router from "@/router";
+import { useNotificationStore } from "@/stores/notification";
 
 const lobbyCode = ref("");
+const notificationStore = useNotificationStore();
 
 async function joinLobby() {
+    const lobbyInt = parseInt(lobbyCode.value);
+    if (lobbyCode.value.length !== 6 || isNaN(lobbyInt)) {
+        notificationStore.addNotification({message: "Lobby code is invalid", type: "error"})
+        return;
+    }
     router.push({
         name: "quiz-lobby",
         params: { lobbyCode: lobbyCode.value },
@@ -17,12 +24,12 @@ async function joinLobby() {
 <template>
     <div class="lobby-chooser-container">
         <h3>Join lobby</h3>
-        <div class="join-wrapper">
+        <form class="join-wrapper" @submit.prevent="joinLobby">
             <input v-model="lobbyCode" placeholder="123456" type="text" />
-            <ButtonComponent large @click="joinLobby">
+            <ButtonComponent large>
                 Join Lobby</ButtonComponent
             >
-        </div>
+        </form>
     </div>
 </template>
 
