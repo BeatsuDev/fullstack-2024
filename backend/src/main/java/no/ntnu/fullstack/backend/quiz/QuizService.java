@@ -53,7 +53,7 @@ public class QuizService {
   public List<QuizWithRevision> retrieveQuizzes(QuizFilters filters)
       throws NoQuizzesFoundException {
     Page<QuizWithRevision> quizzes = quizRepository.findByFilter(filters, filters.toPageable());
-    if (quizzes.isEmpty()) throw new NoQuizzesFoundException();
+    if (quizzes == null || quizzes.isEmpty()) throw new NoQuizzesFoundException();
     return quizzes.toList();
   }
 

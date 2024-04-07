@@ -62,13 +62,14 @@ public class QuizController {
   public ResponseEntity<List<QuizOverviewDTO>> listQuiz(
       @RequestParam(required = false) Integer page,
       @RequestParam(required = false) Integer pageSize,
-      @RequestParam(required = false) String textSearch,
+      @RequestParam(required = false, defaultValue = "") String textSearch,
       @RequestParam(required = false) Integer minDifficulty,
       @RequestParam(required = false) Integer maxDifficulty,
       @RequestParam(required = false) UUID collaborator,
       @RequestParam(required = false) UUID creator,
       @RequestParam(required = false) List<UUID> category)
       throws NoQuizzesFoundException {
+    if (category == null) category = List.of();
     QuizFilters filters =
         new QuizFilters(
             page,
