@@ -25,7 +25,7 @@ public class CompetitionController {
   public ResponseEntity<CompetitionDTO> createCompetition(@PathVariable UUID quizId)
       throws QuizNotFoundException {
     Competition competition = competitionService.createCompetition(quizId);
-    return ResponseEntity.ok(competitionMapper.toDTO(competition));
+    return ResponseEntity.status(HttpStatus.CREATED).body(competitionMapper.toDTO(competition));
   }
 
   @PostMapping("/competition/{joinCode}")
