@@ -19,6 +19,6 @@ public class QuestionAttempt {
   private String answer;
 
   public boolean isCorrect() {
-    return question.getAnswer().equals(answer);
+    return question.getAnswer().equalsIgnoreCase(answer);
   }
 }
