@@ -145,6 +145,7 @@ console.log(width.value);
 
 .app-app-container {
     min-height: 100%;
+    box-sizing: border-box;
 }
 
 a {

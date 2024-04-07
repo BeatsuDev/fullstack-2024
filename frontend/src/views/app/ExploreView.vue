@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import FilterIcon from "@/assets/icons/FilterIcon.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 import FilterOptions from "@/components/FilterOptions.vue";
@@ -10,6 +10,7 @@ import { QuizApi } from "@/api";
 import { useExecutablePromise } from "@/composables/promise";
 import AlertComponent from "@/components/AlertComponent.vue";
 import useDebounceLoading from "@/composables/useDebounceLoading";
+import { useNotificationStore } from "@/stores/notification";
 
 //
 const filterOptions = reactive({
@@ -41,31 +42,42 @@ const errorMessage = computed(() => {
 
 function searchQuizzes() {
     filtersWindowOpen.value = false;
+    nextPage.value = 0;
+    loadMore(true);
+}
+
+// Quizzes
+const foundQuizzes = ref<QuizOverview[]>([]);
+const nextPage = ref(0);
+
+function loadMore(reset = false) {
     executeSearch(
-        50,
-        0,
+        1,
+        nextPage.value++,
         searchQuery.value,
         filterOptions.minDifficulty,
         filterOptions.maxDifficulty,
         filterOptions.selectedCategories.map((c) => c.id)
     ).then((response) => {
-        foundQuizzes.value = [...response.data];
+        if (reset) {
+            console.log("resetting", reset);
+            foundQuizzes.value = response.data;
+        } else {
+            foundQuizzes.value.push(...response.data);
+        }
     });
 }
+loadMore();
 
-// Quizzes
-const foundQuizzes = ref<QuizOverview[] | undefined>();
-
-executeSearch(
-    50,
-    0,
-    searchQuery.value,
-    filterOptions.minDifficulty,
-    filterOptions.maxDifficulty,
-    filterOptions.selectedCategories.map((c) => c.id)
-).then((response) => {
-    foundQuizzes.value = [...response.data];
+watch(error, () => {
+    if (error.value) {
+        useNotificationStore().addNotification({
+            type: "error",
+            message: errorMessage.value,
+        });
+    }
 });
+
 // Filter window
 const filtersWindowOpen = ref(false);
 
@@ -105,17 +117,24 @@ function toggleFiltersWindow() {
             </div>
         </div>
         <main class="found-quizzes-container">
-            <AlertComponent v-if="quizFetchLoadingDebounced" type="info"
-                >Loading...
+            <AlertComponent v-if="quizFetchLoadingDebounced" type="info">
+                Loading...
             </AlertComponent>
-            <AlertComponent v-else-if="error" type="danger"
-                >{{ errorMessage }}
-            </AlertComponent>
-            <div v-else-if="foundQuizzes == undefined"></div>
-            <AlertComponent v-else-if="foundQuizzes.length === 0" type="warning"
-                >No quizzes found.
+            <AlertComponent
+                v-else-if="foundQuizzes.length === 0"
+                type="warning"
+            >
+                No quizzes found.
             </AlertComponent>
             <QuizGrid v-else :quizzes="foundQuizzes" />
+            <ButtonComponent
+                class="load-more-button"
+                filled
+                large
+                @click="loadMore()"
+            >
+                Load more
+            </ButtonComponent>
         </main>
     </div>
 </template>
@@ -156,5 +175,10 @@ function toggleFiltersWindow() {
 .found-quizzes-container {
     padding: 1em;
     max-height: 100%;
+}
+
+.load-more-button {
+    width: 8rem;
+    margin: 1em auto 0 calc(50% - 4rem);
 }
 </style>
