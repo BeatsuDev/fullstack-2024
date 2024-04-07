@@ -56,7 +56,7 @@ const moreQuizzesAvailable = ref(true);
 
 function loadMore(reset = false) {
     executeSearch(
-        1,
+        20,
         nextPage.value++,
         searchQuery.value,
         filterOptions.minDifficulty,
