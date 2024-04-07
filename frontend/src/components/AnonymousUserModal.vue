@@ -1,11 +1,12 @@
 <template>
     <GenericModal title="Who are you?" unclosable v-model="active">
-        <p>To play, please tell us your name!</p>
-        <input v-model="name" id="username" /><button
-            @click="createAnonymousUser()"
-        >
-            Submit
-        </button>
+        <form @submit.prevent="createAnonymousUser">
+            <p>To play, please tell us your name!</p>
+            <input v-model="name" id="username" />
+            <button>
+                Submit
+            </button>
+        </form>
     </GenericModal>
 </template>
 
