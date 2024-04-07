@@ -1,7 +1,7 @@
 import { computed, reactive } from "vue";
 import { defineStore } from "pinia";
 
-import type { User, UserCreate, UserLogin } from "@/api";
+import type { User, UserCreate, UserLogin, UserUpdate } from "@/api";
 import { UserApi, UserSessionApi } from "@/api";
 import globalAxios from "axios";
 
@@ -131,12 +131,19 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         return promise;
     }
 
+    function updateUser(user: UserUpdate) {
+        return userApi.updateUser(user).then((response) => {
+            authenticationData.user = response.data;
+        });
+    }
+
     return {
         logout,
         refresh,
         deauthenticate,
         authenticate,
         register,
+        updateUser,
         authenticated,
         loggedInUser,
     };

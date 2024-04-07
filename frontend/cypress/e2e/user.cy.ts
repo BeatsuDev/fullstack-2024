@@ -29,4 +29,19 @@ describe("User login", () => {
 
         cy.get("button#register-button").click();
     });
+
+    it("Edit user profile", () => {
+        cy.intercept("GET", "/user/session", { fixture: "User.json" });
+        cy.intercept("PUT", "/user", { fixture: "User.json" });
+
+        cy.visit("/profile");
+        cy.get("input#name").clear();
+        cy.get("input#name").type("Cypress Test");
+
+        cy.get("input#email").clear();
+        cy.get("input#email").type("changed@email.com");
+        cy.get("button#change-values-button").click();
+
+        cy.contains("Profile updated successfully");
+    });
 });

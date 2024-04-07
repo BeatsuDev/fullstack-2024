@@ -3,22 +3,25 @@ import { onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { email } from "@vuelidate/validators";
 import { useAuthenticationStore } from "@/stores/authentication";
+import { useExecutablePromise } from "@/composables/promise";
+import { UserApi } from "@/api";
 
 import ValidatedInput from "@/components/ValidatedInput.vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
+import { exec } from "child_process";
+import router from "@/router";
+import { useNotificationStore } from "@/stores/notification";
 
 const authenticationStore = useAuthenticationStore();
 
 const formData = reactive({
     name: "",
     email: "",
-    password: "",
 });
 
 const rules = {
     name: {},
     email: { email },
-    password: {},
 };
 
 const v$ = useVuelidate(rules, formData);
@@ -27,6 +30,34 @@ onMounted(() => {
     formData.name = authenticationStore.loggedInUser?.name || "";
     formData.email = authenticationStore.loggedInUser?.email || "";
 });
+
+// Update logic
+const { loading, error, execute } = useExecutablePromise(
+    authenticationStore.updateUser
+);
+
+function updateUser() {
+    if (v$.value.$invalid) {
+        return;
+    }
+
+    if (!authenticationStore.loggedInUser) {
+        authenticationStore.logout();
+        router.push("/login");
+        return;
+    }
+
+    execute({
+        id: authenticationStore.loggedInUser.id,
+        name: formData.name,
+        email: formData.email,
+    }).then(() => {
+        useNotificationStore().addNotification({
+            message: "Profile updated successfully",
+            type: "success",
+        });
+    });
+}
 </script>
 
 <template>
@@ -35,7 +66,7 @@ onMounted(() => {
             <h3>Edit your profile</h3>
             <p>Change your user information here.</p>
 
-            <form id="change-values-container" @submit.prevent="">
+            <form id="change-values-container" @submit.prevent="updateUser">
                 <ValidatedInput
                     id="name"
                     v-model="formData.name"
@@ -60,6 +91,8 @@ onMounted(() => {
                     Edit profile
                 </ButtonComponent>
             </form>
+            <span v-if="loading">Loading...</span>
+            <span v-if="error">{{ error }}</span>
         </div>
     </main>
 </template>
