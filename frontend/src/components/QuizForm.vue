@@ -26,8 +26,12 @@
                 {{ category.name }}
             </label>
         </div>
-        <ButtonComponent :loading="props.loading" @click="submit"
-            >Submit
+        <ButtonComponent
+            id="quiz-submit-button"
+            :loading="props.loading"
+            @click="submit"
+        >
+            Submit
         </ButtonComponent>
     </form>
 </template>
