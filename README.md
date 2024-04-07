@@ -55,3 +55,14 @@ npm run test:e2e
 
 npm run test:unit
 ```
+
+## Common mistakes:
+
+If you get the error "Could not find ./docker-entrypoint.sh" when running `docker-compose up`
+it means that the file format is DOS and not UNIX. Install the dos2unix commandline
+tool with `winget install dos2unix`, restart cmd, and then run:
+
+```bash
+cd backend
+dos2unix ./docker-entrypoint.sh
+```
