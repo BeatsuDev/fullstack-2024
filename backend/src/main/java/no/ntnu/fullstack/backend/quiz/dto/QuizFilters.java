@@ -5,6 +5,8 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Getter
 @Setter
@@ -36,5 +38,9 @@ public class QuizFilters {
     this.category = category;
     this.creator = creator;
     this.collaborator = collaborator;
+  }
+
+  public Pageable toPageable() {
+    return PageRequest.of(page, pageSize);
   }
 }

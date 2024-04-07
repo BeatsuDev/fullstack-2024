@@ -17,6 +17,7 @@ import no.ntnu.fullstack.backend.quiz.repository.QuizRepository;
 import no.ntnu.fullstack.backend.revision.RevisionRepository;
 import no.ntnu.fullstack.backend.revision.model.Revision;
 import no.ntnu.fullstack.backend.user.model.User;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 /**
@@ -49,57 +50,11 @@ public class QuizService {
     return new QuizWithRevision(createdQuiz, revision);
   }
 
-  public List<QuizWithRevision> retrieveQuizzes() {
-    return quizRepository.findWithFirstRevision();
-  }
-
   public List<QuizWithRevision> retrieveQuizzes(QuizFilters filters)
       throws NoQuizzesFoundException {
-    List<QuizWithRevision> quizzes = retrieveQuizzes();
-    if (filters.getCategory() != null && !filters.getCategory().isEmpty()) {
-      quizzes.removeIf(
-          quizWithRevision ->
-              quizWithRevision.getLatestRevision().getCategories().stream()
-                  .map(Category::getId)
-                  .noneMatch(
-                      category -> filters.getCategory().stream().anyMatch(category::equals)));
-    }
-    if (filters.getMinDifficulty() != null) {
-      quizzes.removeIf(
-          quizWithRevision ->
-              quizWithRevision.getLatestRevision().getDifficulty() < filters.getMinDifficulty());
-    }
-    if (filters.getMaxDifficulty() != null) {
-      quizzes.removeIf(
-          quizWithRevision ->
-              quizWithRevision.getLatestRevision().getDifficulty() > filters.getMaxDifficulty());
-    }
-    if (filters.getTextSearch() != null && !filters.getTextSearch().isEmpty()) {
-      quizzes.removeIf(
-          quizWithRevision ->
-              !quizWithRevision.getLatestRevision().getTitle().contains(filters.getTextSearch())
-                  && !quizWithRevision
-                      .getLatestRevision()
-                      .getDescription()
-                      .contains(filters.getTextSearch()));
-    }
-    if (filters.getCreator() != null) {
-      quizzes.removeIf(
-          quizWithRevision ->
-              !quizWithRevision.getQuiz().getCreator().getId().equals(filters.getCreator()));
-    }
-    if (filters.getCollaborator() != null) {
-      quizzes.removeIf(
-          quizWithRevision ->
-              quizWithRevision.getQuiz().getCollaborators().stream()
-                  .noneMatch(user -> user.getId().equals(filters.getCollaborator())));
-    }
-
-    int start = filters.getPage() * filters.getPageSize();
-    if (start >= quizzes.size()) throw new NoQuizzesFoundException();
-    int end = Math.min(start + filters.getPageSize(), quizzes.size());
-
-    return quizzes.subList(start, end);
+    Page<QuizWithRevision> quizzes = quizRepository.findByFilter(filters, filters.toPageable());
+    if (quizzes.isEmpty()) throw new NoQuizzesFoundException();
+    return quizzes.toList();
   }
 
   public QuizWithRevision getLatestQuiz(UUID quizId) throws QuizNotFoundException {
