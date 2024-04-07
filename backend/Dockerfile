@@ -8,6 +8,4 @@ RUN mvn dependency:resolve
 
 COPY . /app
 
-RUN sed -e 's/\r//g' docker-entrypoint.sh
-RUN chmod 777 docker-entrypoint.sh
-CMD ["./docker-entrypoint.sh"]
+CMD ["/bin/sh", "-c", "dos2unix <docker-entrypoint.sh | sh"]
