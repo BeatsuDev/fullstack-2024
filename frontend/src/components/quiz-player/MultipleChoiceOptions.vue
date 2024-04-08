@@ -9,11 +9,15 @@ defineProps<{
 const emit = defineEmits<{
     answerSelected: [option: string];
 }>();
+
+function shuffle(array: string[]) {
+    return array.sort(() => Math.random() - 0.5);
+}
 </script>
 
 <template>
     <div class="multiple-choice-container">
-        <div v-for="option in question.options" :key="option">
+        <div v-for="option in shuffle(question.options)" :key="option">
             <ButtonComponent
                 class="option"
                 @click="() => emit('answerSelected', option)"
