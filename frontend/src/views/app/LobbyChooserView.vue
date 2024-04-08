@@ -3,23 +3,14 @@ import { ref } from "vue";
 import ButtonComponent from "@/components/ButtonComponent.vue";
 
 import router from "@/router";
-import { useNotificationStore } from "@/stores/notification";
 
-const lobbyCode = ref("");
-const notificationStore = useNotificationStore();
+const lobbyCode = ref("" as number | string);
 
 async function joinLobby() {
-    const lobbyInt = parseInt(lobbyCode.value);
-    if (lobbyCode.value.length !== 6 || isNaN(lobbyInt)) {
-        notificationStore.addNotification({
-            message: "Lobby code is invalid",
-            type: "error",
-        });
-        return;
-    }
+    const sLobbyCode = lobbyCode.value.toString().padStart(6, "0");
     router.push({
         name: "quiz-lobby",
-        params: { lobbyCode: lobbyCode.value },
+        params: { lobbyCode: sLobbyCode },
     });
 }
 </script>
