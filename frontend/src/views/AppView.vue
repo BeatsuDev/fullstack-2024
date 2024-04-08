@@ -109,7 +109,7 @@ console.log(width.value);
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 899px) {
     .app-app-container {
         margin-bottom: 4rem;
     }
