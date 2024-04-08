@@ -1,20 +1,12 @@
 export const templates: {
     difficulty: number;
-    questions: (
-        | {
-              question: string;
-              answer: string;
-              quizId: number;
-              options: string[];
-          }
-        | {
-              question: string;
-              answer: string;
-              quizId: number;
-              options: string[];
-          }
-    )[];
+    questions: {
+        question: string;
+        answer: string;
+        options: string[];
+    }[];
     description: string;
+    categories: readonly [];
     title: string;
 }[] = [
     {
@@ -23,18 +15,17 @@ export const templates: {
         difficulty: 5,
         questions: [
             {
-                quizId: 0,
                 question: "What is 1 + 1?",
                 options: ["1", "2", "3", "4"],
                 answer: "2",
             },
             {
-                quizId: 0,
                 question: "What is 2 + 2?",
                 options: ["1", "2", "3", "4"],
                 answer: "4",
             },
         ],
+        categories: [],
     },
     {
         title: "Norsk",
@@ -42,13 +33,11 @@ export const templates: {
         difficulty: 5,
         questions: [
             {
-                quizId: 0,
                 question: "Hvordan staver man katt?",
                 options: [],
                 answer: "katt",
             },
             {
-                quizId: 0,
                 question: "Hvem er Ivar Åsen?",
                 options: [
                     "Norsk dikter",
@@ -59,5 +48,6 @@ export const templates: {
                 answer: "Norsk dikter",
             },
         ],
+        categories: [],
     },
 ];
