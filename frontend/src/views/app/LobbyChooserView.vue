@@ -11,7 +11,10 @@ const notificationStore = useNotificationStore();
 async function joinLobby() {
     const lobbyInt = parseInt(lobbyCode.value);
     if (lobbyCode.value.length !== 6 || isNaN(lobbyInt)) {
-        notificationStore.addNotification({message: "Lobby code is invalid", type: "error"})
+        notificationStore.addNotification({
+            message: "Lobby code is invalid",
+            type: "error",
+        });
         return;
     }
     router.push({
@@ -42,8 +45,8 @@ async function joinLobby() {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
     flex-direction: column;
+    margin-top: 4rem;
 }
 
 input {

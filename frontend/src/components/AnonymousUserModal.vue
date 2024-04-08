@@ -3,9 +3,7 @@
         <form @submit.prevent="createAnonymousUser">
             <p>To play, please tell us your name!</p>
             <input v-model="name" id="username" />
-            <button>
-                Submit
-            </button>
+            <button>Submit</button>
         </form>
     </GenericModal>
 </template>
