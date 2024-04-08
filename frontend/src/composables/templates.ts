@@ -36,4 +36,28 @@ export const templates: {
             },
         ],
     },
+    {
+        title: "Norsk",
+        description: "Norsk template kvizz",
+        difficulty: 5,
+        questions: [
+            {
+                quizId: 0,
+                question: "Hvordan staver man katt?",
+                options: [],
+                answer: "katt",
+            },
+            {
+                quizId: 0,
+                question: "Hvem er Ivar Åsen?",
+                options: [
+                    "Norsk dikter",
+                    "Norsk forfatter",
+                    "Norsk maler",
+                    "Norsk skuespiller",
+                ],
+                answer: "Norsk dikter",
+            },
+        ],
+    },
 ];
