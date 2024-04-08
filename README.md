@@ -1,7 +1,8 @@
 # Kazoot
 
 This is a monorepo for the back-end and front-end of the application
-"Kazoot" created for the [NTNU course IDATT2105](https://www.ntnu.no/studier/emner/IDATT210).
+"Kazoot" created for the [NTNU course IDATT2105](https://www.ntnu.no/studier/emner/IDATT210) by
+Eric Bieszczad-Stie, Sebastian Bugge and Arunan Gnanasekaran.
 
 In this repo you will find:
 
