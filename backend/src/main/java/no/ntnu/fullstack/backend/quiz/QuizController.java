@@ -93,7 +93,12 @@ public class QuizController {
     QuizWithRevision quiz = quizService.getLatestQuiz(id);
     QuizDTO out = quizMapper.toQuizDTO(quiz.getQuiz(), quiz.getLatestRevision());
     if (!collaboratorService.loggedInUserIsCollaborator(quiz.getQuiz())) {
-      out.getQuestions().forEach(q -> q.setAnswer(null));
+      if (out != null && out.getQuestions() != null)
+        out.getQuestions()
+            .forEach(
+                q -> {
+                  if (q != null) q.setAnswer(null);
+                });
     }
     return ResponseEntity.ok(out);
   }

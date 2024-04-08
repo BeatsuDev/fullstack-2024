@@ -31,7 +31,15 @@ public class AttemptController {
   private final CompetitionService competitionService;
 
   private QuizAttemptDTO removeAnswers(QuizAttemptDTO quizAttempt) {
-    quizAttempt.getQuiz().getQuestions().forEach(q -> q.setAnswer(null));
+    if (quizAttempt.getQuiz() == null || quizAttempt.getQuiz().getQuestions() == null)
+      return quizAttempt;
+    quizAttempt
+        .getQuiz()
+        .getQuestions()
+        .forEach(
+            q -> {
+              if (q != null) q.setAnswer(null);
+            });
     return quizAttempt;
   }
 
