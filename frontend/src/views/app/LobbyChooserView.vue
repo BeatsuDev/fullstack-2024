@@ -25,10 +25,14 @@ async function joinLobby() {
     <div class="lobby-chooser-container">
         <h3>Join lobby</h3>
         <form class="join-wrapper" @submit.prevent="joinLobby">
-            <input v-model="lobbyCode" placeholder="123456" type="text" />
-            <ButtonComponent large>
-                Join Lobby</ButtonComponent
-            >
+            <input
+                v-model="lobbyCode"
+                placeholder="123456"
+                type="number"
+                min="0"
+                max="999999"
+            />
+            <ButtonComponent large>Join Lobby</ButtonComponent>
         </form>
     </div>
 </template>
@@ -47,6 +51,16 @@ input {
     max-width: 150px;
     text-align: right;
     margin-right: 0.2rem;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 
 .join-wrapper {
