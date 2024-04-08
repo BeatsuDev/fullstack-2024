@@ -13,7 +13,7 @@ import no.ntnu.fullstack.backend.image.dto.ImageDTO;
 public class QuestionDTO {
   private final UUID id;
   private final String question;
-  private final String answer;
   private final List<String> options;
   private final ImageDTO image;
+  private String answer;
 }

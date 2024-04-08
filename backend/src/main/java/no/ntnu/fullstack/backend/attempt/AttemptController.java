@@ -30,6 +30,11 @@ public class AttemptController {
   private final AttemptMapper attemptMapper = Mappers.getMapper(AttemptMapper.class);
   private final CompetitionService competitionService;
 
+  private QuizAttemptDTO removeAnswers(QuizAttemptDTO quizAttempt) {
+    quizAttempt.getQuiz().getQuestions().forEach(q -> q.setAnswer(null));
+    return quizAttempt;
+  }
+
   @PostMapping
   public ResponseEntity<QuizAttemptDTO> createAttempt(
       Authentication auth, @PathVariable("quizId") UUID quizId) throws QuizNotFoundException {
@@ -37,7 +42,7 @@ public class AttemptController {
     QuizAttempt quizAttempt = attemptService.createAttempt(quizId, loggedInUser);
 
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(attemptMapper.toQuizAttemptDTO(quizAttempt));
+        .body(removeAnswers(attemptMapper.toQuizAttemptDTO(quizAttempt)));
   }
 
   @GetMapping
@@ -60,7 +65,7 @@ public class AttemptController {
     if (!quizAttempt.getAttemptedBy().getId().equals(loggedInUser.getId()))
       throw new AttemptNotFoundException();
 
-    return ResponseEntity.ok(attemptMapper.toQuizAttemptDTO(quizAttempt));
+    return ResponseEntity.ok(removeAnswers(attemptMapper.toQuizAttemptDTO(quizAttempt)));
   }
 
   @PostMapping("/{attemptId}")

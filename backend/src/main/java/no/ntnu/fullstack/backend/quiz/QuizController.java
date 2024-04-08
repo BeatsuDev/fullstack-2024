@@ -91,7 +91,11 @@ public class QuizController {
   @ResponseBody
   public ResponseEntity<QuizDTO> getQuiz(@PathVariable("id") UUID id) throws QuizNotFoundException {
     QuizWithRevision quiz = quizService.getLatestQuiz(id);
-    return ResponseEntity.ok(quizMapper.toQuizDTO(quiz.getQuiz(), quiz.getLatestRevision()));
+    QuizDTO out = quizMapper.toQuizDTO(quiz.getQuiz(), quiz.getLatestRevision());
+    if (!collaboratorService.loggedInUserIsCollaborator(quiz.getQuiz())) {
+      out.getQuestions().forEach(q -> q.setAnswer(null));
+    }
+    return ResponseEntity.ok(out);
   }
 
   @PutMapping("/{id}")
