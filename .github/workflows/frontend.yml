@@ -56,5 +56,5 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: frontend
-          build: npm run build-only
+          build: npm run build
           start: npm run preview
