@@ -107,7 +107,7 @@ async function createQuiz(quiz?: QuizCreate) {
         title: quiz.title,
         description: quiz.description,
         difficulty: quiz.difficulty,
-        categories: quiz.categories.map((c) => c.id),
+        categories: quiz.categories.map((c) => (c.id ? c.id : c)),
     };
 
     await quizApi
