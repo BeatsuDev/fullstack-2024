@@ -122,8 +122,9 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         const promise = userApi.registerUser(loginDetails, options);
 
         promise
-            .then(() => {
+            .then((response) => {
                 authenticationData.authenticated = true;
+                authenticationData.user = response.data;
                 setDeauthenticationTimer();
             })
             .catch(deauthenticate);
